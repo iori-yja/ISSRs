@@ -1,0 +1,704 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"uart.c"
+  20              	.Ltext0:
+  21              		.cfi_sections	.debug_frame
+  22              		.global	__aeabi_uidiv
+  23              		.section	.text.UARTInit,"ax",%progbits
+  24              		.align	2
+  25              		.global	UARTInit
+  26              		.code	16
+  27              		.thumb_func
+  29              	UARTInit:
+  30              	.LFB0:
+  31              		.file 1 "lib/Common/src/uart.c"
+   1:lib/Common/src/uart.c **** /*****************************************************************************
+   2:lib/Common/src/uart.c ****  *   uart.c:  UART API file for NXP LPC23xx/24xx Family Microprocessors
+   3:lib/Common/src/uart.c ****  *
+   4:lib/Common/src/uart.c ****  *   Copyright(C) 2006, NXP Semiconductor
+   5:lib/Common/src/uart.c ****  *   All rights reserved.
+   6:lib/Common/src/uart.c ****  *
+   7:lib/Common/src/uart.c ****  *   History
+   8:lib/Common/src/uart.c ****  *   2006.07.12  ver 1.00    Prelimnary version, first Release
+   9:lib/Common/src/uart.c ****  *
+  10:lib/Common/src/uart.c **** ******************************************************************************/
+  11:lib/Common/src/uart.c **** 
+  12:lib/Common/src/uart.c **** // modified by Martin Thomas
+  13:lib/Common/src/uart.c **** // - const BYTE in send
+  14:lib/Common/src/uart.c **** 
+  15:lib/Common/src/uart.c **** #include "LPC23xx.h"                        /* LPC23xx/24xx definitions */
+  16:lib/Common/src/uart.c **** #include "target.h"
+  17:lib/Common/src/uart.c **** #include "uart.h"
+  18:lib/Common/src/uart.c **** 
+  19:lib/Common/src/uart.c **** #define BUFSIZE UART_BUFSIZE
+  20:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+  21:lib/Common/src/uart.c **** volatile DWORD UART0Status, UART1Status;
+  22:lib/Common/src/uart.c **** volatile BYTE UART0TxEmpty = 1, UART1TxEmpty = 1;
+  23:lib/Common/src/uart.c **** volatile BYTE UART0Buffer[BUFSIZE], UART1Buffer[BUFSIZE];
+  24:lib/Common/src/uart.c **** volatile DWORD UART0Count = 0, UART1Count = 0;
+  25:lib/Common/src/uart.c **** /*****************************************************************************
+  26:lib/Common/src/uart.c **** ** Function name:		UART0Handler
+  27:lib/Common/src/uart.c **** **
+  28:lib/Common/src/uart.c **** ** Descriptions:		UART0 interrupt handler
+  29:lib/Common/src/uart.c **** **
+  30:lib/Common/src/uart.c **** ** parameters:			None
+  31:lib/Common/src/uart.c **** ** Returned value:		None
+  32:lib/Common/src/uart.c **** ** 
+  33:lib/Common/src/uart.c **** *****************************************************************************/
+  34:lib/Common/src/uart.c **** void UART0Handler (void) __irq 
+  35:lib/Common/src/uart.c **** {
+  36:lib/Common/src/uart.c ****     BYTE IIRValue, LSRValue;
+  37:lib/Common/src/uart.c ****     volatile BYTE Dummy = Dummy;
+  38:lib/Common/src/uart.c **** 
+  39:lib/Common/src/uart.c ****     IENABLE;				/* handles nested interrupt */	
+  40:lib/Common/src/uart.c ****     IIRValue = U0IIR;
+  41:lib/Common/src/uart.c ****     
+  42:lib/Common/src/uart.c ****     IIRValue >>= 1;			/* skip pending bit in IIR */
+  43:lib/Common/src/uart.c ****     IIRValue &= 0x07;			/* check bit 1~3, interrupt identification */
+  44:lib/Common/src/uart.c ****     if ( IIRValue == IIR_RLS )		/* Receive Line Status */
+  45:lib/Common/src/uart.c ****     {
+  46:lib/Common/src/uart.c **** 		LSRValue = U0LSR;
+  47:lib/Common/src/uart.c **** 		/* Receive Line Status */
+  48:lib/Common/src/uart.c **** 		if ( LSRValue & (LSR_OE|LSR_PE|LSR_FE|LSR_RXFE|LSR_BI) )
+  49:lib/Common/src/uart.c **** 		{
+  50:lib/Common/src/uart.c **** 	    	/* There are errors or break interrupt */
+  51:lib/Common/src/uart.c **** 	    	/* Read LSR will clear the interrupt */
+  52:lib/Common/src/uart.c **** 	    	UART0Status = LSRValue;
+  53:lib/Common/src/uart.c **** 	    	Dummy = U0RBR;		/* Dummy read on RX to clear 
+  54:lib/Common/src/uart.c **** 								interrupt, then bail out */
+  55:lib/Common/src/uart.c **** 	    	IDISABLE;
+  56:lib/Common/src/uart.c **** 	    	VICVectAddr = 0;		/* Acknowledge Interrupt */
+  57:lib/Common/src/uart.c **** 	    	return;
+  58:lib/Common/src/uart.c **** 		}
+  59:lib/Common/src/uart.c **** 		if ( LSRValue & LSR_RDR )	/* Receive Data Ready */			
+  60:lib/Common/src/uart.c **** 		{
+  61:lib/Common/src/uart.c **** 	    	/* If no error on RLS, normal ready, save into the data buffer. */
+  62:lib/Common/src/uart.c **** 	    	/* Note: read RBR will clear the interrupt */
+  63:lib/Common/src/uart.c **** 	    	UART0Buffer[UART0Count] = U0RBR;
+  64:lib/Common/src/uart.c **** 	    	UART0Count++;
+  65:lib/Common/src/uart.c **** 	    	if ( UART0Count == BUFSIZE )
+  66:lib/Common/src/uart.c **** 	    	{
+  67:lib/Common/src/uart.c **** 				UART0Count = 0;		/* buffer overflow */
+  68:lib/Common/src/uart.c **** 	    	}	
+  69:lib/Common/src/uart.c **** 		}
+  70:lib/Common/src/uart.c ****     }
+  71:lib/Common/src/uart.c ****     else if ( IIRValue == IIR_RDA )	/* Receive Data Available */
+  72:lib/Common/src/uart.c ****     {
+  73:lib/Common/src/uart.c **** 		/* Receive Data Available */
+  74:lib/Common/src/uart.c **** 		UART0Buffer[UART0Count] = U0RBR;
+  75:lib/Common/src/uart.c **** 		UART0Count++;
+  76:lib/Common/src/uart.c **** 		if ( UART0Count == BUFSIZE )
+  77:lib/Common/src/uart.c **** 		{
+  78:lib/Common/src/uart.c **** 	    	UART0Count = 0;		/* buffer overflow */
+  79:lib/Common/src/uart.c **** 		}
+  80:lib/Common/src/uart.c ****     }
+  81:lib/Common/src/uart.c ****     else if ( IIRValue == IIR_CTI )	/* Character timeout indicator */
+  82:lib/Common/src/uart.c ****     {
+  83:lib/Common/src/uart.c **** 		/* Character Time-out indicator */
+  84:lib/Common/src/uart.c **** 		UART0Status |= 0x100;		/* Bit 9 as the CTI error */
+  85:lib/Common/src/uart.c ****     }
+  86:lib/Common/src/uart.c ****     else if ( IIRValue == IIR_THRE )	/* THRE, transmit holding register empty */
+  87:lib/Common/src/uart.c ****     {
+  88:lib/Common/src/uart.c **** 		/* THRE interrupt */
+  89:lib/Common/src/uart.c **** 		LSRValue = U0LSR;		/* Check status in the LSR to see if
+  90:lib/Common/src/uart.c **** 								valid data in U0THR or not */
+  91:lib/Common/src/uart.c **** 		if ( LSRValue & LSR_THRE )
+  92:lib/Common/src/uart.c **** 		{
+  93:lib/Common/src/uart.c **** 	    	UART0TxEmpty = 1;
+  94:lib/Common/src/uart.c **** 		}
+  95:lib/Common/src/uart.c **** 		else
+  96:lib/Common/src/uart.c **** 		{
+  97:lib/Common/src/uart.c **** 	    	UART0TxEmpty = 0;
+  98:lib/Common/src/uart.c **** 		}
+  99:lib/Common/src/uart.c ****     }
+ 100:lib/Common/src/uart.c ****     
+ 101:lib/Common/src/uart.c ****     IDISABLE;
+ 102:lib/Common/src/uart.c ****     VICVectAddr = 0;		/* Acknowledge Interrupt */
+ 103:lib/Common/src/uart.c **** }
+ 104:lib/Common/src/uart.c **** 
+ 105:lib/Common/src/uart.c **** /*****************************************************************************
+ 106:lib/Common/src/uart.c **** ** Function name:		UART1Handler
+ 107:lib/Common/src/uart.c **** **
+ 108:lib/Common/src/uart.c **** ** Descriptions:		UART1 interrupt handler
+ 109:lib/Common/src/uart.c **** **
+ 110:lib/Common/src/uart.c **** ** parameters:			None
+ 111:lib/Common/src/uart.c **** ** Returned value:		None
+ 112:lib/Common/src/uart.c **** ** 
+ 113:lib/Common/src/uart.c **** *****************************************************************************/
+ 114:lib/Common/src/uart.c **** void UART1Handler (void) __irq 
+ 115:lib/Common/src/uart.c **** {
+ 116:lib/Common/src/uart.c ****     BYTE IIRValue, LSRValue;
+ 117:lib/Common/src/uart.c ****     BYTE Dummy = Dummy;
+ 118:lib/Common/src/uart.c **** 
+ 119:lib/Common/src/uart.c ****     IENABLE;				/* handles nested interrupt */	
+ 120:lib/Common/src/uart.c ****     IIRValue = U1IIR;
+ 121:lib/Common/src/uart.c ****     
+ 122:lib/Common/src/uart.c ****     IIRValue >>= 1;			/* skip pending bit in IIR */
+ 123:lib/Common/src/uart.c ****     IIRValue &= 0x07;			/* check bit 1~3, interrupt identification */
+ 124:lib/Common/src/uart.c ****     if ( IIRValue == IIR_RLS )		/* Receive Line Status */
+ 125:lib/Common/src/uart.c ****     {
+ 126:lib/Common/src/uart.c **** 		LSRValue = U1LSR;
+ 127:lib/Common/src/uart.c **** 		/* Receive Line Status */
+ 128:lib/Common/src/uart.c **** 		if ( LSRValue & (LSR_OE|LSR_PE|LSR_FE|LSR_RXFE|LSR_BI) )
+ 129:lib/Common/src/uart.c **** 		{
+ 130:lib/Common/src/uart.c **** 	    	/* There are errors or break interrupt */
+ 131:lib/Common/src/uart.c **** 	    	/* Read LSR will clear the interrupt */
+ 132:lib/Common/src/uart.c **** 	    	UART1Status = LSRValue;
+ 133:lib/Common/src/uart.c **** 	    	Dummy = U1RBR;		/* Dummy read on RX to clear 
+ 134:lib/Common/src/uart.c **** 								interrupt, then bail out */
+ 135:lib/Common/src/uart.c **** 	    	IDISABLE;
+ 136:lib/Common/src/uart.c **** 	    	VICVectAddr = 0;		/* Acknowledge Interrupt */
+ 137:lib/Common/src/uart.c **** 	    	return;
+ 138:lib/Common/src/uart.c **** 		}
+ 139:lib/Common/src/uart.c **** 		if ( LSRValue & LSR_RDR )	/* Receive Data Ready */			
+ 140:lib/Common/src/uart.c **** 		{
+ 141:lib/Common/src/uart.c **** 	    	/* If no error on RLS, normal ready, save into the data buffer. */
+ 142:lib/Common/src/uart.c **** 	    	/* Note: read RBR will clear the interrupt */
+ 143:lib/Common/src/uart.c **** 	    	UART1Buffer[UART1Count] = U1RBR;
+ 144:lib/Common/src/uart.c **** 	    	UART1Count++;
+ 145:lib/Common/src/uart.c **** 	    	if ( UART1Count == BUFSIZE )
+ 146:lib/Common/src/uart.c **** 	    	{
+ 147:lib/Common/src/uart.c **** 				UART1Count = 0;		/* buffer overflow */
+ 148:lib/Common/src/uart.c **** 	    	}	
+ 149:lib/Common/src/uart.c **** 		}
+ 150:lib/Common/src/uart.c ****     }
+ 151:lib/Common/src/uart.c ****     else if ( IIRValue == IIR_RDA )	/* Receive Data Available */
+ 152:lib/Common/src/uart.c ****     {
+ 153:lib/Common/src/uart.c **** 		/* Receive Data Available */
+ 154:lib/Common/src/uart.c **** 		UART1Buffer[UART1Count] = U1RBR;
+ 155:lib/Common/src/uart.c **** 		UART1Count++;
+ 156:lib/Common/src/uart.c **** 		if ( UART1Count == BUFSIZE )
+ 157:lib/Common/src/uart.c **** 		{
+ 158:lib/Common/src/uart.c **** 	    	UART1Count = 0;		/* buffer overflow */
+ 159:lib/Common/src/uart.c **** 		}
+ 160:lib/Common/src/uart.c ****     }
+ 161:lib/Common/src/uart.c ****     else if ( IIRValue == IIR_CTI )	/* Character timeout indicator */
+ 162:lib/Common/src/uart.c ****     {
+ 163:lib/Common/src/uart.c **** 		/* Character Time-out indicator */
+ 164:lib/Common/src/uart.c **** 		UART1Status |= 0x100;		/* Bit 9 as the CTI error */
+ 165:lib/Common/src/uart.c ****     }
+ 166:lib/Common/src/uart.c ****     else if ( IIRValue == IIR_THRE )	/* THRE, transmit holding register empty */
+ 167:lib/Common/src/uart.c ****     {
+ 168:lib/Common/src/uart.c **** 		/* THRE interrupt */
+ 169:lib/Common/src/uart.c **** 		LSRValue = U1LSR;		/* Check status in the LSR to see if
+ 170:lib/Common/src/uart.c **** 								valid data in U0THR or not */
+ 171:lib/Common/src/uart.c **** 		if ( LSRValue & LSR_THRE )
+ 172:lib/Common/src/uart.c **** 		{
+ 173:lib/Common/src/uart.c **** 	    	UART1TxEmpty = 1;
+ 174:lib/Common/src/uart.c **** 		}
+ 175:lib/Common/src/uart.c **** 		else
+ 176:lib/Common/src/uart.c **** 		{
+ 177:lib/Common/src/uart.c **** 	    	UART1TxEmpty = 0;
+ 178:lib/Common/src/uart.c **** 		}
+ 179:lib/Common/src/uart.c ****     }
+ 180:lib/Common/src/uart.c ****     
+ 181:lib/Common/src/uart.c ****     IDISABLE;
+ 182:lib/Common/src/uart.c ****     VICVectAddr = 0;		/* Acknowledge Interrupt */
+ 183:lib/Common/src/uart.c **** }
+ 184:lib/Common/src/uart.c **** #endif
+ 185:lib/Common/src/uart.c **** 
+ 186:lib/Common/src/uart.c **** /*****************************************************************************
+ 187:lib/Common/src/uart.c **** ** Function name:		UARTInit
+ 188:lib/Common/src/uart.c **** **
+ 189:lib/Common/src/uart.c **** ** Descriptions:		Initialize UART0 port, setup pin select,
+ 190:lib/Common/src/uart.c **** **						clock, parity, stop bits, FIFO, etc.
+ 191:lib/Common/src/uart.c **** **
+ 192:lib/Common/src/uart.c **** ** parameters:			portNum(0 or 1) and UART baudrate
+ 193:lib/Common/src/uart.c **** ** Returned value:		true or false, return false only if the 
+ 194:lib/Common/src/uart.c **** **						interrupt handler can't be installed to the 
+ 195:lib/Common/src/uart.c **** **						VIC table
+ 196:lib/Common/src/uart.c **** ** 
+ 197:lib/Common/src/uart.c **** *****************************************************************************/
+ 198:lib/Common/src/uart.c **** DWORD UARTInit( DWORD PortNum, DWORD baudrate )
+ 199:lib/Common/src/uart.c **** {
+  32              		.loc 1 199 0
+  33              		.cfi_startproc
+  34 0000 38B5     		push	{r3, r4, r5, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 16
+  37              		.cfi_offset 3, -16
+  38              		.cfi_offset 4, -12
+  39              		.cfi_offset 5, -8
+  40              		.cfi_offset 14, -4
+  41              	.LVL0:
+ 200:lib/Common/src/uart.c ****     DWORD Fdiv;
+ 201:lib/Common/src/uart.c **** 
+ 202:lib/Common/src/uart.c **** 	if ( PortNum == 0 )
+  42              		.loc 1 202 0
+  43 0002 041E     		sub	r4, r0, #0
+  44 0004 22D0     		beq	.L6
+ 203:lib/Common/src/uart.c **** 	{
+ 204:lib/Common/src/uart.c **** 		PINSEL0 = 0x00000050;       /* RxD0 and TxD0 */
+ 205:lib/Common/src/uart.c **** 
+ 206:lib/Common/src/uart.c ****     	U0LCR = 0x83;		/* 8 bits, no Parity, 1 Stop bit */
+ 207:lib/Common/src/uart.c ****     	Fdiv = ( Fpclk / 16 ) / baudrate ;	/*baud rate */
+ 208:lib/Common/src/uart.c ****     	U0DLM = Fdiv / 256;							
+ 209:lib/Common/src/uart.c ****     	U0DLL = Fdiv % 256;
+ 210:lib/Common/src/uart.c **** 		U0LCR = 0x03;		/* DLAB = 0 */
+ 211:lib/Common/src/uart.c ****     	U0FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+ 212:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+ 213:lib/Common/src/uart.c ****     	if ( install_irq( UART0_INT, (void *)UART0Handler, HIGHEST_PRIORITY ) == FALSE )
+ 214:lib/Common/src/uart.c ****     	{
+ 215:lib/Common/src/uart.c **** 			return (FALSE);
+ 216:lib/Common/src/uart.c ****     	}
+ 217:lib/Common/src/uart.c ****     	U0IER = IER_RBR | IER_THRE | IER_RLS;	/* Enable UART0 interrupt */
+ 218:lib/Common/src/uart.c **** #endif
+ 219:lib/Common/src/uart.c ****     	return (TRUE);
+ 220:lib/Common/src/uart.c **** 	}
+ 221:lib/Common/src/uart.c **** 	else if ( PortNum == 1 )
+ 222:lib/Common/src/uart.c **** 	{
+ 223:lib/Common/src/uart.c **** #if EA_BOARD_LPC24XX
+ 224:lib/Common/src/uart.c **** 		PINSEL7 |= 0x0000000F;	/* P3.16 TXD1, P3.17 RXD1 */
+ 225:lib/Common/src/uart.c **** #else							/* Default is Keil MCB2300 board */							
+ 226:lib/Common/src/uart.c **** 		PINSEL0 |= 0x40000000;	/* Enable TxD1 P0.15 */
+ 227:lib/Common/src/uart.c **** 		PINSEL1 |= 0x00000001;	/* Enable RxD1 P0.16 */
+ 228:lib/Common/src/uart.c **** #endif
+ 229:lib/Common/src/uart.c ****     	U1LCR = 0x83;		/* 8 bits, no Parity, 1 Stop bit */
+ 230:lib/Common/src/uart.c ****     	Fdiv = ( Fpclk / 16 ) / baudrate ;	/*baud rate */
+ 231:lib/Common/src/uart.c ****     	U1DLM = Fdiv / 256;							
+ 232:lib/Common/src/uart.c ****     	U1DLL = Fdiv % 256;
+ 233:lib/Common/src/uart.c **** 		U1LCR = 0x03;		/* DLAB = 0 */
+ 234:lib/Common/src/uart.c ****     	U1FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+ 235:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+ 236:lib/Common/src/uart.c ****     	if ( install_irq( UART1_INT, (void *)UART1Handler, HIGHEST_PRIORITY ) == FALSE )
+ 237:lib/Common/src/uart.c ****     	{
+ 238:lib/Common/src/uart.c **** 			return (FALSE);
+ 239:lib/Common/src/uart.c ****     	}
+ 240:lib/Common/src/uart.c ****     	U1IER = IER_RBR | IER_THRE | IER_RLS;	/* Enable UART0 interrupt */
+ 241:lib/Common/src/uart.c **** #endif
+ 242:lib/Common/src/uart.c ****     	return (TRUE);
+ 243:lib/Common/src/uart.c **** 	}
+ 244:lib/Common/src/uart.c **** 	return( FALSE ); 
+  45              		.loc 1 244 0
+  46 0006 0020     		mov	r0, #0
+  47              	.LVL1:
+ 221:lib/Common/src/uart.c **** 	else if ( PortNum == 1 )
+  48              		.loc 1 221 0
+  49 0008 012C     		cmp	r4, #1
+  50 000a 02D0     		beq	.L7
+  51              	.LVL2:
+  52              	.L3:
+ 245:lib/Common/src/uart.c **** }
+  53              		.loc 1 245 0
+  54              		@ sp needed for prologue
+  55 000c 38BC     		pop	{r3, r4, r5}
+  56 000e 02BC     		pop	{r1}
+  57 0010 0847     		bx	r1
+  58              	.LVL3:
+  59              	.L7:
+ 226:lib/Common/src/uart.c **** 		PINSEL0 |= 0x40000000;	/* Enable TxD1 P0.15 */
+  60              		.loc 1 226 0
+  61 0012 1A4B     		ldr	r3, .L8
+  62 0014 8025     		mov	r5, #128
+  63 0016 1868     		ldr	r0, [r3]
+  64 0018 EA05     		lsl	r2, r5, #23
+  65 001a 0243     		orr	r2, r2, r0
+  66 001c 1A60     		str	r2, [r3]
+ 227:lib/Common/src/uart.c **** 		PINSEL1 |= 0x00000001;	/* Enable RxD1 P0.16 */
+  67              		.loc 1 227 0
+  68 001e 5D68     		ldr	r5, [r3, #4]
+  69 0020 2543     		orr	r5, r5, r4
+  70 0022 5D60     		str	r5, [r3, #4]
+ 229:lib/Common/src/uart.c ****     	U1LCR = 0x83;		/* 8 bits, no Parity, 1 Stop bit */
+  71              		.loc 1 229 0
+  72 0024 164D     		ldr	r5, .L8+4
+  73 0026 8320     		mov	r0, #131
+  74 0028 2860     		str	r0, [r5]
+ 230:lib/Common/src/uart.c ****     	Fdiv = ( Fpclk / 16 ) / baudrate ;	/*baud rate */
+  75              		.loc 1 230 0
+  76 002a 1648     		ldr	r0, .L8+8
+  77 002c FFF7FEFF 		bl	__aeabi_uidiv
+  78              	.LVL4:
+ 231:lib/Common/src/uart.c ****     	U1DLM = Fdiv / 256;							
+  79              		.loc 1 231 0
+  80 0030 154B     		ldr	r3, .L8+12
+  81 0032 010A     		lsr	r1, r0, #8
+  82 0034 1960     		str	r1, [r3]
+ 232:lib/Common/src/uart.c ****     	U1DLL = Fdiv % 256;
+  83              		.loc 1 232 0
+  84 0036 FF22     		mov	r2, #255
+  85 0038 1449     		ldr	r1, .L8+16
+  86 003a 1040     		and	r0, r0, r2
+  87              	.LVL5:
+ 234:lib/Common/src/uart.c ****     	U1FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+  88              		.loc 1 234 0
+  89 003c 144A     		ldr	r2, .L8+20
+ 232:lib/Common/src/uart.c ****     	U1DLL = Fdiv % 256;
+  90              		.loc 1 232 0
+  91 003e 0860     		str	r0, [r1]
+ 233:lib/Common/src/uart.c **** 		U1LCR = 0x03;		/* DLAB = 0 */
+  92              		.loc 1 233 0
+  93 0040 0323     		mov	r3, #3
+ 234:lib/Common/src/uart.c ****     	U1FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+  94              		.loc 1 234 0
+  95 0042 0721     		mov	r1, #7
+ 233:lib/Common/src/uart.c **** 		U1LCR = 0x03;		/* DLAB = 0 */
+  96              		.loc 1 233 0
+  97 0044 2B60     		str	r3, [r5]
+ 242:lib/Common/src/uart.c ****     	return (TRUE);
+  98              		.loc 1 242 0
+  99 0046 201C     		mov	r0, r4
+ 234:lib/Common/src/uart.c ****     	U1FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+ 100              		.loc 1 234 0
+ 101 0048 1160     		str	r1, [r2]
+ 242:lib/Common/src/uart.c ****     	return (TRUE);
+ 102              		.loc 1 242 0
+ 103 004a DFE7     		b	.L3
+ 104              	.LVL6:
+ 105              	.L6:
+ 204:lib/Common/src/uart.c **** 		PINSEL0 = 0x00000050;       /* RxD0 and TxD0 */
+ 106              		.loc 1 204 0
+ 107 004c 0B4D     		ldr	r5, .L8
+ 108 004e 5024     		mov	r4, #80
+ 109              	.LVL7:
+ 110 0050 2C60     		str	r4, [r5]
+ 206:lib/Common/src/uart.c ****     	U0LCR = 0x83;		/* 8 bits, no Parity, 1 Stop bit */
+ 111              		.loc 1 206 0
+ 112 0052 104C     		ldr	r4, .L8+24
+ 113 0054 8320     		mov	r0, #131
+ 114              	.LVL8:
+ 115 0056 2060     		str	r0, [r4]
+ 207:lib/Common/src/uart.c ****     	Fdiv = ( Fpclk / 16 ) / baudrate ;	/*baud rate */
+ 116              		.loc 1 207 0
+ 117 0058 0A48     		ldr	r0, .L8+8
+ 118 005a FFF7FEFF 		bl	__aeabi_uidiv
+ 119              	.LVL9:
+ 208:lib/Common/src/uart.c ****     	U0DLM = Fdiv / 256;							
+ 120              		.loc 1 208 0
+ 121 005e 0E4B     		ldr	r3, .L8+28
+ 122 0060 020A     		lsr	r2, r0, #8
+ 209:lib/Common/src/uart.c ****     	U0DLL = Fdiv % 256;
+ 123              		.loc 1 209 0
+ 124 0062 FF25     		mov	r5, #255
+ 125 0064 0D49     		ldr	r1, .L8+32
+ 208:lib/Common/src/uart.c ****     	U0DLM = Fdiv / 256;							
+ 126              		.loc 1 208 0
+ 127 0066 1A60     		str	r2, [r3]
+ 209:lib/Common/src/uart.c ****     	U0DLL = Fdiv % 256;
+ 128              		.loc 1 209 0
+ 129 0068 2840     		and	r0, r0, r5
+ 130              	.LVL10:
+ 211:lib/Common/src/uart.c ****     	U0FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+ 131              		.loc 1 211 0
+ 132 006a 0D4B     		ldr	r3, .L8+36
+ 209:lib/Common/src/uart.c ****     	U0DLL = Fdiv % 256;
+ 133              		.loc 1 209 0
+ 134 006c 0860     		str	r0, [r1]
+ 211:lib/Common/src/uart.c ****     	U0FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+ 135              		.loc 1 211 0
+ 136 006e 0722     		mov	r2, #7
+ 210:lib/Common/src/uart.c **** 		U0LCR = 0x03;		/* DLAB = 0 */
+ 137              		.loc 1 210 0
+ 138 0070 0320     		mov	r0, #3
+ 139 0072 2060     		str	r0, [r4]
+ 211:lib/Common/src/uart.c ****     	U0FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+ 140              		.loc 1 211 0
+ 141 0074 1A60     		str	r2, [r3]
+ 219:lib/Common/src/uart.c ****     	return (TRUE);
+ 142              		.loc 1 219 0
+ 143 0076 0120     		mov	r0, #1
+ 144 0078 C8E7     		b	.L3
+ 145              	.L9:
+ 146 007a C046     		.align	2
+ 147              	.L8:
+ 148 007c 00C002E0 		.word	-536690688
+ 149 0080 0C0001E0 		.word	-536805364
+ 150 0084 10552200 		.word	2250000
+ 151 0088 040001E0 		.word	-536805372
+ 152 008c 000001E0 		.word	-536805376
+ 153 0090 080001E0 		.word	-536805368
+ 154 0094 0CC000E0 		.word	-536821748
+ 155 0098 04C000E0 		.word	-536821756
+ 156 009c 00C000E0 		.word	-536821760
+ 157 00a0 08C000E0 		.word	-536821752
+ 158              		.cfi_endproc
+ 159              	.LFE0:
+ 161              		.section	.text.UARTPutch,"ax",%progbits
+ 162              		.align	2
+ 163              		.global	UARTPutch
+ 164              		.code	16
+ 165              		.thumb_func
+ 167              	UARTPutch:
+ 168              	.LFB1:
+ 246:lib/Common/src/uart.c **** 
+ 247:lib/Common/src/uart.c **** /*****************************************************************************
+ 248:lib/Common/src/uart.c **** ** Function name:		UARTSend
+ 249:lib/Common/src/uart.c **** **
+ 250:lib/Common/src/uart.c **** ** Descriptions:		Send a block of data to the UART 0 port based
+ 251:lib/Common/src/uart.c **** **						on the data length
+ 252:lib/Common/src/uart.c **** **
+ 253:lib/Common/src/uart.c **** ** parameters:			portNum, buffer pointer, and data length
+ 254:lib/Common/src/uart.c **** ** Returned value:		None
+ 255:lib/Common/src/uart.c **** ** 
+ 256:lib/Common/src/uart.c **** *****************************************************************************/
+ 257:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+ 258:lib/Common/src/uart.c **** void UARTSend( DWORD portNum, const BYTE *BufferPtr, DWORD Length )
+ 259:lib/Common/src/uart.c **** {
+ 260:lib/Common/src/uart.c **** 	if ( portNum == 0 )
+ 261:lib/Common/src/uart.c **** 	{
+ 262:lib/Common/src/uart.c ****     	while ( Length != 0 )
+ 263:lib/Common/src/uart.c ****     	{
+ 264:lib/Common/src/uart.c **** 			/* THRE status, contain valid data */
+ 265:lib/Common/src/uart.c **** 			while ( !(UART0TxEmpty & 0x01) );	
+ 266:lib/Common/src/uart.c **** 			U0THR = *BufferPtr;
+ 267:lib/Common/src/uart.c **** 			UART0TxEmpty = 0;	/* not empty in the THR until it shifts out */
+ 268:lib/Common/src/uart.c **** 			BufferPtr++;
+ 269:lib/Common/src/uart.c **** 			Length--;
+ 270:lib/Common/src/uart.c **** 		}
+ 271:lib/Common/src/uart.c ****     }
+ 272:lib/Common/src/uart.c **** 	else
+ 273:lib/Common/src/uart.c **** 	{
+ 274:lib/Common/src/uart.c **** 		while ( Length != 0 )
+ 275:lib/Common/src/uart.c ****     	{
+ 276:lib/Common/src/uart.c **** 			/* THRE status, contain valid data */
+ 277:lib/Common/src/uart.c **** 			while ( !(UART1TxEmpty & 0x01) );	
+ 278:lib/Common/src/uart.c **** 			U1THR = *BufferPtr;
+ 279:lib/Common/src/uart.c **** 			UART1TxEmpty = 0;	/* not empty in the THR until it shifts out */
+ 280:lib/Common/src/uart.c **** 			BufferPtr++;
+ 281:lib/Common/src/uart.c **** 			Length--;
+ 282:lib/Common/src/uart.c ****     	}
+ 283:lib/Common/src/uart.c **** 	}
+ 284:lib/Common/src/uart.c ****     return;
+ 285:lib/Common/src/uart.c **** }
+ 286:lib/Common/src/uart.c **** #endif
+ 287:lib/Common/src/uart.c **** 
+ 288:lib/Common/src/uart.c **** /*****************************************************************************
+ 289:lib/Common/src/uart.c **** ** Function name:		UARTPutch
+ 290:lib/Common/src/uart.c **** **
+ 291:lib/Common/src/uart.c **** ** Descriptions:		Send a charactor via uart
+ 292:lib/Common/src/uart.c **** **						
+ 293:lib/Common/src/uart.c **** **
+ 294:lib/Common/src/uart.c **** ** parameters:			portNum, charactor
+ 295:lib/Common/src/uart.c **** ** Returned value:		None
+ 296:lib/Common/src/uart.c **** ** 
+ 297:lib/Common/src/uart.c **** *****************************************************************************/
+ 298:lib/Common/src/uart.c **** void UARTPutch( DWORD portNum, BYTE charactor)
+ 299:lib/Common/src/uart.c **** {
+ 169              		.loc 1 299 0
+ 170              		.cfi_startproc
+ 171 0000 00B5     		push	{lr}
+ 172              	.LCFI1:
+ 173              		.cfi_def_cfa_offset 4
+ 174              		.cfi_offset 14, -4
+ 175              	.LVL11:
+ 300:lib/Common/src/uart.c **** 	if ( portNum == 0 )
+ 176              		.loc 1 300 0
+ 177 0002 0028     		cmp	r0, #0
+ 178 0004 08D1     		bne	.L11
+ 301:lib/Common/src/uart.c **** 	{
+ 302:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+ 303:lib/Common/src/uart.c **** 		/* THRE status, contain valid data */
+ 304:lib/Common/src/uart.c **** 		while ( !(UART0TxEmpty & 0x01) );	
+ 305:lib/Common/src/uart.c **** 		U0THR = charactor;
+ 306:lib/Common/src/uart.c **** 		UART0TxEmpty = 0;	/* not empty in the THR until it shifts out */
+ 307:lib/Common/src/uart.c **** #else
+ 308:lib/Common/src/uart.c **** /*
+ 309:lib/Common/src/uart.c **** 		if (charactor== '\n') {
+ 310:lib/Common/src/uart.c **** 		while (!(U0LSR & 0x20));
+ 311:lib/Common/src/uart.c **** 		U0THR = '\r';
+ 312:lib/Common/src/uart.c **** 		}
+ 313:lib/Common/src/uart.c **** */
+ 314:lib/Common/src/uart.c **** 		while (!(U0LSR & 0x20));
+ 179              		.loc 1 314 0 discriminator 1
+ 180 0006 0848     		ldr	r0, .L18
+ 181              	.LVL12:
+ 182 0008 2022     		mov	r2, #32
+ 183              	.L14:
+ 184 000a 0368     		ldr	r3, [r0]
+ 185 000c 1342     		tst	r3, r2
+ 186 000e FCD0     		beq	.L14
+ 315:lib/Common/src/uart.c **** 		U0THR = charactor;
+ 187              		.loc 1 315 0
+ 188 0010 0648     		ldr	r0, .L18+4
+ 189 0012 0160     		str	r1, [r0]
+ 190              	.L10:
+ 316:lib/Common/src/uart.c **** #endif
+ 317:lib/Common/src/uart.c **** 	}
+ 318:lib/Common/src/uart.c **** 	else
+ 319:lib/Common/src/uart.c **** 	{
+ 320:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+ 321:lib/Common/src/uart.c **** 		/* THRE status, contain valid data */
+ 322:lib/Common/src/uart.c **** 		while ( !(UART1TxEmpty & 0x01) );	
+ 323:lib/Common/src/uart.c **** 		U1THR = charactor;
+ 324:lib/Common/src/uart.c **** 		UART1TxEmpty = 0;	/* not empty in the THR until it shifts out */
+ 325:lib/Common/src/uart.c **** #else
+ 326:lib/Common/src/uart.c **** /*
+ 327:lib/Common/src/uart.c **** 		if (charactor== '\n') {
+ 328:lib/Common/src/uart.c **** 		while (!(U1LSR & 0x20));
+ 329:lib/Common/src/uart.c **** 		U1THR = '\r';
+ 330:lib/Common/src/uart.c **** 		}
+ 331:lib/Common/src/uart.c **** */
+ 332:lib/Common/src/uart.c **** 		while (!(U1LSR & 0x20));
+ 333:lib/Common/src/uart.c **** 		U1THR = charactor;
+ 334:lib/Common/src/uart.c **** #endif
+ 335:lib/Common/src/uart.c **** 	}
+ 336:lib/Common/src/uart.c ****     return;
+ 337:lib/Common/src/uart.c **** }
+ 191              		.loc 1 337 0
+ 192              		@ sp needed for prologue
+ 193 0014 01BC     		pop	{r0}
+ 194 0016 0047     		bx	r0
+ 195              	.LVL13:
+ 196              	.L11:
+ 332:lib/Common/src/uart.c **** 		while (!(U1LSR & 0x20));
+ 197              		.loc 1 332 0 discriminator 1
+ 198 0018 0548     		ldr	r0, .L18+8
+ 199              	.LVL14:
+ 200 001a 2022     		mov	r2, #32
+ 201              	.L15:
+ 202 001c 0368     		ldr	r3, [r0]
+ 203 001e 1342     		tst	r3, r2
+ 204 0020 FCD0     		beq	.L15
+ 333:lib/Common/src/uart.c **** 		U1THR = charactor;
+ 205              		.loc 1 333 0
+ 206 0022 044A     		ldr	r2, .L18+12
+ 207 0024 1160     		str	r1, [r2]
+ 208 0026 F5E7     		b	.L10
+ 209              	.L19:
+ 210              		.align	2
+ 211              	.L18:
+ 212 0028 14C000E0 		.word	-536821740
+ 213 002c 00C000E0 		.word	-536821760
+ 214 0030 140001E0 		.word	-536805356
+ 215 0034 000001E0 		.word	-536805376
+ 216              		.cfi_endproc
+ 217              	.LFE1:
+ 219              		.section	.text.UARTGetch,"ax",%progbits
+ 220              		.align	2
+ 221              		.global	UARTGetch
+ 222              		.code	16
+ 223              		.thumb_func
+ 225              	UARTGetch:
+ 226              	.LFB2:
+ 338:lib/Common/src/uart.c **** 
+ 339:lib/Common/src/uart.c **** /*****************************************************************************
+ 340:lib/Common/src/uart.c **** ** Function name:		UARTGetch
+ 341:lib/Common/src/uart.c **** **
+ 342:lib/Common/src/uart.c **** ** Descriptions:		Send a charactor via uart
+ 343:lib/Common/src/uart.c **** **						
+ 344:lib/Common/src/uart.c **** **
+ 345:lib/Common/src/uart.c **** ** parameters:			portNum, charactor
+ 346:lib/Common/src/uart.c **** ** Returned value:		None
+ 347:lib/Common/src/uart.c **** ** 
+ 348:lib/Common/src/uart.c **** *****************************************************************************/
+ 349:lib/Common/src/uart.c **** char UARTGetch (DWORD portNum)
+ 350:lib/Common/src/uart.c **** {
+ 227              		.loc 1 350 0
+ 228              		.cfi_startproc
+ 229 0000 00B5     		push	{lr}
+ 230              	.LCFI2:
+ 231              		.cfi_def_cfa_offset 4
+ 232              		.cfi_offset 14, -4
+ 233              	.LVL15:
+ 351:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+ 352:lib/Common/src/uart.c ****     int c;
+ 353:lib/Common/src/uart.c **** #endif
+ 354:lib/Common/src/uart.c **** 	if ( portNum == 0 )
+ 234              		.loc 1 354 0
+ 235 0002 0028     		cmp	r0, #0
+ 236 0004 0AD1     		bne	.L21
+ 355:lib/Common/src/uart.c **** 	{
+ 356:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+ 357:lib/Common/src/uart.c **** 		if(UART0Count != 0){
+ 358:lib/Common/src/uart.c **** 			U0IER = IER_THRE | IER_RLS;   /* Disable RBR - buffer-read "atomic" */
+ 359:lib/Common/src/uart.c **** 			c = UART0Buffer[--UART0Count];
+ 360:lib/Common/src/uart.c **** 			U0IER = IER_THRE | IER_RLS | IER_RBR; 
+ 361:lib/Common/src/uart.c **** 			return c;
+ 362:lib/Common/src/uart.c **** 		}
+ 363:lib/Common/src/uart.c **** 		else {
+ 364:lib/Common/src/uart.c **** 			return FALSE;
+ 365:lib/Common/src/uart.c **** 		}
+ 366:lib/Common/src/uart.c **** #else
+ 367:lib/Common/src/uart.c **** 		while (!(U0LSR & 0x01));
+ 237              		.loc 1 367 0 discriminator 1
+ 238 0006 0A49     		ldr	r1, .L28
+ 239 0008 0122     		mov	r2, #1
+ 240              	.L24:
+ 241 000a 0B68     		ldr	r3, [r1]
+ 242 000c 1342     		tst	r3, r2
+ 243 000e FCD0     		beq	.L24
+ 368:lib/Common/src/uart.c **** 		return (U0RBR);
+ 244              		.loc 1 368 0
+ 245 0010 084A     		ldr	r2, .L28+4
+ 246 0012 1168     		ldr	r1, [r2]
+ 247 0014 0806     		lsl	r0, r1, #24
+ 248              	.LVL16:
+ 249 0016 000E     		lsr	r0, r0, #24
+ 250              	.L23:
+ 369:lib/Common/src/uart.c **** #endif
+ 370:lib/Common/src/uart.c ****     }
+ 371:lib/Common/src/uart.c **** 	else
+ 372:lib/Common/src/uart.c **** 	{
+ 373:lib/Common/src/uart.c **** #ifdef BUFFERING_UART
+ 374:lib/Common/src/uart.c **** 		if(UART1Count != 0){
+ 375:lib/Common/src/uart.c **** 			U1IER = IER_THRE | IER_RLS;   /* Disable RBR - buffer-read "atomic" */
+ 376:lib/Common/src/uart.c **** 			c = UART1Buffer[--UART1Count];
+ 377:lib/Common/src/uart.c **** 			U1IER = IER_THRE | IER_RLS | IER_RBR; 
+ 378:lib/Common/src/uart.c **** 			return c;
+ 379:lib/Common/src/uart.c **** 		}
+ 380:lib/Common/src/uart.c **** 		else {
+ 381:lib/Common/src/uart.c **** 			return FALSE;
+ 382:lib/Common/src/uart.c **** 		}
+ 383:lib/Common/src/uart.c **** #else
+ 384:lib/Common/src/uart.c **** 		while (!(U1LSR & 0x01));
+ 385:lib/Common/src/uart.c **** 		return (U1RBR);
+ 386:lib/Common/src/uart.c **** #endif
+ 387:lib/Common/src/uart.c **** 	}
+ 388:lib/Common/src/uart.c **** }
+ 251              		.loc 1 388 0
+ 252              		@ sp needed for prologue
+ 253 0018 02BC     		pop	{r1}
+ 254 001a 0847     		bx	r1
+ 255              	.LVL17:
+ 256              	.L21:
+ 384:lib/Common/src/uart.c **** 		while (!(U1LSR & 0x01));
+ 257              		.loc 1 384 0 discriminator 1
+ 258 001c 0649     		ldr	r1, .L28+8
+ 259 001e 0122     		mov	r2, #1
+ 260              	.L25:
+ 261 0020 0B68     		ldr	r3, [r1]
+ 262 0022 1342     		tst	r3, r2
+ 263 0024 FCD0     		beq	.L25
+ 385:lib/Common/src/uart.c **** 		return (U1RBR);
+ 264              		.loc 1 385 0
+ 265 0026 054A     		ldr	r2, .L28+12
+ 266 0028 1168     		ldr	r1, [r2]
+ 267 002a 0806     		lsl	r0, r1, #24
+ 268              	.LVL18:
+ 269 002c 000E     		lsr	r0, r0, #24
+ 270 002e F3E7     		b	.L23
+ 271              	.L29:
+ 272              		.align	2
+ 273              	.L28:
+ 274 0030 14C000E0 		.word	-536821740
+ 275 0034 00C000E0 		.word	-536821760
+ 276 0038 140001E0 		.word	-536805356
+ 277 003c 000001E0 		.word	-536805376
+ 278              		.cfi_endproc
+ 279              	.LFE2:
+ 281              		.text
+ 282              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart.c
+     /tmp/ccB6VdJO.s:24     .text.UARTInit:00000000 $t
+     /tmp/ccB6VdJO.s:29     .text.UARTInit:00000000 UARTInit
+     /tmp/ccB6VdJO.s:148    .text.UARTInit:0000007c $d
+     /tmp/ccB6VdJO.s:162    .text.UARTPutch:00000000 $t
+     /tmp/ccB6VdJO.s:167    .text.UARTPutch:00000000 UARTPutch
+     /tmp/ccB6VdJO.s:212    .text.UARTPutch:00000028 $d
+     /tmp/ccB6VdJO.s:220    .text.UARTGetch:00000000 $t
+     /tmp/ccB6VdJO.s:225    .text.UARTGetch:00000000 UARTGetch
+     /tmp/ccB6VdJO.s:274    .text.UARTGetch:00000030 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv

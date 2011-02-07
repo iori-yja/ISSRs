@@ -1,0 +1,536 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"misc.c"
+  20              	.Ltext0:
+  21              		.section	.text.__NOP,"ax",%progbits
+  22              		.align	2
+  23              		.global	__NOP
+  24              		.code	16
+  25              		.thumb_func
+  27              	__NOP:
+  28              	.LFB2:
+  29              		.file 1 "lib/Common/src/misc.c"
+   1:lib/Common/src/misc.c **** /********************************************************************************
+   2:lib/Common/src/misc.c **** * File Name          : misc.h
+   3:lib/Common/src/misc.c **** * Author             : Nemui Trinomius (http://nemuisan.blog.bai.ne.jp)
+   4:lib/Common/src/misc.c **** * Version            : V3.00
+   5:lib/Common/src/misc.c **** * Since              : 2009.05.14
+   6:lib/Common/src/misc.c **** * Description        : miscellaneous routine for LPC23xx uC.
+   7:lib/Common/src/misc.c **** *
+   8:lib/Common/src/misc.c **** *                    : 2009.05.14  V1.00    Prelimnary version, first Release.
+   9:lib/Common/src/misc.c **** *                    : 2009.06.29  V2.00    added systick timer using timer1.
+  10:lib/Common/src/misc.c **** *					 : 2009.07.22  V3.00    added FreeRTOS support.
+  11:lib/Common/src/misc.c **** * License			 : BSD License. See Copyright.txt
+  12:lib/Common/src/misc.c **** ********************************************************************************/
+  13:lib/Common/src/misc.c **** 
+  14:lib/Common/src/misc.c **** /*-----------------------------------------
+  15:lib/Common/src/misc.c **** 				includes
+  16:lib/Common/src/misc.c **** -------------------------------------------*/
+  17:lib/Common/src/misc.c **** #include "misc.h"
+  18:lib/Common/src/misc.c **** /* check header file version for fool proof */
+  19:lib/Common/src/misc.c **** #if __MISC_H != 0x0003
+  20:lib/Common/src/misc.c **** #error "header file version is not correspond!"
+  21:lib/Common/src/misc.c **** #endif
+  22:lib/Common/src/misc.c **** 
+  23:lib/Common/src/misc.c **** /*-----------------------------------------
+  24:lib/Common/src/misc.c **** 		   Common Basis Functions
+  25:lib/Common/src/misc.c **** -------------------------------------------*/
+  26:lib/Common/src/misc.c **** inline void __NOP(void)
+  27:lib/Common/src/misc.c **** {
+  30              		.loc 1 27 0
+  28:lib/Common/src/misc.c **** 	__asm__ __volatile__("nop"); 
+  31              		.loc 1 28 0
+  32              	@ 28 "lib/Common/src/misc.c" 1
+  33 0000 C046     		nop
+  34              	@ 0 "" 2
+  29:lib/Common/src/misc.c **** }
+  35              		.loc 1 29 0
+  36              		.code	16
+  37              		@ sp needed for prologue
+  38 0002 7047     		bx	lr
+  39              	.LFE2:
+  41              		.section	.text.time_waste,"ax",%progbits
+  42              		.align	2
+  43              		.global	time_waste
+  44              		.code	16
+  45              		.thumb_func
+  47              	time_waste:
+  48              	.LFB3:
+  30:lib/Common/src/misc.c **** 
+  31:lib/Common/src/misc.c **** void time_waste(volatile uint32_t dv)
+  32:lib/Common/src/misc.c **** {
+  49              		.loc 1 32 0
+  50 0000 00B5     		push	{lr}
+  51              	.LCFI0:
+  52              	.LVL0:
+  53 0002 85B0     		sub	sp, sp, #20
+  54              	.LCFI1:
+  33:lib/Common/src/misc.c **** 	volatile uint32_t cnt;
+  34:lib/Common/src/misc.c **** 	for (cnt=0; cnt<dv ; cnt++ ) { ; }
+  55              		.loc 1 34 0
+  56 0004 0023     		mov	r3, #0
+  57              		.loc 1 32 0
+  58 0006 0190     		str	r0, [sp, #4]
+  59              		.loc 1 34 0
+  60 0008 0393     		str	r3, [sp, #12]
+  61              	.LVL1:
+  62 000a 039A     		ldr	r2, [sp, #12]
+  63 000c 019B     		ldr	r3, [sp, #4]
+  64 000e 9A42     		cmp	r2, r3
+  65 0010 06D2     		bcs	.L6
+  66              	.LVL2:
+  67              	.L7:
+  68 0012 039B     		ldr	r3, [sp, #12]
+  69 0014 0133     		add	r3, r3, #1
+  70              	.LVL3:
+  71 0016 0393     		str	r3, [sp, #12]
+  72 0018 039A     		ldr	r2, [sp, #12]
+  73 001a 019B     		ldr	r3, [sp, #4]
+  74              	.LVL4:
+  75 001c 9A42     		cmp	r2, r3
+  76 001e F8D3     		bcc	.L7
+  77              	.L6:
+  35:lib/Common/src/misc.c **** }
+  78              		.loc 1 35 0
+  79 0020 05B0     		add	sp, sp, #20
+  80              		@ sp needed for prologue
+  81 0022 01BC     		pop	{r0}
+  82 0024 0047     		bx	r0
+  83              	.LFE3:
+  85 0026 C046     		.section	.text._delay_us,"ax",%progbits
+  86              		.align	2
+  87              		.global	_delay_us
+  88              		.code	16
+  89              		.thumb_func
+  91              	_delay_us:
+  92              	.LFB4:
+  36:lib/Common/src/misc.c **** 
+  37:lib/Common/src/misc.c **** void _delay_us(volatile uint32_t us)
+  38:lib/Common/src/misc.c **** {
+  93              		.loc 1 38 0
+  94 0000 00B5     		push	{lr}
+  95              	.LCFI2:
+  96              	.LVL5:
+  97 0002 83B0     		sub	sp, sp, #12
+  98              	.LCFI3:
+  99 0004 0190     		str	r0, [sp, #4]
+ 100 0006 05E0     		b	.L16
+ 101              	.LVL6:
+ 102              	.L17:
+ 103              	.LBB14:
+ 104              	.LBB15:
+ 105              		.loc 1 28 0
+ 106              	@ 28 "lib/Common/src/misc.c" 1
+ 107 0008 C046     		nop
+ 108              	@ 0 "" 2
+ 109              		.code	16
+ 110              	.LBE15:
+ 111              	.LBE14:
+ 112              	.LBB16:
+ 113              	.LBB17:
+ 114              	@ 28 "lib/Common/src/misc.c" 1
+ 115 000a C046     		nop
+ 116              	@ 0 "" 2
+ 117              		.code	16
+ 118              	.LBE17:
+ 119              	.LBE16:
+ 120              	.LBB18:
+ 121              	.LBB19:
+ 122              	@ 28 "lib/Common/src/misc.c" 1
+ 123 000c C046     		nop
+ 124              	@ 0 "" 2
+ 125              		.code	16
+ 126              	.LBE19:
+ 127              	.LBE18:
+ 128              	.LBB20:
+ 129              	.LBB21:
+ 130              	@ 28 "lib/Common/src/misc.c" 1
+ 131 000e C046     		nop
+ 132              	@ 0 "" 2
+ 133              		.code	16
+ 134              	.LBE21:
+ 135              	.LBE20:
+ 136              	.LBB22:
+ 137              	.LBB23:
+ 138              	@ 28 "lib/Common/src/misc.c" 1
+ 139 0010 C046     		nop
+ 140              	@ 0 "" 2
+ 141              		.code	16
+ 142              	.LBE23:
+ 143              	.LBE22:
+ 144              	.LBB24:
+ 145              	.LBB25:
+ 146              	@ 28 "lib/Common/src/misc.c" 1
+ 147 0012 C046     		nop
+ 148              	@ 0 "" 2
+ 149              	.LVL7:
+ 150              		.code	16
+ 151              	.L16:
+ 152              	.LBE25:
+ 153              	.LBE24:
+  39:lib/Common/src/misc.c **** 	while(--us) { __NOP();__NOP();__NOP();__NOP();__NOP();__NOP();}
+ 154              		.loc 1 39 0
+ 155 0014 019B     		ldr	r3, [sp, #4]
+ 156 0016 013B     		sub	r3, r3, #1
+ 157              	.LVL8:
+ 158 0018 0193     		str	r3, [sp, #4]
+ 159 001a 019B     		ldr	r3, [sp, #4]
+ 160              	.LVL9:
+ 161 001c 002B     		cmp	r3, #0
+ 162 001e F3D1     		bne	.L17
+  40:lib/Common/src/misc.c **** }
+ 163              		.loc 1 40 0
+ 164 0020 03B0     		add	sp, sp, #12
+ 165              		@ sp needed for prologue
+ 166 0022 01BC     		pop	{r0}
+ 167 0024 0047     		bx	r0
+ 168              	.LFE4:
+ 170 0026 C046     		.section	.text.dump,"ax",%progbits
+ 171              		.align	2
+ 172              		.global	dump
+ 173              		.code	16
+ 174              		.thumb_func
+ 176              	dump:
+ 177              	.LFB5:
+  41:lib/Common/src/misc.c **** 
+  42:lib/Common/src/misc.c **** /*-----------------------------------------
+  43:lib/Common/src/misc.c **** 		Bare-Metal Only Functions
+  44:lib/Common/src/misc.c **** -------------------------------------------*/
+  45:lib/Common/src/misc.c **** #ifndef INC_FREERTOS_H
+  46:lib/Common/src/misc.c **** void _delay_ms(volatile uint32_t dv)
+  47:lib/Common/src/misc.c **** {
+  48:lib/Common/src/misc.c **** 	waiter = dv;
+  49:lib/Common/src/misc.c **** 	/* reset_timer(TIMER_1); */
+  50:lib/Common/src/misc.c **** 	enable_timer(TIMER_1);
+  51:lib/Common/src/misc.c **** 	while(waiter);
+  52:lib/Common/src/misc.c **** 	disable_timer(TIMER_1);
+  53:lib/Common/src/misc.c **** }
+  54:lib/Common/src/misc.c **** 
+  55:lib/Common/src/misc.c **** void init_delay()
+  56:lib/Common/src/misc.c **** {
+  57:lib/Common/src/misc.c **** 	init_timer(TIMER_1,DELAY_MSEC);
+  58:lib/Common/src/misc.c **** }
+  59:lib/Common/src/misc.c **** #endif
+  60:lib/Common/src/misc.c **** 
+  61:lib/Common/src/misc.c **** /*-----------------------------------------
+  62:lib/Common/src/misc.c **** 		Support Functions via STDIO
+  63:lib/Common/src/misc.c **** -------------------------------------------*/
+  64:lib/Common/src/misc.c **** void dump(uint32_t adr,uint32_t size)
+  65:lib/Common/src/misc.c **** {
+ 178              		.loc 1 65 0
+ 179 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 180              	.LCFI4:
+ 181 0002 5F46     		mov	r7, fp
+ 182 0004 5646     		mov	r6, sl
+ 183 0006 4D46     		mov	r5, r9
+ 184 0008 4446     		mov	r4, r8
+ 185 000a F0B4     		push	{r4, r5, r6, r7}
+ 186              	.LCFI5:
+ 187              	.LVL10:
+ 188 000c 87B0     		sub	sp, sp, #28
+ 189              	.LCFI6:
+ 190              		.loc 1 65 0
+ 191 000e 041C     		mov	r4, r0
+  66:lib/Common/src/misc.c **** 	uint8_t *ad,data[16];
+  67:lib/Common/src/misc.c **** 	int	i,j,k;
+  68:lib/Common/src/misc.c **** 
+  69:lib/Common/src/misc.c **** 	(size%16)?(k=size/16+1):(k=size/16);
+ 192              		.loc 1 69 0
+ 193 0010 0A07     		lsl	r2, r1, #28
+ 194 0012 00D1     		bne	.LCB116
+ 195 0014 A9E0     		b	.L19	@long jump
+ 196              	.LCB116:
+ 197              	.LVL11:
+ 198 0016 0B09     		lsr	r3, r1, #4
+ 199 0018 0133     		add	r3, r3, #1
+ 200 001a 0193     		str	r3, [sp, #4]
+ 201              	.LVL12:
+ 202              	.L20:
+  70:lib/Common/src/misc.c **** 	DBG_print("\n");
+ 203              		.loc 1 70 0
+ 204 001c 0A20     		mov	r0, #10
+ 205 001e FFF7FEFF 		bl	putchar
+ 206              	.LVL13:
+  71:lib/Common/src/misc.c **** 	for(j=0,ad=(uint8_t*)adr;j<k;j++){
+ 207              		.loc 1 71 0
+ 208 0022 019B     		ldr	r3, [sp, #4]
+ 209 0024 002B     		cmp	r3, #0
+ 210 0026 6ADD     		ble	.L37
+ 211              	.LVL14:
+ 212 0028 534B     		ldr	r3, .L49
+ 213 002a 0022     		mov	r2, #0
+ 214 002c 0093     		str	r3, [sp]
+ 215 002e 534F     		ldr	r7, .L49+4
+ 216 0030 534B     		ldr	r3, .L49+8
+ 217 0032 9346     		mov	fp, r2
+ 218              	.LVL15:
+ 219 0034 02AA     		add	r2, sp, #8
+ 220 0036 261C     		mov	r6, r4
+ 221              	.LVL16:
+ 222 0038 9246     		mov	sl, r2
+ 223 003a 9846     		mov	r8, r3
+  72:lib/Common/src/misc.c **** 		DBG_print("%08X",(unsigned int)ad);
+  73:lib/Common/src/misc.c **** 		for(i=0;i<16;i++,ad++)
+  74:lib/Common/src/misc.c **** 			DBG_print(" %02X",data[i]=*ad);
+  75:lib/Common/src/misc.c **** 		DBG_putch(' ');
+ 224              		.loc 1 75 0
+ 225 003c B946     		mov	r9, r7
+ 226              	.LVL17:
+ 227              	.L36:
+ 228              		.loc 1 72 0
+ 229 003e 0098     		ldr	r0, [sp]
+ 230 0040 311C     		mov	r1, r6
+ 231 0042 FFF7FEFF 		bl	printf
+ 232 0046 0024     		mov	r4, #0
+ 233              	.LVL18:
+ 234              	.L22:
+ 235              		.loc 1 74 0
+ 236 0048 315D     		ldrb	r1, [r6, r4]
+ 237 004a 5246     		mov	r2, sl
+ 238 004c 1155     		strb	r1, [r2, r4]
+ 239 004e 4046     		mov	r0, r8
+ 240              		.loc 1 73 0
+ 241 0050 0134     		add	r4, r4, #1
+ 242              		.loc 1 74 0
+ 243 0052 FFF7FEFF 		bl	printf
+ 244              		.loc 1 73 0
+ 245 0056 102C     		cmp	r4, #16
+ 246 0058 F6D1     		bne	.L22
+ 247              		.loc 1 75 0
+ 248 005a 3868     		ldr	r0, [r7]
+ 249 005c 8268     		ldr	r2, [r0, #8]
+ 250 005e 9368     		ldr	r3, [r2, #8]
+ 251 0060 591E     		sub	r1, r3, #1
+ 252              		.loc 1 73 0
+ 253 0062 1036     		add	r6, r6, #16
+ 254              		.loc 1 75 0
+ 255 0064 9160     		str	r1, [r2, #8]
+ 256 0066 0029     		cmp	r1, #0
+ 257 0068 67DB     		blt	.L44
+ 258 006a 1368     		ldr	r3, [r2]
+ 259 006c 2022     		mov	r2, #32
+ 260 006e 1A70     		strb	r2, [r3]
+ 261 0070 4A46     		mov	r2, r9
+ 262 0072 1368     		ldr	r3, [r2]
+ 263 0074 9A68     		ldr	r2, [r3, #8]
+ 264 0076 1368     		ldr	r3, [r2]
+ 265 0078 0133     		add	r3, r3, #1
+ 266 007a 1360     		str	r3, [r2]
+ 267              	.L26:
+ 268 007c 5546     		mov	r5, sl
+ 269 007e 12E0     		b	.L27
+ 270              	.L47:
+  76:lib/Common/src/misc.c **** 		for(i=0;i<16;i++){
+  77:lib/Common/src/misc.c **** 			(data[i]>=0x20 && data[i]<0x80)?DBG_putch(data[i]):DBG_putch('.');
+ 271              		.loc 1 77 0
+ 272 0080 3868     		ldr	r0, [r7]
+ 273 0082 8268     		ldr	r2, [r0, #8]
+ 274 0084 9368     		ldr	r3, [r2, #8]
+ 275 0086 5C1E     		sub	r4, r3, #1
+ 276              	.LVL19:
+ 277 0088 9460     		str	r4, [r2, #8]
+ 278 008a 002C     		cmp	r4, #0
+ 279 008c 1DDB     		blt	.L45
+ 280 008e 1368     		ldr	r3, [r2]
+ 281 0090 1970     		strb	r1, [r3]
+ 282              	.LVL20:
+ 283              	.L43:
+ 284 0092 4A46     		mov	r2, r9
+ 285 0094 1368     		ldr	r3, [r2]
+ 286 0096 9A68     		ldr	r2, [r3, #8]
+ 287 0098 1368     		ldr	r3, [r2]
+ 288 009a 0133     		add	r3, r3, #1
+ 289 009c 1360     		str	r3, [r2]
+ 290              	.L32:
+ 291 009e 0135     		add	r5, r5, #1
+ 292              		.loc 1 76 0
+ 293 00a0 06AB     		add	r3, sp, #24
+ 294 00a2 9D42     		cmp	r5, r3
+ 295 00a4 23D0     		beq	.L46
+ 296              	.L27:
+ 297              		.loc 1 77 0
+ 298 00a6 2978     		ldrb	r1, [r5]
+ 299 00a8 0B1C     		mov	r3, r1
+ 300 00aa 203B     		sub	r3, r3, #32
+ 301 00ac 1B06     		lsl	r3, r3, #24
+ 302 00ae 1B0E     		lsr	r3, r3, #24
+ 303 00b0 5F2B     		cmp	r3, #95
+ 304 00b2 E5D9     		bls	.L47
+ 305 00b4 3868     		ldr	r0, [r7]
+ 306 00b6 8268     		ldr	r2, [r0, #8]
+ 307 00b8 9368     		ldr	r3, [r2, #8]
+ 308 00ba 591E     		sub	r1, r3, #1
+ 309 00bc 9160     		str	r1, [r2, #8]
+ 310 00be 0029     		cmp	r1, #0
+ 311 00c0 26DB     		blt	.L48
+ 312 00c2 1368     		ldr	r3, [r2]
+ 313 00c4 2E22     		mov	r2, #46
+ 314 00c6 1A70     		strb	r2, [r3]
+ 315 00c8 E3E7     		b	.L43
+ 316              	.LVL21:
+ 317              	.L45:
+ 318 00ca 9369     		ldr	r3, [r2, #24]
+ 319 00cc 9C42     		cmp	r4, r3
+ 320 00ce 2DDB     		blt	.L41
+ 321 00d0 1368     		ldr	r3, [r2]
+ 322 00d2 1970     		strb	r1, [r3]
+ 323 00d4 4B46     		mov	r3, r9
+ 324 00d6 1868     		ldr	r0, [r3]
+ 325 00d8 8268     		ldr	r2, [r0, #8]
+ 326 00da 1168     		ldr	r1, [r2]
+ 327 00dc 0B78     		ldrb	r3, [r1]
+ 328 00de 0A2B     		cmp	r3, #10
+ 329 00e0 3BD0     		beq	.L31
+ 330              	.LVL22:
+ 331              	.L42:
+ 332 00e2 4B1C     		add	r3, r1, #1
+ 333 00e4 1360     		str	r3, [r2]
+ 334 00e6 0135     		add	r5, r5, #1
+ 335              		.loc 1 76 0
+ 336 00e8 06AB     		add	r3, sp, #24
+ 337 00ea 9D42     		cmp	r5, r3
+ 338 00ec DBD1     		bne	.L27
+ 339              	.L46:
+  78:lib/Common/src/misc.c **** 		}
+  79:lib/Common/src/misc.c ****         DBG_print("\n");
+ 340              		.loc 1 79 0
+ 341 00ee 0A20     		mov	r0, #10
+ 342 00f0 FFF7FEFF 		bl	putchar
+ 343              		.loc 1 71 0
+ 344 00f4 0122     		mov	r2, #1
+ 345 00f6 019B     		ldr	r3, [sp, #4]
+ 346 00f8 9344     		add	fp, fp, r2
+ 347 00fa 5B45     		cmp	r3, fp
+ 348 00fc 9FDC     		bgt	.L36
+ 349              	.LVL23:
+ 350              	.L37:
+  80:lib/Common/src/misc.c **** 	}
+  81:lib/Common/src/misc.c **** }
+ 351              		.loc 1 81 0
+ 352 00fe 07B0     		add	sp, sp, #28
+ 353              		@ sp needed for prologue
+ 354              	.LVL24:
+ 355              	.LVL25:
+ 356              	.LVL26:
+ 357 0100 3CBC     		pop	{r2, r3, r4, r5}
+ 358 0102 9046     		mov	r8, r2
+ 359 0104 9946     		mov	r9, r3
+ 360 0106 A246     		mov	sl, r4
+ 361 0108 AB46     		mov	fp, r5
+ 362 010a F0BC     		pop	{r4, r5, r6, r7}
+ 363 010c 01BC     		pop	{r0}
+ 364 010e 0047     		bx	r0
+ 365              	.LVL27:
+ 366              	.L48:
+ 367              		.loc 1 77 0
+ 368 0110 9369     		ldr	r3, [r2, #24]
+ 369 0112 9942     		cmp	r1, r3
+ 370 0114 0DDB     		blt	.L34
+ 371 0116 1368     		ldr	r3, [r2]
+ 372 0118 2E22     		mov	r2, #46
+ 373 011a 1A70     		strb	r2, [r3]
+ 374 011c 4B46     		mov	r3, r9
+ 375 011e 1868     		ldr	r0, [r3]
+ 376 0120 8268     		ldr	r2, [r0, #8]
+ 377 0122 1168     		ldr	r1, [r2]
+ 378 0124 0B78     		ldrb	r3, [r1]
+ 379 0126 0A2B     		cmp	r3, #10
+ 380 0128 DBD1     		bne	.L42
+ 381 012a 0A21     		mov	r1, #10
+ 382              	.L41:
+ 383 012c FFF7FEFF 		bl	__swbuf_r
+ 384 0130 B5E7     		b	.L32
+ 385              	.L34:
+ 386 0132 2E21     		mov	r1, #46
+ 387 0134 FFF7FEFF 		bl	__swbuf_r
+ 388 0138 B1E7     		b	.L32
+ 389              	.L44:
+ 390              		.loc 1 75 0
+ 391 013a 9369     		ldr	r3, [r2, #24]
+ 392 013c 9942     		cmp	r1, r3
+ 393 013e 10DB     		blt	.L24
+ 394 0140 1368     		ldr	r3, [r2]
+ 395 0142 2022     		mov	r2, #32
+ 396 0144 1A70     		strb	r2, [r3]
+ 397 0146 4B46     		mov	r3, r9
+ 398 0148 1868     		ldr	r0, [r3]
+ 399 014a 8268     		ldr	r2, [r0, #8]
+ 400 014c 1168     		ldr	r1, [r2]
+ 401 014e 0B78     		ldrb	r3, [r1]
+ 402 0150 0A2B     		cmp	r3, #10
+ 403 0152 0DD0     		beq	.L25
+ 404 0154 4B1C     		add	r3, r1, #1
+ 405 0156 1360     		str	r3, [r2]
+ 406 0158 90E7     		b	.L26
+ 407              	.LVL28:
+ 408              	.L31:
+ 409              		.loc 1 77 0
+ 410 015a 0A21     		mov	r1, #10
+ 411 015c FFF7FEFF 		bl	__swbuf_r
+ 412 0160 9DE7     		b	.L32
+ 413              	.LVL29:
+ 414              	.L24:
+ 415              		.loc 1 75 0
+ 416 0162 2021     		mov	r1, #32
+ 417 0164 FFF7FEFF 		bl	__swbuf_r
+ 418 0168 88E7     		b	.L26
+ 419              	.LVL30:
+ 420              	.L19:
+ 421              		.loc 1 69 0
+ 422 016a 0909     		lsr	r1, r1, #4
+ 423              	.LVL31:
+ 424 016c 0191     		str	r1, [sp, #4]
+ 425              	.LVL32:
+ 426 016e 55E7     		b	.L20
+ 427              	.LVL33:
+ 428              	.L25:
+ 429              		.loc 1 75 0
+ 430 0170 0A21     		mov	r1, #10
+ 431 0172 FFF7FEFF 		bl	__swbuf_r
+ 432 0176 81E7     		b	.L26
+ 433              	.L50:
+ 434              		.align	2
+ 435              	.L49:
+ 436 0178 00000000 		.word	.LC2
+ 437 017c 00000000 		.word	_impure_ptr
+ 438 0180 08000000 		.word	.LC4
+ 439              	.LFE5:
+ 441              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 442              		.align	2
+ 443              	.LC2:
+ 444 0000 25303858 		.ascii	"%08X\000"
+ 444      00
+ 445 0005 000000   		.space	3
+ 446              	.LC4:
+ 447 0008 20253032 		.ascii	" %02X\000"
+ 447      5800
+ 546              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 misc.c
+     /tmp/ccoiWwm6.s:22     .text.__NOP:00000000 $t
+     /tmp/ccoiWwm6.s:27     .text.__NOP:00000000 __NOP
+     /tmp/ccoiWwm6.s:42     .text.time_waste:00000000 $t
+     /tmp/ccoiWwm6.s:47     .text.time_waste:00000000 time_waste
+     /tmp/ccoiWwm6.s:86     .text._delay_us:00000000 $t
+     /tmp/ccoiWwm6.s:91     .text._delay_us:00000000 _delay_us
+     /tmp/ccoiWwm6.s:171    .text.dump:00000000 $t
+     /tmp/ccoiWwm6.s:176    .text.dump:00000000 dump
+     /tmp/ccoiWwm6.s:436    .text.dump:00000178 $d
+     /tmp/ccoiWwm6.s:442    .rodata.str1.4:00000000 $d
+     /tmp/ccoiWwm6.s:550    .debug_loc:00000000 $d
+     /tmp/ccoiWwm6.s:448    .rodata.str1.4:0000000e $d
+
+UNDEFINED SYMBOLS
+putchar
+printf
+__swbuf_r
+_impure_ptr

@@ -1,0 +1,199 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"adc.c"
+  20              	.Ltext0:
+  21              		.section	.text.ADC_Read,"ax",%progbits
+  22              		.align	2
+  23              		.global	ADC_Read
+  24              		.code	16
+  25              		.thumb_func
+  27              	ADC_Read:
+  28              	.LFB2:
+  29              		.file 1 "lib/Common/src/adc.c"
+   1:lib/Common/src/adc.c **** #include "lpc23xx.h"
+   2:lib/Common/src/adc.c **** //#include "target.h"
+   3:lib/Common/src/adc.c **** #include "adc.h"
+   4:lib/Common/src/adc.c **** 
+   5:lib/Common/src/adc.c **** unsigned int ADC_Read (unsigned int ch )
+   6:lib/Common/src/adc.c **** {
+  30              		.loc 1 6 0
+  31 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  32              	.LCFI0:
+  33              	.LVL0:
+   7:lib/Common/src/adc.c ****   unsigned int i;
+   8:lib/Common/src/adc.c ****     AD0CR  = (0x00200400 | ( 1 << ch ));	// Init ADC (Pclk = 18MHz) and select channel. Sampling ra
+  34              		.loc 1 8 0
+  35 0002 194A     		ldr	r2, .L16
+  36 0004 0123     		mov	r3, #1
+  37 0006 1949     		ldr	r1, .L16+4
+  38 0008 8340     		lsl	r3, r3, r0
+  39 000a 1343     		orr	r3, r3, r2
+  40 000c 0B60     		str	r3, [r1]
+   9:lib/Common/src/adc.c ****     AD0CR |= 0x01000000;		// Start A/D Conversion
+  41              		.loc 1 9 0
+  42 000e 8023     		mov	r3, #128
+  43 0010 0A68     		ldr	r2, [r1]
+  44 0012 5B04     		lsl	r3, r3, #17
+  45 0014 1A43     		orr	r2, r2, r3
+  10:lib/Common/src/adc.c ****     do
+  11:lib/Common/src/adc.c ****     {
+  12:lib/Common/src/adc.c ****     switch(ch)
+  46              		.loc 1 12 0
+  47 0016 164B     		ldr	r3, .L16+8
+  48              		.loc 1 9 0
+  49 0018 0A60     		str	r2, [r1]
+  50              		.loc 1 12 0
+  51 001a 8200     		lsl	r2, r0, #2
+  52 001c 9A18     		add	r2, r3, r2
+  13:lib/Common/src/adc.c ****     {
+  14:lib/Common/src/adc.c ****     case 0:
+  15:lib/Common/src/adc.c ****         i = AD0DR0;	// Read A/D Data Register
+  16:lib/Common/src/adc.c ****  	break;
+  17:lib/Common/src/adc.c ****     case 1:
+  18:lib/Common/src/adc.c ****     	i = AD0DR1;
+  19:lib/Common/src/adc.c **** 	break;
+  20:lib/Common/src/adc.c ****     case 2:
+  21:lib/Common/src/adc.c ****     	i = AD0DR2;
+  22:lib/Common/src/adc.c **** 	break;
+  23:lib/Common/src/adc.c ****     case 3:
+  24:lib/Common/src/adc.c ****     	i = AD0DR3;
+  25:lib/Common/src/adc.c **** 	break;
+  26:lib/Common/src/adc.c ****     case 4:
+  27:lib/Common/src/adc.c ****     	i = AD0DR4;
+  28:lib/Common/src/adc.c **** 	break;
+  29:lib/Common/src/adc.c ****     case 5:
+  30:lib/Common/src/adc.c ****     	i = AD0DR5;
+  31:lib/Common/src/adc.c **** 	break;
+  32:lib/Common/src/adc.c ****     case 6:
+  33:lib/Common/src/adc.c ****     	i = AD0DR6;
+  34:lib/Common/src/adc.c **** 	break;
+  35:lib/Common/src/adc.c ****     case 7:
+  36:lib/Common/src/adc.c ****     	i = AD0DR7;
+  53              		.loc 1 36 0
+  54 001e 154B     		ldr	r3, .L16+12
+  55              		.loc 1 33 0
+  56 0020 154F     		ldr	r7, .L16+16
+  57              		.loc 1 30 0
+  58 0022 164E     		ldr	r6, .L16+20
+  59              		.loc 1 27 0
+  60 0024 164D     		ldr	r5, .L16+24
+  61              		.loc 1 6 0
+  62 0026 041C     		mov	r4, r0
+  63              		.loc 1 36 0
+  64 0028 9C46     		mov	ip, r3
+  65              		.loc 1 24 0
+  66 002a 1C31     		add	r1, r1, #28
+  67              	.LVL1:
+  68              	.L12:
+  69              		.loc 1 12 0
+  70 002c 072C     		cmp	r4, #7
+  71 002e 03D8     		bhi	.L2
+  72 0030 1368     		ldr	r3, [r2]
+  73 0032 9F46     		mov	pc, r3
+  74              		.section	.rodata.ADC_Read,"a",%progbits
+  75              		.align	2
+  76              	.L11:
+  77 0000 5C000000 		.word	.L3
+  78 0004 62000000 		.word	.L4
+  79 0008 56000000 		.word	.L5
+  80 000c 52000000 		.word	.L6
+  81 0010 4E000000 		.word	.L7
+  82 0014 4A000000 		.word	.L8
+  83 0018 46000000 		.word	.L9
+  84 001c 34000000 		.word	.L10
+  85              		.section	.text.ADC_Read
+  86              	.L10:
+  87              		.loc 1 36 0
+  88 0034 6346     		mov	r3, ip
+  89 0036 1868     		ldr	r0, [r3]
+  90              	.LVL2:
+  91              	.L2:
+  37:lib/Common/src/adc.c ****     	break;
+  38:lib/Common/src/adc.c ****     	}
+  39:lib/Common/src/adc.c ****     	
+  40:lib/Common/src/adc.c ****        } while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+  92              		.loc 1 40 0
+  93 0038 0028     		cmp	r0, #0
+  94 003a F7DA     		bge	.L12
+  95 003c 0004     		lsl	r0, r0, #16
+  96              	.LVL3:
+  97 003e 800D     		lsr	r0, r0, #22
+  41:lib/Common/src/adc.c ****     return (i >> 6) & 0x03FF;		// bit 6:15 is 10 bit AD value
+  42:lib/Common/src/adc.c **** }
+  98              		.loc 1 42 0
+  99              		@ sp needed for prologue
+ 100              	.LVL4:
+ 101 0040 F0BC     		pop	{r4, r5, r6, r7}
+ 102 0042 02BC     		pop	{r1}
+ 103 0044 0847     		bx	r1
+ 104              	.LVL5:
+ 105              	.L9:
+ 106              		.loc 1 33 0
+ 107 0046 3868     		ldr	r0, [r7]
+ 108 0048 F6E7     		b	.L2
+ 109              	.LVL6:
+ 110              	.L8:
+ 111              		.loc 1 30 0
+ 112 004a 3068     		ldr	r0, [r6]
+ 113 004c F4E7     		b	.L2
+ 114              	.LVL7:
+ 115              	.L7:
+ 116              		.loc 1 27 0
+ 117 004e 2868     		ldr	r0, [r5]
+ 118 0050 F2E7     		b	.L2
+ 119              	.LVL8:
+ 120              	.L6:
+ 121              		.loc 1 24 0
+ 122 0052 0868     		ldr	r0, [r1]
+ 123 0054 F0E7     		b	.L2
+ 124              	.LVL9:
+ 125              	.L5:
+ 126              		.loc 1 21 0
+ 127 0056 0B4B     		ldr	r3, .L16+28
+ 128 0058 1868     		ldr	r0, [r3]
+ 129 005a EDE7     		b	.L2
+ 130              	.LVL10:
+ 131              	.L3:
+ 132              		.loc 1 15 0
+ 133 005c 0A4B     		ldr	r3, .L16+32
+ 134 005e 1868     		ldr	r0, [r3]
+ 135 0060 EAE7     		b	.L2
+ 136              	.LVL11:
+ 137              	.L4:
+ 138              		.loc 1 18 0
+ 139 0062 0A4B     		ldr	r3, .L16+36
+ 140 0064 1868     		ldr	r0, [r3]
+ 141 0066 E7E7     		b	.L2
+ 142              	.L17:
+ 143              		.align	2
+ 144              	.L16:
+ 145 0068 00042000 		.word	2098176
+ 146 006c 004003E0 		.word	-536657920
+ 147 0070 00000000 		.word	.L11
+ 148 0074 2C4003E0 		.word	-536657876
+ 149 0078 284003E0 		.word	-536657880
+ 150 007c 244003E0 		.word	-536657884
+ 151 0080 204003E0 		.word	-536657888
+ 152 0084 184003E0 		.word	-536657896
+ 153 0088 104003E0 		.word	-536657904
+ 154 008c 144003E0 		.word	-536657900
+ 155              	.LFE2:
+ 195              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 adc.c
+     /tmp/ccDrBA6k.s:22     .text.ADC_Read:00000000 $t
+     /tmp/ccDrBA6k.s:27     .text.ADC_Read:00000000 ADC_Read
+     /tmp/ccDrBA6k.s:75     .rodata.ADC_Read:00000000 $d
+     /tmp/ccDrBA6k.s:145    .text.ADC_Read:00000068 $d
+     /tmp/ccDrBA6k.s:199    .debug_loc:00000000 $d
+
+NO UNDEFINED SYMBOLS

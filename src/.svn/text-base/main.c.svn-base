@@ -1,0 +1,367 @@
+/*
+    FreeRTOS V6.0.1 - Copyright (C) 2009 Real Time Engineers Ltd.
+
+    ***************************************************************************
+    *                                                                         *
+    * If you are:                                                             *
+    *                                                                         *
+    *    + New to FreeRTOS,                                                   *
+    *    + Wanting to learn FreeRTOS or multitasking in general quickly       *
+    *    + Looking for basic training,                                        *
+    *    + Wanting to improve your FreeRTOS skills and productivity           *
+    *                                                                         *
+    * then take a look at the FreeRTOS eBook                                  *
+    *                                                                         *
+    *        "Using the FreeRTOS Real Time Kernel - a Practical Guide"        *
+    *                  http://www.FreeRTOS.org/Documentation                  *
+    *                                                                         *
+    * A pdf reference manual is also available.  Both are usually delivered   *
+    * to your inbox within 20 minutes to two hours when purchased between 8am *
+    * and 8pm GMT (although please allow up to 24 hours in case of            *
+    * exceptional circumstances).  Thank you for your support!                *
+    *                                                                         *
+    ***************************************************************************
+
+    This file is part of the FreeRTOS distribution.
+
+    FreeRTOS is free software; you can redistribute it and/or modify it under
+    the terms of the GNU General Public License (version 2) as published by the
+    Free Software Foundation AND MODIFIED BY the FreeRTOS exception.
+    ***NOTE*** The exception to the GPL is included to allow you to distribute
+    a combined work that includes FreeRTOS without being obliged to provide the
+    source code for proprietary components outside of the FreeRTOS kernel.
+    FreeRTOS is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+    more details. You should have received a copy of the GNU General Public 
+    License and the FreeRTOS license exception along with FreeRTOS; if not it 
+    can be viewed here: http://www.freertos.org/a00114.html and also obtained 
+    by writing to Richard Barry, contact details for whom are available on the
+    FreeRTOS WEB site.
+
+    1 tab == 4 spaces!
+
+    http://www.FreeRTOS.org - Documentation, latest information, license and
+    contact details.
+
+    http://www.SafeRTOS.com - A version that is certified for use in safety
+    critical systems.
+
+    http://www.OpenRTOS.com - Commercial support, development, porting,
+    licensing and training services.
+*/
+
+/*
+ * Creates all the demo application tasks, then starts the scheduler.  The WEB
+ * documentation provides more details of the standard demo application tasks.
+ * In addition to the standard demo tasks, the following tasks and tests are
+ * defined and/or created within this file:
+*
+ */
+
+/* Scheduler includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
+
+/* Demo app includes. */
+#include "BlockQ.h"
+#include "death.h"
+#include "blocktim.h"
+#include "flash.h"
+#include "partest.h"
+#include "GenQTest.h"
+#include "QPeek.h"
+#include "dynamic.h"
+#include <string.h>
+#include <stdio.h>
+#include "LPC23xx.h"
+#include "target.h"
+#include "i2cErr.h"
+//#include "adc.h"
+static void UARTint		( void );
+static int  modechecker		( void );
+static void vLedTask 		( void *pvParameters );
+static void vLed2Task 		( void *pvParameters );
+static void vi2c		( void );
+static void vHPYTask		( void *pvParameters );
+static void vADcTask		( void *pvParameters );
+static void vrightwheelTask	( void *pvParameters );
+static void vleftwheelTask	( void *pvParameters );
+void vValueTask			( void *pvParameters );
+void vtrsTask			( void *pvParameters );
+
+/* Demo application definitions. */
+#define mainQUEUE_SIZE						( 3 )
+#define mainCHECK_DELAY						( ( portTickType ) 5000 / portTICK_RATE_MS )
+#define mainBASIC_WEB_STACK_SIZE            ( configMINIMAL_STACK_SIZE * 6 )
+
+/* Task priorities. */
+#define mainQUEUE_POLL_PRIORITY				( tskIDLE_PRIORITY + 2 )
+#define mainCHECK_TASK_PRIORITY				( tskIDLE_PRIORITY + 3 )
+#define mainBLOCK_Q_PRIORITY				( tskIDLE_PRIORITY + 2 )
+#define mainFLASH_PRIORITY					( tskIDLE_PRIORITY + 2 )
+#define mainCREATOR_TASK_PRIORITY				( tskIDLE_PRIORITY + 3 )
+#define mainGEN_QUEUE_TASK_PRIORITY			( tskIDLE_PRIORITY ) 
+#define HIGHpriority						( tskIDLE_PRIORITY + 4 )
+/* Configure the hardware as required by the demo. */
+static void prvSetupHardware( void );
+//int rightCycle;
+//int leftCycle;
+int i2cErr;
+//int verti,horizoni;
+int i2cbuff[6];
+/* The queue used to send messages to the LCD task. */
+//xQueueHandle xLCDQueue;
+int left;
+int right;
+
+/*-----------------------------------------------------------*/
+int main( void )
+{
+	TargetResetInit();//
+	GPIOResetInit();
+	FIO2PIN1 = 0x2;
+	UARTint();
+	vi2c();
+	xTaskCreate( vValueTask,  ( signed portCHAR * )"Yomitori" , (configMINIMAL_STACK_SIZE *7), NULL, mainCHECK_TASK_PRIORITY, NULL );
+	xTaskCreate( vtrsTask,  ( signed portCHAR * )"TREIS" , (configMINIMAL_STACK_SIZE *7), NULL, mainCHECK_TASK_PRIORITY, NULL );
+	xTaskCreate( vrightwheelTask, (signed portCHAR * )"RIT", (configMINIMAL_STACK_SIZE *6), NULL, mainCHECK_TASK_PRIORITY,NULL);
+	xTaskCreate( vleftwheelTask,  (signed portCHAR * )"LET", (configMINIMAL_STACK_SIZE *6), NULL, mainCHECK_TASK_PRIORITY,NULL);
+	/* Start2csender the tasks defined within this file/specific to this demo. */
+	FIO2CLR1 = 0xFF;
+//	xTaskCreate( vLed2Task,  ( signed portCHAR * )"LD" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
+	xTaskCreate( vLedTask,  ( signed portCHAR * )"LED" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
+//	xTaskCreate( vHPYTask,  ( signed portCHAR * )"YUKARI" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
+	left = 10;
+	right= 10;
+	vTaskStartScheduler();
+   /* Will only get here if there was insufficient memory to create the idle task. */
+	
+	return 0;
+}
+//*******************************************************************************************************
+//	-----------------------------In main initializer----------------------------^^
+/*******UART initialize***************/
+void UARTint( void )
+{
+	DWORD Fdiv,i=0;
+
+    	U0LCR = 0x83;		/* 8 bits, no Parity, 1 Stop bit */
+    	Fdiv = ( Fpclk / 16 ) / UART_BAUD ;	/*baud rate */
+    	U0DLM = Fdiv / 256;							
+    	U0DLL = Fdiv % 256;
+		U0LCR = 0x03;		/* DLAB = 0 */
+    	U0FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
+	
+	printf("Hello, world!\n");
+}
+
+//---------------------------------------
+
+/*-----------------------------------------------------------*/
+void vi2c(  )
+{
+	//i2cErr = 0x44;
+	i2cmasterset(2);
+	I22SCLH = 80;
+	I22SCLL = 180;
+//	for(;;){
+//	vTaskDelay(400 / portTICK_RATE_MS);
+	//read_ROM(0x00,32,0);
+//	vTaskDelay(600 / portTICK_RATE_MS);
+//	i2crestart(2);
+//	printf("i2c now start\n");
+
+//	i2csender(2,0,0xA0,8);
+//	printf("sent\n");
+//	if(i2cErr!=0){
+//	printf("failure i2c opration.Errcode%x\n",i2cErr);
+//	}
+//	i2csender(2,1,0x0054,16);//Sub ADRESS
+//	i2csender(2,1,0x726c6421,32);
+//	i2csender(2,1,0x48656c6c,32);//100100001100101011011000110110001101111001011000111011101101111011100100110110001100100001000010101110001101110
+//	i2cstop(2);
+ 	}
+
+
+//*******************************************************************************************************
+//	-----------------------------------T A S K s.-------------------------------^^
+
+void vApplicationTickHook( void )
+{
+
+}
+/*-----------------------------------------------------------*/
+void vADcTask( void *pvParameters )
+{
+unsigned int a, t;
+unsigned int res[5];
+	for(;;){
+		for(a = 0; a <= 4; a++){
+			res[a] = ADC_Read(a);
+		}
+		vTaskDelay(30 / portTICK_RATE_MS);
+		}
+}
+/*-----------------------------------------------------------*/
+unsigned int res[5];
+int white, black;
+//-----------------
+void vValueTask( void *pvParameters )
+{
+int i;
+unsigned int a, t;
+	vTaskDelay(30 / portTICK_RATE_MS);
+	for(white = 0, black = 0, i = 1;i <= 20; i++){
+	for(a = 0; a <= 4; a++){
+		res[a] = ADC_Read(a);
+		printf("  %x....%4x\t", a, res[a] );
+	}
+	printf("\n");
+	white += ((res[1]+res[3]+res[4])/3);
+	black += (res[2]);
+	}
+	white = (white / 20);
+	black = (black / 20);
+	printf("white %x, black %x", white, black);
+	write_ROM(0x1A, 32, white);		//(int subadr, int size, int Data)
+	write_ROM(0x2A, 32, black);		//(int subadr, int size, int Data)
+	while(1){
+		for(a = 0; a <= 4; a++){
+			res[a] = ADC_Read(a);
+			printf("%x\t", res[a]);
+			vTaskDelay(30 / portTICK_RATE_MS);
+		}
+		printf("\n");
+	}
+}
+
+void vtrsTask( void *pvParameters ){
+			vTaskDelay(300 / portTICK_RATE_MS);
+	for(;;){
+	while((res[1] < res[2]) && (res[1] < res[3])){
+	printf("migi");
+	left = 2000;
+	right = 10;
+	}
+	while((res[1] > res[2]) && (res[2] < res[3])){
+	printf("tyuou");
+	left = 10;
+	right = 10;
+	}
+	while((res[1]>res[3]) && (res[2]>res[3])){
+	printf("hidari");
+	left = 10;
+	right = 2000;
+	}
+
+//		vTaskDelay(30 / portTICK_RATE_MS);
+	}
+}
+
+//**           **GPIO TASK**          **
+/*-----------------------------------------------------------*/
+
+void vLedTask( void *pvParameters )
+{
+	GPIOInit(1, FAST_PORT, DIR_OUT, LED1_MASK );
+	
+	for(;;)
+	{
+		FIO1PIN ^= LED1_MASK;
+		vTaskDelay(300 / portTICK_RATE_MS);
+	}
+
+}
+//----------------------------------------------------------
+void vLed2Task( void *pvParameters )
+{	
+	for(;;)
+	{
+		FIO2PIN1 ^= 0x02;
+		vTaskDelay(300 / portTICK_RATE_MS);
+	}
+
+}
+//TODO 衝突検知　
+/*-----------------------------------------------------------
+		for(a = 0; a <= 4; a++){
+			res[a] = ADC_Read(a);
+			printf("  %x....%4x\t", a, res[a] );
+		}
+
+void vHPYTask( void *pvParameters )
+{	
+int phase = 0;
+unsigned int Step[4] = {0x6, 0xC, 0x9, 0x3}
+
+for(;;)
+{
+	if(){ 
+	FIO4CLR0 = 0x0F;
+	}
+}
+
+}
+
+
+-----------------------------------------------------------*/
+void vrightwheelTask( void *pvParameters)
+{
+	int phase;
+	FIO4DIR0 = 0x0F;
+	FIO4CLR0 = 0x0F;
+	while(1){
+	switch(phase){
+		case 0:
+		FIO4PIN0 = 0x03;
+		phase++;
+		break;
+		case 1:
+		FIO4PIN0 = 0x09;
+		phase++;		
+		break;
+		case 2:
+		FIO4PIN0 = 0x0C;
+		phase++;
+		break;
+		case 3:
+		FIO4PIN0 = 0x06;
+		default:
+		phase=0;
+		break;
+		}
+	vTaskDelay( right / portTICK_RATE_MS );
+	}
+}
+//============================
+void vleftwheelTask( void *pvPatameters){	
+	int phase;
+	FIO4DIR1 = 0x0F;
+	FIO4CLR1 = 0x0F;
+	while(1){
+	switch(phase){
+		case 0:
+		FIO4PIN1 = 0x03;
+		phase++;		
+		break;
+		case 1:
+		FIO4PIN1 = 0x09;
+		phase++;
+		break;
+		case 2:
+		FIO4PIN1 = 0x0C;
+		phase++;
+		break;
+		case 3:
+		FIO4PIN1 = 0x06;
+		default:
+		phase = 0;		
+		break;
+		}
+		vTaskDelay( left / portTICK_RATE_MS);
+	
+	}
+}

@@ -1,0 +1,978 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"syscalls.c"
+  20              	.Ltext0:
+  21              		.cfi_sections	.debug_frame
+  22              		.section	.text._read_r,"ax",%progbits
+  23              		.align	2
+  24              		.global	_read_r
+  25              		.code	16
+  26              		.thumb_func
+  28              	_read_r:
+  29              	.LFB0:
+  30              		.file 1 "lib/Common/src/syscalls.c"
+   1:lib/Common/src/syscalls.c **** /******************************************************************************/
+   2:lib/Common/src/syscalls.c **** /*                                                                            */
+   3:lib/Common/src/syscalls.c **** /*        Syscall support functions for newlib console I/O with stdio         */
+   4:lib/Common/src/syscalls.c **** /*                                                                            */
+   5:lib/Common/src/syscalls.c **** /******************************************************************************/
+   6:lib/Common/src/syscalls.c **** 
+   7:lib/Common/src/syscalls.c **** /* $Id: syscalls.c,v 1.4 2008/08/25 16:11:40 cvs Exp $ */
+   8:lib/Common/src/syscalls.c **** /* 20090508 Nemui Fixed   scanf consideration */
+   9:lib/Common/src/syscalls.c **** #include <stdlib.h>
+  10:lib/Common/src/syscalls.c **** #include <string.h>
+  11:lib/Common/src/syscalls.c **** #include <reent.h>
+  12:lib/Common/src/syscalls.c **** #include <sys/stat.h>
+  13:lib/Common/src/syscalls.c **** 
+  14:lib/Common/src/syscalls.c **** /* platform dependent definitions */
+  15:lib/Common/src/syscalls.c **** #include "lpc23xx.h"                        /* LPC23xx/24xx definitions */
+  16:lib/Common/src/syscalls.c **** #include "type.h"							/* unique type definitions */
+  17:lib/Common/src/syscalls.c **** #include "uart.h"							/* uart dredirect function */
+  18:lib/Common/src/syscalls.c **** 
+  19:lib/Common/src/syscalls.c **** /* platform dependent printf/scanf relation settings */
+  20:lib/Common/src/syscalls.c **** #define putch(x)  UARTPutch(UART_NUM,x)
+  21:lib/Common/src/syscalls.c **** #define getch()   UARTGetch(UART_NUM)
+  22:lib/Common/src/syscalls.c **** /* if use scanf echoback, uncomment below it */
+  23:lib/Common/src/syscalls.c **** /* #define ECHOBACK */
+  24:lib/Common/src/syscalls.c **** 
+  25:lib/Common/src/syscalls.c **** /*
+  26:lib/Common/src/syscalls.c **** Notice: 
+  27:lib/Common/src/syscalls.c **** 		Line Feed     : Dec=10 Hex=0x0A ESC='\n'
+  28:lib/Common/src/syscalls.c **** 		Caridge Return: Dec=13 Hex=0x0D ESC='\r'
+  29:lib/Common/src/syscalls.c **** */
+  30:lib/Common/src/syscalls.c **** #ifndef	FALSE
+  31:lib/Common/src/syscalls.c **** 	#define FALSE 0
+  32:lib/Common/src/syscalls.c **** 	#define TRUE  1
+  33:lib/Common/src/syscalls.c **** #endif
+  34:lib/Common/src/syscalls.c **** 
+  35:lib/Common/src/syscalls.c **** /* new code for _read_r provided by Alexey Shusharin - Thanks */
+  36:lib/Common/src/syscalls.c **** _ssize_t _read_r(struct _reent *r, int file, void *ptr, size_t len)
+  37:lib/Common/src/syscalls.c **** {
+  31              		.loc 1 37 0
+  32              		.cfi_startproc
+  33 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 20
+  36              		.cfi_offset 4, -20
+  37              		.cfi_offset 5, -16
+  38              		.cfi_offset 6, -12
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 4746     		mov	r7, r8
+  42 0004 80B4     		push	{r7}
+  43              	.LCFI1:
+  44              		.cfi_def_cfa_offset 24
+  45              		.cfi_offset 8, -24
+  46              	.LVL0:
+  47              		.loc 1 37 0
+  48 0006 1F1C     		mov	r7, r3
+  38:lib/Common/src/syscalls.c ****   char c;
+  39:lib/Common/src/syscalls.c ****   int  i;
+  40:lib/Common/src/syscalls.c ****   unsigned char *p;
+  41:lib/Common/src/syscalls.c **** 
+  42:lib/Common/src/syscalls.c ****   p = (unsigned char*)ptr;
+  43:lib/Common/src/syscalls.c ****   for (i = 0; i < len; i++)
+  49              		.loc 1 43 0
+  50 0008 1C1E     		sub	r4, r3, #0
+  51 000a 11D0     		beq	.L2
+  52 000c 0026     		mov	r6, #0
+  44:lib/Common/src/syscalls.c ****   {
+  45:lib/Common/src/syscalls.c **** 	/* 20090521Nemui */
+  46:lib/Common/src/syscalls.c **** 	do{		
+  47:lib/Common/src/syscalls.c **** 		c = getch();
+  48:lib/Common/src/syscalls.c **** 	}while(c == FALSE);
+  49:lib/Common/src/syscalls.c **** 	/* 20090521Nemui */
+  50:lib/Common/src/syscalls.c **** 	
+  51:lib/Common/src/syscalls.c ****     *p++ = c;
+  52:lib/Common/src/syscalls.c **** 	#ifdef ECHOBACK 
+  53:lib/Common/src/syscalls.c **** 		putch(c);
+  54:lib/Common/src/syscalls.c **** 	#endif
+  55:lib/Common/src/syscalls.c **** 	
+  56:lib/Common/src/syscalls.c ****     if (c == '\r' && i <= (len - 2)) /* 0x0D */
+  53              		.loc 1 56 0
+  54 000e 023B     		sub	r3, r3, #2
+  55              	.LVL1:
+  42:lib/Common/src/syscalls.c ****   p = (unsigned char*)ptr;
+  56              		.loc 1 42 0
+  57 0010 151C     		mov	r5, r2
+  43:lib/Common/src/syscalls.c ****   for (i = 0; i < len; i++)
+  58              		.loc 1 43 0
+  59 0012 341C     		mov	r4, r6
+  60              	.LVL2:
+  61              		.loc 1 56 0
+  62 0014 9846     		mov	r8, r3
+  63              	.LVL3:
+  64              	.L9:
+  47:lib/Common/src/syscalls.c **** 		c = getch();
+  65              		.loc 1 47 0 discriminator 1
+  66 0016 0020     		mov	r0, #0
+  67 0018 FFF7FEFF 		bl	UARTGetch
+  68              	.LVL4:
+  48:lib/Common/src/syscalls.c **** 	}while(c == FALSE);
+  69              		.loc 1 48 0 discriminator 1
+  70 001c 0028     		cmp	r0, #0
+  71 001e FAD0     		beq	.L9
+  51:lib/Common/src/syscalls.c ****     *p++ = c;
+  72              		.loc 1 51 0
+  73 0020 2870     		strb	r0, [r5]
+  74 0022 0135     		add	r5, r5, #1
+  75              	.LVL5:
+  76              		.loc 1 56 0
+  77 0024 0D28     		cmp	r0, #13
+  78 0026 09D0     		beq	.L11
+  79              	.L4:
+  43:lib/Common/src/syscalls.c ****   for (i = 0; i < len; i++)
+  80              		.loc 1 43 0
+  81 0028 0134     		add	r4, r4, #1
+  82              	.LVL6:
+  83 002a 261C     		mov	r6, r4
+  84 002c A742     		cmp	r7, r4
+  85 002e F2D8     		bhi	.L9
+  86              	.LVL7:
+  87              	.L2:
+  57:lib/Common/src/syscalls.c ****     {
+  58:lib/Common/src/syscalls.c ****       *p = '\n';					 /* 0x0A */
+  59:lib/Common/src/syscalls.c **** 	  #ifdef ECHOBACK 
+  60:lib/Common/src/syscalls.c **** 		putch('\n');				 /* 0x0A */
+  61:lib/Common/src/syscalls.c **** 	  #endif
+  62:lib/Common/src/syscalls.c ****       return i + 2;
+  63:lib/Common/src/syscalls.c ****     }
+  64:lib/Common/src/syscalls.c ****   }
+  65:lib/Common/src/syscalls.c ****   return i;
+  66:lib/Common/src/syscalls.c **** }
+  88              		.loc 1 66 0
+  89 0030 201C     		mov	r0, r4
+  90              		@ sp needed for prologue
+  91              	.LVL8:
+  92 0032 04BC     		pop	{r2}
+  93 0034 9046     		mov	r8, r2
+  94 0036 F0BC     		pop	{r4, r5, r6, r7}
+  95 0038 02BC     		pop	{r1}
+  96 003a 0847     		bx	r1
+  97              	.LVL9:
+  98              	.L11:
+  56:lib/Common/src/syscalls.c ****     if (c == '\r' && i <= (len - 2)) /* 0x0D */
+  99              		.loc 1 56 0 discriminator 1
+ 100 003c B045     		cmp	r8, r6
+ 101 003e F3D3     		bcc	.L4
+  58:lib/Common/src/syscalls.c ****       *p = '\n';					 /* 0x0A */
+ 102              		.loc 1 58 0
+ 103 0040 0A20     		mov	r0, #10
+ 104              	.LVL10:
+ 105 0042 2870     		strb	r0, [r5]
+  62:lib/Common/src/syscalls.c ****       return i + 2;
+ 106              		.loc 1 62 0
+ 107 0044 0234     		add	r4, r4, #2
+ 108 0046 F3E7     		b	.L2
+ 109              		.cfi_endproc
+ 110              	.LFE0:
+ 112              		.section	.text._write_r,"ax",%progbits
+ 113              		.align	2
+ 114              		.global	_write_r
+ 115              		.code	16
+ 116              		.thumb_func
+ 118              	_write_r:
+ 119              	.LFB1:
+  67:lib/Common/src/syscalls.c **** 
+  68:lib/Common/src/syscalls.c **** _ssize_t _write_r (
+  69:lib/Common/src/syscalls.c ****     struct _reent *r, 
+  70:lib/Common/src/syscalls.c ****     int file, 
+  71:lib/Common/src/syscalls.c ****     const void *ptr, 
+  72:lib/Common/src/syscalls.c ****     size_t len)
+  73:lib/Common/src/syscalls.c **** {
+ 120              		.loc 1 73 0
+ 121              		.cfi_startproc
+ 122 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 123              	.LCFI2:
+ 124              		.cfi_def_cfa_offset 24
+ 125              		.cfi_offset 3, -24
+ 126              		.cfi_offset 4, -20
+ 127              		.cfi_offset 5, -16
+ 128              		.cfi_offset 6, -12
+ 129              		.cfi_offset 7, -8
+ 130              		.cfi_offset 14, -4
+ 131              	.LVL11:
+ 132              		.loc 1 73 0
+ 133 0002 151C     		mov	r5, r2
+  74:lib/Common/src/syscalls.c **** 	int i;
+  75:lib/Common/src/syscalls.c **** 	const unsigned char *p;
+  76:lib/Common/src/syscalls.c **** 	
+  77:lib/Common/src/syscalls.c **** 	p = (const unsigned char*) ptr;
+  78:lib/Common/src/syscalls.c **** 	
+  79:lib/Common/src/syscalls.c **** 	for (i = 0; i < len; i++) {
+ 134              		.loc 1 79 0
+ 135 0004 1E1E     		sub	r6, r3, #0
+ 136 0006 2BD0     		beq	.L13
+  80:lib/Common/src/syscalls.c **** 		if (*p == '\n' ) putch('\r');
+ 137              		.loc 1 80 0
+ 138 0008 1178     		ldrb	r1, [r2]
+ 139              	.LVL12:
+ 140 000a 771E     		sub	r7, r6, #1
+ 141 000c 0123     		mov	r3, #1
+ 142              	.LVL13:
+ 143 000e 1F40     		and	r7, r7, r3
+ 144 0010 0A29     		cmp	r1, #10
+ 145 0012 2FD0     		beq	.L27
+ 146              	.LVL14:
+ 147              	.L17:
+  81:lib/Common/src/syscalls.c **** 		putch(*p++);
+ 148              		.loc 1 81 0
+ 149 0014 0020     		mov	r0, #0
+  79:lib/Common/src/syscalls.c **** 	for (i = 0; i < len; i++) {
+ 150              		.loc 1 79 0
+ 151 0016 0124     		mov	r4, #1
+ 152              		.loc 1 81 0
+ 153 0018 FFF7FEFF 		bl	UARTPutch
+ 154              	.LVL15:
+  79:lib/Common/src/syscalls.c **** 	for (i = 0; i < len; i++) {
+ 155              		.loc 1 79 0
+ 156 001c B442     		cmp	r4, r6
+ 157 001e 1FD2     		bcs	.L13
+ 158 0020 002F     		cmp	r7, #0
+ 159 0022 08D0     		beq	.L15
+  80:lib/Common/src/syscalls.c **** 		if (*p == '\n' ) putch('\r');
+ 160              		.loc 1 80 0
+ 161 0024 295D     		ldrb	r1, [r5, r4]
+ 162 0026 0A29     		cmp	r1, #10
+ 163 0028 2AD0     		beq	.L28
+ 164              	.L22:
+ 165              		.loc 1 81 0
+ 166 002a 0020     		mov	r0, #0
+  79:lib/Common/src/syscalls.c **** 	for (i = 0; i < len; i++) {
+ 167              		.loc 1 79 0
+ 168 002c 0134     		add	r4, r4, #1
+ 169              		.loc 1 81 0
+ 170 002e FFF7FEFF 		bl	UARTPutch
+  79:lib/Common/src/syscalls.c **** 	for (i = 0; i < len; i++) {
+ 171              		.loc 1 79 0
+ 172 0032 B442     		cmp	r4, r6
+ 173 0034 14D2     		bcs	.L13
+ 174              	.L15:
+  80:lib/Common/src/syscalls.c **** 		if (*p == '\n' ) putch('\r');
+ 175              		.loc 1 80 0
+ 176 0036 295D     		ldrb	r1, [r5, r4]
+ 177 0038 0A29     		cmp	r1, #10
+ 178 003a 15D0     		beq	.L29
+ 179              	.L14:
+ 180              		.loc 1 81 0
+ 181 003c 0020     		mov	r0, #0
+  79:lib/Common/src/syscalls.c **** 	for (i = 0; i < len; i++) {
+ 182              		.loc 1 79 0
+ 183 003e 0134     		add	r4, r4, #1
+ 184              		.loc 1 81 0
+ 185 0040 FFF7FEFF 		bl	UARTPutch
+  80:lib/Common/src/syscalls.c **** 		if (*p == '\n' ) putch('\r');
+ 186              		.loc 1 80 0
+ 187 0044 295D     		ldrb	r1, [r5, r4]
+ 188 0046 0A29     		cmp	r1, #10
+ 189 0048 EFD1     		bne	.L22
+ 190 004a 0020     		mov	r0, #0
+ 191 004c 0D21     		mov	r1, #13
+ 192 004e FFF7FEFF 		bl	UARTPutch
+ 193 0052 295D     		ldrb	r1, [r5, r4]
+ 194              		.loc 1 81 0
+ 195 0054 0020     		mov	r0, #0
+  79:lib/Common/src/syscalls.c **** 	for (i = 0; i < len; i++) {
+ 196              		.loc 1 79 0
+ 197 0056 0134     		add	r4, r4, #1
+ 198              		.loc 1 81 0
+ 199 0058 FFF7FEFF 		bl	UARTPutch
+  79:lib/Common/src/syscalls.c **** 	for (i = 0; i < len; i++) {
+ 200              		.loc 1 79 0
+ 201 005c B442     		cmp	r4, r6
+ 202 005e EAD3     		bcc	.L15
+ 203              	.L13:
+  82:lib/Common/src/syscalls.c **** 	}
+  83:lib/Common/src/syscalls.c **** 	
+  84:lib/Common/src/syscalls.c **** 	return len;
+  85:lib/Common/src/syscalls.c **** }
+ 204              		.loc 1 85 0
+ 205 0060 301C     		mov	r0, r6
+ 206              		@ sp needed for prologue
+ 207              	.LVL16:
+ 208              	.LVL17:
+ 209 0062 F8BC     		pop	{r3, r4, r5, r6, r7}
+ 210 0064 02BC     		pop	{r1}
+ 211 0066 0847     		bx	r1
+ 212              	.LVL18:
+ 213              	.L29:
+  80:lib/Common/src/syscalls.c **** 		if (*p == '\n' ) putch('\r');
+ 214              		.loc 1 80 0 discriminator 1
+ 215 0068 0331     		add	r1, r1, #3
+ 216 006a 0020     		mov	r0, #0
+ 217 006c FFF7FEFF 		bl	UARTPutch
+ 218 0070 295D     		ldrb	r1, [r5, r4]
+ 219 0072 E3E7     		b	.L14
+ 220              	.LVL19:
+ 221              	.L27:
+  80:lib/Common/src/syscalls.c **** 		if (*p == '\n' ) putch('\r');
+ 222              		.loc 1 80 0 is_stmt 0
+ 223 0074 0D21     		mov	r1, #13
+ 224 0076 0020     		mov	r0, #0
+ 225              	.LVL20:
+ 226 0078 FFF7FEFF 		bl	UARTPutch
+ 227 007c 2978     		ldrb	r1, [r5]
+ 228 007e C9E7     		b	.L17
+ 229              	.L28:
+ 230 0080 0331     		add	r1, r1, #3
+ 231 0082 0020     		mov	r0, #0
+ 232 0084 FFF7FEFF 		bl	UARTPutch
+ 233 0088 295D     		ldrb	r1, [r5, r4]
+ 234 008a CEE7     		b	.L22
+ 235              		.cfi_endproc
+ 236              	.LFE1:
+ 238              		.section	.text._close_r,"ax",%progbits
+ 239              		.align	2
+ 240              		.global	_close_r
+ 241              		.code	16
+ 242              		.thumb_func
+ 244              	_close_r:
+ 245              	.LFB2:
+  86:lib/Common/src/syscalls.c **** 
+  87:lib/Common/src/syscalls.c **** int _close_r(
+  88:lib/Common/src/syscalls.c ****     struct _reent *r, 
+  89:lib/Common/src/syscalls.c ****     int file)
+  90:lib/Common/src/syscalls.c **** {
+ 246              		.loc 1 90 0 is_stmt 1
+ 247              		.cfi_startproc
+ 248              	.LVL21:
+  91:lib/Common/src/syscalls.c **** 	return 0;
+  92:lib/Common/src/syscalls.c **** }
+ 249              		.loc 1 92 0
+ 250 0000 0020     		mov	r0, #0
+ 251              	.LVL22:
+ 252              		@ sp needed for prologue
+ 253 0002 7047     		bx	lr
+ 254              		.cfi_endproc
+ 255              	.LFE2:
+ 257              		.section	.text._lseek_r,"ax",%progbits
+ 258              		.align	2
+ 259              		.global	_lseek_r
+ 260              		.code	16
+ 261              		.thumb_func
+ 263              	_lseek_r:
+ 264              	.LFB3:
+  93:lib/Common/src/syscalls.c **** 
+  94:lib/Common/src/syscalls.c **** _off_t _lseek_r(
+  95:lib/Common/src/syscalls.c ****     struct _reent *r, 
+  96:lib/Common/src/syscalls.c ****     int file, 
+  97:lib/Common/src/syscalls.c ****     _off_t ptr, 
+  98:lib/Common/src/syscalls.c ****     int dir)
+  99:lib/Common/src/syscalls.c **** {
+ 265              		.loc 1 99 0
+ 266              		.cfi_startproc
+ 267              	.LVL23:
+ 100:lib/Common/src/syscalls.c **** 	return (_off_t)0;	/*  Always indicate we are at file beginning.	*/
+ 101:lib/Common/src/syscalls.c **** }
+ 268              		.loc 1 101 0
+ 269 0000 0020     		mov	r0, #0
+ 270              	.LVL24:
+ 271              		@ sp needed for prologue
+ 272 0002 7047     		bx	lr
+ 273              		.cfi_endproc
+ 274              	.LFE3:
+ 276              		.section	.text._fstat_r,"ax",%progbits
+ 277              		.align	2
+ 278              		.global	_fstat_r
+ 279              		.code	16
+ 280              		.thumb_func
+ 282              	_fstat_r:
+ 283              	.LFB4:
+ 102:lib/Common/src/syscalls.c **** 
+ 103:lib/Common/src/syscalls.c **** 
+ 104:lib/Common/src/syscalls.c **** int _fstat_r(
+ 105:lib/Common/src/syscalls.c ****     struct _reent *r, 
+ 106:lib/Common/src/syscalls.c ****     int file, 
+ 107:lib/Common/src/syscalls.c ****     struct stat *st)
+ 108:lib/Common/src/syscalls.c **** {
+ 284              		.loc 1 108 0
+ 285              		.cfi_startproc
+ 286              	.LVL25:
+ 109:lib/Common/src/syscalls.c **** 	/*  Always set as character device.				*/
+ 110:lib/Common/src/syscalls.c **** 	st->st_mode = S_IFCHR;	
+ 287              		.loc 1 110 0
+ 288 0000 8020     		mov	r0, #128
+ 289              	.LVL26:
+ 290 0002 8301     		lsl	r3, r0, #6
+ 291 0004 5360     		str	r3, [r2, #4]
+ 111:lib/Common/src/syscalls.c **** 		/* assigned to strong type with implicit 	*/
+ 112:lib/Common/src/syscalls.c **** 		/* signed/unsigned conversion.  Required by 	*/
+ 113:lib/Common/src/syscalls.c **** 		/* newlib.					*/
+ 114:lib/Common/src/syscalls.c **** 
+ 115:lib/Common/src/syscalls.c **** 	return 0;
+ 116:lib/Common/src/syscalls.c **** }
+ 292              		.loc 1 116 0
+ 293 0006 0020     		mov	r0, #0
+ 294              		@ sp needed for prologue
+ 295 0008 7047     		bx	lr
+ 296              		.cfi_endproc
+ 297              	.LFE4:
+ 299 000a C046     		.section	.text.isatty,"ax",%progbits
+ 300              		.align	2
+ 301              		.global	isatty
+ 302              		.code	16
+ 303              		.thumb_func
+ 305              	isatty:
+ 306              	.LFB5:
+ 117:lib/Common/src/syscalls.c **** 
+ 118:lib/Common/src/syscalls.c **** #ifdef __GNUC__
+ 119:lib/Common/src/syscalls.c **** int isatty(int file); /* avoid warning */
+ 120:lib/Common/src/syscalls.c **** #endif
+ 121:lib/Common/src/syscalls.c **** int isatty(int file)
+ 122:lib/Common/src/syscalls.c **** {
+ 307              		.loc 1 122 0
+ 308              		.cfi_startproc
+ 309              	.LVL27:
+ 123:lib/Common/src/syscalls.c **** 	return 1;
+ 124:lib/Common/src/syscalls.c **** }
+ 310              		.loc 1 124 0
+ 311 0000 0120     		mov	r0, #1
+ 312              	.LVL28:
+ 313              		@ sp needed for prologue
+ 314 0002 7047     		bx	lr
+ 315              		.cfi_endproc
+ 316              	.LFE5:
+ 318              		.section	.text._exit,"ax",%progbits
+ 319              		.align	2
+ 320              		.global	_exit
+ 321              		.code	16
+ 322              		.thumb_func
+ 324              	_exit:
+ 325              	.LFB6:
+ 125:lib/Common/src/syscalls.c **** 
+ 126:lib/Common/src/syscalls.c **** 
+ 127:lib/Common/src/syscalls.c **** void _exit(int n) {
+ 326              		.loc 1 127 0
+ 327              		.cfi_startproc
+ 328 0000 00B5     		push	{lr}
+ 329              	.LCFI3:
+ 330              		.cfi_def_cfa_offset 4
+ 331              		.cfi_offset 14, -4
+ 332              	.L35:
+ 333              	.LVL29:
+ 334              	.L36:
+ 335 0002 FEE7     		b	.L36
+ 336              		.cfi_endproc
+ 337              	.LFE6:
+ 339              		.section	.text._getpid,"ax",%progbits
+ 340              		.align	2
+ 341              		.global	_getpid
+ 342              		.code	16
+ 343              		.thumb_func
+ 345              	_getpid:
+ 346              	.LFB7:
+ 128:lib/Common/src/syscalls.c **** label:  goto label; /* endless loop */
+ 129:lib/Common/src/syscalls.c **** }
+ 130:lib/Common/src/syscalls.c **** 
+ 131:lib/Common/src/syscalls.c **** int _getpid(int file)
+ 132:lib/Common/src/syscalls.c **** {
+ 347              		.loc 1 132 0
+ 348              		.cfi_startproc
+ 349              	.LVL30:
+ 133:lib/Common/src/syscalls.c **** 	return 1;
+ 134:lib/Common/src/syscalls.c **** }
+ 350              		.loc 1 134 0
+ 351 0000 0120     		mov	r0, #1
+ 352              	.LVL31:
+ 353              		@ sp needed for prologue
+ 354 0002 7047     		bx	lr
+ 355              		.cfi_endproc
+ 356              	.LFE7:
+ 358              		.section	.text._kill,"ax",%progbits
+ 359              		.align	2
+ 360              		.global	_kill
+ 361              		.code	16
+ 362              		.thumb_func
+ 364              	_kill:
+ 365              	.LFB8:
+ 135:lib/Common/src/syscalls.c **** 
+ 136:lib/Common/src/syscalls.c **** int _kill(int file)
+ 137:lib/Common/src/syscalls.c **** {
+ 366              		.loc 1 137 0
+ 367              		.cfi_startproc
+ 368              	.LVL32:
+ 138:lib/Common/src/syscalls.c **** 	return 1;
+ 139:lib/Common/src/syscalls.c **** }
+ 369              		.loc 1 139 0
+ 370 0000 0120     		mov	r0, #1
+ 371              	.LVL33:
+ 372              		@ sp needed for prologue
+ 373 0002 7047     		bx	lr
+ 374              		.cfi_endproc
+ 375              	.LFE8:
+ 377              		.section	.text._sbrk_r,"ax",%progbits
+ 378              		.align	2
+ 379              		.global	_sbrk_r
+ 380              		.code	16
+ 381              		.thumb_func
+ 383              	_sbrk_r:
+ 384              	.LFB9:
+ 140:lib/Common/src/syscalls.c **** 
+ 141:lib/Common/src/syscalls.c **** /* "malloc clue function" */
+ 142:lib/Common/src/syscalls.c **** 
+ 143:lib/Common/src/syscalls.c **** 	/**** Locally used variables. ****/
+ 144:lib/Common/src/syscalls.c **** extern char end[];              /*  end is set in the linker command 	*/
+ 145:lib/Common/src/syscalls.c **** 								/* file and is the end of statically 	*/
+ 146:lib/Common/src/syscalls.c **** 								/* allocated data (thus start of heap).	*/
+ 147:lib/Common/src/syscalls.c **** 
+ 148:lib/Common/src/syscalls.c **** static char *heap_ptr;			/* Points to current end of the heap.	*/
+ 149:lib/Common/src/syscalls.c **** 
+ 150:lib/Common/src/syscalls.c **** /************************** _sbrk_r *************************************/
+ 151:lib/Common/src/syscalls.c **** /*  Support function.  Adjusts end of heap to provide more memory to	*/
+ 152:lib/Common/src/syscalls.c **** /* memory allocator. Simple and dumb with no sanity checks.				*/
+ 153:lib/Common/src/syscalls.c **** /*  struct _reent *r	-- re-entrancy structure, used by newlib to 	*/
+ 154:lib/Common/src/syscalls.c **** /*			support multiple threads of operation.						*/
+ 155:lib/Common/src/syscalls.c **** /*  ptrdiff_t nbytes	-- number of bytes to add.						*/
+ 156:lib/Common/src/syscalls.c **** /*  Returns pointer to start of new heap area.							*/
+ 157:lib/Common/src/syscalls.c **** /*  Note:  This implementation is not thread safe (despite taking a		*/
+ 158:lib/Common/src/syscalls.c **** /* _reent structure as a parameter).  									*/
+ 159:lib/Common/src/syscalls.c **** /*  Since _s_r is not used in the current implementation, the following	*/
+ 160:lib/Common/src/syscalls.c **** /* messages must be suppressed.											*/
+ 161:lib/Common/src/syscalls.c **** 
+ 162:lib/Common/src/syscalls.c **** void * _sbrk_r(
+ 163:lib/Common/src/syscalls.c ****     struct _reent *_s_r, 
+ 164:lib/Common/src/syscalls.c ****     ptrdiff_t nbytes)
+ 165:lib/Common/src/syscalls.c **** {
+ 385              		.loc 1 165 0
+ 386              		.cfi_startproc
+ 387 0000 00B5     		push	{lr}
+ 388              	.LCFI4:
+ 389              		.cfi_def_cfa_offset 4
+ 390              		.cfi_offset 14, -4
+ 391              	.LVL34:
+ 166:lib/Common/src/syscalls.c **** 	char  *base;		/*  errno should be set to  ENOMEM on error	*/
+ 167:lib/Common/src/syscalls.c **** 
+ 168:lib/Common/src/syscalls.c **** 	if (!heap_ptr) {	/*  Initialize if first time through.		*/
+ 392              		.loc 1 168 0
+ 393 0002 054B     		ldr	r3, .L42
+ 394 0004 1868     		ldr	r0, [r3]
+ 395              	.LVL35:
+ 396 0006 0028     		cmp	r0, #0
+ 397 0008 03D0     		beq	.L41
+ 398              	.L40:
+ 399              	.LVL36:
+ 169:lib/Common/src/syscalls.c **** 		heap_ptr = end;
+ 170:lib/Common/src/syscalls.c **** 	}
+ 171:lib/Common/src/syscalls.c **** 	base = heap_ptr;	/*  Point to end of heap.					*/
+ 172:lib/Common/src/syscalls.c **** 	heap_ptr += nbytes;	/*  Increase heap.							*/
+ 400              		.loc 1 172 0
+ 401 000a 4118     		add	r1, r0, r1
+ 402              	.LVL37:
+ 403 000c 1960     		str	r1, [r3]
+ 173:lib/Common/src/syscalls.c **** 	
+ 174:lib/Common/src/syscalls.c **** 	return base;		/*  Return pointer to start of new heap area.	*/
+ 175:lib/Common/src/syscalls.c **** }
+ 404              		.loc 1 175 0
+ 405              		@ sp needed for prologue
+ 406 000e 02BC     		pop	{r1}
+ 407 0010 0847     		bx	r1
+ 408              	.LVL38:
+ 409              	.L41:
+ 168:lib/Common/src/syscalls.c **** 	if (!heap_ptr) {	/*  Initialize if first time through.		*/
+ 410              		.loc 1 168 0
+ 411 0012 0248     		ldr	r0, .L42+4
+ 412 0014 F9E7     		b	.L40
+ 413              	.L43:
+ 414 0016 C046     		.align	2
+ 415              	.L42:
+ 416 0018 00000000 		.word	.LANCHOR0
+ 417 001c 00000000 		.word	end
+ 418              		.cfi_endproc
+ 419              	.LFE9:
+ 421              		.section	.text._sbrk,"ax",%progbits
+ 422              		.align	2
+ 423              		.global	_sbrk
+ 424              		.code	16
+ 425              		.thumb_func
+ 427              	_sbrk:
+ 428              	.LFB10:
+ 176:lib/Common/src/syscalls.c **** 
+ 177:lib/Common/src/syscalls.c **** 
+ 178:lib/Common/src/syscalls.c **** 
+ 179:lib/Common/src/syscalls.c **** void * _sbrk(ptrdiff_t incr)
+ 180:lib/Common/src/syscalls.c **** {
+ 429              		.loc 1 180 0
+ 430              		.cfi_startproc
+ 431 0000 00B5     		push	{lr}
+ 432              	.LCFI5:
+ 433              		.cfi_def_cfa_offset 4
+ 434              		.cfi_offset 14, -4
+ 435              	.LVL39:
+ 181:lib/Common/src/syscalls.c ****   char  *base;
+ 182:lib/Common/src/syscalls.c **** 
+ 183:lib/Common/src/syscalls.c **** /* Initialize if first time through. */
+ 184:lib/Common/src/syscalls.c **** 
+ 185:lib/Common/src/syscalls.c ****   if (!heap_ptr) heap_ptr = end;
+ 436              		.loc 1 185 0
+ 437 0002 054A     		ldr	r2, .L47
+ 438 0004 1368     		ldr	r3, [r2]
+ 439 0006 002B     		cmp	r3, #0
+ 440 0008 04D0     		beq	.L46
+ 441              	.L45:
+ 442              	.LVL40:
+ 186:lib/Common/src/syscalls.c **** 
+ 187:lib/Common/src/syscalls.c ****   base = heap_ptr;      /*  Point to end of heap.                       */
+ 188:lib/Common/src/syscalls.c ****   heap_ptr += incr;     /*  Increase heap.                              */
+ 443              		.loc 1 188 0
+ 444 000a 1818     		add	r0, r3, r0
+ 445              	.LVL41:
+ 446 000c 1060     		str	r0, [r2]
+ 189:lib/Common/src/syscalls.c **** 
+ 190:lib/Common/src/syscalls.c ****   return base;          /*  Return pointer to start of new heap area.   */
+ 191:lib/Common/src/syscalls.c **** }
+ 447              		.loc 1 191 0
+ 448              		@ sp needed for prologue
+ 449 000e 181C     		mov	r0, r3
+ 450 0010 02BC     		pop	{r1}
+ 451 0012 0847     		bx	r1
+ 452              	.LVL42:
+ 453              	.L46:
+ 185:lib/Common/src/syscalls.c ****   if (!heap_ptr) heap_ptr = end;
+ 454              		.loc 1 185 0 discriminator 1
+ 455 0014 014B     		ldr	r3, .L47+4
+ 456 0016 F8E7     		b	.L45
+ 457              	.L48:
+ 458              		.align	2
+ 459              	.L47:
+ 460 0018 00000000 		.word	.LANCHOR0
+ 461 001c 00000000 		.word	end
+ 462              		.cfi_endproc
+ 463              	.LFE10:
+ 465              		.section	.text._open,"ax",%progbits
+ 466              		.align	2
+ 467              		.global	_open
+ 468              		.code	16
+ 469              		.thumb_func
+ 471              	_open:
+ 472              	.LFB11:
+ 192:lib/Common/src/syscalls.c **** 
+ 193:lib/Common/src/syscalls.c **** int _open(const char *path, int flags, ...)
+ 194:lib/Common/src/syscalls.c **** {
+ 473              		.loc 1 194 0
+ 474              		.cfi_startproc
+ 475 0000 0EB4     		push	{r1, r2, r3}
+ 476              	.LCFI6:
+ 477              		.cfi_def_cfa_offset 12
+ 478              	.LVL43:
+ 195:lib/Common/src/syscalls.c ****   return 1;
+ 196:lib/Common/src/syscalls.c **** }
+ 479              		.loc 1 196 0
+ 480 0002 0120     		mov	r0, #1
+ 481              	.LVL44:
+ 482              		@ sp needed for prologue
+ 483 0004 03B0     		add	sp, sp, #12
+ 484 0006 7047     		bx	lr
+ 485              		.cfi_endproc
+ 486              	.LFE11:
+ 488              		.section	.text._close,"ax",%progbits
+ 489              		.align	2
+ 490              		.global	_close
+ 491              		.code	16
+ 492              		.thumb_func
+ 494              	_close:
+ 495              	.LFB12:
+ 197:lib/Common/src/syscalls.c **** 
+ 198:lib/Common/src/syscalls.c **** int _close(int fd)
+ 199:lib/Common/src/syscalls.c **** {
+ 496              		.loc 1 199 0
+ 497              		.cfi_startproc
+ 498              	.LVL45:
+ 200:lib/Common/src/syscalls.c ****   return 0;
+ 201:lib/Common/src/syscalls.c **** }
+ 499              		.loc 1 201 0
+ 500 0000 0020     		mov	r0, #0
+ 501              	.LVL46:
+ 502              		@ sp needed for prologue
+ 503 0002 7047     		bx	lr
+ 504              		.cfi_endproc
+ 505              	.LFE12:
+ 507              		.section	.text._fstat,"ax",%progbits
+ 508              		.align	2
+ 509              		.global	_fstat
+ 510              		.code	16
+ 511              		.thumb_func
+ 513              	_fstat:
+ 514              	.LFB13:
+ 202:lib/Common/src/syscalls.c **** 
+ 203:lib/Common/src/syscalls.c **** int _fstat(int fd, struct stat *st)
+ 204:lib/Common/src/syscalls.c **** {
+ 515              		.loc 1 204 0
+ 516              		.cfi_startproc
+ 517              	.LVL47:
+ 205:lib/Common/src/syscalls.c ****   st->st_mode = S_IFCHR;
+ 518              		.loc 1 205 0
+ 519 0000 8020     		mov	r0, #128
+ 520              	.LVL48:
+ 521 0002 8301     		lsl	r3, r0, #6
+ 522 0004 4B60     		str	r3, [r1, #4]
+ 206:lib/Common/src/syscalls.c ****   return 0;
+ 207:lib/Common/src/syscalls.c **** }
+ 523              		.loc 1 207 0
+ 524 0006 0020     		mov	r0, #0
+ 525              		@ sp needed for prologue
+ 526 0008 7047     		bx	lr
+ 527              		.cfi_endproc
+ 528              	.LFE13:
+ 530 000a C046     		.section	.text._isatty,"ax",%progbits
+ 531              		.align	2
+ 532              		.global	_isatty
+ 533              		.code	16
+ 534              		.thumb_func
+ 536              	_isatty:
+ 537              	.LFB14:
+ 208:lib/Common/src/syscalls.c **** 
+ 209:lib/Common/src/syscalls.c **** int _isatty(int fd)
+ 210:lib/Common/src/syscalls.c **** {
+ 538              		.loc 1 210 0
+ 539              		.cfi_startproc
+ 540              	.LVL49:
+ 211:lib/Common/src/syscalls.c ****   return 1;
+ 212:lib/Common/src/syscalls.c **** }
+ 541              		.loc 1 212 0
+ 542 0000 0120     		mov	r0, #1
+ 543              	.LVL50:
+ 544              		@ sp needed for prologue
+ 545 0002 7047     		bx	lr
+ 546              		.cfi_endproc
+ 547              	.LFE14:
+ 549              		.section	.text._lseek,"ax",%progbits
+ 550              		.align	2
+ 551              		.global	_lseek
+ 552              		.code	16
+ 553              		.thumb_func
+ 555              	_lseek:
+ 556              	.LFB15:
+ 213:lib/Common/src/syscalls.c **** 
+ 214:lib/Common/src/syscalls.c **** 
+ 215:lib/Common/src/syscalls.c **** int _lseek(int fd, off_t pos, int whence)
+ 216:lib/Common/src/syscalls.c **** {
+ 557              		.loc 1 216 0
+ 558              		.cfi_startproc
+ 559              	.LVL51:
+ 217:lib/Common/src/syscalls.c ****   return 0;
+ 218:lib/Common/src/syscalls.c **** }
+ 560              		.loc 1 218 0
+ 561 0000 0020     		mov	r0, #0
+ 562              	.LVL52:
+ 563              		@ sp needed for prologue
+ 564 0002 7047     		bx	lr
+ 565              		.cfi_endproc
+ 566              	.LFE15:
+ 568              		.section	.text._read,"ax",%progbits
+ 569              		.align	2
+ 570              		.global	_read
+ 571              		.code	16
+ 572              		.thumb_func
+ 574              	_read:
+ 575              	.LFB16:
+ 219:lib/Common/src/syscalls.c **** 
+ 220:lib/Common/src/syscalls.c **** int _read(int fd, char *buf, size_t cnt)
+ 221:lib/Common/src/syscalls.c **** {
+ 576              		.loc 1 221 0
+ 577              		.cfi_startproc
+ 578 0000 10B5     		push	{r4, lr}
+ 579              	.LCFI7:
+ 580              		.cfi_def_cfa_offset 8
+ 581              		.cfi_offset 4, -8
+ 582              		.cfi_offset 14, -4
+ 583              	.LVL53:
+ 222:lib/Common/src/syscalls.c ****   *buf = getch();
+ 584              		.loc 1 222 0
+ 585 0002 0020     		mov	r0, #0
+ 586              	.LVL54:
+ 221:lib/Common/src/syscalls.c **** {
+ 587              		.loc 1 221 0
+ 588 0004 0C1C     		mov	r4, r1
+ 589              		.loc 1 222 0
+ 590 0006 FFF7FEFF 		bl	UARTGetch
+ 591              	.LVL55:
+ 223:lib/Common/src/syscalls.c **** 
+ 224:lib/Common/src/syscalls.c ****   return 1;
+ 225:lib/Common/src/syscalls.c **** }
+ 592              		.loc 1 225 0
+ 593              		@ sp needed for prologue
+ 222:lib/Common/src/syscalls.c ****   *buf = getch();
+ 594              		.loc 1 222 0
+ 595 000a 2070     		strb	r0, [r4]
+ 596              		.loc 1 225 0
+ 597 000c 0120     		mov	r0, #1
+ 598              	.LVL56:
+ 599 000e 10BC     		pop	{r4}
+ 600 0010 02BC     		pop	{r1}
+ 601 0012 0847     		bx	r1
+ 602              		.cfi_endproc
+ 603              	.LFE16:
+ 605              		.section	.text._write,"ax",%progbits
+ 606              		.align	2
+ 607              		.global	_write
+ 608              		.code	16
+ 609              		.thumb_func
+ 611              	_write:
+ 612              	.LFB17:
+ 226:lib/Common/src/syscalls.c **** 
+ 227:lib/Common/src/syscalls.c **** int _write(int fd, const char *buf, size_t cnt)
+ 228:lib/Common/src/syscalls.c **** {
+ 613              		.loc 1 228 0
+ 614              		.cfi_startproc
+ 615 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 616              	.LCFI8:
+ 617              		.cfi_def_cfa_offset 24
+ 618              		.cfi_offset 3, -24
+ 619              		.cfi_offset 4, -20
+ 620              		.cfi_offset 5, -16
+ 621              		.cfi_offset 6, -12
+ 622              		.cfi_offset 7, -8
+ 623              		.cfi_offset 14, -4
+ 624              	.LVL57:
+ 625              		.loc 1 228 0
+ 626 0002 0D1C     		mov	r5, r1
+ 229:lib/Common/src/syscalls.c ****   int i;
+ 230:lib/Common/src/syscalls.c **** 
+ 231:lib/Common/src/syscalls.c ****   for (i = 0; i < cnt; i++)
+ 627              		.loc 1 231 0
+ 628 0004 161E     		sub	r6, r2, #0
+ 629 0006 20D0     		beq	.L56
+ 630 0008 0124     		mov	r4, #1
+ 232:lib/Common/src/syscalls.c ****     putch(buf[i]);
+ 631              		.loc 1 232 0 discriminator 2
+ 632 000a 0978     		ldrb	r1, [r1]
+ 633              	.LVL58:
+ 634 000c 0020     		mov	r0, #0
+ 635              	.LVL59:
+ 636 000e 771E     		sub	r7, r6, #1
+ 637 0010 FFF7FEFF 		bl	UARTPutch
+ 638              	.LVL60:
+ 231:lib/Common/src/syscalls.c ****   for (i = 0; i < cnt; i++)
+ 639              		.loc 1 231 0 discriminator 2
+ 640 0014 231C     		mov	r3, r4
+ 641 0016 2740     		and	r7, r7, r4
+ 642 0018 9E42     		cmp	r6, r3
+ 643 001a 16D9     		bls	.L56
+ 644 001c 002F     		cmp	r7, #0
+ 645 001e 07D0     		beq	.L57
+ 646              		.loc 1 232 0
+ 647 0020 6978     		ldrb	r1, [r5, #1]
+ 648 0022 0020     		mov	r0, #0
+ 231:lib/Common/src/syscalls.c ****   for (i = 0; i < cnt; i++)
+ 649              		.loc 1 231 0
+ 650 0024 0224     		mov	r4, #2
+ 651              		.loc 1 232 0
+ 652 0026 FFF7FEFF 		bl	UARTPutch
+ 231:lib/Common/src/syscalls.c ****   for (i = 0; i < cnt; i++)
+ 653              		.loc 1 231 0
+ 654 002a 231C     		mov	r3, r4
+ 655 002c A642     		cmp	r6, r4
+ 656 002e 0CD9     		bls	.L56
+ 657              	.L57:
+ 658              		.loc 1 232 0 discriminator 2
+ 659 0030 E95C     		ldrb	r1, [r5, r3]
+ 660 0032 0020     		mov	r0, #0
+ 231:lib/Common/src/syscalls.c ****   for (i = 0; i < cnt; i++)
+ 661              		.loc 1 231 0 discriminator 2
+ 662 0034 0134     		add	r4, r4, #1
+ 663              		.loc 1 232 0 discriminator 2
+ 664 0036 FFF7FEFF 		bl	UARTPutch
+ 665 003a 295D     		ldrb	r1, [r5, r4]
+ 666 003c 0020     		mov	r0, #0
+ 231:lib/Common/src/syscalls.c ****   for (i = 0; i < cnt; i++)
+ 667              		.loc 1 231 0 discriminator 2
+ 668 003e 0134     		add	r4, r4, #1
+ 669              		.loc 1 232 0 discriminator 2
+ 670 0040 FFF7FEFF 		bl	UARTPutch
+ 231:lib/Common/src/syscalls.c ****   for (i = 0; i < cnt; i++)
+ 671              		.loc 1 231 0 discriminator 2
+ 672 0044 231C     		mov	r3, r4
+ 673 0046 A642     		cmp	r6, r4
+ 674 0048 F2D8     		bhi	.L57
+ 675              	.L56:
+ 233:lib/Common/src/syscalls.c **** 
+ 234:lib/Common/src/syscalls.c ****   return cnt;
+ 235:lib/Common/src/syscalls.c **** }
+ 676              		.loc 1 235 0
+ 677 004a 301C     		mov	r0, r6
+ 678              		@ sp needed for prologue
+ 679              	.LVL61:
+ 680              	.LVL62:
+ 681 004c F8BC     		pop	{r3, r4, r5, r6, r7}
+ 682 004e 02BC     		pop	{r1}
+ 683 0050 0847     		bx	r1
+ 684              		.cfi_endproc
+ 685              	.LFE17:
+ 687              		.global	__exidx_start
+ 688              		.global	__exidx_end
+ 689 0052 C046     		.section	.bss.__exidx_end,"aw",%nobits
+ 690              		.align	2
+ 693              	__exidx_end:
+ 694 0000 00000000 		.space	4
+ 695              		.section	.bss.__exidx_start,"aw",%nobits
+ 696              		.align	2
+ 699              	__exidx_start:
+ 700 0000 00000000 		.space	4
+ 701              		.section	.bss.heap_ptr,"aw",%nobits
+ 702              		.align	2
+ 703              		.set	.LANCHOR0,. + 0
+ 706              	heap_ptr:
+ 707 0000 00000000 		.space	4
+ 708              		.text
+ 709              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 syscalls.c
+     /tmp/ccohh4xf.s:23     .text._read_r:00000000 $t
+     /tmp/ccohh4xf.s:28     .text._read_r:00000000 _read_r
+     /tmp/ccohh4xf.s:113    .text._write_r:00000000 $t
+     /tmp/ccohh4xf.s:118    .text._write_r:00000000 _write_r
+     /tmp/ccohh4xf.s:239    .text._close_r:00000000 $t
+     /tmp/ccohh4xf.s:244    .text._close_r:00000000 _close_r
+     /tmp/ccohh4xf.s:258    .text._lseek_r:00000000 $t
+     /tmp/ccohh4xf.s:263    .text._lseek_r:00000000 _lseek_r
+     /tmp/ccohh4xf.s:277    .text._fstat_r:00000000 $t
+     /tmp/ccohh4xf.s:282    .text._fstat_r:00000000 _fstat_r
+     /tmp/ccohh4xf.s:300    .text.isatty:00000000 $t
+     /tmp/ccohh4xf.s:305    .text.isatty:00000000 isatty
+     /tmp/ccohh4xf.s:319    .text._exit:00000000 $t
+     /tmp/ccohh4xf.s:324    .text._exit:00000000 _exit
+     /tmp/ccohh4xf.s:340    .text._getpid:00000000 $t
+     /tmp/ccohh4xf.s:345    .text._getpid:00000000 _getpid
+     /tmp/ccohh4xf.s:359    .text._kill:00000000 $t
+     /tmp/ccohh4xf.s:364    .text._kill:00000000 _kill
+     /tmp/ccohh4xf.s:378    .text._sbrk_r:00000000 $t
+     /tmp/ccohh4xf.s:383    .text._sbrk_r:00000000 _sbrk_r
+     /tmp/ccohh4xf.s:416    .text._sbrk_r:00000018 $d
+     /tmp/ccohh4xf.s:422    .text._sbrk:00000000 $t
+     /tmp/ccohh4xf.s:427    .text._sbrk:00000000 _sbrk
+     /tmp/ccohh4xf.s:460    .text._sbrk:00000018 $d
+     /tmp/ccohh4xf.s:466    .text._open:00000000 $t
+     /tmp/ccohh4xf.s:471    .text._open:00000000 _open
+     /tmp/ccohh4xf.s:489    .text._close:00000000 $t
+     /tmp/ccohh4xf.s:494    .text._close:00000000 _close
+     /tmp/ccohh4xf.s:508    .text._fstat:00000000 $t
+     /tmp/ccohh4xf.s:513    .text._fstat:00000000 _fstat
+     /tmp/ccohh4xf.s:531    .text._isatty:00000000 $t
+     /tmp/ccohh4xf.s:536    .text._isatty:00000000 _isatty
+     /tmp/ccohh4xf.s:550    .text._lseek:00000000 $t
+     /tmp/ccohh4xf.s:555    .text._lseek:00000000 _lseek
+     /tmp/ccohh4xf.s:569    .text._read:00000000 $t
+     /tmp/ccohh4xf.s:574    .text._read:00000000 _read
+     /tmp/ccohh4xf.s:606    .text._write:00000000 $t
+     /tmp/ccohh4xf.s:611    .text._write:00000000 _write
+     /tmp/ccohh4xf.s:699    .bss.__exidx_start:00000000 __exidx_start
+     /tmp/ccohh4xf.s:693    .bss.__exidx_end:00000000 __exidx_end
+     /tmp/ccohh4xf.s:690    .bss.__exidx_end:00000000 $d
+     /tmp/ccohh4xf.s:696    .bss.__exidx_start:00000000 $d
+     /tmp/ccohh4xf.s:702    .bss.heap_ptr:00000000 $d
+     /tmp/ccohh4xf.s:706    .bss.heap_ptr:00000000 heap_ptr
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+UARTGetch
+UARTPutch
+end

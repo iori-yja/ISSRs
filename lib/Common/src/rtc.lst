@@ -1,0 +1,876 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"rtc.c"
+  20              	.Ltext0:
+  21              		.cfi_sections	.debug_frame
+  22              		.section	.text.RTCInit,"ax",%progbits
+  23              		.align	2
+  24              		.global	RTCInit
+  25              		.code	16
+  26              		.thumb_func
+  28              	RTCInit:
+  29              	.LFB0:
+  30              		.file 1 "lib/Common/src/rtc.c"
+   1:lib/Common/src/rtc.c **** /*****************************************************************************
+   2:lib/Common/src/rtc.c ****  *   rtc.c:  Realtime clock C file for NXP LPC23xx/34xx Family Microprocessors
+   3:lib/Common/src/rtc.c ****  *
+   4:lib/Common/src/rtc.c ****  *   Copyright(C) 2006, NXP Semiconductor
+   5:lib/Common/src/rtc.c ****  *   All rights reserved.
+   6:lib/Common/src/rtc.c ****  *
+   7:lib/Common/src/rtc.c ****  *   History
+   8:lib/Common/src/rtc.c ****  *   2006.07.12  ver 1.00    Prelimnary version, first Release
+   9:lib/Common/src/rtc.c ****  *   2009.07.03  ver 2.00	 Nemui fixed LPC23xx.H ->LPC23xx.h
+  10:lib/Common/src/rtc.c ****  *							   and fixed DayOfYear -> DayOfMonth! 
+  11:lib/Common/src/rtc.c ****  *   2009.07.28  ver 3.00    FatFs Special
+  12:lib/Common/src/rtc.c ****  *   2009.10.23  ver 4.00    branched rtc and rtc_support
+  13:lib/Common/src/rtc.c **** *****************************************************************************/
+  14:lib/Common/src/rtc.c **** 
+  15:lib/Common/src/rtc.c **** /*-----------------------------------------
+  16:lib/Common/src/rtc.c **** 				includes
+  17:lib/Common/src/rtc.c **** -------------------------------------------*/
+  18:lib/Common/src/rtc.c **** #include "LPC23xx.h"     /* 20090703Nemui */ /* LPC23xx/24xx definitions */
+  19:lib/Common/src/rtc.c **** #include "target.h"
+  20:lib/Common/src/rtc.c **** #include "rtc.h"
+  21:lib/Common/src/rtc.c **** 
+  22:lib/Common/src/rtc.c **** /*-----------------------------------------
+  23:lib/Common/src/rtc.c **** 				glovals
+  24:lib/Common/src/rtc.c **** -------------------------------------------*/
+  25:lib/Common/src/rtc.c **** volatile RTCTime local_time, alarm_time, current_time;
+  26:lib/Common/src/rtc.c **** 
+  27:lib/Common/src/rtc.c **** /*-----------------------------------------
+  28:lib/Common/src/rtc.c **** 				functions
+  29:lib/Common/src/rtc.c **** -------------------------------------------*/
+  30:lib/Common/src/rtc.c **** 
+  31:lib/Common/src/rtc.c **** /*****************************************************************************
+  32:lib/Common/src/rtc.c **** ** Function name:		RTCInit
+  33:lib/Common/src/rtc.c **** **
+  34:lib/Common/src/rtc.c **** ** Descriptions:		Initialize RTC timer
+  35:lib/Common/src/rtc.c **** **
+  36:lib/Common/src/rtc.c **** ** parameters:			None
+  37:lib/Common/src/rtc.c **** ** Returned value:		None
+  38:lib/Common/src/rtc.c **** ** 
+  39:lib/Common/src/rtc.c **** *****************************************************************************/
+  40:lib/Common/src/rtc.c **** DWORD RTCInit( void )
+  41:lib/Common/src/rtc.c **** {
+  31              		.loc 1 41 0
+  32              		.cfi_startproc
+  33 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 20
+  36              		.cfi_offset 4, -20
+  37              		.cfi_offset 5, -16
+  38              		.cfi_offset 6, -12
+  39              		.cfi_offset 7, -8
+  40              		.cfi_offset 14, -4
+  41 0002 5746     		mov	r7, sl
+  42 0004 4E46     		mov	r6, r9
+  43 0006 4546     		mov	r5, r8
+  44 0008 E0B4     		push	{r5, r6, r7}
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 32
+  47              		.cfi_offset 8, -32
+  48              		.cfi_offset 9, -28
+  49              		.cfi_offset 10, -24
+  42:lib/Common/src/rtc.c **** 	/*--- Initialize registers ---*/    
+  43:lib/Common/src/rtc.c **** 	RTC_AMR = 0;
+  50              		.loc 1 43 0
+  51 000a 2D4D     		ldr	r5, .L4
+  52 000c 0022     		mov	r2, #0
+  53 000e 2A60     		str	r2, [r5]
+  44:lib/Common/src/rtc.c **** 	RTC_CIIR = 0;
+  45:lib/Common/src/rtc.c **** 	RTC_CCR = 0;
+  46:lib/Common/src/rtc.c **** 	RTC_CCR = CCR_CLKSRC ;
+  47:lib/Common/src/rtc.c **** 	RTC_PREINT = PREINT_RTC;
+  54              		.loc 1 47 0
+  55 0010 E421     		mov	r1, #228
+  44:lib/Common/src/rtc.c **** 	RTC_CIIR = 0;
+  56              		.loc 1 44 0
+  57 0012 043D     		sub	r5, r5, #4
+  58              		.loc 1 47 0
+  59 0014 2B4E     		ldr	r6, .L4+4
+  48:lib/Common/src/rtc.c **** 	RTC_PREFRAC = PREFRAC_RTC;
+  60              		.loc 1 48 0
+  61 0016 2C4F     		ldr	r7, .L4+8
+  44:lib/Common/src/rtc.c **** 	RTC_CIIR = 0;
+  62              		.loc 1 44 0
+  63 0018 2A60     		str	r2, [r5]
+  47:lib/Common/src/rtc.c **** 	RTC_PREINT = PREINT_RTC;
+  64              		.loc 1 47 0
+  65 001a 4B00     		lsl	r3, r1, #1
+  45:lib/Common/src/rtc.c **** 	RTC_CCR = 0;
+  66              		.loc 1 45 0
+  67 001c 043D     		sub	r5, r5, #4
+  46:lib/Common/src/rtc.c **** 	RTC_CCR = CCR_CLKSRC ;
+  68              		.loc 1 46 0
+  69 001e 1024     		mov	r4, #16
+  45:lib/Common/src/rtc.c **** 	RTC_CCR = 0;
+  70              		.loc 1 45 0
+  71 0020 2A60     		str	r2, [r5]
+  46:lib/Common/src/rtc.c **** 	RTC_CCR = CCR_CLKSRC ;
+  72              		.loc 1 46 0
+  73 0022 2C60     		str	r4, [r5]
+  47:lib/Common/src/rtc.c **** 	RTC_PREINT = PREINT_RTC;
+  74              		.loc 1 47 0
+  75 0024 3360     		str	r3, [r6]
+  76              		.loc 1 48 0
+  77 0026 7760     		str	r7, [r6, #4]
+  78              	.LBB6:
+  79              	.LBB7:
+  49:lib/Common/src/rtc.c **** 
+  50:lib/Common/src/rtc.c **** 	RTCStart(); 
+  51:lib/Common/src/rtc.c **** 
+  52:lib/Common/src/rtc.c **** 	if(RTC_CONF_STAT != CONF_COMPLETED){
+  53:lib/Common/src/rtc.c **** 		/* if RTC was not cofigured then set to 
+  54:lib/Common/src/rtc.c **** 		    2009/07/29 23:43:00 */
+  55:lib/Common/src/rtc.c **** 		RTC_SEC   = 0;
+  56:lib/Common/src/rtc.c **** 		RTC_MIN   = 43;
+  57:lib/Common/src/rtc.c **** 		RTC_HOUR  = 23;
+  58:lib/Common/src/rtc.c **** 		RTC_DOM   = 29;
+  59:lib/Common/src/rtc.c **** 		RTC_MONTH = 7;
+  60:lib/Common/src/rtc.c **** 		RTC_YEAR  = 2009;    
+  61:lib/Common/src/rtc.c **** 		
+  62:lib/Common/src/rtc.c **** 		local_time = RTCGetTime();
+  63:lib/Common/src/rtc.c **** 		
+  64:lib/Common/src/rtc.c **** 		RTC_CONF_STAT = CONF_COMPLETED;
+  65:lib/Common/src/rtc.c **** 	}
+  66:lib/Common/src/rtc.c **** 
+  67:lib/Common/src/rtc.c **** 	return (TRUE);
+  68:lib/Common/src/rtc.c **** }
+  69:lib/Common/src/rtc.c **** 
+  70:lib/Common/src/rtc.c **** /*****************************************************************************
+  71:lib/Common/src/rtc.c **** ** Function name:		RTCStart
+  72:lib/Common/src/rtc.c **** **
+  73:lib/Common/src/rtc.c **** ** Descriptions:		Start RTC timer
+  74:lib/Common/src/rtc.c **** **
+  75:lib/Common/src/rtc.c **** ** parameters:			None
+  76:lib/Common/src/rtc.c **** ** Returned value:		None
+  77:lib/Common/src/rtc.c **** ** 
+  78:lib/Common/src/rtc.c **** *****************************************************************************/
+  79:lib/Common/src/rtc.c **** void RTCStart( void ) 
+  80:lib/Common/src/rtc.c **** {
+  81:lib/Common/src/rtc.c ****   /*--- Start RTC counters ---*/
+  82:lib/Common/src/rtc.c ****   RTC_CCR |= CCR_CLKEN;
+  80              		.loc 1 82 0
+  81 0028 2868     		ldr	r0, [r5]
+  82 002a 0124     		mov	r4, #1
+  83 002c 2043     		orr	r0, r0, r4
+  84 002e 2860     		str	r0, [r5]
+  83:lib/Common/src/rtc.c ****   RTC_ILR = ILR_RTCCIF;
+  85              		.loc 1 83 0
+  86 0030 083D     		sub	r5, r5, #8
+  87 0032 2C60     		str	r4, [r5]
+  88              	.LBE7:
+  89              	.LBE6:
+  52:lib/Common/src/rtc.c **** 	if(RTC_CONF_STAT != CONF_COMPLETED){
+  90              		.loc 1 52 0
+  91 0034 2548     		ldr	r0, .L4+12
+  92 0036 2649     		ldr	r1, .L4+16
+  93 0038 0368     		ldr	r3, [r0]
+  94 003a 8A46     		mov	sl, r1
+  41:lib/Common/src/rtc.c **** {
+  95              		.loc 1 41 0
+  96 003c 88B0     		sub	sp, sp, #32
+  97              	.LCFI2:
+  98              		.cfi_def_cfa_offset 64
+  52:lib/Common/src/rtc.c **** 	if(RTC_CONF_STAT != CONF_COMPLETED){
+  99              		.loc 1 52 0
+ 100 003e 5345     		cmp	r3, sl
+ 101 0040 34D0     		beq	.L2
+  55:lib/Common/src/rtc.c **** 		RTC_SEC   = 0;
+ 102              		.loc 1 55 0
+ 103 0042 244F     		ldr	r7, .L4+20
+  56:lib/Common/src/rtc.c **** 		RTC_MIN   = 43;
+ 104              		.loc 1 56 0
+ 105 0044 244E     		ldr	r6, .L4+24
+ 106 0046 2B23     		mov	r3, #43
+  57:lib/Common/src/rtc.c **** 		RTC_HOUR  = 23;
+ 107              		.loc 1 57 0
+ 108 0048 244D     		ldr	r5, .L4+28
+  55:lib/Common/src/rtc.c **** 		RTC_SEC   = 0;
+ 109              		.loc 1 55 0
+ 110 004a 3A60     		str	r2, [r7]
+  58:lib/Common/src/rtc.c **** 		RTC_DOM   = 29;
+ 111              		.loc 1 58 0
+ 112 004c 2449     		ldr	r1, .L4+32
+  56:lib/Common/src/rtc.c **** 		RTC_MIN   = 43;
+ 113              		.loc 1 56 0
+ 114 004e 3360     		str	r3, [r6]
+  57:lib/Common/src/rtc.c **** 		RTC_HOUR  = 23;
+ 115              		.loc 1 57 0
+ 116 0050 143B     		sub	r3, r3, #20
+ 117 0052 2B60     		str	r3, [r5]
+  59:lib/Common/src/rtc.c **** 		RTC_MONTH = 7;
+ 118              		.loc 1 59 0
+ 119 0054 234A     		ldr	r2, .L4+36
+  58:lib/Common/src/rtc.c **** 		RTC_DOM   = 29;
+ 120              		.loc 1 58 0
+ 121 0056 0633     		add	r3, r3, #6
+ 122 0058 0B60     		str	r3, [r1]
+  59:lib/Common/src/rtc.c **** 		RTC_MONTH = 7;
+ 123              		.loc 1 59 0
+ 124 005a 163B     		sub	r3, r3, #22
+ 125 005c 1360     		str	r3, [r2]
+  60:lib/Common/src/rtc.c **** 		RTC_YEAR  = 2009;    
+ 126              		.loc 1 60 0
+ 127 005e 224C     		ldr	r4, .L4+40
+ 128 0060 224B     		ldr	r3, .L4+44
+ 129 0062 1C60     		str	r4, [r3]
+ 130              	.LBB8:
+ 131              	.LBB9:
+  84:lib/Common/src/rtc.c ****   return;
+  85:lib/Common/src/rtc.c **** }
+  86:lib/Common/src/rtc.c **** 
+  87:lib/Common/src/rtc.c **** /*****************************************************************************
+  88:lib/Common/src/rtc.c **** ** Function name:		RTCStop
+  89:lib/Common/src/rtc.c **** **
+  90:lib/Common/src/rtc.c **** ** Descriptions:		Stop RTC timer
+  91:lib/Common/src/rtc.c **** **
+  92:lib/Common/src/rtc.c **** ** parameters:			None
+  93:lib/Common/src/rtc.c **** ** Returned value:		None
+  94:lib/Common/src/rtc.c **** ** 
+  95:lib/Common/src/rtc.c **** *****************************************************************************/
+  96:lib/Common/src/rtc.c **** void RTCStop( void )
+  97:lib/Common/src/rtc.c **** {   
+  98:lib/Common/src/rtc.c ****   /*--- Stop RTC counters ---*/
+  99:lib/Common/src/rtc.c ****   RTC_CCR &= ~CCR_CLKEN;
+ 100:lib/Common/src/rtc.c ****   return;
+ 101:lib/Common/src/rtc.c **** } 
+ 102:lib/Common/src/rtc.c **** 
+ 103:lib/Common/src/rtc.c **** /*****************************************************************************
+ 104:lib/Common/src/rtc.c **** ** Function name:		RTC_CTCReset
+ 105:lib/Common/src/rtc.c **** **
+ 106:lib/Common/src/rtc.c **** ** Descriptions:		Reset RTC clock tick counter
+ 107:lib/Common/src/rtc.c **** **
+ 108:lib/Common/src/rtc.c **** ** parameters:			None
+ 109:lib/Common/src/rtc.c **** ** Returned value:		None
+ 110:lib/Common/src/rtc.c **** ** 
+ 111:lib/Common/src/rtc.c **** *****************************************************************************/
+ 112:lib/Common/src/rtc.c **** void RTC_CTCReset( void )
+ 113:lib/Common/src/rtc.c **** {   
+ 114:lib/Common/src/rtc.c ****   /*--- Reset CTC ---*/
+ 115:lib/Common/src/rtc.c ****   RTC_CCR |= CCR_CTCRST;
+ 116:lib/Common/src/rtc.c ****   return;
+ 117:lib/Common/src/rtc.c **** }
+ 118:lib/Common/src/rtc.c **** 
+ 119:lib/Common/src/rtc.c **** /*****************************************************************************
+ 120:lib/Common/src/rtc.c **** ** Function name:		RTCSetTime
+ 121:lib/Common/src/rtc.c **** **
+ 122:lib/Common/src/rtc.c **** ** Descriptions:		Setup RTC timer value
+ 123:lib/Common/src/rtc.c **** **
+ 124:lib/Common/src/rtc.c **** ** parameters:			None
+ 125:lib/Common/src/rtc.c **** ** Returned value:		None
+ 126:lib/Common/src/rtc.c **** ** 
+ 127:lib/Common/src/rtc.c **** *****************************************************************************/
+ 128:lib/Common/src/rtc.c **** void RTCSetTime( RTCTime Time ) 
+ 129:lib/Common/src/rtc.c **** {
+ 130:lib/Common/src/rtc.c ****   RTC_SEC   = Time.RTC_Sec;
+ 131:lib/Common/src/rtc.c ****   RTC_MIN   = Time.RTC_Min;
+ 132:lib/Common/src/rtc.c ****   RTC_HOUR  = Time.RTC_Hour;
+ 133:lib/Common/src/rtc.c ****   RTC_DOM   = Time.RTC_Mday;
+ 134:lib/Common/src/rtc.c ****   RTC_DOW   = Time.RTC_Wday;
+ 135:lib/Common/src/rtc.c ****   RTC_DOY   = Time.RTC_Yday;
+ 136:lib/Common/src/rtc.c ****   RTC_MONTH = Time.RTC_Mon;
+ 137:lib/Common/src/rtc.c ****   RTC_YEAR  = Time.RTC_Year;    
+ 138:lib/Common/src/rtc.c ****   return;
+ 139:lib/Common/src/rtc.c **** }
+ 140:lib/Common/src/rtc.c **** 
+ 141:lib/Common/src/rtc.c **** /*****************************************************************************
+ 142:lib/Common/src/rtc.c **** ** Function name:		RTCSetAlarm
+ 143:lib/Common/src/rtc.c **** **
+ 144:lib/Common/src/rtc.c **** ** Descriptions:		Initialize RTC timer
+ 145:lib/Common/src/rtc.c **** **
+ 146:lib/Common/src/rtc.c **** ** parameters:			None
+ 147:lib/Common/src/rtc.c **** ** Returned value:		None
+ 148:lib/Common/src/rtc.c **** ** 
+ 149:lib/Common/src/rtc.c **** *****************************************************************************/
+ 150:lib/Common/src/rtc.c **** void RTCSetAlarm( RTCTime Alarm ) 
+ 151:lib/Common/src/rtc.c **** {   
+ 152:lib/Common/src/rtc.c ****   RTC_ALSEC  = Alarm.RTC_Sec;
+ 153:lib/Common/src/rtc.c ****   RTC_ALMIN  = Alarm.RTC_Min;
+ 154:lib/Common/src/rtc.c ****   RTC_ALHOUR = Alarm.RTC_Hour;
+ 155:lib/Common/src/rtc.c ****   RTC_ALDOM  = Alarm.RTC_Mday;
+ 156:lib/Common/src/rtc.c ****   RTC_ALDOW  = Alarm.RTC_Wday;
+ 157:lib/Common/src/rtc.c ****   RTC_ALDOY  = Alarm.RTC_Yday;
+ 158:lib/Common/src/rtc.c ****   RTC_ALMON  = Alarm.RTC_Mon;
+ 159:lib/Common/src/rtc.c ****   RTC_ALYEAR = Alarm.RTC_Year;    
+ 160:lib/Common/src/rtc.c ****   return;
+ 161:lib/Common/src/rtc.c **** }
+ 162:lib/Common/src/rtc.c **** 
+ 163:lib/Common/src/rtc.c **** /*****************************************************************************
+ 164:lib/Common/src/rtc.c **** ** Function name:		RTCGetTime
+ 165:lib/Common/src/rtc.c **** **
+ 166:lib/Common/src/rtc.c **** ** Descriptions:		Get RTC timer value
+ 167:lib/Common/src/rtc.c **** **
+ 168:lib/Common/src/rtc.c **** ** parameters:			None
+ 169:lib/Common/src/rtc.c **** ** Returned value:		The data structure of the RTC time table
+ 170:lib/Common/src/rtc.c **** ** 
+ 171:lib/Common/src/rtc.c **** *****************************************************************************/
+ 172:lib/Common/src/rtc.c **** RTCTime RTCGetTime( void ) 
+ 173:lib/Common/src/rtc.c **** {
+ 174:lib/Common/src/rtc.c ****   RTCTime LocalTime;
+ 175:lib/Common/src/rtc.c ****     
+ 176:lib/Common/src/rtc.c ****   LocalTime.RTC_Sec = RTC_SEC;
+ 132              		.loc 1 176 0
+ 133 0064 3F68     		ldr	r7, [r7]
+ 134              	.LVL0:
+ 177:lib/Common/src/rtc.c ****   LocalTime.RTC_Min = RTC_MIN;
+ 135              		.loc 1 177 0
+ 136 0066 3668     		ldr	r6, [r6]
+ 178:lib/Common/src/rtc.c ****   LocalTime.RTC_Hour = RTC_HOUR;
+ 137              		.loc 1 178 0
+ 138 0068 2D68     		ldr	r5, [r5]
+ 179:lib/Common/src/rtc.c ****   LocalTime.RTC_Mday = RTC_DOM;
+ 139              		.loc 1 179 0
+ 140 006a 0968     		ldr	r1, [r1]
+ 141 006c 8946     		mov	r9, r1
+ 180:lib/Common/src/rtc.c ****   LocalTime.RTC_Wday = RTC_DOW;
+ 142              		.loc 1 180 0
+ 143 006e 2049     		ldr	r1, .L4+48
+ 177:lib/Common/src/rtc.c ****   LocalTime.RTC_Min = RTC_MIN;
+ 144              		.loc 1 177 0
+ 145 0070 B446     		mov	ip, r6
+ 146              	.LVL1:
+ 178:lib/Common/src/rtc.c ****   LocalTime.RTC_Hour = RTC_HOUR;
+ 147              		.loc 1 178 0
+ 148 0072 A846     		mov	r8, r5
+ 149              	.LVL2:
+ 181:lib/Common/src/rtc.c ****   LocalTime.RTC_Yday = RTC_DOY;
+ 182:lib/Common/src/rtc.c ****   LocalTime.RTC_Mon = RTC_MONTH;
+ 183:lib/Common/src/rtc.c ****   LocalTime.RTC_Year = RTC_YEAR;
+ 150              		.loc 1 183 0
+ 151 0074 6446     		mov	r4, ip
+ 180:lib/Common/src/rtc.c ****   LocalTime.RTC_Wday = RTC_DOW;
+ 152              		.loc 1 180 0
+ 153 0076 0D68     		ldr	r5, [r1]
+ 154              	.LVL3:
+ 181:lib/Common/src/rtc.c ****   LocalTime.RTC_Yday = RTC_DOY;
+ 155              		.loc 1 181 0
+ 156 0078 0431     		add	r1, r1, #4
+ 157 007a 0968     		ldr	r1, [r1]
+ 158              	.LVL4:
+ 182:lib/Common/src/rtc.c ****   LocalTime.RTC_Mon = RTC_MONTH;
+ 159              		.loc 1 182 0
+ 160 007c 1668     		ldr	r6, [r2]
+ 161              	.LVL5:
+ 162              		.loc 1 183 0
+ 163 007e 1A68     		ldr	r2, [r3]
+ 164              	.LVL6:
+ 165 0080 0194     		str	r4, [sp, #4]
+ 166 0082 4446     		mov	r4, r8
+ 167              	.LVL7:
+ 168 0084 0294     		str	r4, [sp, #8]
+ 169 0086 0695     		str	r5, [sp, #24]
+ 170 0088 4C46     		mov	r4, r9
+  62:lib/Common/src/rtc.c **** 		local_time = RTCGetTime();
+ 171              		.loc 1 62 0
+ 172 008a 1A4D     		ldr	r5, .L4+52
+ 173              	.LVL8:
+ 174              		.loc 1 183 0
+ 175 008c 0097     		str	r7, [sp]
+ 176 008e 0496     		str	r6, [sp, #16]
+ 177 0090 0592     		str	r2, [sp, #20]
+ 178 0092 0791     		str	r1, [sp, #28]
+ 179 0094 0394     		str	r4, [sp, #12]
+  62:lib/Common/src/rtc.c **** 		local_time = RTCGetTime();
+ 180              		.loc 1 62 0
+ 181 0096 2F1C     		mov	r7, r5
+ 182              	.LVL9:
+ 183              		.loc 1 183 0
+ 184 0098 6B46     		mov	r3, sp
+  62:lib/Common/src/rtc.c **** 		local_time = RTCGetTime();
+ 185              		.loc 1 62 0
+ 186 009a 70CB     		ldmia	r3!, {r4, r5, r6}
+ 187 009c 70C7     		stmia	r7!, {r4, r5, r6}
+ 188              	.LVL10:
+ 189 009e 3A1C     		mov	r2, r7
+ 190              	.LVL11:
+ 191 00a0 70CB     		ldmia	r3!, {r4, r5, r6}
+ 192 00a2 70C2     		stmia	r2!, {r4, r5, r6}
+ 193              	.LBE9:
+ 194              	.LBE8:
+  64:lib/Common/src/rtc.c **** 		RTC_CONF_STAT = CONF_COMPLETED;
+ 195              		.loc 1 64 0
+ 196 00a4 5146     		mov	r1, sl
+ 197              	.LVL12:
+ 198              	.LBB11:
+ 199              	.LBB10:
+  62:lib/Common/src/rtc.c **** 		local_time = RTCGetTime();
+ 200              		.loc 1 62 0
+ 201 00a6 60CB     		ldmia	r3!, {r5, r6}
+ 202 00a8 60C2     		stmia	r2!, {r5, r6}
+ 203              	.LBE10:
+ 204              	.LBE11:
+  64:lib/Common/src/rtc.c **** 		RTC_CONF_STAT = CONF_COMPLETED;
+ 205              		.loc 1 64 0
+ 206 00aa 0160     		str	r1, [r0]
+ 207              	.LVL13:
+ 208              	.L2:
+  68:lib/Common/src/rtc.c **** }
+ 209              		.loc 1 68 0
+ 210 00ac 08B0     		add	sp, sp, #32
+ 211 00ae 0120     		mov	r0, #1
+ 212              		@ sp needed for prologue
+ 213 00b0 1CBC     		pop	{r2, r3, r4}
+ 214 00b2 9046     		mov	r8, r2
+ 215 00b4 9946     		mov	r9, r3
+ 216 00b6 A246     		mov	sl, r4
+ 217 00b8 F0BC     		pop	{r4, r5, r6, r7}
+ 218 00ba 02BC     		pop	{r1}
+ 219 00bc 0847     		bx	r1
+ 220              	.L5:
+ 221 00be C046     		.align	2
+ 222              	.L4:
+ 223 00c0 104002E0 		.word	-536723440
+ 224 00c4 804002E0 		.word	-536723328
+ 225 00c8 C0610000 		.word	25024
+ 226 00cc 044008E0 		.word	-536330236
+ 227 00d0 A5A5A5A5 		.word	-1515870811
+ 228 00d4 204002E0 		.word	-536723424
+ 229 00d8 244002E0 		.word	-536723420
+ 230 00dc 284002E0 		.word	-536723416
+ 231 00e0 2C4002E0 		.word	-536723412
+ 232 00e4 384002E0 		.word	-536723400
+ 233 00e8 D9070000 		.word	2009
+ 234 00ec 3C4002E0 		.word	-536723396
+ 235 00f0 304002E0 		.word	-536723408
+ 236 00f4 00000000 		.word	.LANCHOR0
+ 237              		.cfi_endproc
+ 238              	.LFE0:
+ 240              		.section	.text.RTCStart,"ax",%progbits
+ 241              		.align	2
+ 242              		.global	RTCStart
+ 243              		.code	16
+ 244              		.thumb_func
+ 246              	RTCStart:
+ 247              	.LFB1:
+  80:lib/Common/src/rtc.c **** {
+ 248              		.loc 1 80 0
+ 249              		.cfi_startproc
+  82:lib/Common/src/rtc.c ****   RTC_CCR |= CCR_CLKEN;
+ 250              		.loc 1 82 0
+ 251 0000 034A     		ldr	r2, .L7
+ 252 0002 1168     		ldr	r1, [r2]
+ 253 0004 0123     		mov	r3, #1
+ 254 0006 1943     		orr	r1, r1, r3
+ 255 0008 1160     		str	r1, [r2]
+  83:lib/Common/src/rtc.c ****   RTC_ILR = ILR_RTCCIF;
+ 256              		.loc 1 83 0
+ 257 000a 083A     		sub	r2, r2, #8
+ 258 000c 1360     		str	r3, [r2]
+  85:lib/Common/src/rtc.c **** }
+ 259              		.loc 1 85 0
+ 260              		@ sp needed for prologue
+ 261 000e 7047     		bx	lr
+ 262              	.L8:
+ 263              		.align	2
+ 264              	.L7:
+ 265 0010 084002E0 		.word	-536723448
+ 266              		.cfi_endproc
+ 267              	.LFE1:
+ 269              		.section	.text.RTCStop,"ax",%progbits
+ 270              		.align	2
+ 271              		.global	RTCStop
+ 272              		.code	16
+ 273              		.thumb_func
+ 275              	RTCStop:
+ 276              	.LFB2:
+  97:lib/Common/src/rtc.c **** {   
+ 277              		.loc 1 97 0
+ 278              		.cfi_startproc
+  99:lib/Common/src/rtc.c ****   RTC_CCR &= ~CCR_CLKEN;
+ 279              		.loc 1 99 0
+ 280 0000 024B     		ldr	r3, .L10
+ 281 0002 1A68     		ldr	r2, [r3]
+ 282 0004 0121     		mov	r1, #1
+ 283 0006 8A43     		bic	r2, r2, r1
+ 284 0008 1A60     		str	r2, [r3]
+ 101:lib/Common/src/rtc.c **** } 
+ 285              		.loc 1 101 0
+ 286              		@ sp needed for prologue
+ 287 000a 7047     		bx	lr
+ 288              	.L11:
+ 289              		.align	2
+ 290              	.L10:
+ 291 000c 084002E0 		.word	-536723448
+ 292              		.cfi_endproc
+ 293              	.LFE2:
+ 295              		.section	.text.RTC_CTCReset,"ax",%progbits
+ 296              		.align	2
+ 297              		.global	RTC_CTCReset
+ 298              		.code	16
+ 299              		.thumb_func
+ 301              	RTC_CTCReset:
+ 302              	.LFB3:
+ 113:lib/Common/src/rtc.c **** {   
+ 303              		.loc 1 113 0
+ 304              		.cfi_startproc
+ 115:lib/Common/src/rtc.c ****   RTC_CCR |= CCR_CTCRST;
+ 305              		.loc 1 115 0
+ 306 0000 024B     		ldr	r3, .L13
+ 307 0002 1A68     		ldr	r2, [r3]
+ 308 0004 0221     		mov	r1, #2
+ 309 0006 0A43     		orr	r2, r2, r1
+ 310 0008 1A60     		str	r2, [r3]
+ 117:lib/Common/src/rtc.c **** }
+ 311              		.loc 1 117 0
+ 312              		@ sp needed for prologue
+ 313 000a 7047     		bx	lr
+ 314              	.L14:
+ 315              		.align	2
+ 316              	.L13:
+ 317 000c 084002E0 		.word	-536723448
+ 318              		.cfi_endproc
+ 319              	.LFE3:
+ 321              		.section	.text.RTCSetTime,"ax",%progbits
+ 322              		.align	2
+ 323              		.global	RTCSetTime
+ 324              		.code	16
+ 325              		.thumb_func
+ 327              	RTCSetTime:
+ 328              	.LFB4:
+ 129:lib/Common/src/rtc.c **** {
+ 329              		.loc 1 129 0
+ 330              		.cfi_startproc
+ 331 0000 84B0     		sub	sp, sp, #16
+ 332              	.LCFI3:
+ 333              		.cfi_def_cfa_offset 16
+ 334 0002 10B5     		push	{r4, lr}
+ 335              	.LCFI4:
+ 336              		.cfi_def_cfa_offset 24
+ 337              		.cfi_offset 4, -24
+ 338              		.cfi_offset 14, -20
+ 129:lib/Common/src/rtc.c **** {
+ 339              		.loc 1 129 0
+ 340 0004 0593     		str	r3, [sp, #20]
+ 130:lib/Common/src/rtc.c ****   RTC_SEC   = Time.RTC_Sec;
+ 341              		.loc 1 130 0
+ 342 0006 0B4B     		ldr	r3, .L16
+ 129:lib/Common/src/rtc.c **** {
+ 343              		.loc 1 129 0
+ 344 0008 0492     		str	r2, [sp, #16]
+ 345 000a 0290     		str	r0, [sp, #8]
+ 346 000c 0391     		str	r1, [sp, #12]
+ 130:lib/Common/src/rtc.c ****   RTC_SEC   = Time.RTC_Sec;
+ 347              		.loc 1 130 0
+ 348 000e 1860     		str	r0, [r3]
+ 131:lib/Common/src/rtc.c ****   RTC_MIN   = Time.RTC_Min;
+ 349              		.loc 1 131 0
+ 350 0010 0399     		ldr	r1, [sp, #12]
+ 351 0012 5960     		str	r1, [r3, #4]
+ 132:lib/Common/src/rtc.c ****   RTC_HOUR  = Time.RTC_Hour;
+ 352              		.loc 1 132 0
+ 353 0014 0498     		ldr	r0, [sp, #16]
+ 354 0016 9860     		str	r0, [r3, #8]
+ 133:lib/Common/src/rtc.c ****   RTC_DOM   = Time.RTC_Mday;
+ 355              		.loc 1 133 0
+ 356 0018 059A     		ldr	r2, [sp, #20]
+ 357 001a DA60     		str	r2, [r3, #12]
+ 134:lib/Common/src/rtc.c ****   RTC_DOW   = Time.RTC_Wday;
+ 358              		.loc 1 134 0
+ 359 001c 089C     		ldr	r4, [sp, #32]
+ 360 001e 1C61     		str	r4, [r3, #16]
+ 135:lib/Common/src/rtc.c ****   RTC_DOY   = Time.RTC_Yday;
+ 361              		.loc 1 135 0
+ 362 0020 0999     		ldr	r1, [sp, #36]
+ 363 0022 5961     		str	r1, [r3, #20]
+ 136:lib/Common/src/rtc.c ****   RTC_MONTH = Time.RTC_Mon;
+ 364              		.loc 1 136 0
+ 365 0024 0698     		ldr	r0, [sp, #24]
+ 366 0026 9861     		str	r0, [r3, #24]
+ 137:lib/Common/src/rtc.c ****   RTC_YEAR  = Time.RTC_Year;    
+ 367              		.loc 1 137 0
+ 368 0028 079A     		ldr	r2, [sp, #28]
+ 139:lib/Common/src/rtc.c **** }
+ 369              		.loc 1 139 0
+ 370              		@ sp needed for prologue
+ 137:lib/Common/src/rtc.c ****   RTC_YEAR  = Time.RTC_Year;    
+ 371              		.loc 1 137 0
+ 372 002a DA61     		str	r2, [r3, #28]
+ 139:lib/Common/src/rtc.c **** }
+ 373              		.loc 1 139 0
+ 374 002c 10BC     		pop	{r4}
+ 375 002e 08BC     		pop	{r3}
+ 376 0030 04B0     		add	sp, sp, #16
+ 377 0032 1847     		bx	r3
+ 378              	.L17:
+ 379              		.align	2
+ 380              	.L16:
+ 381 0034 204002E0 		.word	-536723424
+ 382              		.cfi_endproc
+ 383              	.LFE4:
+ 385              		.section	.text.RTCSetAlarm,"ax",%progbits
+ 386              		.align	2
+ 387              		.global	RTCSetAlarm
+ 388              		.code	16
+ 389              		.thumb_func
+ 391              	RTCSetAlarm:
+ 392              	.LFB5:
+ 151:lib/Common/src/rtc.c **** {   
+ 393              		.loc 1 151 0
+ 394              		.cfi_startproc
+ 395 0000 84B0     		sub	sp, sp, #16
+ 396              	.LCFI5:
+ 397              		.cfi_def_cfa_offset 16
+ 398 0002 10B5     		push	{r4, lr}
+ 399              	.LCFI6:
+ 400              		.cfi_def_cfa_offset 24
+ 401              		.cfi_offset 4, -24
+ 402              		.cfi_offset 14, -20
+ 151:lib/Common/src/rtc.c **** {   
+ 403              		.loc 1 151 0
+ 404 0004 0593     		str	r3, [sp, #20]
+ 152:lib/Common/src/rtc.c ****   RTC_ALSEC  = Alarm.RTC_Sec;
+ 405              		.loc 1 152 0
+ 406 0006 0B4B     		ldr	r3, .L19
+ 151:lib/Common/src/rtc.c **** {   
+ 407              		.loc 1 151 0
+ 408 0008 0492     		str	r2, [sp, #16]
+ 409 000a 0290     		str	r0, [sp, #8]
+ 410 000c 0391     		str	r1, [sp, #12]
+ 152:lib/Common/src/rtc.c ****   RTC_ALSEC  = Alarm.RTC_Sec;
+ 411              		.loc 1 152 0
+ 412 000e 1860     		str	r0, [r3]
+ 153:lib/Common/src/rtc.c ****   RTC_ALMIN  = Alarm.RTC_Min;
+ 413              		.loc 1 153 0
+ 414 0010 0399     		ldr	r1, [sp, #12]
+ 415 0012 5960     		str	r1, [r3, #4]
+ 154:lib/Common/src/rtc.c ****   RTC_ALHOUR = Alarm.RTC_Hour;
+ 416              		.loc 1 154 0
+ 417 0014 0498     		ldr	r0, [sp, #16]
+ 418 0016 9860     		str	r0, [r3, #8]
+ 155:lib/Common/src/rtc.c ****   RTC_ALDOM  = Alarm.RTC_Mday;
+ 419              		.loc 1 155 0
+ 420 0018 059A     		ldr	r2, [sp, #20]
+ 421 001a DA60     		str	r2, [r3, #12]
+ 156:lib/Common/src/rtc.c ****   RTC_ALDOW  = Alarm.RTC_Wday;
+ 422              		.loc 1 156 0
+ 423 001c 089C     		ldr	r4, [sp, #32]
+ 424 001e 1C61     		str	r4, [r3, #16]
+ 157:lib/Common/src/rtc.c ****   RTC_ALDOY  = Alarm.RTC_Yday;
+ 425              		.loc 1 157 0
+ 426 0020 0999     		ldr	r1, [sp, #36]
+ 427 0022 5961     		str	r1, [r3, #20]
+ 158:lib/Common/src/rtc.c ****   RTC_ALMON  = Alarm.RTC_Mon;
+ 428              		.loc 1 158 0
+ 429 0024 0698     		ldr	r0, [sp, #24]
+ 430 0026 9861     		str	r0, [r3, #24]
+ 159:lib/Common/src/rtc.c ****   RTC_ALYEAR = Alarm.RTC_Year;    
+ 431              		.loc 1 159 0
+ 432 0028 079A     		ldr	r2, [sp, #28]
+ 161:lib/Common/src/rtc.c **** }
+ 433              		.loc 1 161 0
+ 434              		@ sp needed for prologue
+ 159:lib/Common/src/rtc.c ****   RTC_ALYEAR = Alarm.RTC_Year;    
+ 435              		.loc 1 159 0
+ 436 002a DA61     		str	r2, [r3, #28]
+ 161:lib/Common/src/rtc.c **** }
+ 437              		.loc 1 161 0
+ 438 002c 10BC     		pop	{r4}
+ 439 002e 08BC     		pop	{r3}
+ 440 0030 04B0     		add	sp, sp, #16
+ 441 0032 1847     		bx	r3
+ 442              	.L20:
+ 443              		.align	2
+ 444              	.L19:
+ 445 0034 604002E0 		.word	-536723360
+ 446              		.cfi_endproc
+ 447              	.LFE5:
+ 449              		.section	.text.RTCGetTime,"ax",%progbits
+ 450              		.align	2
+ 451              		.global	RTCGetTime
+ 452              		.code	16
+ 453              		.thumb_func
+ 455              	RTCGetTime:
+ 456              	.LFB6:
+ 173:lib/Common/src/rtc.c **** {
+ 457              		.loc 1 173 0
+ 458              		.cfi_startproc
+ 459 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 460              	.LCFI7:
+ 461              		.cfi_def_cfa_offset 20
+ 462              		.cfi_offset 4, -20
+ 463              		.cfi_offset 5, -16
+ 464              		.cfi_offset 6, -12
+ 465              		.cfi_offset 7, -8
+ 466              		.cfi_offset 14, -4
+ 467 0002 4746     		mov	r7, r8
+ 468 0004 80B4     		push	{r7}
+ 469              	.LCFI8:
+ 470              		.cfi_def_cfa_offset 24
+ 471              		.cfi_offset 8, -24
+ 176:lib/Common/src/rtc.c ****   LocalTime.RTC_Sec = RTC_SEC;
+ 472              		.loc 1 176 0
+ 473 0006 0F4A     		ldr	r2, .L22
+ 474 0008 1368     		ldr	r3, [r2]
+ 475 000a 9C46     		mov	ip, r3
+ 177:lib/Common/src/rtc.c ****   LocalTime.RTC_Min = RTC_MIN;
+ 476              		.loc 1 177 0
+ 477 000c 0E4B     		ldr	r3, .L22+4
+ 182:lib/Common/src/rtc.c ****   LocalTime.RTC_Mon = RTC_MONTH;
+ 478              		.loc 1 182 0
+ 479 000e 0F49     		ldr	r1, .L22+8
+ 177:lib/Common/src/rtc.c ****   LocalTime.RTC_Min = RTC_MIN;
+ 480              		.loc 1 177 0
+ 481 0010 1F68     		ldr	r7, [r3]
+ 178:lib/Common/src/rtc.c ****   LocalTime.RTC_Hour = RTC_HOUR;
+ 482              		.loc 1 178 0
+ 483 0012 5E68     		ldr	r6, [r3, #4]
+ 179:lib/Common/src/rtc.c ****   LocalTime.RTC_Mday = RTC_DOM;
+ 484              		.loc 1 179 0
+ 485 0014 9D68     		ldr	r5, [r3, #8]
+ 180:lib/Common/src/rtc.c ****   LocalTime.RTC_Wday = RTC_DOW;
+ 486              		.loc 1 180 0
+ 487 0016 DA68     		ldr	r2, [r3, #12]
+ 181:lib/Common/src/rtc.c ****   LocalTime.RTC_Yday = RTC_DOY;
+ 488              		.loc 1 181 0
+ 489 0018 1033     		add	r3, r3, #16
+ 490 001a 1B68     		ldr	r3, [r3]
+ 182:lib/Common/src/rtc.c ****   LocalTime.RTC_Mon = RTC_MONTH;
+ 491              		.loc 1 182 0
+ 492 001c 0C68     		ldr	r4, [r1]
+ 493              		.loc 1 183 0
+ 494 001e 0431     		add	r1, r1, #4
+ 495 0020 0968     		ldr	r1, [r1]
+ 496 0022 8846     		mov	r8, r1
+ 497 0024 6146     		mov	r1, ip
+ 498 0026 0160     		str	r1, [r0]
+ 499 0028 4146     		mov	r1, r8
+ 500 002a 4760     		str	r7, [r0, #4]
+ 501 002c 8660     		str	r6, [r0, #8]
+ 502 002e C560     		str	r5, [r0, #12]
+ 503 0030 0461     		str	r4, [r0, #16]
+ 504 0032 4161     		str	r1, [r0, #20]
+ 505 0034 8261     		str	r2, [r0, #24]
+ 506 0036 C361     		str	r3, [r0, #28]
+ 184:lib/Common/src/rtc.c ****   return ( LocalTime );    
+ 185:lib/Common/src/rtc.c **** }
+ 507              		.loc 1 185 0
+ 508              		@ sp needed for prologue
+ 509 0038 04BC     		pop	{r2}
+ 510 003a 9046     		mov	r8, r2
+ 511 003c F0BC     		pop	{r4, r5, r6, r7}
+ 512 003e 02BC     		pop	{r1}
+ 513 0040 0847     		bx	r1
+ 514              	.L23:
+ 515 0042 C046     		.align	2
+ 516              	.L22:
+ 517 0044 204002E0 		.word	-536723424
+ 518 0048 244002E0 		.word	-536723420
+ 519 004c 384002E0 		.word	-536723400
+ 520              		.cfi_endproc
+ 521              	.LFE6:
+ 523              		.section	.text.RTCSetAlarmMask,"ax",%progbits
+ 524              		.align	2
+ 525              		.global	RTCSetAlarmMask
+ 526              		.code	16
+ 527              		.thumb_func
+ 529              	RTCSetAlarmMask:
+ 530              	.LFB7:
+ 186:lib/Common/src/rtc.c **** 
+ 187:lib/Common/src/rtc.c **** /*****************************************************************************
+ 188:lib/Common/src/rtc.c **** ** Function name:		RTCSetAlarmMask
+ 189:lib/Common/src/rtc.c **** **
+ 190:lib/Common/src/rtc.c **** ** Descriptions:		Set RTC timer alarm mask
+ 191:lib/Common/src/rtc.c **** **
+ 192:lib/Common/src/rtc.c **** ** parameters:			Alarm mask setting
+ 193:lib/Common/src/rtc.c **** ** Returned value:		None
+ 194:lib/Common/src/rtc.c **** ** 
+ 195:lib/Common/src/rtc.c **** *****************************************************************************/
+ 196:lib/Common/src/rtc.c **** void RTCSetAlarmMask( DWORD AlarmMask ) 
+ 197:lib/Common/src/rtc.c **** {
+ 531              		.loc 1 197 0
+ 532              		.cfi_startproc
+ 533              	.LVL14:
+ 198:lib/Common/src/rtc.c ****   /*--- Set alarm mask ---*/    
+ 199:lib/Common/src/rtc.c ****   RTC_AMR = AlarmMask;
+ 534              		.loc 1 199 0
+ 535 0000 014B     		ldr	r3, .L25
+ 200:lib/Common/src/rtc.c ****   return;
+ 201:lib/Common/src/rtc.c **** }
+ 536              		.loc 1 201 0
+ 537              		@ sp needed for prologue
+ 199:lib/Common/src/rtc.c ****   RTC_AMR = AlarmMask;
+ 538              		.loc 1 199 0
+ 539 0002 1860     		str	r0, [r3]
+ 540              		.loc 1 201 0
+ 541 0004 7047     		bx	lr
+ 542              	.L26:
+ 543 0006 C046     		.align	2
+ 544              	.L25:
+ 545 0008 104002E0 		.word	-536723440
+ 546              		.cfi_endproc
+ 547              	.LFE7:
+ 549              		.global	local_time
+ 550              		.global	alarm_time
+ 551              		.global	current_time
+ 552              		.section	.bss.current_time,"aw",%nobits
+ 553              		.align	2
+ 556              	current_time:
+ 557 0000 00000000 		.space	32
+ 557      00000000 
+ 557      00000000 
+ 557      00000000 
+ 557      00000000 
+ 558              		.section	.bss.alarm_time,"aw",%nobits
+ 559              		.align	2
+ 562              	alarm_time:
+ 563 0000 00000000 		.space	32
+ 563      00000000 
+ 563      00000000 
+ 563      00000000 
+ 563      00000000 
+ 564              		.section	.bss.local_time,"aw",%nobits
+ 565              		.align	2
+ 566              		.set	.LANCHOR0,. + 0
+ 569              	local_time:
+ 570 0000 00000000 		.space	32
+ 570      00000000 
+ 570      00000000 
+ 570      00000000 
+ 570      00000000 
+ 571              		.text
+ 572              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 rtc.c
+     /tmp/ccGj0EDG.s:23     .text.RTCInit:00000000 $t
+     /tmp/ccGj0EDG.s:28     .text.RTCInit:00000000 RTCInit
+     /tmp/ccGj0EDG.s:223    .text.RTCInit:000000c0 $d
+     /tmp/ccGj0EDG.s:241    .text.RTCStart:00000000 $t
+     /tmp/ccGj0EDG.s:246    .text.RTCStart:00000000 RTCStart
+     /tmp/ccGj0EDG.s:265    .text.RTCStart:00000010 $d
+     /tmp/ccGj0EDG.s:270    .text.RTCStop:00000000 $t
+     /tmp/ccGj0EDG.s:275    .text.RTCStop:00000000 RTCStop
+     /tmp/ccGj0EDG.s:291    .text.RTCStop:0000000c $d
+     /tmp/ccGj0EDG.s:296    .text.RTC_CTCReset:00000000 $t
+     /tmp/ccGj0EDG.s:301    .text.RTC_CTCReset:00000000 RTC_CTCReset
+     /tmp/ccGj0EDG.s:317    .text.RTC_CTCReset:0000000c $d
+     /tmp/ccGj0EDG.s:322    .text.RTCSetTime:00000000 $t
+     /tmp/ccGj0EDG.s:327    .text.RTCSetTime:00000000 RTCSetTime
+     /tmp/ccGj0EDG.s:381    .text.RTCSetTime:00000034 $d
+     /tmp/ccGj0EDG.s:386    .text.RTCSetAlarm:00000000 $t
+     /tmp/ccGj0EDG.s:391    .text.RTCSetAlarm:00000000 RTCSetAlarm
+     /tmp/ccGj0EDG.s:445    .text.RTCSetAlarm:00000034 $d
+     /tmp/ccGj0EDG.s:450    .text.RTCGetTime:00000000 $t
+     /tmp/ccGj0EDG.s:455    .text.RTCGetTime:00000000 RTCGetTime
+     /tmp/ccGj0EDG.s:517    .text.RTCGetTime:00000044 $d
+     /tmp/ccGj0EDG.s:524    .text.RTCSetAlarmMask:00000000 $t
+     /tmp/ccGj0EDG.s:529    .text.RTCSetAlarmMask:00000000 RTCSetAlarmMask
+     /tmp/ccGj0EDG.s:545    .text.RTCSetAlarmMask:00000008 $d
+     /tmp/ccGj0EDG.s:569    .bss.local_time:00000000 local_time
+     /tmp/ccGj0EDG.s:562    .bss.alarm_time:00000000 alarm_time
+     /tmp/ccGj0EDG.s:556    .bss.current_time:00000000 current_time
+     /tmp/ccGj0EDG.s:553    .bss.current_time:00000000 $d
+     /tmp/ccGj0EDG.s:559    .bss.alarm_time:00000000 $d
+     /tmp/ccGj0EDG.s:565    .bss.local_time:00000000 $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

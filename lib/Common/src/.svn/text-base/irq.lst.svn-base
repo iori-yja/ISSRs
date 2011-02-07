@@ -1,0 +1,220 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"irq.c"
+  20              	.Ltext0:
+  21              		.section	.text.init_VIC,"ax",%progbits
+  22              		.align	2
+  23              		.global	init_VIC
+  24              		.code	16
+  25              		.thumb_func
+  27              	init_VIC:
+  28              	.LFB2:
+  29              		.file 1 "lib/Common/src/irq.c"
+   1:lib/Common/src/irq.c **** /*****************************************************************************
+   2:lib/Common/src/irq.c ****  *   irq.c: Interrupt handler C file for NXP LPC23xx/24xx Family Microprocessors
+   3:lib/Common/src/irq.c ****  *
+   4:lib/Common/src/irq.c ****  *   Copyright(C) 2006, NXP Semiconductor
+   5:lib/Common/src/irq.c ****  *   All rights reserved.
+   6:lib/Common/src/irq.c ****  *
+   7:lib/Common/src/irq.c ****  *   History
+   8:lib/Common/src/irq.c ****  *   2006.07.13  ver 1.00    Prelimnary version, first Release
+   9:lib/Common/src/irq.c ****  *
+  10:lib/Common/src/irq.c ****  ******************************************************************************/ 
+  11:lib/Common/src/irq.c **** 
+  12:lib/Common/src/irq.c **** /* TODO mthomas - volatiles for vect_addr, vect_cntl? */
+  13:lib/Common/src/irq.c **** 
+  14:lib/Common/src/irq.c **** #include "LPC23xx.h"			/* LPC23XX/24xx Peripheral Registers */
+  15:lib/Common/src/irq.c **** #include "target.h"
+  16:lib/Common/src/irq.c **** #include "irq.h"
+  17:lib/Common/src/irq.c **** 
+  18:lib/Common/src/irq.c **** /* Initialize the interrupt controller */
+  19:lib/Common/src/irq.c **** /******************************************************************************
+  20:lib/Common/src/irq.c **** ** Function name:		init_VIC
+  21:lib/Common/src/irq.c **** **
+  22:lib/Common/src/irq.c **** ** Descriptions:		Initialize VIC interrupt controller.
+  23:lib/Common/src/irq.c **** ** parameters:			None
+  24:lib/Common/src/irq.c **** ** Returned value:		None
+  25:lib/Common/src/irq.c **** ** 
+  26:lib/Common/src/irq.c **** ******************************************************************************/
+  27:lib/Common/src/irq.c **** void init_VIC(void) 
+  28:lib/Common/src/irq.c **** {
+  30              		.loc 1 28 0
+  31 0000 30B5     		push	{r4, r5, lr}
+  32              	.LCFI0:
+  29:lib/Common/src/irq.c ****     DWORD i = 0;
+  30:lib/Common/src/irq.c ****     DWORD *vect_addr, *vect_cntl;
+  31:lib/Common/src/irq.c ****    	
+  32:lib/Common/src/irq.c ****     /* initialize VIC*/
+  33:lib/Common/src/irq.c ****     VICIntEnClr = 0xffffffff;
+  33              		.loc 1 33 0
+  34 0002 0C4A     		ldr	r2, .L6
+  35 0004 0123     		mov	r3, #1
+  36 0006 5B42     		neg	r3, r3
+  37 0008 1360     		str	r3, [r2]
+  34:lib/Common/src/irq.c ****     VICVectAddr = 0;
+  38              		.loc 1 34 0
+  39 000a 0B4B     		ldr	r3, .L6+4
+  40 000c 0022     		mov	r2, #0
+  41 000e 1A60     		str	r2, [r3]
+  35:lib/Common/src/irq.c ****     VICIntSelect = 0;
+  42              		.loc 1 35 0
+  43 0010 0A4B     		ldr	r3, .L6+8
+  36:lib/Common/src/irq.c **** 
+  37:lib/Common/src/irq.c ****     /* set all the vector and vector control register to 0 */
+  38:lib/Common/src/irq.c ****     for ( i = 0; i < VIC_SIZE; i++ )
+  44              		.loc 1 38 0
+  45 0012 0B49     		ldr	r1, .L6+12
+  46              		.loc 1 35 0
+  47 0014 1A60     		str	r2, [r3]
+  48 0016 0B4A     		ldr	r2, .L6+16
+  39:lib/Common/src/irq.c ****     {
+  40:lib/Common/src/irq.c **** 		vect_addr = (DWORD *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + i*4);
+  41:lib/Common/src/irq.c **** 		vect_cntl = (DWORD *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + i*4);
+  42:lib/Common/src/irq.c **** 		*vect_addr = 0x0;
+  49              		.loc 1 42 0
+  50 0018 0024     		mov	r4, #0
+  43:lib/Common/src/irq.c **** 		*vect_cntl = 0xF;
+  51              		.loc 1 43 0
+  52 001a 0F20     		mov	r0, #15
+  53              	.L2:
+  54 001c 8025     		mov	r5, #128
+  55 001e 6D00     		lsl	r5, r5, #1
+  56              		.loc 1 42 0
+  57 0020 1460     		str	r4, [r2]
+  58              		.loc 1 43 0
+  59 0022 5319     		add	r3, r2, r5
+  60 0024 0432     		add	r2, r2, #4
+  61 0026 1860     		str	r0, [r3]
+  62              		.loc 1 38 0
+  63 0028 8A42     		cmp	r2, r1
+  64 002a F7D1     		bne	.L2
+  44:lib/Common/src/irq.c ****     }
+  45:lib/Common/src/irq.c ****     return;
+  46:lib/Common/src/irq.c **** }
+  65              		.loc 1 46 0
+  66              		@ sp needed for prologue
+  67 002c 30BC     		pop	{r4, r5}
+  68 002e 01BC     		pop	{r0}
+  69 0030 0047     		bx	r0
+  70              	.L7:
+  71 0032 C046     		.align	2
+  72              	.L6:
+  73 0034 14F0FFFF 		.word	-4076
+  74 0038 00FFFFFF 		.word	-256
+  75 003c 0CF0FFFF 		.word	-4084
+  76 0040 80F1FFFF 		.word	-3712
+  77 0044 00F1FFFF 		.word	-3840
+  78              	.LFE2:
+  80              		.section	.text.install_irq,"ax",%progbits
+  81              		.align	2
+  82              		.global	install_irq
+  83              		.code	16
+  84              		.thumb_func
+  86              	install_irq:
+  87              	.LFB3:
+  47:lib/Common/src/irq.c **** 
+  48:lib/Common/src/irq.c **** /******************************************************************************
+  49:lib/Common/src/irq.c **** ** Function name:		install_irq
+  50:lib/Common/src/irq.c **** **
+  51:lib/Common/src/irq.c **** ** Descriptions:		Install interrupt handler
+  52:lib/Common/src/irq.c **** ** parameters:			Interrupt number, interrupt handler address, 
+  53:lib/Common/src/irq.c **** **						interrupt priority
+  54:lib/Common/src/irq.c **** ** Returned value:		true or false, return false if IntNum is out of range
+  55:lib/Common/src/irq.c **** ** 
+  56:lib/Common/src/irq.c **** ******************************************************************************/
+  57:lib/Common/src/irq.c **** DWORD install_irq( DWORD IntNumber, void *HandlerAddr, DWORD Priority )
+  58:lib/Common/src/irq.c **** {
+  88              		.loc 1 58 0
+  89 0000 30B5     		push	{r4, r5, lr}
+  90              	.LCFI1:
+  91              	.LVL0:
+  59:lib/Common/src/irq.c ****     DWORD *vect_addr;
+  60:lib/Common/src/irq.c ****     DWORD *vect_cntl;
+  61:lib/Common/src/irq.c ****       
+  62:lib/Common/src/irq.c ****     VICIntEnClr = 1 << IntNumber;	/* Disable Interrupt */
+  92              		.loc 1 62 0
+  93 0002 0123     		mov	r3, #1
+  94              		.loc 1 58 0
+  95 0004 141C     		mov	r4, r2
+  96              		.loc 1 62 0
+  97 0006 1A1C     		mov	r2, r3
+  98              	.LVL1:
+  99 0008 0A4B     		ldr	r3, .L13
+ 100 000a 8240     		lsl	r2, r2, r0
+ 101 000c 1A60     		str	r2, [r3]
+  63:lib/Common/src/irq.c ****     if ( IntNumber >= VIC_SIZE )
+ 102              		.loc 1 63 0
+ 103 000e 1F28     		cmp	r0, #31
+ 104 0010 0DD8     		bhi	.L12
+  64:lib/Common/src/irq.c ****     {
+  65:lib/Common/src/irq.c **** 		return ( FALSE );
+  66:lib/Common/src/irq.c ****     }
+  67:lib/Common/src/irq.c ****     else
+  68:lib/Common/src/irq.c ****     {
+  69:lib/Common/src/irq.c **** 		/* find first un-assigned VIC address for the handler */
+  70:lib/Common/src/irq.c **** 		vect_addr = (DWORD *)(VIC_BASE_ADDR + VECT_ADDR_INDEX + IntNumber*4);
+  71:lib/Common/src/irq.c **** 		vect_cntl = (DWORD *)(VIC_BASE_ADDR + VECT_CNTL_INDEX + IntNumber*4);
+  72:lib/Common/src/irq.c **** 		*vect_addr = (DWORD)HandlerAddr;	/* set interrupt vector */
+ 105              		.loc 1 72 0
+ 106 0012 094D     		ldr	r5, .L13+4
+ 107 0014 4319     		add	r3, r0, r5
+ 108 0016 9B00     		lsl	r3, r3, #2
+ 109 0018 1960     		str	r1, [r3]
+  73:lib/Common/src/irq.c **** 		*vect_cntl = Priority;
+ 110              		.loc 1 73 0
+ 111 001a 0849     		ldr	r1, .L13+8
+ 112              	.LVL2:
+ 113 001c 4318     		add	r3, r0, r1
+ 114 001e 9B00     		lsl	r3, r3, #2
+ 115 0020 1C60     		str	r4, [r3]
+  74:lib/Common/src/irq.c **** 		VICIntEnable = 1 << IntNumber;	/* Enable Interrupt */
+ 116              		.loc 1 74 0
+ 117 0022 074B     		ldr	r3, .L13+12
+ 118 0024 1A60     		str	r2, [r3]
+ 119 0026 0120     		mov	r0, #1
+ 120              	.LVL3:
+ 121              	.L10:
+  75:lib/Common/src/irq.c **** 		return( TRUE );
+  76:lib/Common/src/irq.c ****     }
+  77:lib/Common/src/irq.c **** }
+ 122              		.loc 1 77 0
+ 123              		@ sp needed for prologue
+ 124              	.LVL4:
+ 125 0028 30BC     		pop	{r4, r5}
+ 126 002a 02BC     		pop	{r1}
+ 127 002c 0847     		bx	r1
+ 128              	.LVL5:
+ 129              	.L12:
+ 130              		.loc 1 63 0
+ 131 002e 0020     		mov	r0, #0
+ 132              	.LVL6:
+ 133 0030 FAE7     		b	.L10
+ 134              	.L14:
+ 135 0032 C046     		.align	2
+ 136              	.L13:
+ 137 0034 14F0FFFF 		.word	-4076
+ 138 0038 40FCFF3F 		.word	1073740864
+ 139 003c 80FCFF3F 		.word	1073740928
+ 140 0040 10F0FFFF 		.word	-4080
+ 141              	.LFE3:
+ 195              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 irq.c
+     /tmp/ccEcVZwS.s:22     .text.init_VIC:00000000 $t
+     /tmp/ccEcVZwS.s:27     .text.init_VIC:00000000 init_VIC
+     /tmp/ccEcVZwS.s:73     .text.init_VIC:00000034 $d
+     /tmp/ccEcVZwS.s:81     .text.install_irq:00000000 $t
+     /tmp/ccEcVZwS.s:86     .text.install_irq:00000000 install_irq
+     /tmp/ccEcVZwS.s:137    .text.install_irq:00000034 $d
+     /tmp/ccEcVZwS.s:199    .debug_loc:00000000 $d
+
+NO UNDEFINED SYMBOLS

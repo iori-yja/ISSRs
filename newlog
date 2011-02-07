@@ -1,0 +1,79 @@
+arm-none-eabi-gcc (Sourcery G++ Lite 2010.09-51) 4.5.1
+Copyright (C) 2010 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+Size Before
+main.elf  :
+section              size         addr
+.text              0xef60          0x0
+.ARM.exidx            0x8       0xef60
+.data               0x8c8   0x40000000
+.bss                0x2c8   0x400008c8
+.ARM.attributes      0x32          0x0
+.comment             0x2a          0x0
+.debug_aranges      0x6f0          0x0
+.debug_pubnames     0xc7e          0x0
+.debug_info        0x5824          0x0
+.debug_abbrev      0x19dd          0x0
+.debug_line        0x2aab          0x0
+.debug_frame       0x2344          0x0
+.debug_str         0x1f99          0x0
+.debug_loc         0x3efb          0x0
+.debug_pubtypes     0x7e8          0x0
+.debug_ranges       0x888          0x0
+Total             0x23db6
+
+
+
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=src/main.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  src/main.c -o src/main.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=lib/Common/src/irq.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  lib/Common/src/irq.c -o lib/Common/src/irq.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=lib/Common/src/rtc.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  lib/Common/src/rtc.c -o lib/Common/src/rtc.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=lib/Common/src/uart.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  lib/Common/src/uart.c -o lib/Common/src/uart.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=lib/Common/src/fio.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  lib/Common/src/fio.c -o lib/Common/src/fio.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=lib/Common/src/misc.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  lib/Common/src/misc.c -o lib/Common/src/misc.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=lib/Common/src/target.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  lib/Common/src/target.c -o lib/Common/src/target.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=lib/Common/src/syscalls.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  lib/Common/src/syscalls.c -o lib/Common/src/syscalls.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../Common/Minimal/BlockQ.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../Common/Minimal/BlockQ.c -o ../Common/Minimal/BlockQ.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../Common/Minimal/blocktim.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../Common/Minimal/blocktim.c -o ../Common/Minimal/blocktim.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../Common/Minimal/integer.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../Common/Minimal/integer.c -o ../Common/Minimal/integer.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../Common/Minimal/GenQTest.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../Common/Minimal/GenQTest.c -o ../Common/Minimal/GenQTest.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../Common/Minimal/QPeek.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../Common/Minimal/QPeek.c -o ../Common/Minimal/QPeek.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../Common/Minimal/dynamic.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../Common/Minimal/dynamic.c -o ../Common/Minimal/dynamic.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../../Source/list.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../../Source/list.c -o ../../Source/list.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../../Source/queue.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../../Source/queue.c -o ../../Source/queue.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../../Source/tasks.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../../Source/tasks.c -o ../../Source/tasks.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../../Source/portable/GCC/ARM7_LPC23xx/port.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../../Source/portable/GCC/ARM7_LPC23xx/port.c -o ../../Source/portable/GCC/ARM7_LPC23xx/port.o
+arm-none-eabi-gcc -c -mthumb -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../../Source/portable/MemMang/heap_3.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include  ../../Source/portable/MemMang/heap_3.c -o ../../Source/portable/MemMang/heap_3.o
+arm-none-eabi-gcc -c -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=../../Source/portable/GCC/ARM7_LPC23xx/portISR.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include ../../Source/portable/GCC/ARM7_LPC23xx/portISR.c -o ../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
+arm-none-eabi-gcc -c -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=lib/Common/src/i2c.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include lib/Common/src/i2c.c -o lib/Common/src/i2c.o
+arm-none-eabi-gcc -mcpu=arm7tdmi-s -mthumb-interwork -gdwarf-2 -D____ -D__SUBMDL_LPC2388__ -DLPC2378_PORTB -DLPC23xx -DROWLEY_LPC23xx -DTHUMB_INTERWORK -DUSE_FreeRTOS_SUPPORT -DPACK_STRUCT_END=__attribute\(\(packed\)\) -DALIGN_STRUCT_END=__attribute\(\(aligned\(4\)\)\)   -O2 -ffunction-sections -fdata-sections -fno-common -fomit-frame-pointer -TLPC2388-ROM.ld  -Wa,-adhlns=src/main.lst  -I. -I./inc -I/inc -I/inc -I./lib/Common/inc -I../../Source/include -I../../Source/portable/GCC/ARM7_LPC23xx -I../Common/include ../../Source/portable/GCC/ARM7_LPC23xx/portISR.o ./lib/Common/src/i2c.o ./src/main.o ./lib/Common/src/irq.o ./lib/Common/src/rtc.o ./lib/Common/src/uart.o ./lib/Common/src/fio.o ./lib/Common/src/misc.o ./lib/Common/src/target.o ./lib/Common/src/syscalls.o ../Common/Minimal/BlockQ.o ../Common/Minimal/blocktim.o ../Common/Minimal/integer.o ../Common/Minimal/GenQTest.o ../Common/Minimal/QPeek.o ../Common/Minimal/dynamic.o ../../Source/list.o ../../Source/queue.o ../../Source/tasks.o ../../Source/portable/GCC/ARM7_LPC23xx/port.o ../../Source/portable/MemMang/heap_3.o  boot.s -mthumb -nostartfiles -Xlinker -omain.elf -Xlinker -M -Xlinker -Map=main.map
+arm-none-eabi-objcopy main.elf -O ihex main.hex
+arm-none-eabi-objcopy main.elf -O binary main.bin
+arm-none-eabi-objdump -h -S -C main.elf > main.lss
+arm-none-eabi-nm -n main.elf > main.sym
+
+Size After
+main.elf  :
+section              size         addr
+.text              0xef60          0x0
+.ARM.exidx            0x8       0xef60
+.data               0x8c8   0x40000000
+.bss                0x2c8   0x400008c8
+.ARM.attributes      0x32          0x0
+.comment             0x2a          0x0
+.debug_aranges      0x6f0          0x0
+.debug_pubnames     0xc7e          0x0
+.debug_info        0x5824          0x0
+.debug_abbrev      0x19dd          0x0
+.debug_line        0x2aab          0x0
+.debug_frame       0x2344          0x0
+.debug_str         0x1f99          0x0
+.debug_loc         0x3efb          0x0
+.debug_pubtypes     0x7e8          0x0
+.debug_ranges       0x888          0x0
+Total             0x23db6
+
+
+

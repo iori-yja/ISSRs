@@ -1,0 +1,191 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"fio.c"
+  20              	.Ltext0:
+  21              		.section	.text.GPIOInit,"ax",%progbits
+  22              		.align	2
+  23              		.global	GPIOInit
+  24              		.code	16
+  25              		.thumb_func
+  27              	GPIOInit:
+  28              	.LFB2:
+  29              		.file 1 "lib/Common/src/fio.c"
+   1:lib/Common/src/fio.c **** /*****************************************************************************
+   2:lib/Common/src/fio.c ****  *   fio.c:  Fast I/O module file for NXP LPC23xx Family Microprocessors
+   3:lib/Common/src/fio.c ****  *
+   4:lib/Common/src/fio.c ****  *   Copyright(C) 2006, NXP Semiconductor
+   5:lib/Common/src/fio.c ****  *   All rights reserved.
+   6:lib/Common/src/fio.c ****  *
+   7:lib/Common/src/fio.c ****  *   History
+   8:lib/Common/src/fio.c ****  *   2006.07.13  ver 1.00    Prelimnary version, first Release
+   9:lib/Common/src/fio.c ****  *
+  10:lib/Common/src/fio.c ****  ******************************************************************************/
+  11:lib/Common/src/fio.c **** 
+  12:lib/Common/src/fio.c **** #include "LPC23xx.h"
+  13:lib/Common/src/fio.c **** #include "target.h"
+  14:lib/Common/src/fio.c **** #include "fio.h"
+  15:lib/Common/src/fio.c **** 
+  16:lib/Common/src/fio.c **** /*****************************************************************************
+  17:lib/Common/src/fio.c **** ** Function name:   GPIOInit
+  18:lib/Common/src/fio.c **** **
+  19:lib/Common/src/fio.c **** ** Descriptions:    initialize GPIO port
+  20:lib/Common/src/fio.c **** **
+  21:lib/Common/src/fio.c **** ** parameters:      port number and port type, Fast I/O or
+  22:lib/Common/src/fio.c **** **                  regular GPIO, direction, Mask
+  23:lib/Common/src/fio.c **** ** Returned value:  None
+  24:lib/Common/src/fio.c **** **
+  25:lib/Common/src/fio.c **** *****************************************************************************/
+  26:lib/Common/src/fio.c **** void GPIOInit( DWORD PortNum, DWORD PortType, DWORD PortDir, DWORD Mask )
+  27:lib/Common/src/fio.c **** {
+  30              		.loc 1 27 0
+  31 0000 70B5     		push	{r4, r5, r6, lr}
+  32              	.LCFI0:
+  33              	.LVL0:
+  34              		.loc 1 27 0
+  35 0002 1D1C     		mov	r5, r3
+  28:lib/Common/src/fio.c **** 	if ( (PortType == REGULAR_PORT) && ((PortNum == 0) || (PortNum == 1)) )
+  36              		.loc 1 28 0
+  37 0004 0124     		mov	r4, #1
+  38 0006 0023     		mov	r3, #0
+  39              	.LVL1:
+  40              		.loc 1 27 0
+  41 0008 161C     		mov	r6, r2
+  42              		.loc 1 28 0
+  43 000a 8442     		cmp	r4, r0
+  44 000c 5B41     		adc	r3, r3, r3
+  45 000e 0229     		cmp	r1, #2
+  46 0010 04D0     		beq	.L9
+  47              	.LVL2:
+  29:lib/Common/src/fio.c **** 	{
+  30:lib/Common/src/fio.c **** 		SCS &= ~GPIOM;    /* set GPIOx to use regular I/O */
+  31:lib/Common/src/fio.c **** 		if ( PortDir == DIR_OUT )
+  32:lib/Common/src/fio.c **** 		{
+  33:lib/Common/src/fio.c **** 			(*(volatile unsigned long *)(REGULAR_PORT_DIR_BASE
+  34:lib/Common/src/fio.c **** 				+ PortNum * REGULAR_PORT_DIR_INDEX)) |= Mask;
+  35:lib/Common/src/fio.c **** 		}
+  36:lib/Common/src/fio.c **** 		else
+  37:lib/Common/src/fio.c **** 		{
+  38:lib/Common/src/fio.c **** 			(*(volatile unsigned long *)(REGULAR_PORT_DIR_BASE
+  39:lib/Common/src/fio.c **** 				+ PortNum * REGULAR_PORT_DIR_INDEX)) &= ~Mask;
+  40:lib/Common/src/fio.c **** 		}
+  41:lib/Common/src/fio.c **** 	}
+  42:lib/Common/src/fio.c **** 	else if ( PortType == FAST_PORT )
+  48              		.loc 1 42 0
+  49 0012 0129     		cmp	r1, #1
+  50 0014 11D0     		beq	.L10
+  51              	.L7:
+  43:lib/Common/src/fio.c **** 	{
+  44:lib/Common/src/fio.c **** 		if ( (PortNum == 0) || (PortNum == 1) )
+  45:lib/Common/src/fio.c **** 		{
+  46:lib/Common/src/fio.c **** 			SCS |= GPIOM; /* set GPIOx to use Fast I/O */
+  47:lib/Common/src/fio.c **** 		}
+  48:lib/Common/src/fio.c **** 		if ( PortDir == DIR_OUT )
+  49:lib/Common/src/fio.c **** 		{
+  50:lib/Common/src/fio.c **** 			(*(volatile unsigned long *)(HS_PORT_DIR_BASE
+  51:lib/Common/src/fio.c **** 				+ PortNum * HS_PORT_DIR_INDEX)) |= Mask;
+  52:lib/Common/src/fio.c **** 		}
+  53:lib/Common/src/fio.c **** 		else
+  54:lib/Common/src/fio.c **** 		{
+  55:lib/Common/src/fio.c **** 			(*(volatile unsigned long *)(HS_PORT_DIR_BASE
+  56:lib/Common/src/fio.c **** 				+ PortNum * HS_PORT_DIR_INDEX)) &= ~Mask;
+  57:lib/Common/src/fio.c **** 		}
+  58:lib/Common/src/fio.c **** 	}
+  59:lib/Common/src/fio.c **** 	return;
+  60:lib/Common/src/fio.c **** }
+  52              		.loc 1 60 0
+  53              		@ sp needed for prologue
+  54              	.LVL3:
+  55              	.LVL4:
+  56 0016 70BC     		pop	{r4, r5, r6}
+  57 0018 01BC     		pop	{r0}
+  58 001a 0047     		bx	r0
+  59              	.LVL5:
+  60              	.L9:
+  61              		.loc 1 28 0
+  62 001c 002B     		cmp	r3, #0
+  63 001e FAD0     		beq	.L7
+  64              		.loc 1 30 0
+  65 0020 154A     		ldr	r2, .L14
+  66 0022 1368     		ldr	r3, [r2]
+  67 0024 A343     		bic	r3, r3, r4
+  68 0026 1360     		str	r3, [r2]
+  69              		.loc 1 31 0
+  70 0028 012E     		cmp	r6, #1
+  71 002a 11D0     		beq	.L11
+  72              		.loc 1 38 0
+  73 002c 134B     		ldr	r3, .L14+4
+  74 002e 0201     		lsl	r2, r0, #4
+  75 0030 D218     		add	r2, r2, r3
+  76 0032 1368     		ldr	r3, [r2]
+  77 0034 AB43     		bic	r3, r3, r5
+  78 0036 1360     		str	r3, [r2]
+  79 0038 EDE7     		b	.L7
+  80              	.LVL6:
+  81              	.L10:
+  82              		.loc 1 44 0
+  83 003a 002B     		cmp	r3, #0
+  84 003c 0FD1     		bne	.L12
+  85              	.L5:
+  86              		.loc 1 48 0
+  87 003e 012E     		cmp	r6, #1
+  88 0040 12D0     		beq	.L13
+  89              		.loc 1 55 0
+  90 0042 0F4B     		ldr	r3, .L14+8
+  91 0044 C218     		add	r2, r0, r3
+  92 0046 5201     		lsl	r2, r2, #5
+  93 0048 1368     		ldr	r3, [r2]
+  94 004a AB43     		bic	r3, r3, r5
+  95 004c 1360     		str	r3, [r2]
+  96 004e E2E7     		b	.L7
+  97              	.L11:
+  98              		.loc 1 33 0
+  99 0050 0A4B     		ldr	r3, .L14+4
+ 100 0052 0201     		lsl	r2, r0, #4
+ 101 0054 D218     		add	r2, r2, r3
+ 102 0056 1368     		ldr	r3, [r2]
+ 103 0058 2B43     		orr	r3, r3, r5
+ 104 005a 1360     		str	r3, [r2]
+ 105 005c DBE7     		b	.L7
+ 106              	.LVL7:
+ 107              	.L12:
+ 108              		.loc 1 46 0
+ 109 005e 064A     		ldr	r2, .L14
+ 110 0060 1368     		ldr	r3, [r2]
+ 111 0062 0B43     		orr	r3, r3, r1
+ 112 0064 1360     		str	r3, [r2]
+ 113 0066 EAE7     		b	.L5
+ 114              	.LVL8:
+ 115              	.L13:
+ 116              		.loc 1 50 0
+ 117 0068 054B     		ldr	r3, .L14+8
+ 118 006a C218     		add	r2, r0, r3
+ 119 006c 5201     		lsl	r2, r2, #5
+ 120 006e 1368     		ldr	r3, [r2]
+ 121 0070 2B43     		orr	r3, r3, r5
+ 122 0072 1360     		str	r3, [r2]
+ 123 0074 CFE7     		b	.L7
+ 124              	.L15:
+ 125 0076 C046     		.align	2
+ 126              	.L14:
+ 127 0078 A0C11FE0 		.word	-534789728
+ 128 007c 088002E0 		.word	-536707064
+ 129 0080 00FEFF01 		.word	33553920
+ 130              	.LFE2:
+ 168              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 fio.c
+     /tmp/ccfzYBxN.s:22     .text.GPIOInit:00000000 $t
+     /tmp/ccfzYBxN.s:27     .text.GPIOInit:00000000 GPIOInit
+     /tmp/ccfzYBxN.s:127    .text.GPIOInit:00000078 $d
+     /tmp/ccfzYBxN.s:172    .debug_loc:00000000 $d
+
+NO UNDEFINED SYMBOLS

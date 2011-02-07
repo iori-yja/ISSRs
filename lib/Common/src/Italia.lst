@@ -1,0 +1,27 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"Italia.c"
+  20              	.Ltext0:
+  21              		.global	Italia
+  22              		.section	.bss.Italia,"aw",%nobits
+  25              	Italia:
+  26 0000 00000000 		.space	4
+  27              		.text
+  28              	.Letext0:
+  29              		.file 1 "lib/Common/src/Italia.c"
+DEFINED SYMBOLS
+                            *ABS*:00000000 Italia.c
+     /tmp/ccetbGJr.s:25     .bss.Italia:00000000 Italia
+     /tmp/ccetbGJr.s:26     .bss.Italia:00000000 $d
+     /tmp/ccetbGJr.s:31     .debug_info:00000000 $d
+
+NO UNDEFINED SYMBOLS

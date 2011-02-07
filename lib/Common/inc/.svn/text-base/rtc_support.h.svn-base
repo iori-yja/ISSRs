@@ -1,0 +1,26 @@
+/********************************************************************************
+* File Name          : rtc_suport.h
+* Author             : Nemui Trinomius (http://nemuisan.blog.bai.ne.jp)
+* Version            : V0.01
+* Since              : 2009.10.23
+* Description        : rtc functions support for LPC23xx uC.
+*
+*                    : 2009.10.23  V1.00    Prelimnary version, first Release.
+* License			 : BSD License. See Copyright.txt
+********************************************************************************/
+#ifndef __RTC_SUPPORT_H 
+#define __RTC_SUPPORT_H 
+
+
+/* Basis Inclusion */
+#include "rtc.h"
+
+/* prototypes */
+extern void RTCHandler (void); /* extern void RTCHandler (void) __attribute__ ((interrupt("IRQ"))); */
+DWORD RTC_ISR_Init(void);
+extern void RTCTimeSetter(void);
+
+/* RTC test */
+extern volatile DWORD rtc_toggle;
+
+#endif /* __RTC_SUPPORT_H  */

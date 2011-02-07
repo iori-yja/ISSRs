@@ -1,0 +1,211 @@
+   1              		.cpu arm7tdmi-s
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 18, 4
+  11              		.code	16
+  12              		.file	"camerareset.c"
+  20              	.Ltext0:
+  21              		.section	.text.camera_initia,"ax",%progbits
+  22              		.align	2
+  23              		.global	camera_initia
+  24              		.code	16
+  25              		.thumb_func
+  27              	camera_initia:
+  28              	.LFB3:
+  29              		.file 1 "lib/Common/src/camerareset.c"
+   1:lib/Common/src/camerareset.c **** #include <stdio.h>
+   2:lib/Common/src/camerareset.c **** #include "lpc23xx.h"
+   3:lib/Common/src/camerareset.c **** #include "target.h"
+   4:lib/Common/src/camerareset.c **** #include "camerareset.h"
+   5:lib/Common/src/camerareset.c **** //#include "italia.h"
+   6:lib/Common/src/camerareset.c **** 
+   7:lib/Common/src/camerareset.c **** void VandHcounter(void) __irq 
+   8:lib/Common/src/camerareset.c **** {
+   9:lib/Common/src/camerareset.c **** FIO2PIN = 0x00000200;
+  10:lib/Common/src/camerareset.c **** printf("わりこまれた");
+  11:lib/Common/src/camerareset.c **** IO2_INT_CLR = 0x0000000F;
+  12:lib/Common/src/camerareset.c **** vTaskDelay(1000 / portTICK_RATE_MS);
+  13:lib/Common/src/camerareset.c **** VICVectAddr = 0;		/* Acknowledge Interrupt */
+  14:lib/Common/src/camerareset.c **** 
+  15:lib/Common/src/camerareset.c **** }
+  16:lib/Common/src/camerareset.c **** 
+  17:lib/Common/src/camerareset.c **** void camera_initia(){
+  30              		.loc 1 17 0
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  18:lib/Common/src/camerareset.c **** 	FIO2DIR	= 0x00000200;
+  33              		.loc 1 18 0
+  34 0002 154A     		ldr	r2, .L7
+  35 0004 8023     		mov	r3, #128
+  36 0006 9B00     		lsl	r3, r3, #2
+  37 0008 1360     		str	r3, [r2]
+  19:lib/Common/src/camerareset.c **** 	IO2_INT_CLR = 0x0000000F;
+  38              		.loc 1 19 0
+  39 000a 144B     		ldr	r3, .L7+4
+  40 000c 0F22     		mov	r2, #15
+  41 000e 1A60     		str	r2, [r3]
+  20:lib/Common/src/camerareset.c **** 	IO2_INT_EN_F= 0x0000000F; //CN1の31-33fall割り込みenable.
+  42              		.loc 1 20 0
+  43 0010 0833     		add	r3, r3, #8
+  44 0012 1A60     		str	r2, [r3]
+  21:lib/Common/src/camerareset.c **** 	IO2_INT_EN_R= 0x0000000F; //CN1の31-32rise割り込みenable.
+  45              		.loc 1 21 0
+  46 0014 043B     		sub	r3, r3, #4
+  47 0016 1A60     		str	r2, [r3]
+  22:lib/Common/src/camerareset.c **** 	vTaskDelay(200);
+  48              		.loc 1 22 0
+  49 0018 C820     		mov	r0, #200
+  50 001a FFF7FEFF 		bl	vTaskDelay
+  23:lib/Common/src/camerareset.c **** 	if(install_irq(17, (void *)VandHcounter, (HIGHEST_PRIORITY ))==FALSE) printf("installaration was f
+  51              		.loc 1 23 0
+  52 001e 104C     		ldr	r4, .L7+8
+  53 0020 1120     		mov	r0, #17
+  54 0022 211C     		mov	r1, r4
+  55 0024 0122     		mov	r2, #1
+  56 0026 FFF7FEFF 		bl	install_irq
+  57 002a 0028     		cmp	r0, #0
+  58 002c 10D0     		beq	.L6
+  24:lib/Common/src/camerareset.c **** 	else printf("irq installed\n\n");
+  59              		.loc 1 24 0
+  60 002e 0D48     		ldr	r0, .L7+12
+  61 0030 FFF7FEFF 		bl	puts
+  62              	.L3:
+  25:lib/Common/src/camerareset.c **** 	FIO2PIN = 0x00000200;
+  63              		.loc 1 25 0
+  64 0034 0C4A     		ldr	r2, .L7+16
+  65 0036 8023     		mov	r3, #128
+  66 0038 9B00     		lsl	r3, r3, #2
+  67 003a 1360     		str	r3, [r2]
+  26:lib/Common/src/camerareset.c **** 	VICVectAddr17 = ( unsigned int ) &VandHcounter;
+  68              		.loc 1 26 0
+  69 003c 0B4B     		ldr	r3, .L7+20
+  70 003e 1C60     		str	r4, [r3]
+  27:lib/Common/src/camerareset.c **** //	VICIntSelect |= 0x00020000;
+  28:lib/Common/src/camerareset.c **** //	VICIntEnable |= 0x00020000;
+  29:lib/Common/src/camerareset.c **** 	printf("Handler-addr is\n %x\nVV17 is %x", &VandHcounter, VICVectAddr17);
+  71              		.loc 1 29 0
+  72 0040 211C     		mov	r1, r4
+  73 0042 1A68     		ldr	r2, [r3]
+  74 0044 0A48     		ldr	r0, .L7+24
+  75 0046 FFF7FEFF 		bl	printf
+  30:lib/Common/src/camerareset.c **** }
+  76              		.loc 1 30 0
+  77              		@ sp needed for prologue
+  78 004a 10BC     		pop	{r4}
+  79 004c 01BC     		pop	{r0}
+  80 004e 0047     		bx	r0
+  81              	.L6:
+  82              		.loc 1 23 0
+  83 0050 0848     		ldr	r0, .L7+28
+  84 0052 FFF7FEFF 		bl	puts
+  85 0056 EDE7     		b	.L3
+  86              	.L8:
+  87              		.align	2
+  88              	.L7:
+  89 0058 40C0FF3F 		.word	1073725504
+  90 005c AC8002E0 		.word	-536706900
+  91 0060 00000000 		.word	VandHcounter
+  92 0064 1C000000 		.word	.LC3
+  93 0068 54C0FF3F 		.word	1073725524
+  94 006c 44F1FFFF 		.word	-3772
+  95 0070 2C000000 		.word	.LC5
+  96 0074 00000000 		.word	.LC1
+  97              	.LFE3:
+  99              		.section	.text.VandHcounter,"ax",%progbits
+ 100              		.align	2
+ 101              		.global	VandHcounter
+ 102              		.code	16
+ 103              		.thumb_func
+ 105              	VandHcounter:
+ 106              	.LFB2:
+ 107              		.loc 1 8 0
+ 108 0000 10B5     		push	{r4, lr}
+ 109              	.LCFI1:
+ 110              		.loc 1 9 0
+ 111 0002 0A4A     		ldr	r2, .L11
+ 112 0004 8023     		mov	r3, #128
+ 113 0006 9B00     		lsl	r3, r3, #2
+ 114 0008 1360     		str	r3, [r2]
+ 115              		.loc 1 10 0
+ 116 000a 0948     		ldr	r0, .L11+4
+ 117 000c FFF7FEFF 		bl	printf
+ 118              		.loc 1 11 0
+ 119 0010 084B     		ldr	r3, .L11+8
+ 120 0012 0F22     		mov	r2, #15
+ 121              		.loc 1 12 0
+ 122 0014 FA20     		mov	r0, #250
+ 123              		.loc 1 11 0
+ 124 0016 1A60     		str	r2, [r3]
+ 125              		.loc 1 12 0
+ 126 0018 8000     		lsl	r0, r0, #2
+ 127 001a FFF7FEFF 		bl	vTaskDelay
+ 128              		.loc 1 13 0
+ 129 001e 064B     		ldr	r3, .L11+12
+ 130 0020 0022     		mov	r2, #0
+ 131 0022 1A60     		str	r2, [r3]
+ 132              		.loc 1 15 0
+ 133              		@ sp needed for prologue
+ 134 0024 10BC     		pop	{r4}
+ 135 0026 01BC     		pop	{r0}
+ 136 0028 0047     		bx	r0
+ 137              	.L12:
+ 138 002a C046     		.align	2
+ 139              	.L11:
+ 140 002c 54C0FF3F 		.word	1073725524
+ 141 0030 4C000000 		.word	.LC7
+ 142 0034 AC8002E0 		.word	-536706900
+ 143 0038 00FFFFFF 		.word	-256
+ 144              	.LFE2:
+ 146              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 147              		.align	2
+ 148              	.LC1:
+ 149 0000 696E7374 		.ascii	"installaration was failed\000"
+ 149      616C6C61 
+ 149      72617469 
+ 149      6F6E2077 
+ 149      61732066 
+ 150 001a 0000     		.space	2
+ 151              	.LC3:
+ 152 001c 69727120 		.ascii	"irq installed\012\000"
+ 152      696E7374 
+ 152      616C6C65 
+ 152      640A00
+ 153 002b 00       		.space	1
+ 154              	.LC5:
+ 155 002c 48616E64 		.ascii	"Handler-addr is\012 %x\012VV17 is %x\000"
+ 155      6C65722D 
+ 155      61646472 
+ 155      2069730A 
+ 155      2025780A 
+ 156 004b 00       		.space	1
+ 157              	.LC7:
+ 158 004c E3828FE3 		.ascii	"\343\202\217\343\202\212\343\201\223\343\201\276\343"
+ 158      828AE381 
+ 158      93E381BE 
+ 158      E3
+ 159 0059 828CE381 		.ascii	"\202\214\343\201\237\000"
+ 159      9F00
+ 208              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 camerareset.c
+     /tmp/ccrZ6Ite.s:22     .text.camera_initia:00000000 $t
+     /tmp/ccrZ6Ite.s:27     .text.camera_initia:00000000 camera_initia
+     /tmp/ccrZ6Ite.s:89     .text.camera_initia:00000058 $d
+     /tmp/ccrZ6Ite.s:105    .text.VandHcounter:00000000 VandHcounter
+     /tmp/ccrZ6Ite.s:100    .text.VandHcounter:00000000 $t
+     /tmp/ccrZ6Ite.s:140    .text.VandHcounter:0000002c $d
+     /tmp/ccrZ6Ite.s:147    .rodata.str1.4:00000000 $d
+     /tmp/ccrZ6Ite.s:212    .debug_loc:00000000 $d
+     /tmp/ccrZ6Ite.s:160    .rodata.str1.4:0000005f $d
+
+UNDEFINED SYMBOLS
+vTaskDelay
+install_irq
+puts
+printf

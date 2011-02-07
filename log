@@ -1,0 +1,1267 @@
+
+lib/Common/src/i2c.o:     file format elf32-littlearm
+
+
+Disassembly of section .text.i2enable:
+
+00000000 <i2enable>:
+   0:	e59f3008 	ldr	r3, [pc, #8]	; 10 <i2enable+0x10>
+   4:	e3a02000 	mov	r2, #0
+   8:	e5832040 	str	r2, [r3, #64]	; 0x40
+   c:	e12fff1e 	bx	lr
+  10:	e002c000 	.word	0xe002c000
+
+Disassembly of section .text.i2cmasterset:
+
+00000000 <i2cmasterset>:
+   0:	e3500001 	cmp	r0, #1
+   4:	0a00000e 	beq	44 <i2cmasterset+0x44>
+   8:	e3500002 	cmp	r0, #2
+   c:	0a000007 	beq	30 <i2cmasterset+0x30>
+  10:	e3500000 	cmp	r0, #0
+  14:	1a000003 	bne	28 <i2cmasterset+0x28>
+  18:	e59f3038 	ldr	r3, [pc, #56]	; 58 <i2cmasterset+0x58>
+  1c:	e3a02040 	mov	r2, #64	; 0x40
+  20:	e5832000 	str	r2, [r3]
+  24:	e12fff1e 	bx	lr
+  28:	e3a00001 	mov	r0, #1
+  2c:	e12fff1e 	bx	lr
+  30:	e59f2024 	ldr	r2, [pc, #36]	; 5c <i2cmasterset+0x5c>
+  34:	e3a0c040 	mov	ip, #64	; 0x40
+  38:	e582c000 	str	ip, [r2]
+  3c:	e3a00000 	mov	r0, #0
+  40:	e12fff1e 	bx	lr
+  44:	e59f1014 	ldr	r1, [pc, #20]	; 60 <i2cmasterset+0x60>
+  48:	e3a00040 	mov	r0, #64	; 0x40
+  4c:	e5810000 	str	r0, [r1]
+  50:	e3a00000 	mov	r0, #0
+  54:	e12fff1e 	bx	lr
+  58:	e001c000 	.word	0xe001c000
+  5c:	e0080000 	.word	0xe0080000
+  60:	e005c000 	.word	0xe005c000
+
+Disassembly of section .text.i2cstart:
+
+00000000 <i2cstart>:
+   0:	e3500001 	cmp	r0, #1
+   4:	0a000015 	beq	60 <i2cstart+0x60>
+   8:	e3500002 	cmp	r0, #2
+   c:	0a00000b 	beq	40 <i2cstart+0x40>
+  10:	e3500000 	cmp	r0, #0
+  14:	1a000007 	bne	38 <i2cstart+0x38>
+  18:	e59f2060 	ldr	r2, [pc, #96]	; 80 <i2cstart+0x80>
+  1c:	e3a03060 	mov	r3, #96	; 0x60
+  20:	e5823000 	str	r3, [r2]
+  24:	e5920004 	ldr	r0, [r2, #4]
+  28:	e3500008 	cmp	r0, #8
+  2c:	1afffffc 	bne	24 <i2cstart+0x24>
+  30:	e3a00000 	mov	r0, #0
+  34:	e12fff1e 	bx	lr
+  38:	e3a00001 	mov	r0, #1
+  3c:	e12fff1e 	bx	lr
+  40:	e59f203c 	ldr	r2, [pc, #60]	; 84 <i2cstart+0x84>
+  44:	e3a03060 	mov	r3, #96	; 0x60
+  48:	e5823000 	str	r3, [r2]
+  4c:	e5920004 	ldr	r0, [r2, #4]
+  50:	e3500008 	cmp	r0, #8
+  54:	1afffffc 	bne	4c <i2cstart+0x4c>
+  58:	e3a00000 	mov	r0, #0
+  5c:	e12fff1e 	bx	lr
+  60:	e59f2020 	ldr	r2, [pc, #32]	; 88 <i2cstart+0x88>
+  64:	e3a01060 	mov	r1, #96	; 0x60
+  68:	e5821000 	str	r1, [r2]
+  6c:	e592c004 	ldr	ip, [r2, #4]
+  70:	e35c0008 	cmp	ip, #8
+  74:	1afffffc 	bne	6c <i2cstart+0x6c>
+  78:	e3a00000 	mov	r0, #0
+  7c:	e12fff1e 	bx	lr
+  80:	e001c000 	.word	0xe001c000
+  84:	e0080000 	.word	0xe0080000
+  88:	e005c000 	.word	0xe005c000
+
+Disassembly of section .text.i2crestart:
+
+00000000 <i2crestart>:
+   0:	e3500001 	cmp	r0, #1
+   4:	e92d4008 	push	{r3, lr}
+   8:	0a00002d 	beq	c4 <i2crestart+0xc4>
+   c:	e3500002 	cmp	r0, #2
+  10:	0a000017 	beq	74 <i2crestart+0x74>
+  14:	e3500000 	cmp	r0, #0
+  18:	13a00001 	movne	r0, #1
+  1c:	1a000012 	bne	6c <i2crestart+0x6c>
+  20:	e59f30ec 	ldr	r3, [pc, #236]	; 114 <i2crestart+0x114>
+  24:	e3a01014 	mov	r1, #20
+  28:	e3a00008 	mov	r0, #8
+  2c:	e3a02060 	mov	r2, #96	; 0x60
+  30:	e5831000 	str	r1, [r3]
+  34:	e5830018 	str	r0, [r3, #24]
+  38:	e5832000 	str	r2, [r3]
+  3c:	ea000002 	b	4c <i2crestart+0x4c>
+  40:	e593e004 	ldr	lr, [r3, #4]
+  44:	e35e0008 	cmp	lr, #8
+  48:	0a000002 	beq	58 <i2crestart+0x58>
+  4c:	e593c004 	ldr	ip, [r3, #4]
+  50:	e35c0010 	cmp	ip, #16
+  54:	1afffff9 	bne	40 <i2crestart+0x40>
+  58:	e59f30b4 	ldr	r3, [pc, #180]	; 114 <i2crestart+0x114>
+  5c:	e59f00b4 	ldr	r0, [pc, #180]	; 118 <i2crestart+0x118>
+  60:	e5931004 	ldr	r1, [r3, #4]
+  64:	ebfffffe 	bl	0 <printf>
+  68:	e3a00000 	mov	r0, #0
+  6c:	e8bd4008 	pop	{r3, lr}
+  70:	e12fff1e 	bx	lr
+  74:	e59f30a0 	ldr	r3, [pc, #160]	; 11c <i2crestart+0x11c>
+  78:	e3a01014 	mov	r1, #20
+  7c:	e3a00008 	mov	r0, #8
+  80:	e3a02060 	mov	r2, #96	; 0x60
+  84:	e5831000 	str	r1, [r3]
+  88:	e5830018 	str	r0, [r3, #24]
+  8c:	e5832000 	str	r2, [r3]
+  90:	ea000002 	b	a0 <i2crestart+0xa0>
+  94:	e593e004 	ldr	lr, [r3, #4]
+  98:	e35e0008 	cmp	lr, #8
+  9c:	0a000002 	beq	ac <i2crestart+0xac>
+  a0:	e593c004 	ldr	ip, [r3, #4]
+  a4:	e35c0010 	cmp	ip, #16
+  a8:	1afffff9 	bne	94 <i2crestart+0x94>
+  ac:	e59f3068 	ldr	r3, [pc, #104]	; 11c <i2crestart+0x11c>
+  b0:	e59f0060 	ldr	r0, [pc, #96]	; 118 <i2crestart+0x118>
+  b4:	e5931004 	ldr	r1, [r3, #4]
+  b8:	ebfffffe 	bl	0 <printf>
+  bc:	e3a00000 	mov	r0, #0
+  c0:	eaffffe9 	b	6c <i2crestart+0x6c>
+  c4:	e59f3054 	ldr	r3, [pc, #84]	; 120 <i2crestart+0x120>
+  c8:	e3a01014 	mov	r1, #20
+  cc:	e3a00008 	mov	r0, #8
+  d0:	e3a02060 	mov	r2, #96	; 0x60
+  d4:	e5831000 	str	r1, [r3]
+  d8:	e5830018 	str	r0, [r3, #24]
+  dc:	e5832000 	str	r2, [r3]
+  e0:	ea000002 	b	f0 <i2crestart+0xf0>
+  e4:	e593e004 	ldr	lr, [r3, #4]
+  e8:	e35e0008 	cmp	lr, #8
+  ec:	0a000002 	beq	fc <i2crestart+0xfc>
+  f0:	e593c004 	ldr	ip, [r3, #4]
+  f4:	e35c0010 	cmp	ip, #16
+  f8:	1afffff9 	bne	e4 <i2crestart+0xe4>
+  fc:	e59f301c 	ldr	r3, [pc, #28]	; 120 <i2crestart+0x120>
+ 100:	e59f0010 	ldr	r0, [pc, #16]	; 118 <i2crestart+0x118>
+ 104:	e5931004 	ldr	r1, [r3, #4]
+ 108:	ebfffffe 	bl	0 <printf>
+ 10c:	e3a00000 	mov	r0, #0
+ 110:	eaffffd5 	b	6c <i2crestart+0x6c>
+ 114:	e001c000 	.word	0xe001c000
+ 118:	00000000 	.word	0x00000000
+ 11c:	e0080000 	.word	0xe0080000
+ 120:	e005c000 	.word	0xe005c000
+
+Disassembly of section .text.i2cstop:
+
+00000000 <i2cstop>:
+   0:	e3500002 	.word	0xe3500002
+   4:	1a000004 	bne	1c <i2cstop+0x1c>
+   8:	e59f3014 	ldr	r3, [pc, #20]	; 24 <i2cstop+0x24>
+   c:	e3a00050 	mov	r0, #80	; 0x50
+  10:	e3a0202c 	mov	r2, #44	; 0x2c
+  14:	e5830000 	str	r0, [r3]
+  18:	e5832018 	str	r2, [r3, #24]
+  1c:	e3a00001 	mov	r0, #1
+  20:	e12fff1e 	bx	lr
+  24:	e0080000 	.word	0xe0080000
+
+Disassembly of section .text.i2csender:
+
+00000000 <i2csender>:
+   0:	e3500000 	cmp	r0, #0
+   4:	e92d40f8 	push	{r3, r4, r5, r6, r7, lr}
+   8:	e1a04001 	mov	r4, r1
+   c:	e1a06002 	mov	r6, r2
+  10:	0a000010 	beq	58 <i2csender+0x58>
+  14:	e3520000 	cmp	r2, #0
+  18:	159f50bc 	ldrne	r5, [pc, #188]	; dc <i2csender+0xdc>
+  1c:	13a07028 	movne	r7, #40	; 0x28
+  20:	0a00002b 	beq	d4 <i2csender+0xd4>
+  24:	e20410ff 	and	r1, r4, #255	; 0xff
+  28:	e5851008 	str	r1, [r5, #8]
+  2c:	e5857018 	str	r7, [r5, #24]
+  30:	e5953004 	ldr	r3, [r5, #4]
+  34:	e3530028 	cmp	r3, #40	; 0x28
+  38:	1afffffc 	bne	30 <i2csender+0x30>
+  3c:	e59f009c 	ldr	r0, [pc, #156]	; e0 <i2csender+0xe0>
+  40:	e1a01004 	mov	r1, r4
+  44:	ebfffffe 	bl	0 <printf>
+  48:	e2566008 	subs	r6, r6, #8
+  4c:	0a000020 	beq	d4 <i2csender+0xd4>
+  50:	e1a04424 	lsr	r4, r4, #8
+  54:	eafffff2 	b	24 <i2csender+0x24>
+  58:	e59f507c 	ldr	r5, [pc, #124]	; dc <i2csender+0xdc>
+  5c:	e5851008 	str	r1, [r5, #8]
+  60:	e5950000 	ldr	r0, [r5]
+  64:	e3a02008 	mov	r2, #8
+  68:	e380c004 	orr	ip, r0, #4
+  6c:	e585c000 	str	ip, [r5]
+  70:	e59f006c 	ldr	r0, [pc, #108]	; e4 <i2csender+0xe4>
+  74:	e5852018 	str	r2, [r5, #24]
+  78:	ebfffffe 	bl	0 <printf>
+  7c:	e5953004 	ldr	r3, [r5, #4]
+  80:	e3530018 	cmp	r3, #24
+  84:	1a000005 	bne	a0 <i2csender+0xa0>
+  88:	ea000007 	b	ac <i2csender+0xac>
+  8c:	e3a0002e 	mov	r0, #46	; 0x2e
+  90:	ebfffffe 	bl	0 <putchar>
+  94:	e5953004 	ldr	r3, [r5, #4]
+  98:	e3530018 	cmp	r3, #24
+  9c:	0a000002 	beq	ac <i2csender+0xac>
+  a0:	e5951004 	ldr	r1, [r5, #4]
+  a4:	e3510020 	cmp	r1, #32
+  a8:	1afffff7 	bne	8c <i2csender+0x8c>
+  ac:	e59f2028 	ldr	r2, [pc, #40]	; dc <i2csender+0xdc>
+  b0:	e592e004 	ldr	lr, [r2, #4]
+  b4:	e35e0020 	cmp	lr, #32
+  b8:	1a000005 	bne	d4 <i2csender+0xd4>
+  bc:	e59f0024 	ldr	r0, [pc, #36]	; e8 <i2csender+0xe8>
+  c0:	e1a01004 	mov	r1, r4
+  c4:	ebfffffe 	bl	0 <printf>
+  c8:	e59f001c 	ldr	r0, [pc, #28]	; ec <i2csender+0xec>
+  cc:	e3a0c022 	mov	ip, #34	; 0x22
+  d0:	e580c000 	str	ip, [r0]
+  d4:	e8bd40f8 	pop	{r3, r4, r5, r6, r7, lr}
+  d8:	e12fff1e 	bx	lr
+  dc:	e0080000 	.word	0xe0080000
+  e0:	0000003c 	.word	0x0000003c
+  e4:	00000018 	.word	0x00000018
+  e8:	00000028 	.word	0x00000028
+  ec:	00000000 	.word	0x00000000
+
+Disassembly of section .text.novorvisesender:
+
+00000000 <novorvisesender>:
+   0:	e3500000 	.word	0xe3500000
+   4:	e92d4038 	push	{r3, r4, r5, lr}
+   8:	e1a04001 	mov	r4, r1
+   c:	0a000021 	beq	98 <novorvisesender+0x98>
+  10:	e3520000 	cmp	r2, #0
+  14:	159f10a8 	ldrne	r1, [pc, #168]	; c4 <novorvisesender+0xc4>
+  18:	13a00028 	movne	r0, #40	; 0x28
+  1c:	0a00001b 	beq	90 <novorvisesender+0x90>
+  20:	e20430ff 	and	r3, r4, #255	; 0xff
+  24:	e5813008 	str	r3, [r1, #8]
+  28:	e5810018 	str	r0, [r1, #24]
+  2c:	e591c004 	ldr	ip, [r1, #4]
+  30:	e35c0028 	cmp	ip, #40	; 0x28
+  34:	1afffffc 	bne	2c <novorvisesender+0x2c>
+  38:	e2522008 	subs	r2, r2, #8
+  3c:	0a000013 	beq	90 <novorvisesender+0x90>
+  40:	e1a04424 	lsr	r4, r4, #8
+  44:	eafffff5 	b	20 <novorvisesender+0x20>
+  48:	e3a0002e 	mov	r0, #46	; 0x2e
+  4c:	ebfffffe 	bl	0 <putchar>
+  50:	e5953004 	ldr	r3, [r5, #4]
+  54:	e3530018 	cmp	r3, #24
+  58:	0a000002 	beq	68 <novorvisesender+0x68>
+  5c:	e595c004 	ldr	ip, [r5, #4]
+  60:	e35c0020 	cmp	ip, #32
+  64:	1afffff7 	bne	48 <novorvisesender+0x48>
+  68:	e59f1054 	ldr	r1, [pc, #84]	; c4 <novorvisesender+0xc4>
+  6c:	e5910004 	ldr	r0, [r1, #4]
+  70:	e3500020 	cmp	r0, #32
+  74:	1a000005 	bne	90 <novorvisesender+0x90>
+  78:	e59f0048 	ldr	r0, [pc, #72]	; c8 <novorvisesender+0xc8>
+  7c:	e1a01004 	mov	r1, r4
+  80:	ebfffffe 	bl	0 <printf>
+  84:	e59fc040 	ldr	ip, [pc, #64]	; cc <novorvisesender+0xcc>
+  88:	e3a02022 	mov	r2, #34	; 0x22
+  8c:	e58c2000 	str	r2, [ip]
+  90:	e8bd4038 	pop	{r3, r4, r5, lr}
+  94:	e12fff1e 	bx	lr
+  98:	e59f5024 	ldr	r5, [pc, #36]	; c4 <novorvisesender+0xc4>
+  9c:	e5851008 	str	r1, [r5, #8]
+  a0:	e5952000 	ldr	r2, [r5]
+  a4:	e3a00008 	mov	r0, #8
+  a8:	e3821004 	orr	r1, r2, #4
+  ac:	e5851000 	str	r1, [r5]
+  b0:	e5850018 	str	r0, [r5, #24]
+  b4:	e5953004 	ldr	r3, [r5, #4]
+  b8:	e3530018 	cmp	r3, #24
+  bc:	1affffe6 	bne	5c <novorvisesender+0x5c>
+  c0:	eaffffe8 	b	68 <novorvisesender+0x68>
+  c4:	e0080000 	.word	0xe0080000
+  c8:	00000028 	.word	0x00000028
+  cc:	00000000 	.word	0x00000000
+
+Disassembly of section .text.tinyreader:
+
+00000000 <tinyreader>:
+   0:	e92d41f0 	push	{r4, r5, r6, r7, r8, lr}
+   4:	e59f40e4 	ldr	r4, [pc, #228]	; f0 <tinyreader+0xf0>
+   8:	e1a06000 	mov	r6, r0
+   c:	e1a05002 	mov	r5, r2
+  10:	e2818001 	add	r8, r1, #1
+  14:	e3a07008 	mov	r7, #8
+  18:	e5848008 	str	r8, [r4, #8]
+  1c:	e5940000 	ldr	r0, [r4]
+  20:	e3803004 	orr	r3, r0, #4
+  24:	e5843000 	str	r3, [r4]
+  28:	e5847018 	str	r7, [r4, #24]
+  2c:	e5941004 	ldr	r1, [r4, #4]
+  30:	e3510040 	cmp	r1, #64	; 0x40
+  34:	0a000002 	beq	44 <tinyreader+0x44>
+  38:	e5942004 	ldr	r2, [r4, #4]
+  3c:	e3520048 	cmp	r2, #72	; 0x48
+  40:	1afffff9 	bne	2c <tinyreader+0x2c>
+  44:	e594c004 	ldr	ip, [r4, #4]
+  48:	e35c0048 	cmp	ip, #72	; 0x48
+  4c:	e59f309c 	ldr	r3, [pc, #156]	; f0 <tinyreader+0xf0>
+  50:	1a000005 	bne	6c <tinyreader+0x6c>
+  54:	e5941004 	ldr	r1, [r4, #4]
+  58:	e59f0094 	ldr	r0, [pc, #148]	; f4 <tinyreader+0xf4>
+  5c:	ebfffffe 	bl	0 <printf>
+  60:	e3a00002 	mov	r0, #2
+  64:	ebfffffe 	bl	0 <tinyreader>
+  68:	eaffffea 	b	18 <tinyreader+0x18>
+  6c:	e2866001 	add	r6, r6, #1
+  70:	e1550006 	cmp	r5, r6
+  74:	e5932004 	ldr	r2, [r3, #4]
+  78:	0a000016 	beq	d8 <tinyreader+0xd8>
+  7c:	e1a04003 	mov	r4, r3
+  80:	e3a08028 	mov	r8, #40	; 0x28
+  84:	e1a07003 	mov	r7, r3
+  88:	e59f0068 	ldr	r0, [pc, #104]	; f8 <tinyreader+0xf8>
+  8c:	ebfffffe 	bl	0 <printf>
+  90:	e5941000 	ldr	r1, [r4]
+  94:	e3813004 	orr	r3, r1, #4
+  98:	e5843000 	str	r3, [r4]
+  9c:	e59f0058 	ldr	r0, [pc, #88]	; fc <tinyreader+0xfc>
+  a0:	e5848018 	str	r8, [r4, #24]
+  a4:	ebfffffe 	bl	0 <printf>
+  a8:	e594e004 	ldr	lr, [r4, #4]
+  ac:	e35e0050 	cmp	lr, #80	; 0x50
+  b0:	1afffffc 	bne	a8 <tinyreader+0xa8>
+  b4:	e1a01005 	mov	r1, r5
+  b8:	e5972008 	ldr	r2, [r7, #8]
+  bc:	e59f003c 	ldr	r0, [pc, #60]	; 100 <tinyreader+0x100>
+  c0:	ebfffffe 	bl	0 <printf>
+  c4:	e2855001 	add	r5, r5, #1
+  c8:	e3a0000a 	mov	r0, #10
+  cc:	ebfffffe 	bl	0 <vTaskDelay>
+  d0:	e1550006 	cmp	r5, r6
+  d4:	1affffeb 	bne	88 <tinyreader+0x88>
+  d8:	e59f2010 	ldr	r2, [pc, #16]	; f0 <tinyreader+0xf0>
+  dc:	e3a0000c 	mov	r0, #12
+  e0:	e5820018 	str	r0, [r2, #24]
+  e4:	e3a00000 	mov	r0, #0
+  e8:	e8bd41f0 	pop	{r4, r5, r6, r7, r8, lr}
+  ec:	e12fff1e 	bx	lr
+  f0:	e0080000 	.word	0xe0080000
+  f4:	0000004c 	.word	0x0000004c
+  f8:	00000060 	.word	0x00000060
+  fc:	00000070 	.word	0x00000070
+ 100:	00000078 	.word	0x00000078
+
+Disassembly of section .text.i2creader:
+
+00000000 <i2creader>:
+   0:	e92d41f0 	push	{r4, r5, r6, r7, r8, lr}
+   4:	e59f4118 	ldr	r4, [pc, #280]	; 124 <i2creader+0x124>
+   8:	e1a06000 	mov	r6, r0
+   c:	e1a05002 	mov	r5, r2
+  10:	e2818001 	add	r8, r1, #1
+  14:	e3a07008 	mov	r7, #8
+  18:	e5848008 	str	r8, [r4, #8]
+  1c:	e5941000 	ldr	r1, [r4]
+  20:	e3810004 	orr	r0, r1, #4
+  24:	e5840000 	str	r0, [r4]
+  28:	e5847018 	str	r7, [r4, #24]
+  2c:	e59f00f4 	ldr	r0, [pc, #244]	; 128 <i2creader+0x128>
+  30:	e5941004 	ldr	r1, [r4, #4]
+  34:	ebfffffe 	bl	0 <printf>
+  38:	e5943004 	ldr	r3, [r4, #4]
+  3c:	e3530040 	cmp	r3, #64	; 0x40
+  40:	1a000005 	bne	5c <i2creader+0x5c>
+  44:	ea000007 	b	68 <i2creader+0x68>
+  48:	e3a0002e 	mov	r0, #46	; 0x2e
+  4c:	ebfffffe 	bl	0 <putchar>
+  50:	e594c004 	ldr	ip, [r4, #4]
+  54:	e35c0040 	cmp	ip, #64	; 0x40
+  58:	0a000002 	beq	68 <i2creader+0x68>
+  5c:	e5942004 	ldr	r2, [r4, #4]
+  60:	e3520048 	cmp	r2, #72	; 0x48
+  64:	1afffff7 	bne	48 <i2creader+0x48>
+  68:	e594e004 	ldr	lr, [r4, #4]
+  6c:	e35e0048 	cmp	lr, #72	; 0x48
+  70:	e59f30ac 	ldr	r3, [pc, #172]	; 124 <i2creader+0x124>
+  74:	1a000005 	bne	90 <i2creader+0x90>
+  78:	e5941004 	ldr	r1, [r4, #4]
+  7c:	e59f00a8 	ldr	r0, [pc, #168]	; 12c <i2creader+0x12c>
+  80:	ebfffffe 	bl	0 <printf>
+  84:	e3a00002 	mov	r0, #2
+  88:	ebfffffe 	bl	0 <i2creader>
+  8c:	eaffffe1 	b	18 <i2creader+0x18>
+  90:	e2866001 	add	r6, r6, #1
+  94:	e1550006 	cmp	r5, r6
+  98:	e5932004 	ldr	r2, [r3, #4]
+  9c:	0a000018 	beq	104 <i2creader+0x104>
+  a0:	e1a04003 	mov	r4, r3
+  a4:	e3a08028 	mov	r8, #40	; 0x28
+  a8:	e1a07003 	mov	r7, r3
+  ac:	e59f007c 	ldr	r0, [pc, #124]	; 130 <i2creader+0x130>
+  b0:	ebfffffe 	bl	0 <printf>
+  b4:	e5940000 	ldr	r0, [r4]
+  b8:	e3803004 	orr	r3, r0, #4
+  bc:	e5843000 	str	r3, [r4]
+  c0:	e5848018 	str	r8, [r4, #24]
+  c4:	e59f0068 	ldr	r0, [pc, #104]	; 134 <i2creader+0x134>
+  c8:	e5941004 	ldr	r1, [r4, #4]
+  cc:	e5942000 	ldr	r2, [r4]
+  d0:	ebfffffe 	bl	0 <printf>
+  d4:	e5941004 	ldr	r1, [r4, #4]
+  d8:	e3510050 	cmp	r1, #80	; 0x50
+  dc:	1afffffc 	bne	d4 <i2creader+0xd4>
+  e0:	e1a01005 	mov	r1, r5
+  e4:	e5972008 	ldr	r2, [r7, #8]
+  e8:	e59f0048 	ldr	r0, [pc, #72]	; 138 <i2creader+0x138>
+  ec:	ebfffffe 	bl	0 <printf>
+  f0:	e2855001 	add	r5, r5, #1
+  f4:	e3a0000a 	mov	r0, #10
+  f8:	ebfffffe 	bl	0 <vTaskDelay>
+  fc:	e1550006 	cmp	r5, r6
+ 100:	1affffe9 	bne	ac <i2creader+0xac>
+ 104:	e59f0030 	ldr	r0, [pc, #48]	; 13c <i2creader+0x13c>
+ 108:	ebfffffe 	bl	0 <printf>
+ 10c:	e59fc010 	ldr	ip, [pc, #16]	; 124 <i2creader+0x124>
+ 110:	e3a0200c 	mov	r2, #12
+ 114:	e58c2018 	str	r2, [ip, #24]
+ 118:	e3a00000 	mov	r0, #0
+ 11c:	e8bd41f0 	pop	{r4, r5, r6, r7, r8, lr}
+ 120:	e12fff1e 	bx	lr
+ 124:	e0080000 	.word	0xe0080000
+ 128:	00000084 	.word	0x00000084
+ 12c:	0000004c 	.word	0x0000004c
+ 130:	00000060 	.word	0x00000060
+ 134:	00000070 	.word	0x00000070
+ 138:	00000094 	.word	0x00000094
+ 13c:	000000ac 	.word	0x000000ac
+
+Disassembly of section .text.tinyread:
+
+00000000 <tinyread>:
+   0:	e92d40f8 	.word	0xe92d40f8
+   4:	e1a07000 	mov	r7, r0
+   8:	e3a00002 	mov	r0, #2
+   c:	e1a06001 	mov	r6, r1
+  10:	e1a05002 	mov	r5, r2
+  14:	e59f407c 	ldr	r4, [pc, #124]	; 98 <tinyread+0x98>
+  18:	ebfffffe 	bl	0 <tinyread>
+  1c:	e3a0c000 	mov	ip, #0
+  20:	e1a0000c 	mov	r0, ip
+  24:	e3a01042 	mov	r1, #66	; 0x42
+  28:	e3a02008 	mov	r2, #8
+  2c:	e584c000 	str	ip, [r4]
+  30:	ebfffffe 	bl	0 <tinyread>
+  34:	e5943000 	ldr	r3, [r4]
+  38:	e3530022 	cmp	r3, #34	; 0x22
+  3c:	0a000012 	beq	8c <tinyread+0x8c>
+  40:	e1a01007 	mov	r1, r7
+  44:	e3a02008 	mov	r2, #8
+  48:	e3a00001 	mov	r0, #1
+  4c:	ebfffffe 	bl	0 <tinyread>
+  50:	e3a00002 	mov	r0, #2
+  54:	ebfffffe 	bl	0 <tinyread>
+  58:	e1a00006 	mov	r0, r6
+  5c:	e3a01042 	mov	r1, #66	; 0x42
+  60:	e1a02005 	mov	r2, r5
+  64:	ebfffffe 	bl	0 <tinyread>
+  68:	e3a0001e 	mov	r0, #30
+  6c:	ebfffffe 	bl	0 <vTaskDelay>
+  70:	e59f0024 	ldr	r0, [pc, #36]	; 9c <tinyread+0x9c>
+  74:	e3a01050 	mov	r1, #80	; 0x50
+  78:	e3a0202c 	mov	r2, #44	; 0x2c
+  7c:	e5801000 	str	r1, [r0]
+  80:	e5802018 	str	r2, [r0, #24]
+  84:	e8bd40f8 	pop	{r3, r4, r5, r6, r7, lr}
+  88:	e12fff1e 	bx	lr
+  8c:	e59f000c 	ldr	r0, [pc, #12]	; a0 <tinyread+0xa0>
+  90:	ebfffffe 	bl	0 <printf>
+  94:	eafffff5 	b	70 <tinyread+0x70>
+  98:	00000000 	.word	0x00000000
+  9c:	e0080000 	.word	0xe0080000
+  a0:	000000b8 	.word	0x000000b8
+
+Disassembly of section .text.SCCBread:
+
+00000000 <SCCBread>:
+   0:	e92d40f8 	push	{r3, r4, r5, r6, r7, lr}
+   4:	e1a05000 	mov	r5, r0
+   8:	e3a00002 	mov	r0, #2
+   c:	e1a07001 	mov	r7, r1
+  10:	e1a06002 	mov	r6, r2
+  14:	e59f40a4 	ldr	r4, [pc, #164]	; c0 <SCCBread+0xc0>
+  18:	ebfffffe 	bl	0 <SCCBread>
+  1c:	e3a0c000 	mov	ip, #0
+  20:	e1a0000c 	mov	r0, ip
+  24:	e3a01042 	mov	r1, #66	; 0x42
+  28:	e3a02008 	mov	r2, #8
+  2c:	e584c000 	str	ip, [r4]
+  30:	ebfffffe 	bl	0 <SCCBread>
+  34:	e5943000 	ldr	r3, [r4]
+  38:	e3530022 	cmp	r3, #34	; 0x22
+  3c:	0a000017 	beq	a0 <SCCBread+0xa0>
+  40:	e3a02008 	mov	r2, #8
+  44:	e3a00001 	mov	r0, #1
+  48:	e1a01005 	mov	r1, r5
+  4c:	ebfffffe 	bl	0 <SCCBread>
+  50:	e1a01005 	mov	r1, r5
+  54:	e59f0068 	ldr	r0, [pc, #104]	; c4 <SCCBread+0xc4>
+  58:	ebfffffe 	bl	0 <printf>
+  5c:	e3a00002 	mov	r0, #2
+  60:	ebfffffe 	bl	0 <SCCBread>
+  64:	e1a02006 	mov	r2, r6
+  68:	e3a01042 	mov	r1, #66	; 0x42
+  6c:	e1a00007 	mov	r0, r7
+  70:	ebfffffe 	bl	0 <SCCBread>
+  74:	e3a0000a 	mov	r0, #10
+  78:	ebfffffe 	bl	0 <putchar>
+  7c:	e59f3044 	ldr	r3, [pc, #68]	; c8 <SCCBread+0xc8>
+  80:	e3a02050 	mov	r2, #80	; 0x50
+  84:	e3a0c02c 	mov	ip, #44	; 0x2c
+  88:	e5832000 	str	r2, [r3]
+  8c:	e59f0038 	ldr	r0, [pc, #56]	; cc <SCCBread+0xcc>
+  90:	e583c018 	str	ip, [r3, #24]
+  94:	ebfffffe 	bl	0 <puts>
+  98:	e8bd40f8 	pop	{r3, r4, r5, r6, r7, lr}
+  9c:	e12fff1e 	bx	lr
+  a0:	e59f0028 	ldr	r0, [pc, #40]	; d0 <SCCBread+0xd0>
+  a4:	ebfffffe 	bl	0 <printf>
+  a8:	e59f0018 	ldr	r0, [pc, #24]	; c8 <SCCBread+0xc8>
+  ac:	e3a01050 	mov	r1, #80	; 0x50
+  b0:	e3a0202c 	mov	r2, #44	; 0x2c
+  b4:	e5801000 	str	r1, [r0]
+  b8:	e5802018 	str	r2, [r0, #24]
+  bc:	eafffff5 	b	98 <SCCBread+0x98>
+  c0:	00000000 	.word	0x00000000
+  c4:	000000c0 	.word	0x000000c0
+  c8:	e0080000 	.word	0xe0080000
+  cc:	000000e0 	.word	0x000000e0
+  d0:	000000b8 	.word	0x000000b8
+
+Disassembly of section .text.SCCBwrite:
+
+00000000 <SCCBwrite>:
+   0:	e92d40f8 	.word	0xe92d40f8
+   4:	e1a06000 	mov	r6, r0
+   8:	e3a00002 	mov	r0, #2
+   c:	e1a07001 	mov	r7, r1
+  10:	e1a05002 	mov	r5, r2
+  14:	e59f4084 	ldr	r4, [pc, #132]	; a0 <SCCBwrite+0xa0>
+  18:	ebfffffe 	bl	0 <SCCBwrite>
+  1c:	e3a0c000 	mov	ip, #0
+  20:	e1a0000c 	mov	r0, ip
+  24:	e3a01042 	mov	r1, #66	; 0x42
+  28:	e3a02008 	mov	r2, #8
+  2c:	e584c000 	str	ip, [r4]
+  30:	ebfffffe 	bl	0 <SCCBwrite>
+  34:	e5943000 	ldr	r3, [r4]
+  38:	e3530022 	cmp	r3, #34	; 0x22
+  3c:	0a000014 	beq	94 <SCCBwrite+0x94>
+  40:	e3a02008 	mov	r2, #8
+  44:	e3a00001 	mov	r0, #1
+  48:	e1a01006 	mov	r1, r6
+  4c:	ebfffffe 	bl	0 <SCCBwrite>
+  50:	e1a01006 	mov	r1, r6
+  54:	e59f0048 	ldr	r0, [pc, #72]	; a4 <SCCBwrite+0xa4>
+  58:	ebfffffe 	bl	0 <printf>
+  5c:	e3a00001 	mov	r0, #1
+  60:	e1a01005 	mov	r1, r5
+  64:	e1a02007 	mov	r2, r7
+  68:	ebfffffe 	bl	0 <SCCBwrite>
+  6c:	e59f0034 	ldr	r0, [pc, #52]	; a8 <SCCBwrite+0xa8>
+  70:	e1a01005 	mov	r1, r5
+  74:	ebfffffe 	bl	0 <printf>
+  78:	e59f002c 	ldr	r0, [pc, #44]	; ac <SCCBwrite+0xac>
+  7c:	e3a01050 	mov	r1, #80	; 0x50
+  80:	e3a0202c 	mov	r2, #44	; 0x2c
+  84:	e5801000 	str	r1, [r0]
+  88:	e5802018 	str	r2, [r0, #24]
+  8c:	e8bd40f8 	pop	{r3, r4, r5, r6, r7, lr}
+  90:	e12fff1e 	bx	lr
+  94:	e59f0014 	ldr	r0, [pc, #20]	; b0 <SCCBwrite+0xb0>
+  98:	ebfffffe 	bl	0 <printf>
+  9c:	eafffff5 	b	78 <SCCBwrite+0x78>
+  a0:	00000000 	.word	0x00000000
+  a4:	000000ec 	.word	0x000000ec
+  a8:	0000010c 	.word	0x0000010c
+  ac:	e0080000 	.word	0xe0080000
+  b0:	000000b8 	.word	0x000000b8
+
+Disassembly of section .text.SCCBByteWrite:
+
+00000000 <SCCBByteWrite>:
+   0:	e92d4038 	.word	0xe92d4038
+   4:	e1a05440 	asr	r5, r0, #8
+   8:	e20040ff 	and	r4, r0, #255	; 0xff
+   c:	e1a01005 	mov	r1, r5
+  10:	e1a03004 	mov	r3, r4
+  14:	e3a02008 	mov	r2, #8
+  18:	e59f001c 	ldr	r0, [pc, #28]	; 3c <SCCBByteWrite+0x3c>
+  1c:	ebfffffe 	bl	0 <printf>
+  20:	e20500ff 	and	r0, r5, #255	; 0xff
+  24:	e3a01008 	mov	r1, #8
+  28:	e1a02004 	mov	r2, r4
+  2c:	ebfffffe 	bl	0 <SCCBByteWrite>
+  30:	e3a00000 	mov	r0, #0
+  34:	e8bd4038 	pop	{r3, r4, r5, lr}
+  38:	e12fff1e 	bx	lr
+  3c:	00000114 	.word	0x00000114
+
+Disassembly of section .text.vi2c:
+
+00000000 <vi2c>:
+   0:	e59f3864 	ldr	r3, [pc, #2148]	; 86c <vi2c+0x86c>
+   4:	e92d41f0 	push	{r4, r5, r6, r7, r8, lr}
+   8:	e3a01050 	mov	r1, #80	; 0x50
+   c:	e3a020b4 	mov	r2, #180	; 0xb4
+  10:	e3a04040 	mov	r4, #64	; 0x40
+  14:	e5834000 	str	r4, [r3]
+  18:	e3a000c8 	mov	r0, #200	; 0xc8
+  1c:	e5831010 	str	r1, [r3, #16]
+  20:	e5832014 	str	r2, [r3, #20]
+  24:	ebfffffe 	bl	0 <vTaskDelay>
+  28:	e3a01008 	mov	r1, #8
+  2c:	e3a02080 	mov	r2, #128	; 0x80
+  30:	e3a00012 	mov	r0, #18
+  34:	ebfffffe 	bl	0 <vi2c>
+  38:	e59f7830 	ldr	r7, [pc, #2096]	; 870 <vi2c+0x870>
+  3c:	e59f0830 	ldr	r0, [pc, #2096]	; 874 <vi2c+0x874>
+  40:	ebfffffe 	bl	0 <vi2c>
+  44:	e3a00002 	mov	r0, #2
+  48:	ebfffffe 	bl	0 <vTaskDelay>
+  4c:	e59f6824 	ldr	r6, [pc, #2084]	; 878 <vi2c+0x878>
+  50:	e1a00007 	mov	r0, r7
+  54:	ebfffffe 	bl	0 <vi2c>
+  58:	e3a00002 	mov	r0, #2
+  5c:	ebfffffe 	bl	0 <vTaskDelay>
+  60:	e59f5814 	ldr	r5, [pc, #2068]	; 87c <vi2c+0x87c>
+  64:	e1a00006 	mov	r0, r6
+  68:	ebfffffe 	bl	0 <vi2c>
+  6c:	e3a00002 	mov	r0, #2
+  70:	ebfffffe 	bl	0 <vTaskDelay>
+  74:	e59f4804 	ldr	r4, [pc, #2052]	; 880 <vi2c+0x880>
+  78:	e1a00005 	mov	r0, r5
+  7c:	ebfffffe 	bl	0 <vi2c>
+  80:	e3a00002 	mov	r0, #2
+  84:	ebfffffe 	bl	0 <vTaskDelay>
+  88:	e1a00004 	mov	r0, r4
+  8c:	ebfffffe 	bl	0 <vi2c>
+  90:	e3a00002 	mov	r0, #2
+  94:	ebfffffe 	bl	0 <vTaskDelay>
+  98:	e1a00007 	mov	r0, r7
+  9c:	ebfffffe 	bl	0 <vi2c>
+  a0:	e3a00002 	mov	r0, #2
+  a4:	ebfffffe 	bl	0 <vTaskDelay>
+  a8:	e1a00006 	mov	r0, r6
+  ac:	ebfffffe 	bl	0 <vi2c>
+  b0:	e3a00002 	mov	r0, #2
+  b4:	ebfffffe 	bl	0 <vTaskDelay>
+  b8:	e1a00005 	mov	r0, r5
+  bc:	ebfffffe 	bl	0 <vi2c>
+  c0:	e3a00002 	mov	r0, #2
+  c4:	ebfffffe 	bl	0 <vTaskDelay>
+  c8:	e59f07b4 	ldr	r0, [pc, #1972]	; 884 <vi2c+0x884>
+  cc:	ebfffffe 	bl	0 <vi2c>
+  d0:	e3a00002 	mov	r0, #2
+  d4:	ebfffffe 	bl	0 <vTaskDelay>
+  d8:	e1a00004 	mov	r0, r4
+  dc:	ebfffffe 	bl	0 <vi2c>
+  e0:	e3a00002 	mov	r0, #2
+  e4:	ebfffffe 	bl	0 <vTaskDelay>
+  e8:	e59f0798 	ldr	r0, [pc, #1944]	; 888 <vi2c+0x888>
+  ec:	ebfffffe 	bl	0 <vi2c>
+  f0:	e3a00002 	mov	r0, #2
+  f4:	ebfffffe 	bl	0 <vTaskDelay>
+  f8:	e59f078c 	ldr	r0, [pc, #1932]	; 88c <vi2c+0x88c>
+  fc:	ebfffffe 	bl	0 <vi2c>
+ 100:	e3a00002 	mov	r0, #2
+ 104:	ebfffffe 	bl	0 <vTaskDelay>
+ 108:	e3a00c15 	mov	r0, #5376	; 0x1500
+ 10c:	ebfffffe 	bl	0 <vi2c>
+ 110:	e3a00002 	mov	r0, #2
+ 114:	ebfffffe 	bl	0 <vTaskDelay>
+ 118:	e59f0770 	ldr	r0, [pc, #1904]	; 890 <vi2c+0x890>
+ 11c:	ebfffffe 	bl	0 <vi2c>
+ 120:	e3a00002 	mov	r0, #2
+ 124:	ebfffffe 	bl	0 <vTaskDelay>
+ 128:	e59f0764 	ldr	r0, [pc, #1892]	; 894 <vi2c+0x894>
+ 12c:	ebfffffe 	bl	0 <vi2c>
+ 130:	e3a00002 	mov	r0, #2
+ 134:	ebfffffe 	bl	0 <vTaskDelay>
+ 138:	e59f0758 	ldr	r0, [pc, #1880]	; 898 <vi2c+0x898>
+ 13c:	ebfffffe 	bl	0 <vi2c>
+ 140:	e3a00002 	mov	r0, #2
+ 144:	ebfffffe 	bl	0 <vTaskDelay>
+ 148:	e59f074c 	ldr	r0, [pc, #1868]	; 89c <vi2c+0x89c>
+ 14c:	ebfffffe 	bl	0 <vi2c>
+ 150:	e3a00002 	mov	r0, #2
+ 154:	ebfffffe 	bl	0 <vTaskDelay>
+ 158:	e59f0740 	ldr	r0, [pc, #1856]	; 8a0 <vi2c+0x8a0>
+ 15c:	ebfffffe 	bl	0 <vi2c>
+ 160:	e3a00002 	mov	r0, #2
+ 164:	ebfffffe 	bl	0 <vTaskDelay>
+ 168:	e59f0734 	ldr	r0, [pc, #1844]	; 8a4 <vi2c+0x8a4>
+ 16c:	ebfffffe 	bl	0 <vi2c>
+ 170:	e3a00002 	mov	r0, #2
+ 174:	ebfffffe 	bl	0 <vTaskDelay>
+ 178:	e59f0728 	ldr	r0, [pc, #1832]	; 8a8 <vi2c+0x8a8>
+ 17c:	ebfffffe 	bl	0 <vi2c>
+ 180:	e3a00002 	mov	r0, #2
+ 184:	ebfffffe 	bl	0 <vTaskDelay>
+ 188:	e59f071c 	ldr	r0, [pc, #1820]	; 8ac <vi2c+0x8ac>
+ 18c:	ebfffffe 	bl	0 <vi2c>
+ 190:	e3a00002 	mov	r0, #2
+ 194:	ebfffffe 	bl	0 <vTaskDelay>
+ 198:	e59f0710 	ldr	r0, [pc, #1808]	; 8b0 <vi2c+0x8b0>
+ 19c:	ebfffffe 	bl	0 <vi2c>
+ 1a0:	e3a00002 	mov	r0, #2
+ 1a4:	ebfffffe 	bl	0 <vTaskDelay>
+ 1a8:	e59f0704 	ldr	r0, [pc, #1796]	; 8b4 <vi2c+0x8b4>
+ 1ac:	ebfffffe 	bl	0 <vi2c>
+ 1b0:	e3a00002 	mov	r0, #2
+ 1b4:	ebfffffe 	bl	0 <vTaskDelay>
+ 1b8:	e59f06f8 	ldr	r0, [pc, #1784]	; 8b8 <vi2c+0x8b8>
+ 1bc:	ebfffffe 	bl	0 <vi2c>
+ 1c0:	e3a00002 	mov	r0, #2
+ 1c4:	ebfffffe 	bl	0 <vTaskDelay>
+ 1c8:	e59f06ec 	ldr	r0, [pc, #1772]	; 8bc <vi2c+0x8bc>
+ 1cc:	ebfffffe 	bl	0 <vi2c>
+ 1d0:	e3a00002 	mov	r0, #2
+ 1d4:	ebfffffe 	bl	0 <vTaskDelay>
+ 1d8:	e59f06e0 	ldr	r0, [pc, #1760]	; 8c0 <vi2c+0x8c0>
+ 1dc:	ebfffffe 	bl	0 <vi2c>
+ 1e0:	e3a00002 	mov	r0, #2
+ 1e4:	ebfffffe 	bl	0 <vTaskDelay>
+ 1e8:	e59f06d4 	ldr	r0, [pc, #1748]	; 8c4 <vi2c+0x8c4>
+ 1ec:	ebfffffe 	bl	0 <vi2c>
+ 1f0:	e3a00002 	mov	r0, #2
+ 1f4:	ebfffffe 	bl	0 <vTaskDelay>
+ 1f8:	e59f06c8 	ldr	r0, [pc, #1736]	; 8c8 <vi2c+0x8c8>
+ 1fc:	ebfffffe 	bl	0 <vi2c>
+ 200:	e3a00002 	mov	r0, #2
+ 204:	ebfffffe 	bl	0 <vTaskDelay>
+ 208:	e59f06bc 	ldr	r0, [pc, #1724]	; 8cc <vi2c+0x8cc>
+ 20c:	ebfffffe 	bl	0 <vi2c>
+ 210:	e3a00002 	mov	r0, #2
+ 214:	ebfffffe 	bl	0 <vTaskDelay>
+ 218:	e59f06b0 	ldr	r0, [pc, #1712]	; 8d0 <vi2c+0x8d0>
+ 21c:	ebfffffe 	bl	0 <vi2c>
+ 220:	e3a00002 	mov	r0, #2
+ 224:	ebfffffe 	bl	0 <vTaskDelay>
+ 228:	e3a00000 	mov	r0, #0
+ 22c:	ebfffffe 	bl	0 <vi2c>
+ 230:	e3a00002 	mov	r0, #2
+ 234:	ebfffffe 	bl	0 <vTaskDelay>
+ 238:	e3a00a01 	mov	r0, #4096	; 0x1000
+ 23c:	ebfffffe 	bl	0 <vi2c>
+ 240:	e3a00002 	mov	r0, #2
+ 244:	ebfffffe 	bl	0 <vTaskDelay>
+ 248:	e3a00d35 	mov	r0, #3392	; 0xd40
+ 24c:	ebfffffe 	bl	0 <vi2c>
+ 250:	e3a00002 	mov	r0, #2
+ 254:	ebfffffe 	bl	0 <vTaskDelay>
+ 258:	e59f0674 	ldr	r0, [pc, #1652]	; 8d4 <vi2c+0x8d4>
+ 25c:	ebfffffe 	bl	0 <vi2c>
+ 260:	e3a00002 	mov	r0, #2
+ 264:	ebfffffe 	bl	0 <vTaskDelay>
+ 268:	e59f0668 	ldr	r0, [pc, #1640]	; 8d8 <vi2c+0x8d8>
+ 26c:	ebfffffe 	bl	0 <vi2c>
+ 270:	e3a00002 	mov	r0, #2
+ 274:	ebfffffe 	bl	0 <vTaskDelay>
+ 278:	e59f065c 	ldr	r0, [pc, #1628]	; 8dc <vi2c+0x8dc>
+ 27c:	ebfffffe 	bl	0 <vi2c>
+ 280:	e3a00002 	mov	r0, #2
+ 284:	ebfffffe 	bl	0 <vTaskDelay>
+ 288:	e59f0650 	ldr	r0, [pc, #1616]	; 8e0 <vi2c+0x8e0>
+ 28c:	ebfffffe 	bl	0 <vi2c>
+ 290:	e3a00002 	mov	r0, #2
+ 294:	ebfffffe 	bl	0 <vTaskDelay>
+ 298:	e59f0644 	ldr	r0, [pc, #1604]	; 8e4 <vi2c+0x8e4>
+ 29c:	ebfffffe 	bl	0 <vi2c>
+ 2a0:	e3a00002 	mov	r0, #2
+ 2a4:	ebfffffe 	bl	0 <vTaskDelay>
+ 2a8:	e59f0638 	ldr	r0, [pc, #1592]	; 8e8 <vi2c+0x8e8>
+ 2ac:	ebfffffe 	bl	0 <vi2c>
+ 2b0:	e3a00002 	mov	r0, #2
+ 2b4:	ebfffffe 	bl	0 <vTaskDelay>
+ 2b8:	e59f062c 	ldr	r0, [pc, #1580]	; 8ec <vi2c+0x8ec>
+ 2bc:	ebfffffe 	bl	0 <vi2c>
+ 2c0:	e3a00002 	mov	r0, #2
+ 2c4:	ebfffffe 	bl	0 <vTaskDelay>
+ 2c8:	e59f0620 	ldr	r0, [pc, #1568]	; 8f0 <vi2c+0x8f0>
+ 2cc:	ebfffffe 	bl	0 <vi2c>
+ 2d0:	e3a00002 	mov	r0, #2
+ 2d4:	ebfffffe 	bl	0 <vTaskDelay>
+ 2d8:	e59f0614 	ldr	r0, [pc, #1556]	; 8f4 <vi2c+0x8f4>
+ 2dc:	ebfffffe 	bl	0 <vi2c>
+ 2e0:	e3a00002 	mov	r0, #2
+ 2e4:	ebfffffe 	bl	0 <vTaskDelay>
+ 2e8:	e59f0608 	ldr	r0, [pc, #1544]	; 8f8 <vi2c+0x8f8>
+ 2ec:	ebfffffe 	bl	0 <vi2c>
+ 2f0:	e3a00002 	mov	r0, #2
+ 2f4:	ebfffffe 	bl	0 <vTaskDelay>
+ 2f8:	e59f05fc 	ldr	r0, [pc, #1532]	; 8fc <vi2c+0x8fc>
+ 2fc:	ebfffffe 	bl	0 <vi2c>
+ 300:	e3a00002 	mov	r0, #2
+ 304:	ebfffffe 	bl	0 <vTaskDelay>
+ 308:	e59f05f0 	ldr	r0, [pc, #1520]	; 900 <vi2c+0x900>
+ 30c:	ebfffffe 	bl	0 <vi2c>
+ 310:	e3a00002 	mov	r0, #2
+ 314:	ebfffffe 	bl	0 <vTaskDelay>
+ 318:	e59f05e4 	ldr	r0, [pc, #1508]	; 904 <vi2c+0x904>
+ 31c:	ebfffffe 	bl	0 <vi2c>
+ 320:	e3a00002 	mov	r0, #2
+ 324:	ebfffffe 	bl	0 <vTaskDelay>
+ 328:	e59f05d8 	ldr	r0, [pc, #1496]	; 908 <vi2c+0x908>
+ 32c:	ebfffffe 	bl	0 <vi2c>
+ 330:	e3a00002 	mov	r0, #2
+ 334:	ebfffffe 	bl	0 <vTaskDelay>
+ 338:	e59f05cc 	ldr	r0, [pc, #1484]	; 90c <vi2c+0x90c>
+ 33c:	ebfffffe 	bl	0 <vi2c>
+ 340:	e3a00002 	mov	r0, #2
+ 344:	ebfffffe 	bl	0 <vTaskDelay>
+ 348:	e59f05c0 	ldr	r0, [pc, #1472]	; 910 <vi2c+0x910>
+ 34c:	ebfffffe 	bl	0 <vi2c>
+ 350:	e3a00002 	mov	r0, #2
+ 354:	ebfffffe 	bl	0 <vTaskDelay>
+ 358:	e59f05b4 	ldr	r0, [pc, #1460]	; 914 <vi2c+0x914>
+ 35c:	ebfffffe 	bl	0 <vi2c>
+ 360:	e3a00002 	mov	r0, #2
+ 364:	ebfffffe 	bl	0 <vTaskDelay>
+ 368:	e59f05a8 	ldr	r0, [pc, #1448]	; 918 <vi2c+0x918>
+ 36c:	ebfffffe 	bl	0 <vi2c>
+ 370:	e3a00002 	mov	r0, #2
+ 374:	ebfffffe 	bl	0 <vTaskDelay>
+ 378:	e59f059c 	ldr	r0, [pc, #1436]	; 91c <vi2c+0x91c>
+ 37c:	ebfffffe 	bl	0 <vi2c>
+ 380:	e3a00002 	mov	r0, #2
+ 384:	ebfffffe 	bl	0 <vTaskDelay>
+ 388:	e59f0590 	ldr	r0, [pc, #1424]	; 920 <vi2c+0x920>
+ 38c:	ebfffffe 	bl	0 <vi2c>
+ 390:	e3a00002 	mov	r0, #2
+ 394:	ebfffffe 	bl	0 <vTaskDelay>
+ 398:	e59f0584 	ldr	r0, [pc, #1412]	; 924 <vi2c+0x924>
+ 39c:	ebfffffe 	bl	0 <vi2c>
+ 3a0:	e3a00002 	mov	r0, #2
+ 3a4:	ebfffffe 	bl	0 <vTaskDelay>
+ 3a8:	e59f0578 	ldr	r0, [pc, #1400]	; 928 <vi2c+0x928>
+ 3ac:	ebfffffe 	bl	0 <vi2c>
+ 3b0:	e3a00002 	mov	r0, #2
+ 3b4:	ebfffffe 	bl	0 <vTaskDelay>
+ 3b8:	e59f056c 	ldr	r0, [pc, #1388]	; 92c <vi2c+0x92c>
+ 3bc:	ebfffffe 	bl	0 <vi2c>
+ 3c0:	e3a00002 	mov	r0, #2
+ 3c4:	ebfffffe 	bl	0 <vTaskDelay>
+ 3c8:	e59f0560 	ldr	r0, [pc, #1376]	; 930 <vi2c+0x930>
+ 3cc:	ebfffffe 	bl	0 <vi2c>
+ 3d0:	e3a00002 	mov	r0, #2
+ 3d4:	ebfffffe 	bl	0 <vTaskDelay>
+ 3d8:	e59f0554 	ldr	r0, [pc, #1364]	; 934 <vi2c+0x934>
+ 3dc:	ebfffffe 	bl	0 <vi2c>
+ 3e0:	e3a00002 	mov	r0, #2
+ 3e4:	ebfffffe 	bl	0 <vTaskDelay>
+ 3e8:	e59f0548 	ldr	r0, [pc, #1352]	; 938 <vi2c+0x938>
+ 3ec:	ebfffffe 	bl	0 <vi2c>
+ 3f0:	e3a00002 	mov	r0, #2
+ 3f4:	ebfffffe 	bl	0 <vTaskDelay>
+ 3f8:	e59f053c 	ldr	r0, [pc, #1340]	; 93c <vi2c+0x93c>
+ 3fc:	ebfffffe 	bl	0 <vi2c>
+ 400:	e3a00002 	mov	r0, #2
+ 404:	ebfffffe 	bl	0 <vTaskDelay>
+ 408:	e59f0530 	ldr	r0, [pc, #1328]	; 940 <vi2c+0x940>
+ 40c:	ebfffffe 	bl	0 <vi2c>
+ 410:	e3a00002 	mov	r0, #2
+ 414:	ebfffffe 	bl	0 <vTaskDelay>
+ 418:	e59f0524 	ldr	r0, [pc, #1316]	; 944 <vi2c+0x944>
+ 41c:	ebfffffe 	bl	0 <vi2c>
+ 420:	e3a00002 	mov	r0, #2
+ 424:	ebfffffe 	bl	0 <vTaskDelay>
+ 428:	e59f0518 	ldr	r0, [pc, #1304]	; 948 <vi2c+0x948>
+ 42c:	ebfffffe 	bl	0 <vi2c>
+ 430:	e3a00002 	mov	r0, #2
+ 434:	ebfffffe 	bl	0 <vTaskDelay>
+ 438:	e3a00c69 	mov	r0, #26880	; 0x6900
+ 43c:	ebfffffe 	bl	0 <vi2c>
+ 440:	e3a00002 	mov	r0, #2
+ 444:	ebfffffe 	bl	0 <vTaskDelay>
+ 448:	e59f04fc 	ldr	r0, [pc, #1276]	; 94c <vi2c+0x94c>
+ 44c:	ebfffffe 	bl	0 <vi2c>
+ 450:	e3a00002 	mov	r0, #2
+ 454:	ebfffffe 	bl	0 <vTaskDelay>
+ 458:	e59f04f0 	ldr	r0, [pc, #1264]	; 950 <vi2c+0x950>
+ 45c:	ebfffffe 	bl	0 <vi2c>
+ 460:	e3a00002 	mov	r0, #2
+ 464:	ebfffffe 	bl	0 <vTaskDelay>
+ 468:	e59f04e4 	ldr	r0, [pc, #1252]	; 954 <vi2c+0x954>
+ 46c:	ebfffffe 	bl	0 <vi2c>
+ 470:	e3a00002 	mov	r0, #2
+ 474:	ebfffffe 	bl	0 <vTaskDelay>
+ 478:	e3a00c8e 	mov	r0, #36352	; 0x8e00
+ 47c:	ebfffffe 	bl	0 <vi2c>
+ 480:	e3a00002 	mov	r0, #2
+ 484:	ebfffffe 	bl	0 <vTaskDelay>
+ 488:	e3a00c8f 	mov	r0, #36608	; 0x8f00
+ 48c:	ebfffffe 	bl	0 <vi2c>
+ 490:	e3a00002 	mov	r0, #2
+ 494:	ebfffffe 	bl	0 <vTaskDelay>
+ 498:	e3a00a09 	mov	r0, #36864	; 0x9000
+ 49c:	ebfffffe 	bl	0 <vi2c>
+ 4a0:	e3a00002 	mov	r0, #2
+ 4a4:	ebfffffe 	bl	0 <vTaskDelay>
+ 4a8:	e3a00c91 	mov	r0, #37120	; 0x9100
+ 4ac:	ebfffffe 	bl	0 <vi2c>
+ 4b0:	e3a00002 	mov	r0, #2
+ 4b4:	ebfffffe 	bl	0 <vTaskDelay>
+ 4b8:	e3a00c96 	mov	r0, #38400	; 0x9600
+ 4bc:	ebfffffe 	bl	0 <vi2c>
+ 4c0:	e3a00002 	mov	r0, #2
+ 4c4:	ebfffffe 	bl	0 <vTaskDelay>
+ 4c8:	e3a00c9a 	mov	r0, #39424	; 0x9a00
+ 4cc:	ebfffffe 	bl	0 <vi2c>
+ 4d0:	e3a00002 	mov	r0, #2
+ 4d4:	ebfffffe 	bl	0 <vTaskDelay>
+ 4d8:	e59f0478 	ldr	r0, [pc, #1144]	; 958 <vi2c+0x958>
+ 4dc:	ebfffffe 	bl	0 <vi2c>
+ 4e0:	e3a00002 	mov	r0, #2
+ 4e4:	ebfffffe 	bl	0 <vTaskDelay>
+ 4e8:	e59f046c 	ldr	r0, [pc, #1132]	; 95c <vi2c+0x95c>
+ 4ec:	ebfffffe 	bl	0 <vi2c>
+ 4f0:	e3a00002 	mov	r0, #2
+ 4f4:	ebfffffe 	bl	0 <vTaskDelay>
+ 4f8:	e59f0460 	ldr	r0, [pc, #1120]	; 960 <vi2c+0x960>
+ 4fc:	ebfffffe 	bl	0 <vi2c>
+ 500:	e3a00002 	mov	r0, #2
+ 504:	ebfffffe 	bl	0 <vTaskDelay>
+ 508:	e59f0454 	ldr	r0, [pc, #1108]	; 964 <vi2c+0x964>
+ 50c:	ebfffffe 	bl	0 <vi2c>
+ 510:	e3a00002 	mov	r0, #2
+ 514:	ebfffffe 	bl	0 <vTaskDelay>
+ 518:	e59f0448 	ldr	r0, [pc, #1096]	; 968 <vi2c+0x968>
+ 51c:	ebfffffe 	bl	0 <vi2c>
+ 520:	e3a00002 	mov	r0, #2
+ 524:	ebfffffe 	bl	0 <vTaskDelay>
+ 528:	e59f043c 	ldr	r0, [pc, #1084]	; 96c <vi2c+0x96c>
+ 52c:	ebfffffe 	bl	0 <vi2c>
+ 530:	e3a00002 	mov	r0, #2
+ 534:	ebfffffe 	bl	0 <vTaskDelay>
+ 538:	e59f0430 	ldr	r0, [pc, #1072]	; 970 <vi2c+0x970>
+ 53c:	ebfffffe 	bl	0 <vi2c>
+ 540:	e3a00002 	mov	r0, #2
+ 544:	ebfffffe 	bl	0 <vTaskDelay>
+ 548:	e59f0424 	ldr	r0, [pc, #1060]	; 974 <vi2c+0x974>
+ 54c:	ebfffffe 	bl	0 <vi2c>
+ 550:	e3a00002 	mov	r0, #2
+ 554:	ebfffffe 	bl	0 <vTaskDelay>
+ 558:	e59f0418 	ldr	r0, [pc, #1048]	; 978 <vi2c+0x978>
+ 55c:	ebfffffe 	bl	0 <vi2c>
+ 560:	e3a00002 	mov	r0, #2
+ 564:	ebfffffe 	bl	0 <vTaskDelay>
+ 568:	e59f040c 	ldr	r0, [pc, #1036]	; 97c <vi2c+0x97c>
+ 56c:	ebfffffe 	bl	0 <vi2c>
+ 570:	e3a00002 	mov	r0, #2
+ 574:	ebfffffe 	bl	0 <vTaskDelay>
+ 578:	e59f0400 	ldr	r0, [pc, #1024]	; 980 <vi2c+0x980>
+ 57c:	ebfffffe 	bl	0 <vi2c>
+ 580:	e3a00002 	mov	r0, #2
+ 584:	ebfffffe 	bl	0 <vTaskDelay>
+ 588:	e59f03f4 	ldr	r0, [pc, #1012]	; 984 <vi2c+0x984>
+ 58c:	ebfffffe 	bl	0 <vi2c>
+ 590:	e3a00002 	mov	r0, #2
+ 594:	ebfffffe 	bl	0 <vTaskDelay>
+ 598:	e59f03e8 	ldr	r0, [pc, #1000]	; 988 <vi2c+0x988>
+ 59c:	ebfffffe 	bl	0 <vi2c>
+ 5a0:	e3a00002 	mov	r0, #2
+ 5a4:	ebfffffe 	bl	0 <vTaskDelay>
+ 5a8:	e59f03dc 	ldr	r0, [pc, #988]	; 98c <vi2c+0x98c>
+ 5ac:	ebfffffe 	bl	0 <vi2c>
+ 5b0:	e3a00002 	mov	r0, #2
+ 5b4:	ebfffffe 	bl	0 <vTaskDelay>
+ 5b8:	e59f03d0 	ldr	r0, [pc, #976]	; 990 <vi2c+0x990>
+ 5bc:	ebfffffe 	bl	0 <vi2c>
+ 5c0:	e3a00002 	mov	r0, #2
+ 5c4:	ebfffffe 	bl	0 <vTaskDelay>
+ 5c8:	e59f03c4 	ldr	r0, [pc, #964]	; 994 <vi2c+0x994>
+ 5cc:	ebfffffe 	bl	0 <vi2c>
+ 5d0:	e3a00002 	mov	r0, #2
+ 5d4:	ebfffffe 	bl	0 <vTaskDelay>
+ 5d8:	e59f03b8 	ldr	r0, [pc, #952]	; 998 <vi2c+0x998>
+ 5dc:	ebfffffe 	bl	0 <vi2c>
+ 5e0:	e3a00002 	mov	r0, #2
+ 5e4:	ebfffffe 	bl	0 <vTaskDelay>
+ 5e8:	e59f03ac 	ldr	r0, [pc, #940]	; 99c <vi2c+0x99c>
+ 5ec:	ebfffffe 	bl	0 <vi2c>
+ 5f0:	e3a00002 	mov	r0, #2
+ 5f4:	ebfffffe 	bl	0 <vTaskDelay>
+ 5f8:	e59f03a0 	ldr	r0, [pc, #928]	; 9a0 <vi2c+0x9a0>
+ 5fc:	ebfffffe 	bl	0 <vi2c>
+ 600:	e3a00002 	mov	r0, #2
+ 604:	ebfffffe 	bl	0 <vTaskDelay>
+ 608:	e59f0394 	ldr	r0, [pc, #916]	; 9a4 <vi2c+0x9a4>
+ 60c:	ebfffffe 	bl	0 <vi2c>
+ 610:	e3a00002 	mov	r0, #2
+ 614:	ebfffffe 	bl	0 <vTaskDelay>
+ 618:	e3a00d05 	mov	r0, #320	; 0x140
+ 61c:	ebfffffe 	bl	0 <vi2c>
+ 620:	e3a00002 	mov	r0, #2
+ 624:	ebfffffe 	bl	0 <vTaskDelay>
+ 628:	e3a00e26 	mov	r0, #608	; 0x260
+ 62c:	ebfffffe 	bl	0 <vi2c>
+ 630:	e3a00002 	mov	r0, #2
+ 634:	ebfffffe 	bl	0 <vTaskDelay>
+ 638:	e59f0368 	ldr	r0, [pc, #872]	; 9a8 <vi2c+0x9a8>
+ 63c:	ebfffffe 	bl	0 <vi2c>
+ 640:	e3a00002 	mov	r0, #2
+ 644:	ebfffffe 	bl	0 <vTaskDelay>
+ 648:	e59f035c 	ldr	r0, [pc, #860]	; 9ac <vi2c+0x9ac>
+ 64c:	ebfffffe 	bl	0 <vi2c>
+ 650:	e3a00002 	mov	r0, #2
+ 654:	ebfffffe 	bl	0 <vTaskDelay>
+ 658:	e59f0350 	ldr	r0, [pc, #848]	; 9b0 <vi2c+0x9b0>
+ 65c:	ebfffffe 	bl	0 <vi2c>
+ 660:	e3a00002 	mov	r0, #2
+ 664:	ebfffffe 	bl	0 <vTaskDelay>
+ 668:	e3a00c51 	mov	r0, #20736	; 0x5100
+ 66c:	ebfffffe 	bl	0 <vi2c>
+ 670:	e3a00002 	mov	r0, #2
+ 674:	ebfffffe 	bl	0 <vTaskDelay>
+ 678:	e59f0334 	ldr	r0, [pc, #820]	; 9b4 <vi2c+0x9b4>
+ 67c:	ebfffffe 	bl	0 <vi2c>
+ 680:	e3a00002 	mov	r0, #2
+ 684:	ebfffffe 	bl	0 <vTaskDelay>
+ 688:	e59f0328 	ldr	r0, [pc, #808]	; 9b8 <vi2c+0x9b8>
+ 68c:	ebfffffe 	bl	0 <vi2c>
+ 690:	e3a00002 	mov	r0, #2
+ 694:	ebfffffe 	bl	0 <vTaskDelay>
+ 698:	e59f031c 	ldr	r0, [pc, #796]	; 9bc <vi2c+0x9bc>
+ 69c:	ebfffffe 	bl	0 <vi2c>
+ 6a0:	e3a00002 	mov	r0, #2
+ 6a4:	ebfffffe 	bl	0 <vTaskDelay>
+ 6a8:	e59f0310 	ldr	r0, [pc, #784]	; 9c0 <vi2c+0x9c0>
+ 6ac:	ebfffffe 	bl	0 <vi2c>
+ 6b0:	e3a00002 	mov	r0, #2
+ 6b4:	ebfffffe 	bl	0 <vTaskDelay>
+ 6b8:	e59f0304 	ldr	r0, [pc, #772]	; 9c4 <vi2c+0x9c4>
+ 6bc:	ebfffffe 	bl	0 <vi2c>
+ 6c0:	e3a00002 	mov	r0, #2
+ 6c4:	ebfffffe 	bl	0 <vTaskDelay>
+ 6c8:	e3a00c3f 	mov	r0, #16128	; 0x3f00
+ 6cc:	ebfffffe 	bl	0 <vi2c>
+ 6d0:	e3a00002 	mov	r0, #2
+ 6d4:	ebfffffe 	bl	0 <vTaskDelay>
+ 6d8:	e59f02e8 	ldr	r0, [pc, #744]	; 9c8 <vi2c+0x9c8>
+ 6dc:	ebfffffe 	bl	0 <vi2c>
+ 6e0:	e3a00002 	mov	r0, #2
+ 6e4:	ebfffffe 	bl	0 <vTaskDelay>
+ 6e8:	e59f02dc 	ldr	r0, [pc, #732]	; 9cc <vi2c+0x9cc>
+ 6ec:	ebfffffe 	bl	0 <vi2c>
+ 6f0:	e3a00002 	mov	r0, #2
+ 6f4:	ebfffffe 	bl	0 <vTaskDelay>
+ 6f8:	e3a00b13 	mov	r0, #19456	; 0x4c00
+ 6fc:	ebfffffe 	bl	0 <vi2c>
+ 700:	e3a00002 	mov	r0, #2
+ 704:	ebfffffe 	bl	0 <vTaskDelay>
+ 708:	e59f02c0 	ldr	r0, [pc, #704]	; 9d0 <vi2c+0x9d0>
+ 70c:	ebfffffe 	bl	0 <vi2c>
+ 710:	e3a00002 	mov	r0, #2
+ 714:	ebfffffe 	bl	0 <vTaskDelay>
+ 718:	e59f02b4 	ldr	r0, [pc, #692]	; 9d4 <vi2c+0x9d4>
+ 71c:	ebfffffe 	bl	0 <vi2c>
+ 720:	e3a00002 	mov	r0, #2
+ 724:	ebfffffe 	bl	0 <vTaskDelay>
+ 728:	e59f02a8 	ldr	r0, [pc, #680]	; 9d8 <vi2c+0x9d8>
+ 72c:	ebfffffe 	bl	0 <vi2c>
+ 730:	e3a00002 	mov	r0, #2
+ 734:	ebfffffe 	bl	0 <vTaskDelay>
+ 738:	e59f029c 	ldr	r0, [pc, #668]	; 9dc <vi2c+0x9dc>
+ 73c:	ebfffffe 	bl	0 <vi2c>
+ 740:	e3a00002 	mov	r0, #2
+ 744:	ebfffffe 	bl	0 <vTaskDelay>
+ 748:	e59f0290 	ldr	r0, [pc, #656]	; 9e0 <vi2c+0x9e0>
+ 74c:	ebfffffe 	bl	0 <vi2c>
+ 750:	e3a00002 	mov	r0, #2
+ 754:	ebfffffe 	bl	0 <vTaskDelay>
+ 758:	e59f0284 	ldr	r0, [pc, #644]	; 9e4 <vi2c+0x9e4>
+ 75c:	ebfffffe 	bl	0 <vi2c>
+ 760:	e3a00002 	mov	r0, #2
+ 764:	ebfffffe 	bl	0 <vTaskDelay>
+ 768:	e59f0278 	ldr	r0, [pc, #632]	; 9e8 <vi2c+0x9e8>
+ 76c:	ebfffffe 	bl	0 <vi2c>
+ 770:	e3a00002 	mov	r0, #2
+ 774:	ebfffffe 	bl	0 <vTaskDelay>
+ 778:	e59f026c 	ldr	r0, [pc, #620]	; 9ec <vi2c+0x9ec>
+ 77c:	ebfffffe 	bl	0 <vi2c>
+ 780:	e3a00002 	mov	r0, #2
+ 784:	ebfffffe 	bl	0 <vTaskDelay>
+ 788:	e59f0260 	ldr	r0, [pc, #608]	; 9f0 <vi2c+0x9f0>
+ 78c:	ebfffffe 	bl	0 <vi2c>
+ 790:	e3a00002 	mov	r0, #2
+ 794:	ebfffffe 	bl	0 <vTaskDelay>
+ 798:	e3a00c96 	mov	r0, #38400	; 0x9600
+ 79c:	ebfffffe 	bl	0 <vi2c>
+ 7a0:	e3a00002 	mov	r0, #2
+ 7a4:	ebfffffe 	bl	0 <vTaskDelay>
+ 7a8:	e59f0244 	ldr	r0, [pc, #580]	; 9f4 <vi2c+0x9f4>
+ 7ac:	ebfffffe 	bl	0 <vi2c>
+ 7b0:	e3a00002 	mov	r0, #2
+ 7b4:	ebfffffe 	bl	0 <vTaskDelay>
+ 7b8:	e59f0238 	ldr	r0, [pc, #568]	; 9f8 <vi2c+0x9f8>
+ 7bc:	ebfffffe 	bl	0 <vi2c>
+ 7c0:	e3a00002 	mov	r0, #2
+ 7c4:	ebfffffe 	bl	0 <vTaskDelay>
+ 7c8:	e59f022c 	ldr	r0, [pc, #556]	; 9fc <vi2c+0x9fc>
+ 7cc:	ebfffffe 	bl	0 <vi2c>
+ 7d0:	e3a00002 	mov	r0, #2
+ 7d4:	ebfffffe 	bl	0 <vTaskDelay>
+ 7d8:	e59f0220 	ldr	r0, [pc, #544]	; a00 <vi2c+0xa00>
+ 7dc:	ebfffffe 	bl	0 <vi2c>
+ 7e0:	e3a00002 	mov	r0, #2
+ 7e4:	ebfffffe 	bl	0 <vTaskDelay>
+ 7e8:	e59f0214 	ldr	r0, [pc, #532]	; a04 <vi2c+0xa04>
+ 7ec:	ebfffffe 	bl	0 <vi2c>
+ 7f0:	e3a00002 	mov	r0, #2
+ 7f4:	ebfffffe 	bl	0 <vTaskDelay>
+ 7f8:	e59f0208 	ldr	r0, [pc, #520]	; a08 <vi2c+0xa08>
+ 7fc:	ebfffffe 	bl	0 <vi2c>
+ 800:	e3a00002 	mov	r0, #2
+ 804:	ebfffffe 	bl	0 <vTaskDelay>
+ 808:	e59f01fc 	ldr	r0, [pc, #508]	; a0c <vi2c+0xa0c>
+ 80c:	ebfffffe 	bl	0 <vi2c>
+ 810:	e3a00002 	mov	r0, #2
+ 814:	ebfffffe 	bl	0 <vTaskDelay>
+ 818:	e59f01f0 	ldr	r0, [pc, #496]	; a10 <vi2c+0xa10>
+ 81c:	ebfffffe 	bl	0 <vi2c>
+ 820:	e3a00002 	mov	r0, #2
+ 824:	ebfffffe 	bl	0 <vTaskDelay>
+ 828:	e59f01e4 	ldr	r0, [pc, #484]	; a14 <vi2c+0xa14>
+ 82c:	ebfffffe 	bl	0 <vi2c>
+ 830:	e3a00002 	mov	r0, #2
+ 834:	ebfffffe 	bl	0 <vTaskDelay>
+ 838:	e59f01d8 	ldr	r0, [pc, #472]	; a18 <vi2c+0xa18>
+ 83c:	ebfffffe 	bl	0 <vi2c>
+ 840:	e3a00002 	mov	r0, #2
+ 844:	ebfffffe 	bl	0 <vTaskDelay>
+ 848:	e59f01cc 	ldr	r0, [pc, #460]	; a1c <vi2c+0xa1c>
+ 84c:	ebfffffe 	bl	0 <vi2c>
+ 850:	e3a000c8 	mov	r0, #200	; 0xc8
+ 854:	ebfffffe 	bl	0 <vTaskDelay>
+ 858:	e3a00000 	mov	r0, #0
+ 85c:	e3a010ca 	mov	r1, #202	; 0xca
+ 860:	e1a02000 	mov	r2, r0
+ 864:	e8bd41f0 	pop	{r4, r5, r6, r7, r8, lr}
+ 868:	eafffffe 	b	0 <vi2c>
+ 86c:	e0080000 	.word	0xe0080000
+ 870:	000040d0 	.word	0x000040d0
+ 874:	00001204 	.word	0x00001204
+ 878:	00008c02 	.word	0x00008c02
+ 87c:	0000703a 	.word	0x0000703a
+ 880:	00007211 	.word	0x00007211
+ 884:	00007135 	.word	0x00007135
+ 888:	000073f0 	.word	0x000073f0
+ 88c:	0000a202 	.word	0x0000a202
+ 890:	00007a20 	.word	0x00007a20
+ 894:	00007b10 	.word	0x00007b10
+ 898:	00007c1e 	.word	0x00007c1e
+ 89c:	00007d35 	.word	0x00007d35
+ 8a0:	00007e5a 	.word	0x00007e5a
+ 8a4:	00007f69 	.word	0x00007f69
+ 8a8:	00008076 	.word	0x00008076
+ 8ac:	00008180 	.word	0x00008180
+ 8b0:	00008288 	.word	0x00008288
+ 8b4:	0000838f 	.word	0x0000838f
+ 8b8:	00008496 	.word	0x00008496
+ 8bc:	000085a3 	.word	0x000085a3
+ 8c0:	000086af 	.word	0x000086af
+ 8c4:	000087c4 	.word	0x000087c4
+ 8c8:	000088d7 	.word	0x000088d7
+ 8cc:	000089e8 	.word	0x000089e8
+ 8d0:	000013e0 	.word	0x000013e0
+ 8d4:	00001418 	.word	0x00001418
+ 8d8:	0000a505 	.word	0x0000a505
+ 8dc:	0000ab07 	.word	0x0000ab07
+ 8e0:	00002495 	.word	0x00002495
+ 8e4:	00002533 	.word	0x00002533
+ 8e8:	000026e3 	.word	0x000026e3
+ 8ec:	00009f78 	.word	0x00009f78
+ 8f0:	0000a068 	.word	0x0000a068
+ 8f4:	0000a103 	.word	0x0000a103
+ 8f8:	0000a6d8 	.word	0x0000a6d8
+ 8fc:	0000a7d8 	.word	0x0000a7d8
+ 900:	0000a8f0 	.word	0x0000a8f0
+ 904:	0000a990 	.word	0x0000a990
+ 908:	0000aa94 	.word	0x0000aa94
+ 90c:	000013e5 	.word	0x000013e5
+ 910:	00000e61 	.word	0x00000e61
+ 914:	00000f4b 	.word	0x00000f4b
+ 918:	00001602 	.word	0x00001602
+ 91c:	00001e07 	.word	0x00001e07
+ 920:	00002102 	.word	0x00002102
+ 924:	00002291 	.word	0x00002291
+ 928:	00002907 	.word	0x00002907
+ 92c:	0000330b 	.word	0x0000330b
+ 930:	0000350b 	.word	0x0000350b
+ 934:	0000371d 	.word	0x0000371d
+ 938:	00003871 	.word	0x00003871
+ 93c:	0000392a 	.word	0x0000392a
+ 940:	00003c78 	.word	0x00003c78
+ 944:	00004d34 	.word	0x00004d34
+ 948:	00004e20 	.word	0x00004e20
+ 94c:	00006b0a 	.word	0x00006b0a
+ 950:	00007410 	.word	0x00007410
+ 954:	00008d4f 	.word	0x00008d4f
+ 958:	0000b084 	.word	0x0000b084
+ 95c:	0000b10c 	.word	0x0000b10c
+ 960:	0000b20e 	.word	0x0000b20e
+ 964:	0000b382 	.word	0x0000b382
+ 968:	0000b80a 	.word	0x0000b80a
+ 96c:	0000430a 	.word	0x0000430a
+ 970:	000044f0 	.word	0x000044f0
+ 974:	00004534 	.word	0x00004534
+ 978:	0000483a 	.word	0x0000483a
+ 97c:	00005999 	.word	0x00005999
+ 980:	00005a88 	.word	0x00005a88
+ 984:	00005b44 	.word	0x00005b44
+ 988:	00005c67 	.word	0x00005c67
+ 98c:	00005d49 	.word	0x00005d49
+ 990:	00005e0e 	.word	0x00005e0e
+ 994:	00006c0a 	.word	0x00006c0a
+ 998:	00006d55 	.word	0x00006d55
+ 99c:	00006e11 	.word	0x00006e11
+ 9a0:	00006f9f 	.word	0x00006f9f
+ 9a4:	00006a40 	.word	0x00006a40
+ 9a8:	000013e7 	.word	0x000013e7
+ 9ac:	00004f80 	.word	0x00004f80
+ 9b0:	00005080 	.word	0x00005080
+ 9b4:	00005222 	.word	0x00005222
+ 9b8:	0000535e 	.word	0x0000535e
+ 9bc:	00005480 	.word	0x00005480
+ 9c0:	0000589e 	.word	0x0000589e
+ 9c4:	00004108 	.word	0x00004108
+ 9c8:	00007505 	.word	0x00007505
+ 9cc:	000076e1 	.word	0x000076e1
+ 9d0:	00007701 	.word	0x00007701
+ 9d4:	00003dc3 	.word	0x00003dc3
+ 9d8:	00004b09 	.word	0x00004b09
+ 9dc:	0000c960 	.word	0x0000c960
+ 9e0:	00004138 	.word	0x00004138
+ 9e4:	00005640 	.word	0x00005640
+ 9e8:	00003411 	.word	0x00003411
+ 9ec:	00003b12 	.word	0x00003b12
+ 9f0:	0000a488 	.word	0x0000a488
+ 9f4:	00009730 	.word	0x00009730
+ 9f8:	00009820 	.word	0x00009820
+ 9fc:	00009930 	.word	0x00009930
+ a00:	00009a84 	.word	0x00009a84
+ a04:	00009b29 	.word	0x00009b29
+ a08:	00009c03 	.word	0x00009c03
+ a0c:	00009d4c 	.word	0x00009d4c
+ a10:	00009e3f 	.word	0x00009e3f
+ a14:	00007804 	.word	0x00007804
+ a18:	00007901 	.word	0x00007901
+ a1c:	0000c8f0 	.word	0x0000c8f0

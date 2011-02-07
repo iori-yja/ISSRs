@@ -1,0 +1,253 @@
+/****************************************************************************
+This is i2c source for LPC23xx/24xx micro processor.
+Author		:iorivr
+History	:30th,Jan,2010 stared to write.
+function	:i2c initialize, data sending, and data resieving.
+NOTE		:It is NOT to eat.
+		 distributed on LGPL license.
+		 Also, I will adjust even for SCCB.
+
+****************************************************************************
+|\  | |""""| """|""" |"""" 
+After 502page on user manual is very usefull. Please reference for it!!
+| \ | |    |    |    |====	
+
+|  \| |____|    |    |____
+******************************************************************************/
+#include"LPC23xx.h"
+#include"target.h"
+#include"i2c.h"
+#include"i2cErr.h"
+/****************************************************************************
+function name	:i2enable
+about function:as name.
+Problem	:
+****************************************************************************/
+void i2enable(){
+	PINMODE0 = 0x00000000;
+}
+/****************************************************************************
+function name	:i2cmasterset
+discribe	:the i2c periphrals which given number will be master
+****************************************************************************/ 
+int i2cmasterset(int a){
+	switch(a){
+	case 0:
+		I20CONSET = 0x40;
+		return 0;
+		break;
+	case 1:
+		I21CONSET = 0x40;
+		return 0;
+		break;
+	case 2:
+		I22CONSET = 0x40;
+		return 0;
+		break;
+	default:
+		return 1;
+	}
+}
+/****************************************************************************
+function name	:i2cstart
+discribe	:the i2c will start
+****************************************************************************/ 
+int i2cstart(int a){
+	switch(a){
+	case 0:
+		I20CONSET = 0x60;
+		while(I20STAT != 0x08);
+		return 0;
+		break;
+	case 1:
+		I21CONSET = 0x60;
+		while(I21STAT != 0x08);
+		return 0;
+		break;
+	case 2:
+		I22CONSET = 0x60;
+		while(I22STAT != 0x08);
+		printf("I2C now started\n");
+		return 0;
+		break;
+	default:
+		return 1;
+	}
+	}
+/****************************************************************************
+function name	:i2crestart
+discribe	:the i2c will restart
+****************************************************************************/ 
+int i2crestart(int a){
+	switch(a){
+	case 0:
+		I20CONSET = 0x14;
+		I20CONCLR = 0x08;
+		I20CONSET = 0x60;
+		while((I20STAT != 0x10)&&(I20STAT != 0x08));
+		printf("restarter report...%x",I20STAT);
+		return 0;
+		break;
+	case 1:
+		I21CONSET = 0x14;
+		I21CONCLR = 0x08;
+		I21CONSET = 0x60;
+		while((I21STAT != 0x10)&&(I21STAT != 0x08));
+		printf("restarter report...%x",I21STAT);
+		return 0;		
+		break;
+	case 2:
+		I22CONSET = 0x14;
+		I22CONCLR = 0x08;
+		I22CONSET = 0x60;
+		while((I22STAT != 0x10)&&(I22STAT != 0x08));
+		printf("restarter report...%x",I22STAT);
+		return 0;
+		break;
+	default:
+		return 1;
+	}
+	}
+
+/****************************************************************************
+function name	:i2stop
+discribe	:the i2c will stop
+****************************************************************************/ 
+int i2cstop(int a){
+	switch(a){
+	case 2:
+		I22CONSET = 0x50;
+		I22CONCLR = 0x2C;
+		printf("I2C stopped\n");
+		break;
+	default:
+		return 1;
+	}
+}
+/*****************************************************************************
+function name	:i2csender
+dscribe		:i2c data and adress
+parameter 	:bus_num,data
+return value	:void
+*****************************************************************************/
+void i2csender(int bus_num, int Continue, unsigned int Data, int Keta){
+//int i2cStatus;
+	switch(bus_num){
+/*
+		case 0:	//if((I22CONSET & 0x08)) i2cErr = 0xAA;printf("not started yet! I2CONSET=%x\n",I22CONSET);break;
+			printf("I20CONSETis %x\n, I2CSTATis %x\n",I20CONSET,I20STAT);
+			if(Continue==0){
+first0:
+			I20DAT = ADR;
+			I20CONSET |= 0x04;
+			I20CONCLR  = 0x08;
+			printf("Status is %x\n",I20STAT);
+			while(I20STAT!=0x18 && I20STAT!=0x20){printf(".");};
+			if(I20STAT==0x20){i2cErr = 0x22;printf("no acknowlege\(%x\)\n",I22STAT);i2crestart(0);goto first0;}
+			if(I20STAT==0x18)printf("ADDtrnsd&ACK\n");
+			}
+			for(;Keta == 0;Keta=Keta-8){
+			I20DAT = Data & 0xFF;
+			Data = Data >> 8;
+			while(I22STAT!=0x28);
+			if(I20STAT==0x28)printf("DATtrnsd&ACK\n");
+			}
+			if(I20STAT==0x28)i2cErr = 0;
+			break;
+		case 1:
+			//if((I22CONSET & 0x08)) i2cErr = 0xAA;printf("not started yet! I2CONSET=%x\n",I22CONSET);break;
+			printf("I21CONSETis %x\n, I2CSTATis %x\n",I21CONSET,I21STAT);
+			if(Continue==0){
+first1:
+			I21DAT = ADR;
+			I21CONSET |= 0x04;
+			I21CONCLR  = 0x08;
+			printf("Status is %x\n",I21STAT);
+			while(I21STAT!=0x18 && I21STAT!=0x20){printf(".");};
+			if(I21STAT==0x20){i2cErr = 0x22;printf("no acknowlege\(%x\)\n",I21STAT);i2crestart(1);goto first1;}
+			if(I21STAT==0x18)printf("ADDtrnsd&ACK\n");
+			}
+			for(;Keta == 0;Keta=Keta-8){
+			I21DAT = Data & 0xFF;
+			Data = Data >> 8;
+			while(I21STAT!=0x28);
+			if(I21STAT==0x28)printf("DATtrnsd&ACK\n");
+			}
+			if(I21STAT==0x28)i2cErr = 0;
+			break;*/
+		case 2:
+			//if((I22CONSET & 0x08)) i2cErr = 0xAA;printf("not started yet! I2CONSET=%x\n",I22CONSET);break;
+			//printf("I22CONSETis %x\n, I2CSTATis %x\n",I22CONSET,I22STAT);
+			if(Continue==0){
+first:				I22DAT = Data;
+				I22CONSET |= 0x04;
+				I22CONCLR  = 0x08;
+				printf("Status is %x\n",I22STAT);
+				while(I22STAT!=0x18 && I22STAT!=0x20){printf(".");};
+				if(I22STAT==0x20){i2cErr = 0x22;printf("no acknowlege\(%x\)\n",I22STAT);i2crestart(2);goto first;}
+				if(I22STAT==0x18)printf("ADDtrnsd&ACK\n");
+			}else {
+				for(;Keta != 0;Keta-=8){
+					printf("start transfar!%x-%x\n",I22STAT,I22CONSET);
+					I22DAT = (Data & 0xFF);
+//					printf("wh %4x", (Data & 0xFF));
+					I22CONCLR  = 0x28;
+					//printf("ttt..%x,status is %x ",I22CONSET,I22STAT);
+				while(I22STAT!=0x28);
+					if(I22STAT==0x28)printf("DATtrnsd&ACK\n");
+					Data = Data >> 8;
+				}
+				if(I22STAT==0x28)i2cErr = 0;
+				break;
+		}
+	}
+//	return i2cErr;
+}
+
+/***********************************************************************************************************************************
+*/
+
+
+int i2creader(int Keta, int Adr, int i2bufpointa){
+upper:
+				I22DAT = (Adr + 1);
+				I22CONSET |= 0x04;
+				I22CONCLR  = 0x08;
+				printf("Status is %x\n",I22STAT);
+				while(I22STAT!=0x40 && I22STAT!=0x48){printf(".");};
+				if(I22STAT==0x48){printf("no acknowlege\(%x\)\n",I22STAT);i2crestart(2);goto upper;}
+				if(I22STAT==0x40)printf("ADRtrnsd&ACK\n\n");
+				while(i2bufpointa!=(Keta+1)){
+					printf("reanding..  ");
+					I22CONSET |= 0x04;
+					I22CONCLR  = 0x28;
+					printf("%x-%x\nwait for Data\t",I22STAT,I22CONSET);
+					while(I22STAT != 0x50 )printf("..");
+					i2cbuff[i2bufpointa] = I22DAT;
+					printf("%x\t%x\t%dth\n",I22DAT,I22STAT,i2bufpointa++);
+//					if(a==32)return;
+				}
+				
+				printf("done.....");
+				I22CONCLR = 0x0C;
+//	return i2cErr;
+}
+
+/**************************************************************************************************************************************
+*************************************************************************************************************************************/
+void read_ROM(int subadr, int size, int i2bufpointa){
+i2cstart(2);			//i want to read!b So, start.
+	i2csender(2,0,0xA0,8);	//Hey, ?
+	i2csender(2,1,subadr,16);	//0x03byte? 
+	i2crestart(2);			//if you under stand, restart,please.
+	i2creader(size,0xA0,i2bufpointa);			//
+	i2cstop(2);
+}
+void write_ROM(int subadr, int size, int Data ){
+i2cstart(2);			//i want to write! So, start.
+	i2csender(2,0,0xA0,8);	//Hey, ?
+	i2csender(2,1,subadr,16);	//0x03byte? 
+	i2csender(2,1, Data,size);
+	i2cstop(2);
+}
+
