@@ -358,6 +358,9 @@ void vi2c( void *pvParameters )
 	SCCBread(0x00,0xca,0);
 	vTaskDelay(200/portTICK_RATE_MS);
 	if(xSemaphoreGive( Mutex ))FIO2PIN1 = 0x2;
+//	vTasklist((signed portCHAR*)tskls);
+//	vTaskSuspend(NULL);
+//	vTasklist((signed portCHAR*)tskls);
 	while(1);
  	}
 

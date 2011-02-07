@@ -689,15 +689,15 @@
  282              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 uart.c
-     /tmp/ccB6VdJO.s:24     .text.UARTInit:00000000 $t
-     /tmp/ccB6VdJO.s:29     .text.UARTInit:00000000 UARTInit
-     /tmp/ccB6VdJO.s:148    .text.UARTInit:0000007c $d
-     /tmp/ccB6VdJO.s:162    .text.UARTPutch:00000000 $t
-     /tmp/ccB6VdJO.s:167    .text.UARTPutch:00000000 UARTPutch
-     /tmp/ccB6VdJO.s:212    .text.UARTPutch:00000028 $d
-     /tmp/ccB6VdJO.s:220    .text.UARTGetch:00000000 $t
-     /tmp/ccB6VdJO.s:225    .text.UARTGetch:00000000 UARTGetch
-     /tmp/ccB6VdJO.s:274    .text.UARTGetch:00000030 $d
+     /tmp/ccccxBgh.s:24     .text.UARTInit:00000000 $t
+     /tmp/ccccxBgh.s:29     .text.UARTInit:00000000 UARTInit
+     /tmp/ccccxBgh.s:148    .text.UARTInit:0000007c $d
+     /tmp/ccccxBgh.s:162    .text.UARTPutch:00000000 $t
+     /tmp/ccccxBgh.s:167    .text.UARTPutch:00000000 UARTPutch
+     /tmp/ccccxBgh.s:212    .text.UARTPutch:00000028 $d
+     /tmp/ccccxBgh.s:220    .text.UARTGetch:00000000 $t
+     /tmp/ccccxBgh.s:225    .text.UARTGetch:00000000 UARTGetch
+     /tmp/ccccxBgh.s:274    .text.UARTGetch:00000030 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

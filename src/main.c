@@ -332,6 +332,8 @@ void vLedTask( void *pvParameters )
 	{
 		FIO1PIN ^= LED1_MASK;
 		vTaskDelay(207 / portTICK_RATE_MS);
+			vTaskSuspend(NULL);
+
 	}
 
 }

@@ -151,7 +151,7 @@ LOAD ../../Source/queue.o
 LOAD ../../Source/tasks.o
 LOAD ../../Source/portable/GCC/ARM7_LPC23xx/port.o
 LOAD ../../Source/portable/MemMang/heap_3.o
-LOAD /tmp/ccnUaf1P.o
+LOAD /tmp/ccX0aDUS.o
 START GROUP
 LOAD /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a
 LOAD /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a
@@ -160,12 +160,12 @@ END GROUP
                 0x4000ffdc                _stack_end = (((_ram_base + 0x10000) - 0x20) - 0x4)
                 0x4000ffdc                __stack_end__ = _stack_end
 
-.text           0x00000000     0xe94c
+.text           0x00000000     0xe954
  *(.VECTOR)
  *(.vectorg)
  *(.RESET)
  *(.startup)
- .startup       0x00000000       0x44 /tmp/ccnUaf1P.o
+ .startup       0x00000000       0x44 /tmp/ccX0aDUS.o
  *(.SWI_HANDLER)
                 0x00000044                . = ALIGN (0x4)
  *(.init)
@@ -235,594 +235,594 @@ END GROUP
                 0x00000b6c                vi2c
  .text          0x00000cd4        0x0 ./src/main.o
  .text.vLedTask
-                0x00000cd4       0x28 ./src/main.o
+                0x00000cd4       0x30 ./src/main.o
  .text.ADC_Read
-                0x00000cfc       0x90 ./src/main.o
-                0x00000cfc                ADC_Read
- .text.main     0x00000d8c       0xd0 ./src/main.o
-                0x00000d8c                main
- *fill*         0x00000e5c        0x4 00
- .text.getISSI  0x00000e60       0xb0 ./src/main.o
-                0x00000e60                getISSI
- .text.ISSR     0x00000f10       0x40 ./src/main.o
+                0x00000d04       0x90 ./src/main.o
+                0x00000d04                ADC_Read
+ .text.main     0x00000d94       0xd0 ./src/main.o
+                0x00000d94                main
+ *fill*         0x00000e64        0x4 00
+ .text.getISSI  0x00000e68       0xb0 ./src/main.o
+                0x00000e68                getISSI
+ .text.ISSR     0x00000f18       0x40 ./src/main.o
  .text.vApplicationTickHook
-                0x00000f50        0x4 ./src/main.o
-                0x00000f50                vApplicationTickHook
+                0x00000f58        0x4 ./src/main.o
+                0x00000f58                vApplicationTickHook
  .text.vValueTask
-                0x00000f54      0x124 ./src/main.o
-                0x00000f54                vValueTask
+                0x00000f5c      0x124 ./src/main.o
+                0x00000f5c                vValueTask
  .text.vtrsTask
-                0x00001078       0xc4 ./src/main.o
-                0x00001078                vtrsTask
- .text          0x0000113c        0x0 ./lib/Common/src/irq.o
+                0x00001080       0xc4 ./src/main.o
+                0x00001080                vtrsTask
+ .text          0x00001144        0x0 ./lib/Common/src/irq.o
  .text.init_VIC
-                0x0000113c       0x4c ./lib/Common/src/irq.o
-                0x0000113c                init_VIC
+                0x00001144       0x4c ./lib/Common/src/irq.o
+                0x00001144                init_VIC
  .text.install_irq
-                0x00001188       0x40 ./lib/Common/src/irq.o
-                0x00001188                install_irq
- .text          0x000011c8        0x0 ./lib/Common/src/rtc.o
- .text.RTCInit  0x000011c8       0xf8 ./lib/Common/src/rtc.o
-                0x000011c8                RTCInit
+                0x00001190       0x40 ./lib/Common/src/irq.o
+                0x00001190                install_irq
+ .text          0x000011d0        0x0 ./lib/Common/src/rtc.o
+ .text.RTCInit  0x000011d0       0xf8 ./lib/Common/src/rtc.o
+                0x000011d0                RTCInit
  .text.RTCStart
-                0x000012c0       0x14 ./lib/Common/src/rtc.o
-                0x000012c0                RTCStart
- .text.RTCStop  0x000012d4       0x10 ./lib/Common/src/rtc.o
-                0x000012d4                RTCStop
+                0x000012c8       0x14 ./lib/Common/src/rtc.o
+                0x000012c8                RTCStart
+ .text.RTCStop  0x000012dc       0x10 ./lib/Common/src/rtc.o
+                0x000012dc                RTCStop
  .text.RTC_CTCReset
-                0x000012e4       0x10 ./lib/Common/src/rtc.o
-                0x000012e4                RTC_CTCReset
+                0x000012ec       0x10 ./lib/Common/src/rtc.o
+                0x000012ec                RTC_CTCReset
  .text.RTCSetTime
-                0x000012f4       0x38 ./lib/Common/src/rtc.o
-                0x000012f4                RTCSetTime
+                0x000012fc       0x38 ./lib/Common/src/rtc.o
+                0x000012fc                RTCSetTime
  .text.RTCSetAlarm
-                0x0000132c       0x38 ./lib/Common/src/rtc.o
-                0x0000132c                RTCSetAlarm
+                0x00001334       0x38 ./lib/Common/src/rtc.o
+                0x00001334                RTCSetAlarm
  .text.RTCGetTime
-                0x00001364       0x50 ./lib/Common/src/rtc.o
-                0x00001364                RTCGetTime
+                0x0000136c       0x50 ./lib/Common/src/rtc.o
+                0x0000136c                RTCGetTime
  .text.RTCSetAlarmMask
-                0x000013b4        0xc ./lib/Common/src/rtc.o
-                0x000013b4                RTCSetAlarmMask
- .text          0x000013c0        0x0 ./lib/Common/src/uart.o
+                0x000013bc        0xc ./lib/Common/src/rtc.o
+                0x000013bc                RTCSetAlarmMask
+ .text          0x000013c8        0x0 ./lib/Common/src/uart.o
  .text.UARTInit
-                0x000013c0       0xa4 ./lib/Common/src/uart.o
-                0x000013c0                UARTInit
+                0x000013c8       0xa4 ./lib/Common/src/uart.o
+                0x000013c8                UARTInit
  .text.UARTPutch
-                0x00001464       0x38 ./lib/Common/src/uart.o
-                0x00001464                UARTPutch
+                0x0000146c       0x38 ./lib/Common/src/uart.o
+                0x0000146c                UARTPutch
  .text.UARTGetch
-                0x0000149c       0x40 ./lib/Common/src/uart.o
-                0x0000149c                UARTGetch
- .text          0x000014dc        0x0 ./lib/Common/src/fio.o
+                0x000014a4       0x40 ./lib/Common/src/uart.o
+                0x000014a4                UARTGetch
+ .text          0x000014e4        0x0 ./lib/Common/src/fio.o
  .text.GPIOInit
-                0x000014dc       0x7c ./lib/Common/src/fio.o
-                0x000014dc                GPIOInit
- .text          0x00001558        0x0 ./lib/Common/src/misc.o
- .text.__NOP    0x00001558        0x4 ./lib/Common/src/misc.o
-                0x00001558                __NOP
+                0x000014e4       0x7c ./lib/Common/src/fio.o
+                0x000014e4                GPIOInit
+ .text          0x00001560        0x0 ./lib/Common/src/misc.o
+ .text.__NOP    0x00001560        0x4 ./lib/Common/src/misc.o
+                0x00001560                __NOP
  .text.time_waste
-                0x0000155c       0x28 ./lib/Common/src/misc.o
-                0x0000155c                time_waste
+                0x00001564       0x28 ./lib/Common/src/misc.o
+                0x00001564                time_waste
  .text._delay_us
-                0x00001584       0x28 ./lib/Common/src/misc.o
-                0x00001584                _delay_us
- .text.dump     0x000015ac      0x320 ./lib/Common/src/misc.o
-                0x000015ac                dump
- .text          0x000018cc        0x0 ./lib/Common/src/target.o
+                0x0000158c       0x28 ./lib/Common/src/misc.o
+                0x0000158c                _delay_us
+ .text.dump     0x000015b4      0x320 ./lib/Common/src/misc.o
+                0x000015b4                dump
+ .text          0x000018d4        0x0 ./lib/Common/src/target.o
  .text.TargetInit
-                0x000018cc       0x1c ./lib/Common/src/target.o
-                0x000018cc                TargetInit
+                0x000018d4       0x1c ./lib/Common/src/target.o
+                0x000018d4                TargetInit
  .text.GPIOResetInit
-                0x000018e8       0x90 ./lib/Common/src/target.o
-                0x000018e8                GPIOResetInit
+                0x000018f0       0x90 ./lib/Common/src/target.o
+                0x000018f0                GPIOResetInit
  .text.ConfigurePLL
-                0x00001978       0xb8 ./lib/Common/src/target.o
-                0x00001978                ConfigurePLL
+                0x00001980       0xb8 ./lib/Common/src/target.o
+                0x00001980                ConfigurePLL
  .text.TargetResetInit
-                0x00001a30       0x54 ./lib/Common/src/target.o
-                0x00001a30                TargetResetInit
- .text          0x00001a84        0x0 ./lib/Common/src/syscalls.o
- .text._read_r  0x00001a84       0x48 ./lib/Common/src/syscalls.o
-                0x00001a84                _read_r
+                0x00001a38       0x54 ./lib/Common/src/target.o
+                0x00001a38                TargetResetInit
+ .text          0x00001a8c        0x0 ./lib/Common/src/syscalls.o
+ .text._read_r  0x00001a8c       0x48 ./lib/Common/src/syscalls.o
+                0x00001a8c                _read_r
  .text._write_r
-                0x00001acc       0x8c ./lib/Common/src/syscalls.o
-                0x00001acc                _write_r
+                0x00001ad4       0x8c ./lib/Common/src/syscalls.o
+                0x00001ad4                _write_r
  .text._close_r
-                0x00001b58        0x4 ./lib/Common/src/syscalls.o
-                0x00001b58                _close_r
+                0x00001b60        0x4 ./lib/Common/src/syscalls.o
+                0x00001b60                _close_r
  .text._lseek_r
-                0x00001b5c        0x4 ./lib/Common/src/syscalls.o
-                0x00001b5c                _lseek_r
+                0x00001b64        0x4 ./lib/Common/src/syscalls.o
+                0x00001b64                _lseek_r
  .text._fstat_r
-                0x00001b60        0xc ./lib/Common/src/syscalls.o
-                0x00001b60                _fstat_r
- .text.isatty   0x00001b6c        0x4 ./lib/Common/src/syscalls.o
-                0x00001b6c                isatty
- .text._exit    0x00001b70        0x4 ./lib/Common/src/syscalls.o
-                0x00001b70                _exit
- .text._getpid  0x00001b74        0x4 ./lib/Common/src/syscalls.o
-                0x00001b74                _getpid
- .text._kill    0x00001b78        0x4 ./lib/Common/src/syscalls.o
-                0x00001b78                _kill
- .text._sbrk_r  0x00001b7c       0x20 ./lib/Common/src/syscalls.o
-                0x00001b7c                _sbrk_r
- .text._sbrk    0x00001b9c       0x20 ./lib/Common/src/syscalls.o
-                0x00001b9c                _sbrk
- .text._open    0x00001bbc        0x8 ./lib/Common/src/syscalls.o
-                0x00001bbc                _open
- .text._close   0x00001bc4        0x4 ./lib/Common/src/syscalls.o
-                0x00001bc4                _close
- .text._fstat   0x00001bc8        0xc ./lib/Common/src/syscalls.o
-                0x00001bc8                _fstat
- .text._isatty  0x00001bd4        0x4 ./lib/Common/src/syscalls.o
-                0x00001bd4                _isatty
- .text._lseek   0x00001bd8        0x4 ./lib/Common/src/syscalls.o
-                0x00001bd8                _lseek
- .text._read    0x00001bdc       0x14 ./lib/Common/src/syscalls.o
-                0x00001bdc                _read
- .text._write   0x00001bf0       0x54 ./lib/Common/src/syscalls.o
-                0x00001bf0                _write
- .text          0x00001c44        0x0 ../Common/Minimal/BlockQ.o
+                0x00001b68        0xc ./lib/Common/src/syscalls.o
+                0x00001b68                _fstat_r
+ .text.isatty   0x00001b74        0x4 ./lib/Common/src/syscalls.o
+                0x00001b74                isatty
+ .text._exit    0x00001b78        0x4 ./lib/Common/src/syscalls.o
+                0x00001b78                _exit
+ .text._getpid  0x00001b7c        0x4 ./lib/Common/src/syscalls.o
+                0x00001b7c                _getpid
+ .text._kill    0x00001b80        0x4 ./lib/Common/src/syscalls.o
+                0x00001b80                _kill
+ .text._sbrk_r  0x00001b84       0x20 ./lib/Common/src/syscalls.o
+                0x00001b84                _sbrk_r
+ .text._sbrk    0x00001ba4       0x20 ./lib/Common/src/syscalls.o
+                0x00001ba4                _sbrk
+ .text._open    0x00001bc4        0x8 ./lib/Common/src/syscalls.o
+                0x00001bc4                _open
+ .text._close   0x00001bcc        0x4 ./lib/Common/src/syscalls.o
+                0x00001bcc                _close
+ .text._fstat   0x00001bd0        0xc ./lib/Common/src/syscalls.o
+                0x00001bd0                _fstat
+ .text._isatty  0x00001bdc        0x4 ./lib/Common/src/syscalls.o
+                0x00001bdc                _isatty
+ .text._lseek   0x00001be0        0x4 ./lib/Common/src/syscalls.o
+                0x00001be0                _lseek
+ .text._read    0x00001be4       0x14 ./lib/Common/src/syscalls.o
+                0x00001be4                _read
+ .text._write   0x00001bf8       0x54 ./lib/Common/src/syscalls.o
+                0x00001bf8                _write
+ .text          0x00001c4c        0x0 ../Common/Minimal/BlockQ.o
  .text.vBlockingQueueProducer
-                0x00001c44       0x3c ../Common/Minimal/BlockQ.o
+                0x00001c4c       0x3c ../Common/Minimal/BlockQ.o
  .text.vBlockingQueueConsumer
-                0x00001c80       0x44 ../Common/Minimal/BlockQ.o
+                0x00001c88       0x44 ../Common/Minimal/BlockQ.o
  .text.vStartBlockingQueueTasks
-                0x00001cc4      0x168 ../Common/Minimal/BlockQ.o
-                0x00001cc4                vStartBlockingQueueTasks
+                0x00001ccc      0x168 ../Common/Minimal/BlockQ.o
+                0x00001ccc                vStartBlockingQueueTasks
  .text.xAreBlockingQueuesStillRunning
-                0x00001e2c       0xb0 ../Common/Minimal/BlockQ.o
-                0x00001e2c                xAreBlockingQueuesStillRunning
- .text          0x00001edc        0x0 ../Common/Minimal/blocktim.o
+                0x00001e34       0xb0 ../Common/Minimal/BlockQ.o
+                0x00001e34                xAreBlockingQueuesStillRunning
+ .text          0x00001ee4        0x0 ../Common/Minimal/blocktim.o
  .text.vSecondaryBlockTimeTestTask
-                0x00001edc       0xb0 ../Common/Minimal/blocktim.o
+                0x00001ee4       0xb0 ../Common/Minimal/blocktim.o
  .text.vPrimaryBlockTimeTestTask
-                0x00001f8c      0x260 ../Common/Minimal/blocktim.o
+                0x00001f94      0x260 ../Common/Minimal/blocktim.o
  .text.vCreateBlockTimeTasks
-                0x000021ec       0x60 ../Common/Minimal/blocktim.o
-                0x000021ec                vCreateBlockTimeTasks
+                0x000021f4       0x60 ../Common/Minimal/blocktim.o
+                0x000021f4                vCreateBlockTimeTasks
  .text.xAreBlockTimeTestTasksStillRunning
-                0x0000224c       0x54 ../Common/Minimal/blocktim.o
-                0x0000224c                xAreBlockTimeTestTasksStillRunning
- .text          0x000022a0        0x0 ../Common/Minimal/integer.o
+                0x00002254       0x54 ../Common/Minimal/blocktim.o
+                0x00002254                xAreBlockTimeTestTasksStillRunning
+ .text          0x000022a8        0x0 ../Common/Minimal/integer.o
  .text.vCompeteingIntMathTask
-                0x000022a0       0x4c ../Common/Minimal/integer.o
+                0x000022a8       0x4c ../Common/Minimal/integer.o
  .text.vStartIntegerMathTasks
-                0x000022ec       0x2c ../Common/Minimal/integer.o
-                0x000022ec                vStartIntegerMathTasks
+                0x000022f4       0x2c ../Common/Minimal/integer.o
+                0x000022f4                vStartIntegerMathTasks
  .text.xAreIntegerMathsTaskStillRunning
-                0x00002318       0x14 ../Common/Minimal/integer.o
-                0x00002318                xAreIntegerMathsTaskStillRunning
- .text          0x0000232c        0x0 ../Common/Minimal/GenQTest.o
+                0x00002320       0x14 ../Common/Minimal/integer.o
+                0x00002320                xAreIntegerMathsTaskStillRunning
+ .text          0x00002334        0x0 ../Common/Minimal/GenQTest.o
  .text.prvMediumPriorityMutexTask
-                0x0000232c       0x18 ../Common/Minimal/GenQTest.o
+                0x00002334       0x18 ../Common/Minimal/GenQTest.o
  .text.prvHighPriorityMutexTask
-                0x00002344       0x3c ../Common/Minimal/GenQTest.o
+                0x0000234c       0x3c ../Common/Minimal/GenQTest.o
  .text.prvLowPriorityMutexTask
-                0x00002380       0xc8 ../Common/Minimal/GenQTest.o
+                0x00002388       0xc8 ../Common/Minimal/GenQTest.o
  .text.prvSendFrontAndBackTest
-                0x00002448      0x234 ../Common/Minimal/GenQTest.o
+                0x00002450      0x234 ../Common/Minimal/GenQTest.o
  .text.vStartGenericQueueTasks
-                0x0000267c       0xa0 ../Common/Minimal/GenQTest.o
-                0x0000267c                vStartGenericQueueTasks
+                0x00002684       0xa0 ../Common/Minimal/GenQTest.o
+                0x00002684                vStartGenericQueueTasks
  .text.xAreGenericQueueTasksStillRunning
-                0x0000271c       0x54 ../Common/Minimal/GenQTest.o
-                0x0000271c                xAreGenericQueueTasksStillRunning
- .text          0x00002770        0x0 ../Common/Minimal/QPeek.o
+                0x00002724       0x54 ../Common/Minimal/GenQTest.o
+                0x00002724                xAreGenericQueueTasksStillRunning
+ .text          0x00002778        0x0 ../Common/Minimal/QPeek.o
  .text.prvHighestPriorityPeekTask
-                0x00002770       0xb8 ../Common/Minimal/QPeek.o
+                0x00002778       0xb8 ../Common/Minimal/QPeek.o
  .text.prvHighPriorityPeekTask
-                0x00002828       0x6c ../Common/Minimal/QPeek.o
+                0x00002830       0x6c ../Common/Minimal/QPeek.o
  .text.prvMediumPriorityPeekTask
-                0x00002894       0x58 ../Common/Minimal/QPeek.o
+                0x0000289c       0x58 ../Common/Minimal/QPeek.o
  .text.prvLowPriorityPeekTask
-                0x000028ec       0xf0 ../Common/Minimal/QPeek.o
+                0x000028f4       0xf0 ../Common/Minimal/QPeek.o
  .text.vStartQueuePeekTasks
-                0x000029dc       0xa0 ../Common/Minimal/QPeek.o
-                0x000029dc                vStartQueuePeekTasks
+                0x000029e4       0xa0 ../Common/Minimal/QPeek.o
+                0x000029e4                vStartQueuePeekTasks
  .text.xAreQueuePeekTasksStillRunning
-                0x00002a7c       0x34 ../Common/Minimal/QPeek.o
-                0x00002a7c                xAreQueuePeekTasksStillRunning
- .text          0x00002ab0        0x0 ../Common/Minimal/dynamic.o
+                0x00002a84       0x34 ../Common/Minimal/QPeek.o
+                0x00002a84                xAreQueuePeekTasksStillRunning
+ .text          0x00002ab8        0x0 ../Common/Minimal/dynamic.o
  .text.vQueueReceiveWhenSuspendedTask
-                0x00002ab0       0x68 ../Common/Minimal/dynamic.o
+                0x00002ab8       0x68 ../Common/Minimal/dynamic.o
  .text.vQueueSendWhenSuspendedTask
-                0x00002b18       0x40 ../Common/Minimal/dynamic.o
+                0x00002b20       0x40 ../Common/Minimal/dynamic.o
  .text.vLimitedIncrementTask
-                0x00002b58       0x30 ../Common/Minimal/dynamic.o
+                0x00002b60       0x30 ../Common/Minimal/dynamic.o
  .text.vCounterControlTask
-                0x00002b88      0x13c ../Common/Minimal/dynamic.o
+                0x00002b90      0x13c ../Common/Minimal/dynamic.o
  .text.vContinuousIncrementTask
-                0x00002cc4       0x28 ../Common/Minimal/dynamic.o
+                0x00002ccc       0x28 ../Common/Minimal/dynamic.o
  .text.vStartDynamicPriorityTasks
-                0x00002cec       0xc0 ../Common/Minimal/dynamic.o
-                0x00002cec                vStartDynamicPriorityTasks
+                0x00002cf4       0xc0 ../Common/Minimal/dynamic.o
+                0x00002cf4                vStartDynamicPriorityTasks
  .text.xAreDynamicPriorityTasksStillRunning
-                0x00002dac       0x44 ../Common/Minimal/dynamic.o
-                0x00002dac                xAreDynamicPriorityTasksStillRunning
- .text          0x00002df0        0x0 ../../Source/list.o
+                0x00002db4       0x44 ../Common/Minimal/dynamic.o
+                0x00002db4                xAreDynamicPriorityTasksStillRunning
+ .text          0x00002df8        0x0 ../../Source/list.o
  .text.vListInitialise
-                0x00002df0       0x18 ../../Source/list.o
-                0x00002df0                vListInitialise
+                0x00002df8       0x18 ../../Source/list.o
+                0x00002df8                vListInitialise
  .text.vListInitialiseItem
-                0x00002e08        0x8 ../../Source/list.o
-                0x00002e08                vListInitialiseItem
+                0x00002e10        0x8 ../../Source/list.o
+                0x00002e10                vListInitialiseItem
  .text.vListInsertEnd
-                0x00002e10       0x1c ../../Source/list.o
-                0x00002e10                vListInsertEnd
+                0x00002e18       0x1c ../../Source/list.o
+                0x00002e18                vListInsertEnd
  .text.vListInsert
-                0x00002e2c       0x3c ../../Source/list.o
-                0x00002e2c                vListInsert
+                0x00002e34       0x3c ../../Source/list.o
+                0x00002e34                vListInsert
  .text.vListRemove
-                0x00002e68       0x28 ../../Source/list.o
-                0x00002e68                vListRemove
- .text          0x00002e90        0x0 ../../Source/queue.o
+                0x00002e70       0x28 ../../Source/list.o
+                0x00002e70                vListRemove
+ .text          0x00002e98        0x0 ../../Source/queue.o
  .text.prvUnlockQueue
-                0x00002e90       0x9c ../../Source/queue.o
+                0x00002e98       0x9c ../../Source/queue.o
  .text.prvCopyDataToQueue
-                0x00002f2c       0x68 ../../Source/queue.o
+                0x00002f34       0x68 ../../Source/queue.o
  .text.xQueueCreate
-                0x00002f94       0x78 ../../Source/queue.o
-                0x00002f94                xQueueCreate
+                0x00002f9c       0x78 ../../Source/queue.o
+                0x00002f9c                xQueueCreate
  .text.xQueueGenericSend
-                0x0000300c      0x110 ../../Source/queue.o
-                0x0000300c                xQueueGenericSend
+                0x00003014      0x110 ../../Source/queue.o
+                0x00003014                xQueueGenericSend
  .text.xQueueCreateMutex
-                0x0000311c       0x48 ../../Source/queue.o
-                0x0000311c                xQueueCreateMutex
+                0x00003124       0x48 ../../Source/queue.o
+                0x00003124                xQueueCreateMutex
  .text.xQueueGenericSendFromISR
-                0x00003164       0x48 ../../Source/queue.o
-                0x00003164                xQueueGenericSendFromISR
+                0x0000316c       0x48 ../../Source/queue.o
+                0x0000316c                xQueueGenericSendFromISR
  .text.xQueueGenericReceive
-                0x000031ac      0x168 ../../Source/queue.o
-                0x000031ac                xQueueGenericReceive
+                0x000031b4      0x168 ../../Source/queue.o
+                0x000031b4                xQueueGenericReceive
  .text.xQueueReceiveFromISR
-                0x00003314       0x60 ../../Source/queue.o
-                0x00003314                xQueueReceiveFromISR
+                0x0000331c       0x60 ../../Source/queue.o
+                0x0000331c                xQueueReceiveFromISR
  .text.uxQueueMessagesWaiting
-                0x00003374       0x18 ../../Source/queue.o
-                0x00003374                uxQueueMessagesWaiting
+                0x0000337c       0x18 ../../Source/queue.o
+                0x0000337c                uxQueueMessagesWaiting
  .text.uxQueueMessagesWaitingFromISR
-                0x0000338c        0x4 ../../Source/queue.o
-                0x0000338c                uxQueueMessagesWaitingFromISR
+                0x00003394        0x4 ../../Source/queue.o
+                0x00003394                uxQueueMessagesWaitingFromISR
  .text.vQueueDelete
-                0x00003390       0x18 ../../Source/queue.o
-                0x00003390                vQueueDelete
+                0x00003398       0x18 ../../Source/queue.o
+                0x00003398                vQueueDelete
  .text.xQueueIsQueueEmptyFromISR
-                0x000033a8        0x8 ../../Source/queue.o
-                0x000033a8                xQueueIsQueueEmptyFromISR
+                0x000033b0        0x8 ../../Source/queue.o
+                0x000033b0                xQueueIsQueueEmptyFromISR
  .text.xQueueIsQueueFullFromISR
-                0x000033b0        0xc ../../Source/queue.o
-                0x000033b0                xQueueIsQueueFullFromISR
- .text          0x000033bc        0x0 ../../Source/tasks.o
+                0x000033b8        0xc ../../Source/queue.o
+                0x000033b8                xQueueIsQueueFullFromISR
+ .text          0x000033c4        0x0 ../../Source/tasks.o
  .text.prvListTaskWithinSingleList
-                0x000033bc       0xa4 ../../Source/tasks.o
+                0x000033c4       0xa4 ../../Source/tasks.o
  .text.xTaskGenericCreate
-                0x00003460      0x1e4 ../../Source/tasks.o
-                0x00003460                xTaskGenericCreate
+                0x00003468      0x1e4 ../../Source/tasks.o
+                0x00003468                xTaskGenericCreate
  .text.vTaskDelete
-                0x00003644       0x78 ../../Source/tasks.o
-                0x00003644                vTaskDelete
+                0x0000364c       0x78 ../../Source/tasks.o
+                0x0000364c                vTaskDelete
  .text.uxTaskPriorityGet
-                0x000036bc       0x24 ../../Source/tasks.o
-                0x000036bc                uxTaskPriorityGet
+                0x000036c4       0x24 ../../Source/tasks.o
+                0x000036c4                uxTaskPriorityGet
  .text.vTaskPrioritySet
-                0x000036e0       0x9c ../../Source/tasks.o
-                0x000036e0                vTaskPrioritySet
+                0x000036e8       0x9c ../../Source/tasks.o
+                0x000036e8                vTaskPrioritySet
  .text.xTaskIsTaskSuspended
-                0x0000377c       0x28 ../../Source/tasks.o
-                0x0000377c                xTaskIsTaskSuspended
+                0x00003784       0x28 ../../Source/tasks.o
+                0x00003784                xTaskIsTaskSuspended
  .text.vTaskResume
-                0x000037a4       0x78 ../../Source/tasks.o
-                0x000037a4                vTaskResume
+                0x000037ac       0x78 ../../Source/tasks.o
+                0x000037ac                vTaskResume
  .text.xTaskResumeFromISR
-                0x0000381c       0x80 ../../Source/tasks.o
-                0x0000381c                xTaskResumeFromISR
+                0x00003824       0x80 ../../Source/tasks.o
+                0x00003824                xTaskResumeFromISR
  .text.vTaskStartScheduler
-                0x0000389c       0x4c ../../Source/tasks.o
-                0x0000389c                vTaskStartScheduler
+                0x000038a4       0x4c ../../Source/tasks.o
+                0x000038a4                vTaskStartScheduler
  .text.vTaskEndScheduler
-                0x000038e8       0x1c ../../Source/tasks.o
-                0x000038e8                vTaskEndScheduler
+                0x000038f0       0x1c ../../Source/tasks.o
+                0x000038f0                vTaskEndScheduler
  .text.vTaskSuspendAll
-                0x00003904       0x10 ../../Source/tasks.o
-                0x00003904                vTaskSuspendAll
+                0x0000390c       0x10 ../../Source/tasks.o
+                0x0000390c                vTaskSuspendAll
  .text.xTaskGetTickCount
-                0x00003914       0x1c ../../Source/tasks.o
-                0x00003914                xTaskGetTickCount
+                0x0000391c       0x1c ../../Source/tasks.o
+                0x0000391c                xTaskGetTickCount
  .text.xTaskGetTickCountFromISR
-                0x00003930        0xc ../../Source/tasks.o
-                0x00003930                xTaskGetTickCountFromISR
+                0x00003938        0xc ../../Source/tasks.o
+                0x00003938                xTaskGetTickCountFromISR
  .text.uxTaskGetNumberOfTasks
-                0x0000393c        0xc ../../Source/tasks.o
-                0x0000393c                uxTaskGetNumberOfTasks
+                0x00003944        0xc ../../Source/tasks.o
+                0x00003944                uxTaskGetNumberOfTasks
  .text.vTaskStartTrace
-                0x00003948       0x3c ../../Source/tasks.o
-                0x00003948                vTaskStartTrace
+                0x00003950       0x3c ../../Source/tasks.o
+                0x00003950                vTaskStartTrace
  .text.ulTaskEndTrace
-                0x00003984       0x2c ../../Source/tasks.o
-                0x00003984                ulTaskEndTrace
+                0x0000398c       0x2c ../../Source/tasks.o
+                0x0000398c                ulTaskEndTrace
  .text.vTaskIncrementTick
-                0x000039b0       0xd0 ../../Source/tasks.o
-                0x000039b0                vTaskIncrementTick
+                0x000039b8       0xd0 ../../Source/tasks.o
+                0x000039b8                vTaskIncrementTick
  .text.xTaskResumeAll
-                0x00003a80       0xe4 ../../Source/tasks.o
-                0x00003a80                xTaskResumeAll
+                0x00003a88       0xe4 ../../Source/tasks.o
+                0x00003a88                xTaskResumeAll
  .text.vTaskList
-                0x00003b64      0x108 ../../Source/tasks.o
-                0x00003b64                vTaskList
+                0x00003b6c      0x108 ../../Source/tasks.o
+                0x00003b6c                vTaskList
  .text.prvIdleTask
-                0x00003c6c       0x88 ../../Source/tasks.o
+                0x00003c74       0x88 ../../Source/tasks.o
  .text.vTaskDelay
-                0x00003cf4       0x68 ../../Source/tasks.o
-                0x00003cf4                vTaskDelay
+                0x00003cfc       0x68 ../../Source/tasks.o
+                0x00003cfc                vTaskDelay
  .text.vTaskDelayUntil
-                0x00003d5c       0x80 ../../Source/tasks.o
-                0x00003d5c                vTaskDelayUntil
+                0x00003d64       0x80 ../../Source/tasks.o
+                0x00003d64                vTaskDelayUntil
  .text.vTaskSwitchContext
-                0x00003ddc       0xc8 ../../Source/tasks.o
-                0x00003ddc                vTaskSwitchContext
+                0x00003de4       0xc8 ../../Source/tasks.o
+                0x00003de4                vTaskSwitchContext
  .text.vTaskSuspend
-                0x00003ea4       0x74 ../../Source/tasks.o
-                0x00003ea4                vTaskSuspend
+                0x00003eac       0x74 ../../Source/tasks.o
+                0x00003eac                vTaskSuspend
  .text.vTaskPlaceOnEventList
-                0x00003f18       0x6c ../../Source/tasks.o
-                0x00003f18                vTaskPlaceOnEventList
+                0x00003f20       0x6c ../../Source/tasks.o
+                0x00003f20                vTaskPlaceOnEventList
  .text.xTaskRemoveFromEventList
-                0x00003f84       0x78 ../../Source/tasks.o
-                0x00003f84                xTaskRemoveFromEventList
+                0x00003f8c       0x78 ../../Source/tasks.o
+                0x00003f8c                xTaskRemoveFromEventList
  .text.vTaskSetTimeOutState
-                0x00003ffc       0x18 ../../Source/tasks.o
-                0x00003ffc                vTaskSetTimeOutState
+                0x00004004       0x18 ../../Source/tasks.o
+                0x00004004                vTaskSetTimeOutState
  .text.xTaskCheckForTimeOut
-                0x00004014       0x68 ../../Source/tasks.o
-                0x00004014                xTaskCheckForTimeOut
+                0x0000401c       0x68 ../../Source/tasks.o
+                0x0000401c                xTaskCheckForTimeOut
  .text.vTaskMissedYield
-                0x0000407c        0xc ../../Source/tasks.o
-                0x0000407c                vTaskMissedYield
+                0x00004084        0xc ../../Source/tasks.o
+                0x00004084                vTaskMissedYield
  .text.xTaskGetCurrentTaskHandle
-                0x00004088        0xc ../../Source/tasks.o
-                0x00004088                xTaskGetCurrentTaskHandle
+                0x00004090        0xc ../../Source/tasks.o
+                0x00004090                xTaskGetCurrentTaskHandle
  .text.vTaskPriorityInherit
-                0x00004094       0x6c ../../Source/tasks.o
-                0x00004094                vTaskPriorityInherit
+                0x0000409c       0x6c ../../Source/tasks.o
+                0x0000409c                vTaskPriorityInherit
  .text.vTaskPriorityDisinherit
-                0x00004100       0x4c ../../Source/tasks.o
-                0x00004100                vTaskPriorityDisinherit
- .text          0x0000414c        0x0 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
+                0x00004108       0x4c ../../Source/tasks.o
+                0x00004108                vTaskPriorityDisinherit
+ .text          0x00004154        0x0 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
  .text.pxPortInitialiseStack
-                0x0000414c       0xa4 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
-                0x0000414c                pxPortInitialiseStack
+                0x00004154       0xa4 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
+                0x00004154                pxPortInitialiseStack
  .text.xPortStartScheduler
-                0x000041f0       0x68 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
-                0x000041f0                xPortStartScheduler
+                0x000041f8       0x68 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
+                0x000041f8                xPortStartScheduler
  .text.vPortEndScheduler
-                0x00004258        0x4 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
-                0x00004258                vPortEndScheduler
- .text          0x0000425c        0x0 ../../Source/portable/MemMang/heap_3.o
+                0x00004260        0x4 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
+                0x00004260                vPortEndScheduler
+ .text          0x00004264        0x0 ../../Source/portable/MemMang/heap_3.o
  .text.pvPortMalloc
-                0x0000425c       0x1c ../../Source/portable/MemMang/heap_3.o
-                0x0000425c                pvPortMalloc
+                0x00004264       0x1c ../../Source/portable/MemMang/heap_3.o
+                0x00004264                pvPortMalloc
  .text.vPortFree
-                0x00004278       0x1c ../../Source/portable/MemMang/heap_3.o
-                0x00004278                vPortFree
- .text          0x00004294       0xc4 /tmp/ccnUaf1P.o
-                0x00004294                _startup
-                0x00004294                start
-                0x0000433c                endless_loop
- .text          0x00004358      0x11c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivsi3.o)
-                0x00004358                __udivsi3
-                0x00004358                __aeabi_uidiv
-                0x00004454                __aeabi_uidivmod
- .text          0x00004474      0x150 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divsi3.o)
-                0x00004474                __aeabi_idiv
-                0x00004474                __divsi3
-                0x000045a4                __aeabi_idivmod
- .text          0x000045c4        0x4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_dvmd_tls.o)
-                0x000045c4                __aeabi_ldiv0
-                0x000045c4                __aeabi_idiv0
- .text          0x000045c8      0x18c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fflush.o)
-                0x000045c8                _fflush_r
-                0x00004724                fflush
- .text          0x00004754      0x234 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-findfp.o)
-                0x0000475c                _cleanup_r
-                0x00004770                __sfmoreglue
-                0x0000479c                _cleanup
-                0x000047b0                __sinit
-                0x000048b0                __sfp
-                0x00004940                __sfp_lock_acquire
-                0x00004944                __sfp_lock_release
-                0x00004948                __sinit_lock_acquire
-                0x0000494c                __sinit_lock_release
-                0x00004950                __fp_lock_all
-                0x0000496c                __fp_unlock_all
- .text          0x00004988      0x24c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-freer.o)
-                0x00004988                _malloc_trim_r
-                0x00004a2c                _free_r
- .text          0x00004bd4       0xbc /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fwalk.o)
-                0x00004bd4                _fwalk
-                0x00004c2c                _fwalk_reent
- .text          0x00004c90        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
- .text          0x00004c90       0x30 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-malloc.o)
-                0x00004c90                malloc
-                0x00004ca8                free
- .text          0x00004cc0      0x50c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-mallocr.o)
-                0x00004cc0                _malloc_r
- .text          0x000051cc       0xfc /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-memcpy.o)
-                0x000051cc                memcpy
- .text          0x000052c8       0x8c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-memset.o)
-                0x000052c8                memset
- .text          0x00005354        0x8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-mlock.o)
-                0x00005354                __malloc_lock
-                0x00005358                __malloc_unlock
- .text          0x0000535c       0x40 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-printf.o)
-                0x0000535c                _printf_r
-                0x00005378                printf
- .text          0x0000539c       0x28 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-putchar.o)
-                0x0000539c                _putchar_r
-                0x000053ac                putchar
- .text          0x000053c4       0x84 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-puts.o)
-                0x000053c4                _puts_r
-                0x00005430                puts
- .text          0x00005448       0x84 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-sprintf.o)
-                0x00005448                _sprintf_r
-                0x00005488                sprintf
- .text          0x000054cc       0xac /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-stdio.o)
-                0x000054cc                __sread
-                0x000054f8                __seofread
-                0x000054fc                __swrite
-                0x00005538                __sseek
-                0x00005568                __sclose
- .text          0x00005578       0x48 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strcat.o)
-                0x00005578                strcat
- .text          0x000055c0       0x10 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strcpy.o)
-                0x000055c0                strcpy
- .text          0x000055d0       0x10 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strlen.o)
-                0x000055d0                strlen
- .text          0x000055e0       0x6c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncpy.o)
-                0x000055e0                strncpy
- *fill*         0x0000564c        0x4 00
- .text          0x00005650     0x1558 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfprintf.o)
-                0x00005650                _svfprintf_r
- .text          0x00006ba8     0x17f0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfprintf.o)
-                0x00006ba8                _vfprintf_r
-                0x00008378                vfprintf
- .text          0x00008398       0xe0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-wbuf.o)
-                0x00008398                __swbuf_r
-                0x0000845c                __swbuf
- .text          0x00008478       0xc0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-wsetup.o)
-                0x00008478                __swsetup_r
- .text          0x00008538     0x1088 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-dtoa.o)
-                0x0000869c                _dtoa_r
- .text          0x000095c0       0xb8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fclose.o)
-                0x000095c0                _fclose_r
-                0x0000965c                fclose
- .text          0x00009678      0x344 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fvwrite.o)
-                0x00009678                __sfvwrite_r
- .text          0x000099bc       0xa4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-locale.o)
-                0x000099bc                _setlocale_r
-                0x00009a08                __locale_charset
-                0x00009a10                __locale_mb_cur_max
-                0x00009a1c                __locale_msgcharset
-                0x00009a28                __locale_cjk_lang
-                0x00009a2c                _localeconv_r
-                0x00009a38                setlocale
-                0x00009a54                localeconv
- .text          0x00009a60       0xe4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-makebuf.o)
-                0x00009a60                __smakebuf_r
- .text          0x00009b44       0x90 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-memchr.o)
-                0x00009b44                memchr
- .text          0x00009bd4       0x9c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-memmove.o)
-                0x00009bd4                memmove
- .text          0x00009c70      0x9c0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-mprec.o)
-                0x00009c70                _Balloc
-                0x00009cc4                _Bfree
-                0x00009cdc                __multadd
-                0x00009d78                __s2b
-                0x00009e08                __hi0bits
-                0x00009e48                __lo0bits
-                0x00009eac                __i2b
-                0x00009ec4                __multiply
-                0x0000a04c                __pow5mult
-                0x0000a100                __lshift
-                0x0000a1d0                __mcmp
-                0x0000a210                __mdiff
-                0x0000a310                __ulp
-                0x0000a35c                __b2d
-                0x0000a3fc                __d2b
-                0x0000a4cc                __ratio
-                0x0000a540                _mprec_log10
-                0x0000a584                __copybits
-                0x0000a5cc                __any_on
- .text          0x0000a630       0xd0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-putc.o)
-                0x0000a630                _putc_r
-                0x0000a694                putc
- .text          0x0000a700      0x424 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-reallocr.o)
-                0x0000a700                _realloc_r
- .text          0x0000ab24       0x9c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-s_fpclassify.o)
-                0x0000ab24                __fpclassifyd
- .text          0x0000abc0       0x14 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strcmp.o)
-                0x0000abc0                strcmp
- .text          0x0000abd4      0xc54 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfiprintf.o)
-                0x0000abd4                __ssprint_r
-                0x0000acf8                _svfiprintf_r
- .text          0x0000b828      0xd38 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfiprintf.o)
-                0x0000b828                __sprint_r
-                0x0000b8a8                _vfiprintf_r
-                0x0000c540                vfiprintf
- .text          0x0000c560       0x60 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-callocr.o)
-                0x0000c560                _calloc_r
- .text          0x0000c5c0       0xf8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fputwc.o)
-                0x0000c5c0                _fputwc_r
-                0x0000c68c                fputwc
- .text          0x0000c6b8       0x28 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-isattyr.o)
-                0x0000c6b8                _isatty_r
- .text          0x0000c6e0      0x118 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-reent.o)
-                0x0000c6e0                cleanup_glue
-                0x0000c700                _reclaim_reent
-                0x0000c7a8                _wrapup_reent
- .text          0x0000c7f8       0xdc /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-wcrtomb.o)
-                0x0000c7f8                _wcrtomb_r
-                0x0000c858                wcrtomb
- .text          0x0000c8d4       0x5c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-wctomb_r.o)
-                0x0000c8d4                __ascii_wctomb
-                0x0000c8f4                _wctomb_r
- .text          0x0000c930      0x41c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_arm_addsubdf3.o)
-                0x0000c930                __aeabi_drsub
-                0x0000c938                __aeabi_dsub
-                0x0000c938                __subdf3
-                0x0000c93c                __adddf3
-                0x0000c93c                __aeabi_dadd
-                0x0000cc4c                __aeabi_ui2d
-                0x0000cc4c                __floatunsidf
-                0x0000cc70                __floatsidf
-                0x0000cc70                __aeabi_i2d
-                0x0000cc98                __extendsfdf2
-                0x0000cc98                __aeabi_f2d
-                0x0000ccd8                __aeabi_ul2d
-                0x0000ccd8                __floatundidf
-                0x0000ccec                __floatdidf
-                0x0000ccec                __aeabi_l2d
- .text          0x0000cd4c      0x49c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_arm_muldivdf3.o)
-                0x0000cd4c                __aeabi_dmul
-                0x0000cd4c                __muldf3
-                0x0000cfdc                __aeabi_ddiv
-                0x0000cfdc                __divdf3
- .text          0x0000d1e8      0x144 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_arm_cmpdf2.o)
-                0x0000d1e8                __gtdf2
-                0x0000d1e8                __gedf2
-                0x0000d1f0                __ltdf2
-                0x0000d1f0                __ledf2
-                0x0000d1f8                __cmpdf2
-                0x0000d1f8                __eqdf2
-                0x0000d1f8                __nedf2
-                0x0000d280                __aeabi_cdrcmple
-                0x0000d29c                __aeabi_cdcmple
-                0x0000d29c                __aeabi_cdcmpeq
-                0x0000d2b4                __aeabi_dcmpeq
-                0x0000d2cc                __aeabi_dcmplt
-                0x0000d2e4                __aeabi_dcmple
-                0x0000d2fc                __aeabi_dcmpge
-                0x0000d314                __aeabi_dcmpgt
- .text          0x0000d32c       0x5c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_arm_fixdfsi.o)
-                0x0000d32c                __fixdfsi
-                0x0000d32c                __aeabi_d2iz
- .text          0x0000d388       0x3c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_aeabi_uldivmod.o)
-                0x0000d388                __aeabi_uldivmod
- .text          0x0000d3c4       0x70 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(bpabi.o)
-                0x0000d3c4                __gnu_ldivmod_helper
-                0x0000d3fc                __gnu_uldivmod_helper
- .text          0x0000d434       0x4c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_muldi3.o)
-                0x0000d434                __aeabi_lmul
-                0x0000d434                __muldi3
- .text          0x0000d480      0x3a8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divdi3.o)
-                0x0000d480                __divdi3
- .text          0x0000d828      0x340 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivdi3.o)
-                0x0000d828                __udivdi3
- .text          0x0000db68       0x48 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_clzsi2.o)
-                0x0000db68                __clzsi2
- .text.stub     0x0000dbb0      0x14c linker stubs
+                0x00004280       0x1c ../../Source/portable/MemMang/heap_3.o
+                0x00004280                vPortFree
+ .text          0x0000429c       0xc4 /tmp/ccX0aDUS.o
+                0x0000429c                _startup
+                0x0000429c                start
+                0x00004344                endless_loop
+ .text          0x00004360      0x11c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivsi3.o)
+                0x00004360                __udivsi3
+                0x00004360                __aeabi_uidiv
+                0x0000445c                __aeabi_uidivmod
+ .text          0x0000447c      0x150 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divsi3.o)
+                0x0000447c                __aeabi_idiv
+                0x0000447c                __divsi3
+                0x000045ac                __aeabi_idivmod
+ .text          0x000045cc        0x4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_dvmd_tls.o)
+                0x000045cc                __aeabi_ldiv0
+                0x000045cc                __aeabi_idiv0
+ .text          0x000045d0      0x18c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fflush.o)
+                0x000045d0                _fflush_r
+                0x0000472c                fflush
+ .text          0x0000475c      0x234 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-findfp.o)
+                0x00004764                _cleanup_r
+                0x00004778                __sfmoreglue
+                0x000047a4                _cleanup
+                0x000047b8                __sinit
+                0x000048b8                __sfp
+                0x00004948                __sfp_lock_acquire
+                0x0000494c                __sfp_lock_release
+                0x00004950                __sinit_lock_acquire
+                0x00004954                __sinit_lock_release
+                0x00004958                __fp_lock_all
+                0x00004974                __fp_unlock_all
+ .text          0x00004990      0x24c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-freer.o)
+                0x00004990                _malloc_trim_r
+                0x00004a34                _free_r
+ .text          0x00004bdc       0xbc /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fwalk.o)
+                0x00004bdc                _fwalk
+                0x00004c34                _fwalk_reent
+ .text          0x00004c98        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
+ .text          0x00004c98       0x30 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-malloc.o)
+                0x00004c98                malloc
+                0x00004cb0                free
+ .text          0x00004cc8      0x50c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-mallocr.o)
+                0x00004cc8                _malloc_r
+ .text          0x000051d4       0xfc /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-memcpy.o)
+                0x000051d4                memcpy
+ .text          0x000052d0       0x8c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-memset.o)
+                0x000052d0                memset
+ .text          0x0000535c        0x8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-mlock.o)
+                0x0000535c                __malloc_lock
+                0x00005360                __malloc_unlock
+ .text          0x00005364       0x40 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-printf.o)
+                0x00005364                _printf_r
+                0x00005380                printf
+ .text          0x000053a4       0x28 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-putchar.o)
+                0x000053a4                _putchar_r
+                0x000053b4                putchar
+ .text          0x000053cc       0x84 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-puts.o)
+                0x000053cc                _puts_r
+                0x00005438                puts
+ .text          0x00005450       0x84 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-sprintf.o)
+                0x00005450                _sprintf_r
+                0x00005490                sprintf
+ .text          0x000054d4       0xac /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-stdio.o)
+                0x000054d4                __sread
+                0x00005500                __seofread
+                0x00005504                __swrite
+                0x00005540                __sseek
+                0x00005570                __sclose
+ .text          0x00005580       0x48 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strcat.o)
+                0x00005580                strcat
+ .text          0x000055c8       0x10 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strcpy.o)
+                0x000055c8                strcpy
+ .text          0x000055d8       0x10 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strlen.o)
+                0x000055d8                strlen
+ .text          0x000055e8       0x6c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strncpy.o)
+                0x000055e8                strncpy
+ *fill*         0x00005654        0x4 00
+ .text          0x00005658     0x1558 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfprintf.o)
+                0x00005658                _svfprintf_r
+ .text          0x00006bb0     0x17f0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfprintf.o)
+                0x00006bb0                _vfprintf_r
+                0x00008380                vfprintf
+ .text          0x000083a0       0xe0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-wbuf.o)
+                0x000083a0                __swbuf_r
+                0x00008464                __swbuf
+ .text          0x00008480       0xc0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-wsetup.o)
+                0x00008480                __swsetup_r
+ .text          0x00008540     0x1088 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-dtoa.o)
+                0x000086a4                _dtoa_r
+ .text          0x000095c8       0xb8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fclose.o)
+                0x000095c8                _fclose_r
+                0x00009664                fclose
+ .text          0x00009680      0x344 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fvwrite.o)
+                0x00009680                __sfvwrite_r
+ .text          0x000099c4       0xa4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-locale.o)
+                0x000099c4                _setlocale_r
+                0x00009a10                __locale_charset
+                0x00009a18                __locale_mb_cur_max
+                0x00009a24                __locale_msgcharset
+                0x00009a30                __locale_cjk_lang
+                0x00009a34                _localeconv_r
+                0x00009a40                setlocale
+                0x00009a5c                localeconv
+ .text          0x00009a68       0xe4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-makebuf.o)
+                0x00009a68                __smakebuf_r
+ .text          0x00009b4c       0x90 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-memchr.o)
+                0x00009b4c                memchr
+ .text          0x00009bdc       0x9c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-memmove.o)
+                0x00009bdc                memmove
+ .text          0x00009c78      0x9c0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-mprec.o)
+                0x00009c78                _Balloc
+                0x00009ccc                _Bfree
+                0x00009ce4                __multadd
+                0x00009d80                __s2b
+                0x00009e10                __hi0bits
+                0x00009e50                __lo0bits
+                0x00009eb4                __i2b
+                0x00009ecc                __multiply
+                0x0000a054                __pow5mult
+                0x0000a108                __lshift
+                0x0000a1d8                __mcmp
+                0x0000a218                __mdiff
+                0x0000a318                __ulp
+                0x0000a364                __b2d
+                0x0000a404                __d2b
+                0x0000a4d4                __ratio
+                0x0000a548                _mprec_log10
+                0x0000a58c                __copybits
+                0x0000a5d4                __any_on
+ .text          0x0000a638       0xd0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-putc.o)
+                0x0000a638                _putc_r
+                0x0000a69c                putc
+ .text          0x0000a708      0x424 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-reallocr.o)
+                0x0000a708                _realloc_r
+ .text          0x0000ab2c       0x9c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-s_fpclassify.o)
+                0x0000ab2c                __fpclassifyd
+ .text          0x0000abc8       0x14 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-strcmp.o)
+                0x0000abc8                strcmp
+ .text          0x0000abdc      0xc54 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfiprintf.o)
+                0x0000abdc                __ssprint_r
+                0x0000ad00                _svfiprintf_r
+ .text          0x0000b830      0xd38 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfiprintf.o)
+                0x0000b830                __sprint_r
+                0x0000b8b0                _vfiprintf_r
+                0x0000c548                vfiprintf
+ .text          0x0000c568       0x60 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-callocr.o)
+                0x0000c568                _calloc_r
+ .text          0x0000c5c8       0xf8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-fputwc.o)
+                0x0000c5c8                _fputwc_r
+                0x0000c694                fputwc
+ .text          0x0000c6c0       0x28 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-isattyr.o)
+                0x0000c6c0                _isatty_r
+ .text          0x0000c6e8      0x118 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-reent.o)
+                0x0000c6e8                cleanup_glue
+                0x0000c708                _reclaim_reent
+                0x0000c7b0                _wrapup_reent
+ .text          0x0000c800       0xdc /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-wcrtomb.o)
+                0x0000c800                _wcrtomb_r
+                0x0000c860                wcrtomb
+ .text          0x0000c8dc       0x5c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-wctomb_r.o)
+                0x0000c8dc                __ascii_wctomb
+                0x0000c8fc                _wctomb_r
+ .text          0x0000c938      0x41c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_arm_addsubdf3.o)
+                0x0000c938                __aeabi_drsub
+                0x0000c940                __aeabi_dsub
+                0x0000c940                __subdf3
+                0x0000c944                __adddf3
+                0x0000c944                __aeabi_dadd
+                0x0000cc54                __aeabi_ui2d
+                0x0000cc54                __floatunsidf
+                0x0000cc78                __floatsidf
+                0x0000cc78                __aeabi_i2d
+                0x0000cca0                __extendsfdf2
+                0x0000cca0                __aeabi_f2d
+                0x0000cce0                __aeabi_ul2d
+                0x0000cce0                __floatundidf
+                0x0000ccf4                __floatdidf
+                0x0000ccf4                __aeabi_l2d
+ .text          0x0000cd54      0x49c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_arm_muldivdf3.o)
+                0x0000cd54                __aeabi_dmul
+                0x0000cd54                __muldf3
+                0x0000cfe4                __aeabi_ddiv
+                0x0000cfe4                __divdf3
+ .text          0x0000d1f0      0x144 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_arm_cmpdf2.o)
+                0x0000d1f0                __gtdf2
+                0x0000d1f0                __gedf2
+                0x0000d1f8                __ltdf2
+                0x0000d1f8                __ledf2
+                0x0000d200                __cmpdf2
+                0x0000d200                __eqdf2
+                0x0000d200                __nedf2
+                0x0000d288                __aeabi_cdrcmple
+                0x0000d2a4                __aeabi_cdcmple
+                0x0000d2a4                __aeabi_cdcmpeq
+                0x0000d2bc                __aeabi_dcmpeq
+                0x0000d2d4                __aeabi_dcmplt
+                0x0000d2ec                __aeabi_dcmple
+                0x0000d304                __aeabi_dcmpge
+                0x0000d31c                __aeabi_dcmpgt
+ .text          0x0000d334       0x5c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_arm_fixdfsi.o)
+                0x0000d334                __fixdfsi
+                0x0000d334                __aeabi_d2iz
+ .text          0x0000d390       0x3c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_aeabi_uldivmod.o)
+                0x0000d390                __aeabi_uldivmod
+ .text          0x0000d3cc       0x70 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(bpabi.o)
+                0x0000d3cc                __gnu_ldivmod_helper
+                0x0000d404                __gnu_uldivmod_helper
+ .text          0x0000d43c       0x4c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_muldi3.o)
+                0x0000d43c                __aeabi_lmul
+                0x0000d43c                __muldi3
+ .text          0x0000d488      0x3a8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divdi3.o)
+                0x0000d488                __divdi3
+ .text          0x0000d830      0x340 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivdi3.o)
+                0x0000d830                __udivdi3
+ .text          0x0000db70       0x48 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_clzsi2.o)
+                0x0000db70                __clzsi2
+ .text.stub     0x0000dbb8      0x14c linker stubs
  *(.gnu.linkonce.t.*)
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
@@ -835,128 +835,128 @@ END GROUP
  .v4_bx         0x00000000        0x0 linker stubs
  *(.gcc_except_table)
  *(.rodata)
- .rodata        0x0000dd30        0x4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
-                0x0000dd30                _global_impure_ptr
- .rodata        0x0000dd34      0x184 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfprintf.o)
- .rodata        0x0000deb8      0x184 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfprintf.o)
- *fill*         0x0000e03c        0x4 00
- .rodata        0x0000e040      0x128 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-mprec.o)
-                0x0000e050                __mprec_tens
-                0x0000e118                __mprec_bigtens
-                0x0000e140                __mprec_tinytens
- .rodata        0x0000e168      0x184 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfiprintf.o)
- .rodata        0x0000e2ec      0x184 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfiprintf.o)
+ .rodata        0x0000dd38        0x4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
+                0x0000dd38                _global_impure_ptr
+ .rodata        0x0000dd3c      0x184 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfprintf.o)
+ .rodata        0x0000dec0      0x184 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfprintf.o)
+ *fill*         0x0000e044        0x4 00
+ .rodata        0x0000e048      0x128 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-mprec.o)
+                0x0000e058                __mprec_tens
+                0x0000e120                __mprec_bigtens
+                0x0000e148                __mprec_tinytens
+ .rodata        0x0000e170      0x184 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfiprintf.o)
+ .rodata        0x0000e2f4      0x184 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfiprintf.o)
  *(.rodata*)
  .rodata.str1.4
-                0x0000e470       0xdf ./lib/Common/src/i2c.o
+                0x0000e478       0xdf ./lib/Common/src/i2c.o
                                  0xe0 (size before relaxing)
- *fill*         0x0000e54f        0x1 00
+ *fill*         0x0000e557        0x1 00
  .rodata.OV7670
-                0x0000e550      0x204 ./lib/Common/src/i2c.o
-                0x0000e550                OV7670
+                0x0000e558      0x204 ./lib/Common/src/i2c.o
+                0x0000e558                OV7670
  .rodata.ADC_Read
-                0x0000e754       0x20 ./src/main.o
+                0x0000e75c       0x20 ./src/main.o
  .rodata.str1.4
-                0x0000e774       0x96 ./src/main.o
+                0x0000e77c       0x96 ./src/main.o
                                  0x98 (size before relaxing)
- *fill*         0x0000e80a        0x2 00
+ *fill*         0x0000e812        0x2 00
  .rodata.str1.4
-                0x0000e80c        0xe ./lib/Common/src/misc.o
+                0x0000e814        0xe ./lib/Common/src/misc.o
                                  0x10 (size before relaxing)
- *fill*         0x0000e81a        0x2 00
+ *fill*         0x0000e822        0x2 00
  .rodata.str1.4
-                0x0000e81c       0x30 ../Common/Minimal/BlockQ.o
+                0x0000e824       0x30 ../Common/Minimal/BlockQ.o
  .rodata.str1.4
-                0x0000e84c        0xf ../Common/Minimal/blocktim.o
+                0x0000e854        0xf ../Common/Minimal/blocktim.o
                                  0x10 (size before relaxing)
- *fill*         0x0000e85b        0x1 00
+ *fill*         0x0000e863        0x1 00
  .rodata.str1.4
-                0x0000e85c        0x8 ../Common/Minimal/integer.o
+                0x0000e864        0x8 ../Common/Minimal/integer.o
  .rodata.str1.4
-                0x0000e864       0x1f ../Common/Minimal/GenQTest.o
+                0x0000e86c       0x1f ../Common/Minimal/GenQTest.o
                                  0x20 (size before relaxing)
- *fill*         0x0000e883        0x1 00
+ *fill*         0x0000e88b        0x1 00
  .rodata.str1.4
-                0x0000e884       0x1f ../Common/Minimal/QPeek.o
+                0x0000e88c       0x1f ../Common/Minimal/QPeek.o
                                  0x20 (size before relaxing)
- *fill*         0x0000e8a3        0x1 00
+ *fill*         0x0000e8ab        0x1 00
  .rodata.str1.4
-                0x0000e8a4       0x28 ../Common/Minimal/dynamic.o
+                0x0000e8ac       0x28 ../Common/Minimal/dynamic.o
  .rodata.str1.4
-                0x0000e8cc       0x1f ../../Source/tasks.o
+                0x0000e8d4       0x1f ../../Source/tasks.o
                                  0x20 (size before relaxing)
- *fill*         0x0000e8eb        0x1 00
+ *fill*         0x0000e8f3        0x1 00
  .rodata.str1.4
-                0x0000e8ec        0x2 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
+                0x0000e8f4        0x2 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-impure.o)
                                   0x4 (size before relaxing)
  .rodata.str1.4
                 0x00000000        0x2 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-puts.o)
                                   0x4 (size before relaxing)
- *fill*         0x0000e8ee        0x2 00
+ *fill*         0x0000e8f6        0x2 00
  .rodata.str1.4
-                0x0000e8f0       0x42 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfprintf.o)
+                0x0000e8f8       0x42 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfprintf.o)
                                  0x44 (size before relaxing)
  .rodata.str1.4
                 0x00000000       0x44 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfprintf.o)
- *fill*         0x0000e932        0x2 00
+ *fill*         0x0000e93a        0x2 00
  .rodata.str1.4
-                0x0000e934       0x10 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-dtoa.o)
+                0x0000e93c       0x10 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-dtoa.o)
                                  0x14 (size before relaxing)
  .rodata.str1.4
-                0x0000e944        0x8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-locale.o)
+                0x0000e94c        0x8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-locale.o)
                                  0x14 (size before relaxing)
  .rodata.str1.4
                 0x00000000       0x30 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-svfiprintf.o)
  .rodata.str1.4
                 0x00000000       0x30 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-vfiprintf.o)
  *(.gnu.linkonce.r.*)
-                0x0000e94c                . = ALIGN (0x4)
-                0x0000e94c                . = ALIGN (0x4)
+                0x0000e954                . = ALIGN (0x4)
+                0x0000e954                . = ALIGN (0x4)
 
-.ctors          0x0000e94c        0x0
-                0x0000e94c                PROVIDE (__ctors_start__, .)
+.ctors          0x0000e954        0x0
+                0x0000e954                PROVIDE (__ctors_start__, .)
  *(SORT(.ctors.*))
  *(.ctors)
-                0x0000e94c                . = ALIGN (0x4)
-                0x0000e94c                PROVIDE (__ctors_end__, .)
-                0x0000e94c                . = ALIGN (0x4)
+                0x0000e954                . = ALIGN (0x4)
+                0x0000e954                PROVIDE (__ctors_end__, .)
+                0x0000e954                . = ALIGN (0x4)
 
-.dtors          0x0000e94c        0x0
-                0x0000e94c                PROVIDE (__dtors_start__, .)
+.dtors          0x0000e954        0x0
+                0x0000e954                PROVIDE (__dtors_start__, .)
  *(SORT(.dtors.*))
  *(.dtors)
-                0x0000e94c                . = ALIGN (0x4)
-                0x0000e94c                PROVIDE (__dtors_end__, .)
-                0x0000e94c                . = ALIGN (0x4)
-                0x0000e94c                . = ALIGN (0x4)
+                0x0000e954                . = ALIGN (0x4)
+                0x0000e954                PROVIDE (__dtors_end__, .)
+                0x0000e954                . = ALIGN (0x4)
+                0x0000e954                . = ALIGN (0x4)
 
-.ARM.extab      0x0000e94c        0x0
+.ARM.extab      0x0000e954        0x0
  *(.ARM.extab* .gnu.linkonce.armextab.*)
- .ARM.extab     0x0000e94c        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divdi3.o)
- .ARM.extab     0x0000e94c        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivdi3.o)
-                0x0000e94c                __exidx_start = .
+ .ARM.extab     0x0000e954        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divdi3.o)
+ .ARM.extab     0x0000e954        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivdi3.o)
+                0x0000e954                __exidx_start = .
 
-.ARM.exidx      0x0000e94c        0x8
+.ARM.exidx      0x0000e954        0x8
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
- .ARM.exidx     0x0000e94c        0x8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divdi3.o)
- .ARM.exidx     0x0000e954        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivdi3.o)
+ .ARM.exidx     0x0000e954        0x8 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divdi3.o)
+ .ARM.exidx     0x0000e95c        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivdi3.o)
                                   0x8 (size before relaxing)
-                0x0000e954                __exidx_end = .
+                0x0000e95c                __exidx_end = .
 
 .eh_frame_hdr
  *(.eh_frame_hdr)
 
 .eh_frame
  *(.eh_frame)
-                0x0000e954                . = ALIGN (0x4)
-                0x0000e954                __end_of_text__ = .
-                0x0000e954                _etext = .
-                0x0000e954                PROVIDE (etext, .)
+                0x0000e95c                . = ALIGN (0x4)
+                0x0000e95c                __end_of_text__ = .
+                0x0000e95c                _etext = .
+                0x0000e95c                PROVIDE (etext, .)
 
-.data           0x40000000      0x8c8 load address 0x0000e954
+.data           0x40000000      0x8c8 load address 0x0000e95c
                 0x40000000                _data = .
                 0x40000000                __data_beg__ = .
-                0x0000e954                __data_beg_src__ = __end_of_text__
+                0x0000e95c                __data_beg_src__ = __end_of_text__
  *(.vectmapped)
                 0x40000000                . = ALIGN (0x4)
  *(.fastrun)
@@ -984,7 +984,7 @@ END GROUP
  .data          0x40000000        0x0 ../../Source/tasks.o
  .data          0x40000000        0x0 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
  .data          0x40000000        0x0 ../../Source/portable/MemMang/heap_3.o
- .data          0x40000000        0x0 /tmp/ccnUaf1P.o
+ .data          0x40000000        0x0 /tmp/ccX0aDUS.o
  .data          0x40000000        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivsi3.o)
  .data          0x40000000        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divsi3.o)
  .data          0x40000000        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_dvmd_tls.o)
@@ -1060,7 +1060,7 @@ END GROUP
                 0x400008c8                _edata = .
                 0x400008c8                PROVIDE (edata, .)
 
-.bss            0x400008c8      0x2cc load address 0x0000f21c
+.bss            0x400008c8      0x2c8 load address 0x0000f224
                 0x400008c8                __bss_start = .
                 0x400008c8                _bss_start = .
                 0x400008c8                __bss_beg__ = .
@@ -1088,7 +1088,7 @@ END GROUP
  .bss           0x400008c8        0x0 ../../Source/tasks.o
  .bss           0x400008c8        0x0 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
  .bss           0x400008c8        0x0 ../../Source/portable/MemMang/heap_3.o
- .bss           0x400008c8        0x0 /tmp/ccnUaf1P.o
+ .bss           0x400008c8        0x0 /tmp/ccX0aDUS.o
  .bss           0x400008c8        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivsi3.o)
  .bss           0x400008c8        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divsi3.o)
  .bss           0x400008c8        0x0 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_dvmd_tls.o)
@@ -1183,15 +1183,15 @@ END GROUP
  .bss.__exidx_start
                 0x400009b0        0x4 ./lib/Common/src/syscalls.o
  .bss.heap_ptr  0x400009b4        0x4 ./lib/Common/src/syscalls.o
- .bss.sBlockingProducerCount
+ .bss.sLastBlockingProducerCount.2843
                 0x400009b8        0x8 ../Common/Minimal/BlockQ.o
- .bss.sLastBlockingProducerCount.2848
+ .bss.sBlockingProducerCount
                 0x400009c0        0x8 ../Common/Minimal/BlockQ.o
- .bss.sBlockingConsumerCount
+ .bss.sLastBlockingConsumerCount.2842
                 0x400009c8        0x8 ../Common/Minimal/BlockQ.o
- .bss.sLastBlockingConsumerCount.2847
+ .bss.sBlockingConsumerCount
                 0x400009d0        0x8 ../Common/Minimal/BlockQ.o
- .bss.xLastSecondaryCycleCount.2463
+ .bss.xLastSecondaryCycleCount.2458
                 0x400009d8        0x4 ../Common/Minimal/blocktim.o
  .bss.xPrimaryCycles
                 0x400009dc        0x4 ../Common/Minimal/blocktim.o
@@ -1203,7 +1203,7 @@ END GROUP
                 0x400009e8        0x4 ../Common/Minimal/blocktim.o
  .bss.xErrorOccurred
                 0x400009ec        0x4 ../Common/Minimal/blocktim.o
- .bss.xLastPrimaryCycleCount.2462
+ .bss.xLastPrimaryCycleCount.2457
                 0x400009f0        0x4 ../Common/Minimal/blocktim.o
  .bss.xSecondaryCycles
                 0x400009f4        0x4 ../Common/Minimal/blocktim.o
@@ -1213,9 +1213,9 @@ END GROUP
                 0x400009fc        0x4 ../Common/Minimal/GenQTest.o
  .bss.xHighPriorityMutexTask
                 0x40000a00        0x4 ../Common/Minimal/GenQTest.o
- .bss.ulLastLoopCounter2.2862
+ .bss.ulLastLoopCounter2.2857
                 0x40000a04        0x4 ../Common/Minimal/GenQTest.o
- .bss.ulLastLoopCounter.2861
+ .bss.ulLastLoopCounter.2856
                 0x40000a08        0x4 ../Common/Minimal/GenQTest.o
  .bss.ulGuardedVariable
                 0x40000a0c        0x4 ../Common/Minimal/GenQTest.o
@@ -1225,7 +1225,7 @@ END GROUP
                 0x40000a14        0x4 ../Common/Minimal/GenQTest.o
  .bss.ulLoopCounter
                 0x40000a18        0x4 ../Common/Minimal/GenQTest.o
- .bss.ulLastLoopCounter.2850
+ .bss.ulLastLoopCounter.2845
                 0x40000a1c        0x4 ../Common/Minimal/QPeek.o
  .bss.xHighestPriorityTask
                 0x40000a20        0x4 ../Common/Minimal/QPeek.o
@@ -1245,110 +1245,108 @@ END GROUP
                 0x40000a34                xSuspendedTestQueue
  .bss.usCheckVariable
                 0x40000a38        0x2 ../Common/Minimal/dynamic.o
- *fill*         0x40000a3a        0x2 00
- .bss.ulReceivedValue.2856
-                0x40000a3c        0x4 ../Common/Minimal/dynamic.o
+ .bss.usLastTaskCheck.2859
+                0x40000a3a        0x2 ../Common/Minimal/dynamic.o
  .bss.xLimitedIncrementHandle
-                0x40000a40        0x4 ../Common/Minimal/dynamic.o
- .bss.ulExpectedValue.2855
-                0x40000a44        0x4 ../Common/Minimal/dynamic.o
+                0x40000a3c        0x4 ../Common/Minimal/dynamic.o
  .bss.xSuspendedQueueSendError
-                0x40000a48        0x4 ../Common/Minimal/dynamic.o
- .bss.usLastTaskCheck.2864
-                0x40000a4c        0x2 ../Common/Minimal/dynamic.o
- *fill*         0x40000a4e        0x2 00
+                0x40000a40        0x4 ../Common/Minimal/dynamic.o
  .bss.ulCounter
-                0x40000a50        0x4 ../Common/Minimal/dynamic.o
+                0x40000a44        0x4 ../Common/Minimal/dynamic.o
  .bss.xSuspendedQueueReceiveError
-                0x40000a54        0x4 ../Common/Minimal/dynamic.o
+                0x40000a48        0x4 ../Common/Minimal/dynamic.o
+ .bss.ulValueToSend.2845
+                0x40000a4c        0x4 ../Common/Minimal/dynamic.o
  .bss.xContinousIncrementHandle
+                0x40000a50        0x4 ../Common/Minimal/dynamic.o
+ .bss.ulExpectedValue.2850
+                0x40000a54        0x4 ../Common/Minimal/dynamic.o
+ .bss.ulReceivedValue.2851
                 0x40000a58        0x4 ../Common/Minimal/dynamic.o
- .bss.ulValueToSend.2850
-                0x40000a5c        0x4 ../Common/Minimal/dynamic.o
  .bss.uxTopReadyPriority
-                0x40000a60        0x4 ../../Source/tasks.o
+                0x40000a5c        0x4 ../../Source/tasks.o
  .bss.uxTasksDeleted
-                0x40000a64        0x4 ../../Source/tasks.o
+                0x40000a60        0x4 ../../Source/tasks.o
  .bss.xTickCount
-                0x40000a68        0x4 ../../Source/tasks.o
+                0x40000a64        0x4 ../../Source/tasks.o
  .bss.pxReadyTasksLists
-                0x40000a6c       0x50 ../../Source/tasks.o
+                0x40000a68       0x50 ../../Source/tasks.o
  .bss.pxOverflowDelayedTaskList
-                0x40000abc        0x4 ../../Source/tasks.o
+                0x40000ab8        0x4 ../../Source/tasks.o
  .bss.xTasksWaitingTermination
-                0x40000ac0       0x14 ../../Source/tasks.o
- .bss.xTracing  0x40000ad4        0x4 ../../Source/tasks.o
+                0x40000abc       0x14 ../../Source/tasks.o
+ .bss.xTracing  0x40000ad0        0x4 ../../Source/tasks.o
  .bss.pxDelayedTaskList
-                0x40000ad8        0x4 ../../Source/tasks.o
+                0x40000ad4        0x4 ../../Source/tasks.o
  .bss.xPendingReadyList
-                0x40000adc       0x14 ../../Source/tasks.o
+                0x40000ad8       0x14 ../../Source/tasks.o
  .bss.xSchedulerRunning
-                0x40000af0        0x4 ../../Source/tasks.o
+                0x40000aec        0x4 ../../Source/tasks.o
  .bss.xMissedYield
-                0x40000af4        0x4 ../../Source/tasks.o
+                0x40000af0        0x4 ../../Source/tasks.o
  .bss.uxTaskNumber
-                0x40000af8        0x4 ../../Source/tasks.o
+                0x40000af4        0x4 ../../Source/tasks.o
  .bss.pcTraceBuffer
-                0x40000afc        0x4 ../../Source/tasks.o
+                0x40000af8        0x4 ../../Source/tasks.o
  .bss.pxCurrentTCB
-                0x40000b00        0x4 ../../Source/tasks.o
-                0x40000b00                pxCurrentTCB
+                0x40000afc        0x4 ../../Source/tasks.o
+                0x40000afc                pxCurrentTCB
  .bss.pcStatusString
-                0x40000b04       0x34 ../../Source/tasks.o
+                0x40000b00       0x34 ../../Source/tasks.o
  .bss.xSuspendedTaskList
-                0x40000b38       0x14 ../../Source/tasks.o
+                0x40000b34       0x14 ../../Source/tasks.o
  .bss.uxCurrentNumberOfTasks
-                0x40000b4c        0x4 ../../Source/tasks.o
+                0x40000b48        0x4 ../../Source/tasks.o
  .bss.xDelayedTaskList1
-                0x40000b50       0x14 ../../Source/tasks.o
+                0x40000b4c       0x14 ../../Source/tasks.o
  .bss.xDelayedTaskList2
-                0x40000b64       0x14 ../../Source/tasks.o
+                0x40000b60       0x14 ../../Source/tasks.o
  .bss.uxSchedulerSuspended
-                0x40000b78        0x4 ../../Source/tasks.o
+                0x40000b74        0x4 ../../Source/tasks.o
  .bss.uxMissedTicks
-                0x40000b7c        0x4 ../../Source/tasks.o
+                0x40000b78        0x4 ../../Source/tasks.o
  .bss.pcTraceBufferStart
-                0x40000b80        0x4 ../../Source/tasks.o
+                0x40000b7c        0x4 ../../Source/tasks.o
  .bss.pcTraceBufferEnd
-                0x40000b84        0x4 ../../Source/tasks.o
+                0x40000b80        0x4 ../../Source/tasks.o
  .bss.xNumOfOverflows
-                0x40000b88        0x4 ../../Source/tasks.o
+                0x40000b84        0x4 ../../Source/tasks.o
  .bss.uxTopUsedPriority
-                0x40000b8c        0x4 ../../Source/tasks.o
+                0x40000b88        0x4 ../../Source/tasks.o
  *(.gnu.linkonce.b*)
  *(COMMON)
- COMMON         0x40000b90        0x4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-reent.o)
-                0x40000b90                errno
-                0x40000b94                . = ALIGN (0x4)
-                0x40000b94                . = ALIGN (0x4)
-                0x40000b94                __bss_end__ = .
-                0x40000b94                PROVIDE (__bss_end, .)
-                0x40000b94                _bss_end = .
-                0x40000b94                PROVIDE (_bss_end, .)
-                0x40000b94                __end__ = .
-                0x40000b94                . = ALIGN (0x4)
+ COMMON         0x40000b8c        0x4 /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/../../../../arm-none-eabi/lib/thumb/libc.a(lib_a-reent.o)
+                0x40000b8c                errno
+                0x40000b90                . = ALIGN (0x4)
+                0x40000b90                . = ALIGN (0x4)
+                0x40000b90                __bss_end__ = .
+                0x40000b90                PROVIDE (__bss_end, .)
+                0x40000b90                _bss_end = .
+                0x40000b90                PROVIDE (_bss_end, .)
+                0x40000b90                __end__ = .
+                0x40000b90                . = ALIGN (0x4)
 
-.heap           0x40000b94        0x0
-                0x40000b94                _end = .
-                0x40000b94                PROVIDE (_end, .)
-                0x40000b94                PROVIDE (end, .)
-                0x40000b94                PROVIDE (_heap, .)
+.heap           0x40000b90        0x0
+                0x40000b90                _end = .
+                0x40000b90                PROVIDE (_end, .)
+                0x40000b90                PROVIDE (end, .)
+                0x40000b90                PROVIDE (_heap, .)
  *(.heap)
  *(.heap*)
  *(.HEAP)
-                0x40000b94                . = ALIGN (0x4)
-                0x40000b94                . = ALIGN (0x4)
-                0x40000b94                _heap_end = .
-                0x40000b94                PROVIDE (_heap_end, .)
+                0x40000b90                . = ALIGN (0x4)
+                0x40000b90                . = ALIGN (0x4)
+                0x40000b90                _heap_end = .
+                0x40000b90                PROVIDE (_heap_end, .)
 
-.stack          0x40000b94        0x0
-                0x40000b94                _stack_top = .
-                0x40000b94                PROVIDE (_stack_top, .)
+.stack          0x40000b90        0x0
+                0x40000b90                _stack_top = .
+                0x40000b90                PROVIDE (_stack_top, .)
  *(.stack)
  *(.STACK)
-                0x40000b94                _stack = .
-                0x40000b94                PROVIDE (_stack, .)
-                0x40000b94                . = ALIGN (0x4)
+                0x40000b90                _stack = .
+                0x40000b90                PROVIDE (_stack, .)
+                0x40000b90                . = ALIGN (0x4)
 
 .usbram         0x7fd00000        0x0
                 0x7fd00000                __usbram_start = .
@@ -1431,7 +1429,7 @@ END GROUP
  .ARM.attributes
                 0x00000410       0x34 ../../Source/portable/MemMang/heap_3.o
  .ARM.attributes
-                0x00000444       0x24 /tmp/ccnUaf1P.o
+                0x00000444       0x24 /tmp/ccX0aDUS.o
  .ARM.attributes
                 0x00000468       0x1a /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivsi3.o)
  .ARM.attributes
@@ -1627,7 +1625,7 @@ END GROUP
  .debug_aranges
                 0x000006a0       0x28 ../../Source/portable/MemMang/heap_3.o
  .debug_aranges
-                0x000006c8       0x28 /tmp/ccnUaf1P.o
+                0x000006c8       0x28 /tmp/ccX0aDUS.o
 
 .debug_pubnames
                 0x00000000      0xc93
@@ -1675,7 +1673,7 @@ END GROUP
  .debug_pubnames
                 0x00000c62       0x31 ../../Source/portable/MemMang/heap_3.o
 
-.debug_info     0x00000000     0x61f4
+.debug_info     0x00000000     0x61ed
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x20b ../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
  .debug_info    0x0000020b      0xdf6 ./lib/Common/src/i2c.o
@@ -1698,7 +1696,7 @@ END GROUP
  .debug_info    0x00004e3d     0x10f7 ../../Source/tasks.o
  .debug_info    0x00005f34      0x180 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
  .debug_info    0x000060b4       0xe4 ../../Source/portable/MemMang/heap_3.o
- .debug_info    0x00006198       0x5c /tmp/ccnUaf1P.o
+ .debug_info    0x00006198       0x55 /tmp/ccX0aDUS.o
 
 .debug_abbrev   0x00000000     0x1b50
  *(.debug_abbrev)
@@ -1723,32 +1721,32 @@ END GROUP
  .debug_abbrev  0x000016b2      0x2f0 ../../Source/tasks.o
  .debug_abbrev  0x000019a2      0x101 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
  .debug_abbrev  0x00001aa3       0x9b ../../Source/portable/MemMang/heap_3.o
- .debug_abbrev  0x00001b3e       0x12 /tmp/ccnUaf1P.o
+ .debug_abbrev  0x00001b3e       0x12 /tmp/ccX0aDUS.o
 
-.debug_line     0x00000000     0x2b1e
+.debug_line     0x00000000     0x2b23
  *(.debug_line)
  .debug_line    0x00000000       0xe7 ../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
  .debug_line    0x000000e7      0x4b4 ./lib/Common/src/i2c.o
- .debug_line    0x0000059b      0x2f3 ./src/main.o
- .debug_line    0x0000088e       0xa5 ./lib/Common/src/irq.o
- .debug_line    0x00000933      0x159 ./lib/Common/src/rtc.o
- .debug_line    0x00000a8c       0xd5 ./lib/Common/src/uart.o
- .debug_line    0x00000b61       0x76 ./lib/Common/src/fio.o
- .debug_line    0x00000bd7      0x24b ./lib/Common/src/misc.o
- .debug_line    0x00000e22      0x124 ./lib/Common/src/target.o
- .debug_line    0x00000f46      0x32d ./lib/Common/src/syscalls.o
- .debug_line    0x00001273      0x17b ../Common/Minimal/BlockQ.o
- .debug_line    0x000013ee      0x1c0 ../Common/Minimal/blocktim.o
- .debug_line    0x000015ae       0xab ../Common/Minimal/integer.o
- .debug_line    0x00001659      0x1f6 ../Common/Minimal/GenQTest.o
- .debug_line    0x0000184f      0x1a0 ../Common/Minimal/QPeek.o
- .debug_line    0x000019ef      0x1d6 ../Common/Minimal/dynamic.o
- .debug_line    0x00001bc5      0x12a ../../Source/list.o
- .debug_line    0x00001cef      0x3e6 ../../Source/queue.o
- .debug_line    0x000020d5      0x7be ../../Source/tasks.o
- .debug_line    0x00002893      0x14f ../../Source/portable/GCC/ARM7_LPC23xx/port.o
- .debug_line    0x000029e2       0xc1 ../../Source/portable/MemMang/heap_3.o
- .debug_line    0x00002aa3       0x7b /tmp/ccnUaf1P.o
+ .debug_line    0x0000059b      0x2f8 ./src/main.o
+ .debug_line    0x00000893       0xa5 ./lib/Common/src/irq.o
+ .debug_line    0x00000938      0x159 ./lib/Common/src/rtc.o
+ .debug_line    0x00000a91       0xd5 ./lib/Common/src/uart.o
+ .debug_line    0x00000b66       0x76 ./lib/Common/src/fio.o
+ .debug_line    0x00000bdc      0x24b ./lib/Common/src/misc.o
+ .debug_line    0x00000e27      0x124 ./lib/Common/src/target.o
+ .debug_line    0x00000f4b      0x32d ./lib/Common/src/syscalls.o
+ .debug_line    0x00001278      0x17b ../Common/Minimal/BlockQ.o
+ .debug_line    0x000013f3      0x1c0 ../Common/Minimal/blocktim.o
+ .debug_line    0x000015b3       0xab ../Common/Minimal/integer.o
+ .debug_line    0x0000165e      0x1f6 ../Common/Minimal/GenQTest.o
+ .debug_line    0x00001854      0x1a0 ../Common/Minimal/QPeek.o
+ .debug_line    0x000019f4      0x1d6 ../Common/Minimal/dynamic.o
+ .debug_line    0x00001bca      0x12a ../../Source/list.o
+ .debug_line    0x00001cf4      0x3e6 ../../Source/queue.o
+ .debug_line    0x000020da      0x7be ../../Source/tasks.o
+ .debug_line    0x00002898      0x14f ../../Source/portable/GCC/ARM7_LPC23xx/port.o
+ .debug_line    0x000029e7       0xc1 ../../Source/portable/MemMang/heap_3.o
+ .debug_line    0x00002aa8       0x7b /tmp/ccX0aDUS.o
 
 .debug_frame    0x00000000     0x2330
  *(.debug_frame)
@@ -1822,50 +1820,50 @@ END GROUP
  .debug_frame   0x000022b8       0x3c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_divdi3.o)
  .debug_frame   0x000022f4       0x3c /opt/CodeSourcery/bin/../lib/gcc/arm-none-eabi/4.5.1/thumb/libgcc.a(_udivdi3.o)
 
-.debug_str      0x00000000     0x1fb1
+.debug_str      0x00000000     0x1faa
  *(.debug_str)
- .debug_str     0x00000000      0x17b ../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
-                                0x1b4 (size before relaxing)
- .debug_str     0x0000017b      0x4cd ./lib/Common/src/i2c.o
-                                0x5be (size before relaxing)
- .debug_str     0x00000648       0x9b ./src/main.o
-                                0x1a5 (size before relaxing)
- .debug_str     0x000006e3       0x54 ./lib/Common/src/irq.o
-                                0x128 (size before relaxing)
- .debug_str     0x00000737       0xe7 ./lib/Common/src/rtc.o
-                                0x1c7 (size before relaxing)
- .debug_str     0x0000081e       0x5b ./lib/Common/src/uart.o
-                                0x12b (size before relaxing)
- .debug_str     0x00000879       0x2f ./lib/Common/src/fio.o
-                                0x107 (size before relaxing)
- .debug_str     0x000008a8       0x47 ./lib/Common/src/misc.o
-                                0x4d1 (size before relaxing)
- .debug_str     0x000008ef       0x5c ./lib/Common/src/target.o
-                                0x127 (size before relaxing)
- .debug_str     0x0000094b      0x1ad ./lib/Common/src/syscalls.o
-                                0x65c (size before relaxing)
- .debug_str     0x00000af8      0x220 ../Common/Minimal/BlockQ.o
-                                0x31b (size before relaxing)
- .debug_str     0x00000d18      0x14d ../Common/Minimal/blocktim.o
-                                0x247 (size before relaxing)
- .debug_str     0x00000e65       0x8f ../Common/Minimal/integer.o
-                                0x18d (size before relaxing)
- .debug_str     0x00000ef4      0x164 ../Common/Minimal/GenQTest.o
-                                0x27f (size before relaxing)
- .debug_str     0x00001058       0xf5 ../Common/Minimal/QPeek.o
-                                0x223 (size before relaxing)
- .debug_str     0x0000114d      0x1db ../Common/Minimal/dynamic.o
-                                0x2ec (size before relaxing)
- .debug_str     0x00001328      0x132 ../../Source/list.o
-                                0x20a (size before relaxing)
- .debug_str     0x0000145a      0x2ff ../../Source/queue.o
-                                0x494 (size before relaxing)
- .debug_str     0x00001759      0x760 ../../Source/tasks.o
-                                0x971 (size before relaxing)
- .debug_str     0x00001eb9       0xa5 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
+ .debug_str     0x00000000      0x174 ../../Source/portable/GCC/ARM7_LPC23xx/portISR.o
                                 0x1ad (size before relaxing)
- .debug_str     0x00001f5e       0x53 ../../Source/portable/MemMang/heap_3.o
-                                0x11f (size before relaxing)
+ .debug_str     0x00000174      0x4cd ./lib/Common/src/i2c.o
+                                0x5b7 (size before relaxing)
+ .debug_str     0x00000641       0x9b ./src/main.o
+                                0x19e (size before relaxing)
+ .debug_str     0x000006dc       0x54 ./lib/Common/src/irq.o
+                                0x121 (size before relaxing)
+ .debug_str     0x00000730       0xe7 ./lib/Common/src/rtc.o
+                                0x1c0 (size before relaxing)
+ .debug_str     0x00000817       0x5b ./lib/Common/src/uart.o
+                                0x124 (size before relaxing)
+ .debug_str     0x00000872       0x2f ./lib/Common/src/fio.o
+                                0x100 (size before relaxing)
+ .debug_str     0x000008a1       0x47 ./lib/Common/src/misc.o
+                                0x4ca (size before relaxing)
+ .debug_str     0x000008e8       0x5c ./lib/Common/src/target.o
+                                0x120 (size before relaxing)
+ .debug_str     0x00000944      0x1ad ./lib/Common/src/syscalls.o
+                                0x655 (size before relaxing)
+ .debug_str     0x00000af1      0x220 ../Common/Minimal/BlockQ.o
+                                0x314 (size before relaxing)
+ .debug_str     0x00000d11      0x14d ../Common/Minimal/blocktim.o
+                                0x240 (size before relaxing)
+ .debug_str     0x00000e5e       0x8f ../Common/Minimal/integer.o
+                                0x186 (size before relaxing)
+ .debug_str     0x00000eed      0x164 ../Common/Minimal/GenQTest.o
+                                0x278 (size before relaxing)
+ .debug_str     0x00001051       0xf5 ../Common/Minimal/QPeek.o
+                                0x21c (size before relaxing)
+ .debug_str     0x00001146      0x1db ../Common/Minimal/dynamic.o
+                                0x2e5 (size before relaxing)
+ .debug_str     0x00001321      0x132 ../../Source/list.o
+                                0x203 (size before relaxing)
+ .debug_str     0x00001453      0x2ff ../../Source/queue.o
+                                0x48d (size before relaxing)
+ .debug_str     0x00001752      0x760 ../../Source/tasks.o
+                                0x96a (size before relaxing)
+ .debug_str     0x00001eb2       0xa5 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
+                                0x1a6 (size before relaxing)
+ .debug_str     0x00001f57       0x53 ../../Source/portable/MemMang/heap_3.o
+                                0x118 (size before relaxing)
 
 .debug_loc      0x00000000     0x3ed2
  *(.debug_loc)
@@ -1973,4 +1971,4 @@ OUTPUT(main.elf elf32-littlearm)
  .debug_ranges  0x00000530      0x308 ../../Source/tasks.o
  .debug_ranges  0x00000838       0x38 ../../Source/portable/GCC/ARM7_LPC23xx/port.o
  .debug_ranges  0x00000870       0x18 ../../Source/portable/MemMang/heap_3.o
- .debug_ranges  0x00000888       0x20 /tmp/ccnUaf1P.o
+ .debug_ranges  0x00000888       0x20 /tmp/ccX0aDUS.o
