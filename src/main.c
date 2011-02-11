@@ -164,6 +164,8 @@ int main( void )
 	TargetResetInit();//
 	GPIOResetInit();
 	UARTint();
+//	GPIOInit(1, FAST_PORT, DIR_OUT, LED1_MASK );
+
 	FIO2PIN1 = 0x2;
 	Mutex = xSemaphoreCreateMutex();
  	printf(" world!%d:%d\n",pdTRUE,pdFALSE);
@@ -212,16 +214,14 @@ vTaskDelay( 1 / portTICK_RATE_MS );
 	printf("start ISSI connection\n");
 
 	while(1){
-		printf("HandShake");
 		il++;
 		FIO2SET0 = 1;
-		FIO2SET1 = 0x2;
+		FIO2SET1 = 2;
 		prv=FIO2PIN0&3;
-		printf("up\t%x\n",prv);
 		bitshift = (bitshift<<1)+(prv&2)>>1;
 		vTaskDelay(1 / portTICK_RATE_MS);
 		FIO2CLR0 = 1;
-		FIO2CLR1 = 0x2;
+		FIO2CLR1 = 2;
 		printf("prv=%x",prv);
 		crr = FIO0PIN&3;
 		printf("Cr=%d",crr);
@@ -230,7 +230,6 @@ vTaskDelay( 1 / portTICK_RATE_MS );
 			break;
 			}
 		vTaskDelay(1 / portTICK_RATE_MS);
-		printf("Delaying%d",0.01 / portTICK_RATE_MS);
 		}
 	}
 
@@ -257,7 +256,7 @@ unsigned int res[5];
 void ISSR( void *pvParameters )
 {
 unsigned int tmpData;
-	vTaskDelay(30 / portTICK_RATE_MS);
+	vTaskDelay(300 / portTICK_RATE_MS);
 	while(!xSemaphoreTake( Mutex, 301 / portTICK_RATE_MS ));
 	vTaskDelay(30 / portTICK_RATE_MS);
 	FIO2CLR1 = 0xFF;
@@ -326,14 +325,12 @@ void vtrsTask( void *pvParameters ){
 /*-----------------------------------------------------------*/
 void vLedTask( void *pvParameters )
 {
-	GPIOInit(1, FAST_PORT, DIR_OUT, LED1_MASK );
+	vTaskDelay(300 / portTICK_RATE_MS);
 	
 	for(;;)
 	{
 		FIO1PIN ^= LED1_MASK;
-		vTaskDelay(207 / portTICK_RATE_MS);
-			vTaskSuspend(NULL);
-
+		vTaskDelay(100 / portTICK_RATE_MS);
 	}
 
 }
