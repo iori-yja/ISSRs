@@ -79,12 +79,13 @@
 #include "LPC23xx.h"
 #include "target.h"
 #include "i2cErr.h"
-//#include "adc.h"
+#include "adc.h"
 static void UARTint		( void );
 static int  modechecker		( void );
 static void vLedTask 		( void *pvParameters );
 static void vLed2Task 		( void *pvParameters );
 static void vi2c		( void );
+static void ISSR 		( void *pvParameters );
 static void vHPYTask		( void *pvParameters );
 static void vADcTask		( void *pvParameters );
 static void vrightwheelTask	( void *pvParameters );
@@ -116,29 +117,66 @@ int i2cbuff[6];
 //xQueueHandle xLCDQueue;
 int left;
 int right;
+xSemaphoreHandle Mutex;
+
+unsigned int ADC_Read (unsigned int ch )
+{
+  unsigned int i;
+    AD0CR  = (0x00200400 | ( 1 << ch ));	// Init ADC (Pclk = 18MHz) and select channel. Sampling rate = 4.5MHz
+    AD0CR |= 0x01000000;		// Start A/D Conversion
+    do
+    {
+    switch(ch)
+    {
+    case 0:
+        i = AD0DR0;	// Read A/D Data Register
+ 	break;
+    case 1:
+    	i = AD0DR1;
+	break;
+    case 2:
+    	i = AD0DR2;
+	break;
+    case 3:
+    	i = AD0DR3;
+	break;
+    case 4:
+    	i = AD0DR4;
+	break;
+    case 5:
+    	i = AD0DR5;
+	break;
+    case 6:
+    	i = AD0DR6;
+	break;
+    case 7:
+    	i = AD0DR7;
+    	break;
+    	}
+    	
+       } while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+    return (i >> 6) & 0x03FF;		// bit 6:15 is 10 bit AD value
+}
 
 /*-----------------------------------------------------------*/
 int main( void )
 {
 	TargetResetInit();//
 	GPIOResetInit();
-	FIO2PIN1 = 0x2;
 	UARTint();
-//	vi2c();
-	xTaskCreate( vValueTask,  ( signed portCHAR * )"Yomitori" , (configMINIMAL_STACK_SIZE *7), NULL, mainCHECK_TASK_PRIORITY, NULL );
-//	xTaskCreate( vtrsTask,  ( signed portCHAR * )"TREIS" , (configMINIMAL_STACK_SIZE *7), NULL, mainCHECK_TASK_PRIORITY, NULL );
-//	xTaskCreate( vrightwheelTask, (signed portCHAR * )"RIT", (configMINIMAL_STACK_SIZE *6), NULL, mainCHECK_TASK_PRIORITY,NULL);
-//	xTaskCreate( vleftwheelTask,  (signed portCHAR * )"LET", (configMINIMAL_STACK_SIZE *6), NULL, mainCHECK_TASK_PRIORITY,NULL);
-	/* Start2csender the tasks defined within this file/specific to this demo. */
-	FIO2CLR1 = 0xFF;
-//	xTaskCreate( vLed2Task,  ( signed portCHAR * )"LD" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
-	xTaskCreate( vLedTask,  ( signed portCHAR * )"LED" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
-//	xTaskCreate( vHPYTask,  ( signed portCHAR * )"YUKARI" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
-	left = 10;
-	right= 10;
-	vTaskStartScheduler();
-   /* Will only get here if there was insufficient memory to create the idle task. */
-	
+	FIO2PIN1 = 0x2;
+	Mutex = xSemaphoreCreateMutex();
+ 	printf(" world!%d:%d\n",pdTRUE,pdFALSE);
+	 if( Mutex != NULL ){
+		xTaskCreate( vLedTask,  ( signed portCHAR * )"LED" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY-1, NULL );
+		/* Start2csender the tasks defined within this file/specific to this demo. */
+		xTaskCreate( vi2c,  ( signed portCHAR * )"LD" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
+		xTaskCreate( ISSR,  ( signed portCHAR * )"ITS" , configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
+		FIO2CLR1 = 0xFF;
+		vTaskStartScheduler();
+		}
+	else printf("F");
+	while(1);
 	return 0;
 }
 //*******************************************************************************************************
@@ -150,41 +188,51 @@ void UARTint( void )
 
     	U0LCR = 0x83;		/* 8 bits, no Parity, 1 Stop bit */
     	Fdiv = ( Fpclk / 16 ) / UART_BAUD ;	/*baud rate */
-    	U0DLM = Fdiv / 256;							
+    	U0DLM = Fdiv / 256;
     	U0DLL = Fdiv % 256;
 		U0LCR = 0x03;		/* DLAB = 0 */
     	U0FCR = 0x07;		/* Enable and reset TX and RX FIFO. */
 	
-	printf("Hello, world!\n");
-}
+	printf("Hello,");
+	}
 
 //---------------------------------------
 
 /*-----------------------------------------------------------*/
-void vi2c(  )
+
+//*******************************************************************************************************
+//      ----------------------------------- Routines -------------------------------
+void getISSI( void )
 {
-	//i2cErr = 0x44;
-	i2cmasterset(2);
-	I22SCLH = 80;
-	I22SCLL = 180;
-//	for(;;){
-//	vTaskDelay(400 / portTICK_RATE_MS);
-	//read_ROM(0x00,32,0);
-//	vTaskDelay(600 / portTICK_RATE_MS);
-//	i2crestart(2);
-//	printf("i2c now start\n");
+int bitshift=0;
+int il=0;
+int prv;
+int crr;
+vTaskDelay( 1 / portTICK_RATE_MS );
+	printf("start ISSI connection\n");
 
-//	i2csender(2,0,0xA0,8);
-//	printf("sent\n");
-//	if(i2cErr!=0){
-//	printf("failure i2c opration.Errcode%x\n",i2cErr);
-//	}
-//	i2csender(2,1,0x0054,16);//Sub ADRESS
-//	i2csender(2,1,0x726c6421,32);
-//	i2csender(2,1,0x48656c6c,32);//100100001100101011011000110110001101111001011000111011101101111011100100110110001100100001000010101110001101110
-//	i2cstop(2);
- 	}
-
+	while(1){
+		printf("HandShake");
+		il++;
+		FIO2SET0 = 1;
+		FIO2SET1 = 0x2;
+		prv=FIO2PIN0&3;
+		printf("up\t%x\n",prv);
+		bitshift = (bitshift<<1)+(prv&2)>>1;
+		vTaskDelay(1 / portTICK_RATE_MS);
+		FIO2CLR0 = 1;
+		FIO2CLR1 = 0x2;
+		printf("prv=%x",prv);
+		crr = FIO0PIN&3;
+		printf("Cr=%d",crr);
+		if(crr&2!=prv&2){
+			printf("-%d\t%d\n",crr,il);
+			break;
+			}
+		vTaskDelay(1 / portTICK_RATE_MS);
+		printf("Delaying%d",0.01 / portTICK_RATE_MS);
+		}
+	}
 
 //*******************************************************************************************************
 //	-----------------------------------T A S K s.-------------------------------^^
@@ -201,8 +249,21 @@ unsigned int res[5];
 	for(;;){
 		for(a = 0; a <= 4; a++){
 			res[a] = ADC_Read(a);
-		}
+			}
 		vTaskDelay(30 / portTICK_RATE_MS);
+		}
+}
+/*-----------------------------------------------------------*/
+void ISSR( void *pvParameters )
+{
+unsigned int tmpData;
+	vTaskDelay(30 / portTICK_RATE_MS);
+	while(!xSemaphoreTake( Mutex, 301 / portTICK_RATE_MS ));
+	vTaskDelay(30 / portTICK_RATE_MS);
+	FIO2CLR1 = 0xFF;
+	while(1){
+		getISSI();
+		vTaskDelay(300 / portTICK_RATE_MS);
 		}
 }
 /*-----------------------------------------------------------*/
@@ -232,7 +293,7 @@ unsigned int a, t;
 		for(a = 0; a <= 4; a++){
 			res[a] = ADC_Read(a);
 			printf("%d\t", res[a]);
-			vTaskDelay(30 / portTICK_RATE_MS);
+			vTaskDelay(3 / portTICK_RATE_MS);
 		}
 		printf("\n");
 	}
@@ -263,7 +324,6 @@ void vtrsTask( void *pvParameters ){
 }
 //**           **GPIO TASK**          **
 /*-----------------------------------------------------------*/
-
 void vLedTask( void *pvParameters )
 {
 	GPIOInit(1, FAST_PORT, DIR_OUT, LED1_MASK );
@@ -271,10 +331,13 @@ void vLedTask( void *pvParameters )
 	for(;;)
 	{
 		FIO1PIN ^= LED1_MASK;
-		vTaskDelay(300 / portTICK_RATE_MS);
+		vTaskDelay(207 / portTICK_RATE_MS);
+			vTaskSuspend(NULL);
+
 	}
 
 }
+
 //----------------------------------------------------------
 void vLed2Task( void *pvParameters )
 {	

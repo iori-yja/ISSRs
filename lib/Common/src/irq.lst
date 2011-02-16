@@ -247,12 +247,12 @@
  170              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 irq.c
-     /tmp/ccxT2nsc.s:23     .text.init_VIC:00000000 $t
-     /tmp/ccxT2nsc.s:28     .text.init_VIC:00000000 init_VIC
-     /tmp/ccxT2nsc.s:91     .text.init_VIC:00000038 $d
-     /tmp/ccxT2nsc.s:100    .text.install_irq:00000000 $t
-     /tmp/ccxT2nsc.s:105    .text.install_irq:00000000 install_irq
-     /tmp/ccxT2nsc.s:162    .text.install_irq:00000030 $d
+     /tmp/ccmxmpAp.s:23     .text.init_VIC:00000000 $t
+     /tmp/ccmxmpAp.s:28     .text.init_VIC:00000000 init_VIC
+     /tmp/ccmxmpAp.s:91     .text.init_VIC:00000038 $d
+     /tmp/ccmxmpAp.s:100    .text.install_irq:00000000 $t
+     /tmp/ccmxmpAp.s:105    .text.install_irq:00000000 install_irq
+     /tmp/ccmxmpAp.s:162    .text.install_irq:00000030 $d
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

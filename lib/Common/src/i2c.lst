@@ -30,37 +30,38 @@
   11:lib/Common/src/i2c.c **** |\  | |""""| """|""" |"""" 
   12:lib/Common/src/i2c.c **** After 502page on user manual is very usefull. Please reference for it!!
   13:lib/Common/src/i2c.c **** | \ | |    |    |    |====	
-  14:lib/Common/src/i2c.c **** 
-  15:lib/Common/src/i2c.c **** |  \| |____|    |    |____
-  16:lib/Common/src/i2c.c **** ******************************************************************************/
-  17:lib/Common/src/i2c.c **** #include"lpc23xx.h"
-  18:lib/Common/src/i2c.c **** #include"target.h"
-  19:lib/Common/src/i2c.c **** #include"i2c.h"
-  20:lib/Common/src/i2c.c **** #include"i2cErr.h"
-  21:lib/Common/src/i2c.c **** #include"semphr.h"
-  22:lib/Common/src/i2c.c **** #include"OV7670userconfig.h"
-  23:lib/Common/src/i2c.c **** extern xSemaphoreHandle Mutex;
-  24:lib/Common/src/i2c.c **** 
-  25:lib/Common/src/i2c.c **** #define  RESETREG SCCBByteWrite(0x1280);
-  26:lib/Common/src/i2c.c **** /****************************************************************************
-  27:lib/Common/src/i2c.c **** function name	:i2enable
-  28:lib/Common/src/i2c.c **** about function:as name.
-  29:lib/Common/src/i2c.c **** Problem	:
-  30:lib/Common/src/i2c.c **** ****************************************************************************/
-  31:lib/Common/src/i2c.c **** void i2enable(){
-  28              		.loc 1 31 0
+  14:lib/Common/src/i2c.c **** |  \| |____|    |    |____
+  15:lib/Common/src/i2c.c **** ******************************************************************************/
+  16:lib/Common/src/i2c.c **** #include"lpc23xx.h"
+  17:lib/Common/src/i2c.c **** #include"target.h"
+  18:lib/Common/src/i2c.c **** #include"i2c.h"
+  19:lib/Common/src/i2c.c **** #include"i2cErr.h"
+  20:lib/Common/src/i2c.c **** #include"semphr.h"
+  21:lib/Common/src/i2c.c **** #include"OV7670userconfig.h"
+  22:lib/Common/src/i2c.c **** extern xSemaphoreHandle Mutex;
+  23:lib/Common/src/i2c.c **** 
+  24:lib/Common/src/i2c.c **** #define  RESETREG SCCBByteWrite(0x1280);
+  25:lib/Common/src/i2c.c **** /****************************************************************************
+  26:lib/Common/src/i2c.c **** function name	:i2enable
+  27:lib/Common/src/i2c.c **** about function:as name.
+  28:lib/Common/src/i2c.c **** Problem	:
+  29:lib/Common/src/i2c.c **** ****************************************************************************/
+  30:lib/Common/src/i2c.c **** void
+  31:lib/Common/src/i2c.c **** i2enable ()
+  32:lib/Common/src/i2c.c **** {
+  28              		.loc 1 32 0
   29              		.cfi_startproc
   30              		@ Function supports interworking.
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-  32:lib/Common/src/i2c.c **** 	PINMODE0 = 0x00000000;
-  34              		.loc 1 32 0
+  33:lib/Common/src/i2c.c ****   PINMODE0 = 0x00000000;
+  34              		.loc 1 33 0
   35 0000 08309FE5 		ldr	r3, .L2
   36 0004 0020A0E3 		mov	r2, #0
   37 0008 402083E5 		str	r2, [r3, #64]
-  33:lib/Common/src/i2c.c **** }
-  38              		.loc 1 33 0
+  34:lib/Common/src/i2c.c **** }
+  38              		.loc 1 34 0
   39 000c 1EFF2FE1 		bx	lr
   40              	.L3:
   41              		.align	2
@@ -73,76 +74,80 @@
   49              		.global	i2cmasterset
   51              	i2cmasterset:
   52              	.LFB1:
-  34:lib/Common/src/i2c.c **** /****************************************************************************
-  35:lib/Common/src/i2c.c **** function name	:i2cmasterset
-  36:lib/Common/src/i2c.c **** discribe	:the i2c periphrals which given number will be master
-  37:lib/Common/src/i2c.c **** ****************************************************************************/ 
-  38:lib/Common/src/i2c.c **** int i2cmasterset(int a){
-  53              		.loc 1 38 0
+  35:lib/Common/src/i2c.c **** 
+  36:lib/Common/src/i2c.c **** /****************************************************************************
+  37:lib/Common/src/i2c.c **** function name	:i2cmasterset
+  38:lib/Common/src/i2c.c **** discribe	:the i2c periphrals which given number will be master
+  39:lib/Common/src/i2c.c **** ****************************************************************************/
+  40:lib/Common/src/i2c.c **** int
+  41:lib/Common/src/i2c.c **** i2cmasterset (int a)
+  42:lib/Common/src/i2c.c **** {
+  53              		.loc 1 42 0
   54              		.cfi_startproc
   55              		@ Function supports interworking.
   56              		@ args = 0, pretend = 0, frame = 0
   57              		@ frame_needed = 0, uses_anonymous_args = 0
   58              		@ link register save eliminated.
   59              	.LVL0:
-  39:lib/Common/src/i2c.c **** 	switch(a){
-  60              		.loc 1 39 0
+  43:lib/Common/src/i2c.c ****   switch (a)
+  60              		.loc 1 43 0
   61 0000 010050E3 		cmp	r0, #1
   62 0004 0E00000A 		beq	.L7
   63 0008 020050E3 		cmp	r0, #2
   64 000c 0700000A 		beq	.L8
   65 0010 000050E3 		cmp	r0, #0
   66 0014 0300001A 		bne	.L10
-  40:lib/Common/src/i2c.c **** 	case 0:
-  41:lib/Common/src/i2c.c **** 		I20CONSET = 0x40;
-  67              		.loc 1 41 0
+  44:lib/Common/src/i2c.c ****     {
+  45:lib/Common/src/i2c.c ****     case 0:
+  46:lib/Common/src/i2c.c ****       I20CONSET = 0x40;
+  67              		.loc 1 46 0
   68 0018 38309FE5 		ldr	r3, .L12
   69 001c 4020A0E3 		mov	r2, #64
   70 0020 002083E5 		str	r2, [r3, #0]
-  42:lib/Common/src/i2c.c **** 		return 0;
-  71              		.loc 1 42 0
+  47:lib/Common/src/i2c.c ****       return 0;
+  71              		.loc 1 47 0
   72 0024 1EFF2FE1 		bx	lr
   73              	.L10:
-  43:lib/Common/src/i2c.c **** 		break;
-  44:lib/Common/src/i2c.c **** 	case 1:
-  45:lib/Common/src/i2c.c **** 		I21CONSET = 0x40;
-  46:lib/Common/src/i2c.c **** 		return 0;
-  47:lib/Common/src/i2c.c **** 		break;
-  48:lib/Common/src/i2c.c **** 	case 2:
-  49:lib/Common/src/i2c.c **** 		I22CONSET = 0x40;
-  50:lib/Common/src/i2c.c **** 		return 0;
-  51:lib/Common/src/i2c.c **** 		break;
-  52:lib/Common/src/i2c.c **** 	default:
-  53:lib/Common/src/i2c.c **** 		return 1;
-  74              		.loc 1 53 0
+  48:lib/Common/src/i2c.c ****       break;
+  49:lib/Common/src/i2c.c ****     case 1:
+  50:lib/Common/src/i2c.c ****       I21CONSET = 0x40;
+  51:lib/Common/src/i2c.c ****       return 0;
+  52:lib/Common/src/i2c.c ****       break;
+  53:lib/Common/src/i2c.c ****     case 2:
+  54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
+  55:lib/Common/src/i2c.c ****       return 0;
+  56:lib/Common/src/i2c.c ****       break;
+  57:lib/Common/src/i2c.c ****     default:
+  58:lib/Common/src/i2c.c ****       return 1;
+  74              		.loc 1 58 0
   75 0028 0100A0E3 		mov	r0, #1
   76              	.LVL1:
-  54:lib/Common/src/i2c.c **** 	}
-  55:lib/Common/src/i2c.c **** }
-  77              		.loc 1 55 0
+  59:lib/Common/src/i2c.c ****     }
+  60:lib/Common/src/i2c.c **** }
+  77              		.loc 1 60 0
   78 002c 1EFF2FE1 		bx	lr
   79              	.LVL2:
   80              	.L8:
-  49:lib/Common/src/i2c.c **** 		I22CONSET = 0x40;
-  81              		.loc 1 49 0
+  54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
+  81              		.loc 1 54 0
   82 0030 24209FE5 		ldr	r2, .L12+4
   83 0034 40C0A0E3 		mov	ip, #64
   84 0038 00C082E5 		str	ip, [r2, #0]
-  50:lib/Common/src/i2c.c **** 		return 0;
-  85              		.loc 1 50 0
+  55:lib/Common/src/i2c.c ****       return 0;
+  85              		.loc 1 55 0
   86 003c 0000A0E3 		mov	r0, #0
   87              	.LVL3:
   88 0040 1EFF2FE1 		bx	lr
   89              	.LVL4:
   90              	.L7:
-  45:lib/Common/src/i2c.c **** 		I21CONSET = 0x40;
-  91              		.loc 1 45 0
+  50:lib/Common/src/i2c.c ****       I21CONSET = 0x40;
+  91              		.loc 1 50 0
   92 0044 14109FE5 		ldr	r1, .L12+8
   93 0048 4000A0E3 		mov	r0, #64
   94              	.LVL5:
   95 004c 000081E5 		str	r0, [r1, #0]
-  46:lib/Common/src/i2c.c **** 		return 0;
-  96              		.loc 1 46 0
+  51:lib/Common/src/i2c.c ****       return 0;
+  96              		.loc 1 51 0
   97 0050 0000A0E3 		mov	r0, #0
   98 0054 1EFF2FE1 		bx	lr
   99              	.L13:
@@ -158,99 +163,103 @@
  110              		.global	i2cstart
  112              	i2cstart:
  113              	.LFB2:
-  56:lib/Common/src/i2c.c **** /****************************************************************************
-  57:lib/Common/src/i2c.c **** function name	:i2cstart
-  58:lib/Common/src/i2c.c **** discribe	:the i2c will start
-  59:lib/Common/src/i2c.c **** ****************************************************************************/ 
-  60:lib/Common/src/i2c.c **** int i2cstart(int a){
- 114              		.loc 1 60 0
+  61:lib/Common/src/i2c.c **** 
+  62:lib/Common/src/i2c.c **** /****************************************************************************
+  63:lib/Common/src/i2c.c **** function name	:i2cstart
+  64:lib/Common/src/i2c.c **** discribe	:the i2c will start
+  65:lib/Common/src/i2c.c **** ****************************************************************************/
+  66:lib/Common/src/i2c.c **** int
+  67:lib/Common/src/i2c.c **** i2cstart (int a)
+  68:lib/Common/src/i2c.c **** {
+ 114              		.loc 1 68 0
  115              		.cfi_startproc
  116              		@ Function supports interworking.
  117              		@ args = 0, pretend = 0, frame = 0
  118              		@ frame_needed = 0, uses_anonymous_args = 0
  119              		@ link register save eliminated.
  120              	.LVL6:
-  61:lib/Common/src/i2c.c **** 	switch(a){
- 121              		.loc 1 61 0
+  69:lib/Common/src/i2c.c ****   switch (a)
+ 121              		.loc 1 69 0
  122 0000 010050E3 		cmp	r0, #1
  123 0004 1500000A 		beq	.L17
  124 0008 020050E3 		cmp	r0, #2
  125 000c 0B00000A 		beq	.L18
  126 0010 000050E3 		cmp	r0, #0
  127 0014 0700001A 		bne	.L26
-  62:lib/Common/src/i2c.c **** 	case 0:
-  63:lib/Common/src/i2c.c **** 		I20CONSET = 0x60;
- 128              		.loc 1 63 0
+  70:lib/Common/src/i2c.c ****     {
+  71:lib/Common/src/i2c.c ****     case 0:
+  72:lib/Common/src/i2c.c ****       I20CONSET = 0x60;
+ 128              		.loc 1 72 0
  129 0018 60209FE5 		ldr	r2, .L28
  130 001c 6030A0E3 		mov	r3, #96
  131 0020 003082E5 		str	r3, [r2, #0]
  132              	.LVL7:
  133              	.L19:
-  64:lib/Common/src/i2c.c **** 		while(I20STAT != 0x08);
- 134              		.loc 1 64 0 discriminator 1
+  73:lib/Common/src/i2c.c ****       while (I20STAT != 0x08);
+ 134              		.loc 1 73 0 discriminator 1
  135 0024 040092E5 		ldr	r0, [r2, #4]
  136 0028 080050E3 		cmp	r0, #8
  137 002c FCFFFF1A 		bne	.L19
-  65:lib/Common/src/i2c.c **** 		return 0;
-  66:lib/Common/src/i2c.c **** 		break;
-  67:lib/Common/src/i2c.c **** 	case 1:
-  68:lib/Common/src/i2c.c **** 		I21CONSET = 0x60;
-  69:lib/Common/src/i2c.c **** 		while(I21STAT != 0x08);
-  70:lib/Common/src/i2c.c **** 		return 0;
-  71:lib/Common/src/i2c.c **** 		break;
-  72:lib/Common/src/i2c.c **** 	case 2:
-  73:lib/Common/src/i2c.c **** 		I22CONSET = 0x60;
-  74:lib/Common/src/i2c.c **** 		while(I22STAT != 0x08);
-  75:lib/Common/src/i2c.c **** //		printf("I2C now started\n");
-  76:lib/Common/src/i2c.c **** 		return 0;
- 138              		.loc 1 76 0
+  74:lib/Common/src/i2c.c ****       return 0;
+  75:lib/Common/src/i2c.c ****       break;
+  76:lib/Common/src/i2c.c ****     case 1:
+  77:lib/Common/src/i2c.c ****       I21CONSET = 0x60;
+  78:lib/Common/src/i2c.c ****       while (I21STAT != 0x08);
+  79:lib/Common/src/i2c.c ****       return 0;
+  80:lib/Common/src/i2c.c ****       break;
+  81:lib/Common/src/i2c.c ****     case 2:
+  82:lib/Common/src/i2c.c ****       I22CONSET = 0x60;
+  83:lib/Common/src/i2c.c ****       while (I22STAT != 0x08);
+  84:lib/Common/src/i2c.c **** //              printf("I2C now started\n");
+  85:lib/Common/src/i2c.c ****       return 0;
+ 138              		.loc 1 85 0
  139 0030 0000A0E3 		mov	r0, #0
  140 0034 1EFF2FE1 		bx	lr
  141              	.LVL8:
  142              	.L26:
-  77:lib/Common/src/i2c.c **** 		break;
-  78:lib/Common/src/i2c.c **** 	default:
-  79:lib/Common/src/i2c.c **** 		return 1;
- 143              		.loc 1 79 0
+  86:lib/Common/src/i2c.c ****       break;
+  87:lib/Common/src/i2c.c ****     default:
+  88:lib/Common/src/i2c.c ****       return 1;
+ 143              		.loc 1 88 0
  144 0038 0100A0E3 		mov	r0, #1
  145              	.LVL9:
-  80:lib/Common/src/i2c.c **** 	}
-  81:lib/Common/src/i2c.c **** 	}
- 146              		.loc 1 81 0
+  89:lib/Common/src/i2c.c ****     }
+  90:lib/Common/src/i2c.c **** }
+ 146              		.loc 1 90 0
  147 003c 1EFF2FE1 		bx	lr
  148              	.LVL10:
  149              	.L18:
-  73:lib/Common/src/i2c.c **** 		I22CONSET = 0x60;
- 150              		.loc 1 73 0
+  82:lib/Common/src/i2c.c ****       I22CONSET = 0x60;
+ 150              		.loc 1 82 0
  151 0040 3C209FE5 		ldr	r2, .L28+4
  152 0044 6030A0E3 		mov	r3, #96
  153 0048 003082E5 		str	r3, [r2, #0]
  154              	.LVL11:
  155              	.L21:
-  74:lib/Common/src/i2c.c **** 		while(I22STAT != 0x08);
- 156              		.loc 1 74 0 discriminator 1
+  83:lib/Common/src/i2c.c ****       while (I22STAT != 0x08);
+ 156              		.loc 1 83 0 discriminator 1
  157 004c 040092E5 		ldr	r0, [r2, #4]
  158 0050 080050E3 		cmp	r0, #8
  159 0054 FCFFFF1A 		bne	.L21
-  76:lib/Common/src/i2c.c **** 		return 0;
- 160              		.loc 1 76 0
+  85:lib/Common/src/i2c.c ****       return 0;
+ 160              		.loc 1 85 0
  161 0058 0000A0E3 		mov	r0, #0
  162 005c 1EFF2FE1 		bx	lr
  163              	.LVL12:
  164              	.L17:
-  68:lib/Common/src/i2c.c **** 		I21CONSET = 0x60;
- 165              		.loc 1 68 0
+  77:lib/Common/src/i2c.c ****       I21CONSET = 0x60;
+ 165              		.loc 1 77 0
  166 0060 20209FE5 		ldr	r2, .L28+8
  167 0064 6010A0E3 		mov	r1, #96
  168 0068 001082E5 		str	r1, [r2, #0]
  169              	.L20:
-  69:lib/Common/src/i2c.c **** 		while(I21STAT != 0x08);
- 170              		.loc 1 69 0 discriminator 1
+  78:lib/Common/src/i2c.c ****       while (I21STAT != 0x08);
+ 170              		.loc 1 78 0 discriminator 1
  171 006c 04C092E5 		ldr	ip, [r2, #4]
  172 0070 08005CE3 		cmp	ip, #8
  173 0074 FCFFFF1A 		bne	.L20
-  76:lib/Common/src/i2c.c **** 		return 0;
- 174              		.loc 1 76 0
+  85:lib/Common/src/i2c.c ****       return 0;
+ 174              		.loc 1 85 0
  175 0078 0000A0E3 		mov	r0, #0
  176              	.LVL13:
  177 007c 1EFF2FE1 		bx	lr
@@ -267,208 +276,212 @@
  189              		.global	i2crestart
  191              	i2crestart:
  192              	.LFB3:
-  82:lib/Common/src/i2c.c **** /****************************************************************************
-  83:lib/Common/src/i2c.c **** function name	:i2crestart
-  84:lib/Common/src/i2c.c **** discribe	:the i2c will restart
-  85:lib/Common/src/i2c.c **** ****************************************************************************/ 
-  86:lib/Common/src/i2c.c **** int i2crestart(int a){
- 193              		.loc 1 86 0
+  91:lib/Common/src/i2c.c **** 
+  92:lib/Common/src/i2c.c **** /****************************************************************************
+  93:lib/Common/src/i2c.c **** function name	:i2crestart
+  94:lib/Common/src/i2c.c **** discribe	:the i2c will restart
+  95:lib/Common/src/i2c.c **** ****************************************************************************/
+  96:lib/Common/src/i2c.c **** int
+  97:lib/Common/src/i2c.c **** i2crestart (int a)
+  98:lib/Common/src/i2c.c **** {
+ 193              		.loc 1 98 0
  194              		.cfi_startproc
  195              		@ Function supports interworking.
  196              		@ args = 0, pretend = 0, frame = 0
  197              		@ frame_needed = 0, uses_anonymous_args = 0
  198              	.LVL14:
-  87:lib/Common/src/i2c.c **** 	switch(a){
- 199              		.loc 1 87 0
+  99:lib/Common/src/i2c.c ****   switch (a)
+ 199              		.loc 1 99 0
  200 0000 010050E3 		cmp	r0, #1
-  86:lib/Common/src/i2c.c **** int i2crestart(int a){
- 201              		.loc 1 86 0
+  98:lib/Common/src/i2c.c **** {
+ 201              		.loc 1 98 0
  202 0004 08402DE9 		stmfd	sp!, {r3, lr}
  203              	.LCFI0:
  204              		.cfi_def_cfa_offset 8
- 205              		.loc 1 87 0
+ 205              		.loc 1 99 0
  206 0008 2D00000A 		beq	.L33
  207              		.cfi_offset 14, -4
  208              		.cfi_offset 3, -8
  209 000c 020050E3 		cmp	r0, #2
  210 0010 1700000A 		beq	.L34
  211 0014 000050E3 		cmp	r0, #0
-  88:lib/Common/src/i2c.c **** 	case 0:
-  89:lib/Common/src/i2c.c **** 		I20CONSET = 0x14;
-  90:lib/Common/src/i2c.c **** 		I20CONCLR = 0x08;
-  91:lib/Common/src/i2c.c **** 		I20CONSET = 0x60;
-  92:lib/Common/src/i2c.c **** 		while((I20STAT != 0x10)&&(I20STAT != 0x08));
-  93:lib/Common/src/i2c.c **** 		printf("restarter report...%x",I20STAT);
-  94:lib/Common/src/i2c.c **** 		return 0;
-  95:lib/Common/src/i2c.c **** 		break;
-  96:lib/Common/src/i2c.c **** 	case 1:
-  97:lib/Common/src/i2c.c **** 		I21CONSET = 0x14;
-  98:lib/Common/src/i2c.c **** 		I21CONCLR = 0x08;
-  99:lib/Common/src/i2c.c **** 		I21CONSET = 0x60;
- 100:lib/Common/src/i2c.c **** 		while((I21STAT != 0x10)&&(I21STAT != 0x08));
- 101:lib/Common/src/i2c.c **** 		printf("restarter report...%x",I21STAT);
- 102:lib/Common/src/i2c.c **** 		return 0;		
- 103:lib/Common/src/i2c.c **** 		break;
- 104:lib/Common/src/i2c.c **** 	case 2:
- 105:lib/Common/src/i2c.c **** 		I22CONSET = 0x14;
- 106:lib/Common/src/i2c.c **** 		I22CONCLR = 0x08;
- 107:lib/Common/src/i2c.c **** 		I22CONSET = 0x60;
- 108:lib/Common/src/i2c.c **** 		while((I22STAT != 0x10)&&(I22STAT != 0x08));
- 109:lib/Common/src/i2c.c **** 		printf("restarter report...%x",I22STAT);
- 110:lib/Common/src/i2c.c **** 		return 0;
- 111:lib/Common/src/i2c.c **** 		break;
- 112:lib/Common/src/i2c.c **** 	default:
- 113:lib/Common/src/i2c.c **** 		return 1;
- 212              		.loc 1 113 0
+ 100:lib/Common/src/i2c.c ****     {
+ 101:lib/Common/src/i2c.c ****     case 0:
+ 102:lib/Common/src/i2c.c ****       I20CONSET = 0x14;
+ 103:lib/Common/src/i2c.c ****       I20CONCLR = 0x08;
+ 104:lib/Common/src/i2c.c ****       I20CONSET = 0x60;
+ 105:lib/Common/src/i2c.c ****       while ((I20STAT != 0x10) && (I20STAT != 0x08));
+ 106:lib/Common/src/i2c.c ****       printf ("restarter report...%x", I20STAT);
+ 107:lib/Common/src/i2c.c ****       return 0;
+ 108:lib/Common/src/i2c.c ****       break;
+ 109:lib/Common/src/i2c.c ****     case 1:
+ 110:lib/Common/src/i2c.c ****       I21CONSET = 0x14;
+ 111:lib/Common/src/i2c.c ****       I21CONCLR = 0x08;
+ 112:lib/Common/src/i2c.c ****       I21CONSET = 0x60;
+ 113:lib/Common/src/i2c.c ****       while ((I21STAT != 0x10) && (I21STAT != 0x08));
+ 114:lib/Common/src/i2c.c ****       printf ("restarter report...%x", I21STAT);
+ 115:lib/Common/src/i2c.c ****       return 0;
+ 116:lib/Common/src/i2c.c ****       break;
+ 117:lib/Common/src/i2c.c ****     case 2:
+ 118:lib/Common/src/i2c.c ****       I22CONSET = 0x14;
+ 119:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 120:lib/Common/src/i2c.c ****       I22CONSET = 0x60;
+ 121:lib/Common/src/i2c.c ****       while ((I22STAT != 0x10) && (I22STAT != 0x08));
+ 122:lib/Common/src/i2c.c ****       printf ("restarter report...%x", I22STAT);
+ 123:lib/Common/src/i2c.c ****       return 0;
+ 124:lib/Common/src/i2c.c ****       break;
+ 125:lib/Common/src/i2c.c ****     default:
+ 126:lib/Common/src/i2c.c ****       return 1;
+ 212              		.loc 1 126 0
  213 0018 0100A013 		movne	r0, #1
  214              	.LVL15:
-  87:lib/Common/src/i2c.c **** 	switch(a){
- 215              		.loc 1 87 0
+  99:lib/Common/src/i2c.c ****   switch (a)
+ 215              		.loc 1 99 0
  216 001c 1200001A 		bne	.L31
-  89:lib/Common/src/i2c.c **** 		I20CONSET = 0x14;
- 217              		.loc 1 89 0
+ 102:lib/Common/src/i2c.c ****       I20CONSET = 0x14;
+ 217              		.loc 1 102 0
  218 0020 EC309FE5 		ldr	r3, .L49
  219 0024 1410A0E3 		mov	r1, #20
-  90:lib/Common/src/i2c.c **** 		I20CONCLR = 0x08;
- 220              		.loc 1 90 0
+ 103:lib/Common/src/i2c.c ****       I20CONCLR = 0x08;
+ 220              		.loc 1 103 0
  221 0028 0800A0E3 		mov	r0, #8
-  91:lib/Common/src/i2c.c **** 		I20CONSET = 0x60;
- 222              		.loc 1 91 0
+ 104:lib/Common/src/i2c.c ****       I20CONSET = 0x60;
+ 222              		.loc 1 104 0
  223 002c 6020A0E3 		mov	r2, #96
-  89:lib/Common/src/i2c.c **** 		I20CONSET = 0x14;
- 224              		.loc 1 89 0
+ 102:lib/Common/src/i2c.c ****       I20CONSET = 0x14;
+ 224              		.loc 1 102 0
  225 0030 001083E5 		str	r1, [r3, #0]
-  90:lib/Common/src/i2c.c **** 		I20CONCLR = 0x08;
- 226              		.loc 1 90 0
+ 103:lib/Common/src/i2c.c ****       I20CONCLR = 0x08;
+ 226              		.loc 1 103 0
  227 0034 180083E5 		str	r0, [r3, #24]
-  91:lib/Common/src/i2c.c **** 		I20CONSET = 0x60;
- 228              		.loc 1 91 0
+ 104:lib/Common/src/i2c.c ****       I20CONSET = 0x60;
+ 228              		.loc 1 104 0
  229 0038 002083E5 		str	r2, [r3, #0]
-  92:lib/Common/src/i2c.c **** 		while((I20STAT != 0x10)&&(I20STAT != 0x08));
- 230              		.loc 1 92 0
+ 105:lib/Common/src/i2c.c ****       while ((I20STAT != 0x10) && (I20STAT != 0x08));
+ 230              		.loc 1 105 0
  231 003c 020000EA 		b	.L36
  232              	.L46:
-  92:lib/Common/src/i2c.c **** 		while((I20STAT != 0x10)&&(I20STAT != 0x08));
- 233              		.loc 1 92 0 is_stmt 0 discriminator 2
+ 105:lib/Common/src/i2c.c ****       while ((I20STAT != 0x10) && (I20STAT != 0x08));
+ 233              		.loc 1 105 0 is_stmt 0 discriminator 2
  234 0040 04E093E5 		ldr	lr, [r3, #4]
  235 0044 08005EE3 		cmp	lr, #8
  236 0048 0200000A 		beq	.L35
  237              	.L36:
-  92:lib/Common/src/i2c.c **** 		while((I20STAT != 0x10)&&(I20STAT != 0x08));
- 238              		.loc 1 92 0 discriminator 1
+ 105:lib/Common/src/i2c.c ****       while ((I20STAT != 0x10) && (I20STAT != 0x08));
+ 238              		.loc 1 105 0 discriminator 1
  239 004c 04C093E5 		ldr	ip, [r3, #4]
  240 0050 10005CE3 		cmp	ip, #16
  241 0054 F9FFFF1A 		bne	.L46
  242              	.L35:
-  93:lib/Common/src/i2c.c **** 		printf("restarter report...%x",I20STAT);
- 243              		.loc 1 93 0 is_stmt 1
+ 106:lib/Common/src/i2c.c ****       printf ("restarter report...%x", I20STAT);
+ 243              		.loc 1 106 0 is_stmt 1
  244 0058 B4309FE5 		ldr	r3, .L49
  245 005c B4009FE5 		ldr	r0, .L49+4
  246 0060 041093E5 		ldr	r1, [r3, #4]
  247 0064 FEFFFFEB 		bl	printf
-  94:lib/Common/src/i2c.c **** 		return 0;
- 248              		.loc 1 94 0
+ 107:lib/Common/src/i2c.c ****       return 0;
+ 248              		.loc 1 107 0
  249 0068 0000A0E3 		mov	r0, #0
  250              	.L31:
- 114:lib/Common/src/i2c.c **** 	}
- 115:lib/Common/src/i2c.c **** 	}
- 251              		.loc 1 115 0
+ 127:lib/Common/src/i2c.c ****     }
+ 128:lib/Common/src/i2c.c **** }
+ 251              		.loc 1 128 0
  252 006c 0840BDE8 		ldmfd	sp!, {r3, lr}
  253 0070 1EFF2FE1 		bx	lr
  254              	.LVL16:
  255              	.L34:
- 105:lib/Common/src/i2c.c **** 		I22CONSET = 0x14;
- 256              		.loc 1 105 0
+ 118:lib/Common/src/i2c.c ****       I22CONSET = 0x14;
+ 256              		.loc 1 118 0
  257 0074 A0309FE5 		ldr	r3, .L49+8
  258 0078 1410A0E3 		mov	r1, #20
- 106:lib/Common/src/i2c.c **** 		I22CONCLR = 0x08;
- 259              		.loc 1 106 0
+ 119:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 259              		.loc 1 119 0
  260 007c 0800A0E3 		mov	r0, #8
  261              	.LVL17:
- 107:lib/Common/src/i2c.c **** 		I22CONSET = 0x60;
- 262              		.loc 1 107 0
+ 120:lib/Common/src/i2c.c ****       I22CONSET = 0x60;
+ 262              		.loc 1 120 0
  263 0080 6020A0E3 		mov	r2, #96
- 105:lib/Common/src/i2c.c **** 		I22CONSET = 0x14;
- 264              		.loc 1 105 0
+ 118:lib/Common/src/i2c.c ****       I22CONSET = 0x14;
+ 264              		.loc 1 118 0
  265 0084 001083E5 		str	r1, [r3, #0]
- 106:lib/Common/src/i2c.c **** 		I22CONCLR = 0x08;
- 266              		.loc 1 106 0
+ 119:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 266              		.loc 1 119 0
  267 0088 180083E5 		str	r0, [r3, #24]
- 107:lib/Common/src/i2c.c **** 		I22CONSET = 0x60;
- 268              		.loc 1 107 0
+ 120:lib/Common/src/i2c.c ****       I22CONSET = 0x60;
+ 268              		.loc 1 120 0
  269 008c 002083E5 		str	r2, [r3, #0]
- 108:lib/Common/src/i2c.c **** 		while((I22STAT != 0x10)&&(I22STAT != 0x08));
- 270              		.loc 1 108 0
+ 121:lib/Common/src/i2c.c ****       while ((I22STAT != 0x10) && (I22STAT != 0x08));
+ 270              		.loc 1 121 0
  271 0090 020000EA 		b	.L40
  272              	.L47:
- 108:lib/Common/src/i2c.c **** 		while((I22STAT != 0x10)&&(I22STAT != 0x08));
- 273              		.loc 1 108 0 is_stmt 0 discriminator 2
+ 121:lib/Common/src/i2c.c ****       while ((I22STAT != 0x10) && (I22STAT != 0x08));
+ 273              		.loc 1 121 0 is_stmt 0 discriminator 2
  274 0094 04E093E5 		ldr	lr, [r3, #4]
  275 0098 08005EE3 		cmp	lr, #8
  276 009c 0200000A 		beq	.L39
  277              	.L40:
- 108:lib/Common/src/i2c.c **** 		while((I22STAT != 0x10)&&(I22STAT != 0x08));
- 278              		.loc 1 108 0 discriminator 1
+ 121:lib/Common/src/i2c.c ****       while ((I22STAT != 0x10) && (I22STAT != 0x08));
+ 278              		.loc 1 121 0 discriminator 1
  279 00a0 04C093E5 		ldr	ip, [r3, #4]
  280 00a4 10005CE3 		cmp	ip, #16
  281 00a8 F9FFFF1A 		bne	.L47
  282              	.L39:
- 109:lib/Common/src/i2c.c **** 		printf("restarter report...%x",I22STAT);
- 283              		.loc 1 109 0 is_stmt 1
+ 122:lib/Common/src/i2c.c ****       printf ("restarter report...%x", I22STAT);
+ 283              		.loc 1 122 0 is_stmt 1
  284 00ac 68309FE5 		ldr	r3, .L49+8
  285 00b0 60009FE5 		ldr	r0, .L49+4
  286 00b4 041093E5 		ldr	r1, [r3, #4]
  287 00b8 FEFFFFEB 		bl	printf
- 110:lib/Common/src/i2c.c **** 		return 0;
- 288              		.loc 1 110 0
+ 123:lib/Common/src/i2c.c ****       return 0;
+ 288              		.loc 1 123 0
  289 00bc 0000A0E3 		mov	r0, #0
  290 00c0 E9FFFFEA 		b	.L31
  291              	.LVL18:
  292              	.L33:
-  97:lib/Common/src/i2c.c **** 		I21CONSET = 0x14;
- 293              		.loc 1 97 0
+ 110:lib/Common/src/i2c.c ****       I21CONSET = 0x14;
+ 293              		.loc 1 110 0
  294 00c4 54309FE5 		ldr	r3, .L49+12
  295 00c8 1410A0E3 		mov	r1, #20
-  98:lib/Common/src/i2c.c **** 		I21CONCLR = 0x08;
- 296              		.loc 1 98 0
+ 111:lib/Common/src/i2c.c ****       I21CONCLR = 0x08;
+ 296              		.loc 1 111 0
  297 00cc 0800A0E3 		mov	r0, #8
  298              	.LVL19:
-  99:lib/Common/src/i2c.c **** 		I21CONSET = 0x60;
- 299              		.loc 1 99 0
+ 112:lib/Common/src/i2c.c ****       I21CONSET = 0x60;
+ 299              		.loc 1 112 0
  300 00d0 6020A0E3 		mov	r2, #96
-  97:lib/Common/src/i2c.c **** 		I21CONSET = 0x14;
- 301              		.loc 1 97 0
+ 110:lib/Common/src/i2c.c ****       I21CONSET = 0x14;
+ 301              		.loc 1 110 0
  302 00d4 001083E5 		str	r1, [r3, #0]
-  98:lib/Common/src/i2c.c **** 		I21CONCLR = 0x08;
- 303              		.loc 1 98 0
+ 111:lib/Common/src/i2c.c ****       I21CONCLR = 0x08;
+ 303              		.loc 1 111 0
  304 00d8 180083E5 		str	r0, [r3, #24]
-  99:lib/Common/src/i2c.c **** 		I21CONSET = 0x60;
- 305              		.loc 1 99 0
+ 112:lib/Common/src/i2c.c ****       I21CONSET = 0x60;
+ 305              		.loc 1 112 0
  306 00dc 002083E5 		str	r2, [r3, #0]
- 100:lib/Common/src/i2c.c **** 		while((I21STAT != 0x10)&&(I21STAT != 0x08));
- 307              		.loc 1 100 0
+ 113:lib/Common/src/i2c.c ****       while ((I21STAT != 0x10) && (I21STAT != 0x08));
+ 307              		.loc 1 113 0
  308 00e0 020000EA 		b	.L38
  309              	.L48:
- 100:lib/Common/src/i2c.c **** 		while((I21STAT != 0x10)&&(I21STAT != 0x08));
- 310              		.loc 1 100 0 is_stmt 0 discriminator 2
+ 113:lib/Common/src/i2c.c ****       while ((I21STAT != 0x10) && (I21STAT != 0x08));
+ 310              		.loc 1 113 0 is_stmt 0 discriminator 2
  311 00e4 04E093E5 		ldr	lr, [r3, #4]
  312 00e8 08005EE3 		cmp	lr, #8
  313 00ec 0200000A 		beq	.L37
  314              	.L38:
- 100:lib/Common/src/i2c.c **** 		while((I21STAT != 0x10)&&(I21STAT != 0x08));
- 315              		.loc 1 100 0 discriminator 1
+ 113:lib/Common/src/i2c.c ****       while ((I21STAT != 0x10) && (I21STAT != 0x08));
+ 315              		.loc 1 113 0 discriminator 1
  316 00f0 04C093E5 		ldr	ip, [r3, #4]
  317 00f4 10005CE3 		cmp	ip, #16
  318 00f8 F9FFFF1A 		bne	.L48
  319              	.L37:
- 101:lib/Common/src/i2c.c **** 		printf("restarter report...%x",I21STAT);
- 320              		.loc 1 101 0 is_stmt 1
+ 114:lib/Common/src/i2c.c ****       printf ("restarter report...%x", I21STAT);
+ 320              		.loc 1 114 0 is_stmt 1
  321 00fc 1C309FE5 		ldr	r3, .L49+12
  322 0100 10009FE5 		ldr	r0, .L49+4
  323 0104 041093E5 		ldr	r1, [r3, #4]
  324 0108 FEFFFFEB 		bl	printf
- 102:lib/Common/src/i2c.c **** 		return 0;		
- 325              		.loc 1 102 0
+ 115:lib/Common/src/i2c.c ****       return 0;
+ 325              		.loc 1 115 0
  326 010c 0000A0E3 		mov	r0, #0
  327 0110 D5FFFFEA 		b	.L31
  328              	.L50:
@@ -485,45 +498,48 @@
  340              		.global	i2cstop
  342              	i2cstop:
  343              	.LFB4:
- 116:lib/Common/src/i2c.c **** 
- 117:lib/Common/src/i2c.c **** /****************************************************************************
- 118:lib/Common/src/i2c.c **** function name	:i2stop
- 119:lib/Common/src/i2c.c **** discribe	:the i2c will stop
- 120:lib/Common/src/i2c.c **** ****************************************************************************/ 
- 121:lib/Common/src/i2c.c **** int i2cstop(int a){
- 344              		.loc 1 121 0
+ 129:lib/Common/src/i2c.c **** 
+ 130:lib/Common/src/i2c.c **** /****************************************************************************
+ 131:lib/Common/src/i2c.c **** function name	:i2stop
+ 132:lib/Common/src/i2c.c **** discribe	:the i2c will stop
+ 133:lib/Common/src/i2c.c **** ****************************************************************************/
+ 134:lib/Common/src/i2c.c **** int
+ 135:lib/Common/src/i2c.c **** i2cstop (int a)
+ 136:lib/Common/src/i2c.c **** {
+ 344              		.loc 1 136 0
  345              		.cfi_startproc
  346              		@ Function supports interworking.
  347              		@ args = 0, pretend = 0, frame = 0
  348              		@ frame_needed = 0, uses_anonymous_args = 0
  349              		@ link register save eliminated.
  350              	.LVL20:
- 122:lib/Common/src/i2c.c **** 	switch(a){
- 351              		.loc 1 122 0
+ 137:lib/Common/src/i2c.c ****   switch (a)
+ 351              		.loc 1 137 0
  352 0000 020050E3 		cmp	r0, #2
  353 0004 0400001A 		bne	.L51
- 123:lib/Common/src/i2c.c **** 	case 2:
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 354              		.loc 1 124 0
+ 138:lib/Common/src/i2c.c ****     {
+ 139:lib/Common/src/i2c.c ****     case 2:
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 354              		.loc 1 140 0
  355 0008 14309FE5 		ldr	r3, .L55
  356 000c 5000A0E3 		mov	r0, #80
  357              	.LVL21:
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 358              		.loc 1 125 0
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 358              		.loc 1 141 0
  359 0010 2C20A0E3 		mov	r2, #44
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 360              		.loc 1 124 0
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 360              		.loc 1 140 0
  361 0014 000083E5 		str	r0, [r3, #0]
- 362              		.loc 1 125 0
+ 362              		.loc 1 141 0
  363 0018 182083E5 		str	r2, [r3, #24]
  364              	.L51:
- 126:lib/Common/src/i2c.c **** //		printf("I2C stopped\n");
- 127:lib/Common/src/i2c.c **** 		break;
- 128:lib/Common/src/i2c.c **** 	default:
- 129:lib/Common/src/i2c.c **** 		return 1;
- 130:lib/Common/src/i2c.c **** 	}
- 131:lib/Common/src/i2c.c **** }
- 365              		.loc 1 131 0
+ 142:lib/Common/src/i2c.c **** //              printf("I2C stopped\n");
+ 143:lib/Common/src/i2c.c ****       break;
+ 144:lib/Common/src/i2c.c ****     default:
+ 145:lib/Common/src/i2c.c ****       return 1;
+ 146:lib/Common/src/i2c.c ****     }
+ 147:lib/Common/src/i2c.c **** }
+ 365              		.loc 1 147 0
  366 001c 0100A0E3 		mov	r0, #1
  367 0020 1EFF2FE1 		bx	lr
  368              	.L56:
@@ -537,145 +553,152 @@
  377              		.global	i2csender
  379              	i2csender:
  380              	.LFB5:
- 132:lib/Common/src/i2c.c **** /*****************************************************************************
- 133:lib/Common/src/i2c.c **** function name	:i2csender
- 134:lib/Common/src/i2c.c **** dscribe		:i2c data and adress
- 135:lib/Common/src/i2c.c **** parameter 	:bus_num,data
- 136:lib/Common/src/i2c.c **** return value	:void
- 137:lib/Common/src/i2c.c **** *****************************************************************************/
- 138:lib/Common/src/i2c.c **** void i2csender(int Continue, unsigned int Data, int Keta){
- 381              		.loc 1 138 0
+ 148:lib/Common/src/i2c.c **** 
+ 149:lib/Common/src/i2c.c **** /*****************************************************************************
+ 150:lib/Common/src/i2c.c **** function name	:i2csender
+ 151:lib/Common/src/i2c.c **** dscribe		:i2c data and adress
+ 152:lib/Common/src/i2c.c **** parameter 	:bus_num,data
+ 153:lib/Common/src/i2c.c **** return value	:void
+ 154:lib/Common/src/i2c.c **** *****************************************************************************/
+ 155:lib/Common/src/i2c.c **** void
+ 156:lib/Common/src/i2c.c **** i2csender (int Continue, unsigned int Data, int Keta)
+ 157:lib/Common/src/i2c.c **** {
+ 381              		.loc 1 157 0
  382              		.cfi_startproc
  383              		@ Function supports interworking.
  384              		@ args = 0, pretend = 0, frame = 0
  385              		@ frame_needed = 0, uses_anonymous_args = 0
  386              	.LVL22:
- 139:lib/Common/src/i2c.c **** //int i2cStatus;
- 140:lib/Common/src/i2c.c **** 			if(Continue==0){
- 387              		.loc 1 140 0
+ 158:lib/Common/src/i2c.c **** //int i2cStatus;
+ 159:lib/Common/src/i2c.c ****   if (Continue == 0)
+ 387              		.loc 1 159 0
  388 0000 000050E3 		cmp	r0, #0
- 138:lib/Common/src/i2c.c **** void i2csender(int Continue, unsigned int Data, int Keta){
- 389              		.loc 1 138 0
+ 157:lib/Common/src/i2c.c **** {
+ 389              		.loc 1 157 0
  390 0004 08402DE9 		stmfd	sp!, {r3, lr}
  391              	.LCFI1:
  392              		.cfi_def_cfa_offset 8
- 393              		.loc 1 140 0
+ 393              		.loc 1 159 0
  394 0008 0D00000A 		beq	.L58
  395              		.cfi_offset 14, -4
  396              		.cfi_offset 3, -8
- 141:lib/Common/src/i2c.c **** 				I22DAT = Data;
- 142:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 143:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 144:lib/Common/src/i2c.c **** //				printf("requesting%x",Data);
- 145:lib/Common/src/i2c.c **** 				while(I22STAT!=0x18 && I22STAT!=0x20);
- 146:lib/Common/src/i2c.c **** 	FIO2PIN1 = 0x2;
- 147:lib/Common/src/i2c.c **** 				if(I22STAT==0x20){
- 148:lib/Common/src/i2c.c **** 					printf("No such device%4x\n",Data);
- 149:lib/Common/src/i2c.c **** 					i2cErr = 0x22;
- 150:lib/Common/src/i2c.c **** 					return;
- 151:lib/Common/src/i2c.c **** 					}
- 152:lib/Common/src/i2c.c **** 			}else {
- 153:lib/Common/src/i2c.c **** 				for(;Keta != 0;Keta-=8){
- 397              		.loc 1 153 0 discriminator 1
+ 160:lib/Common/src/i2c.c ****     {
+ 161:lib/Common/src/i2c.c ****       I22DAT = Data;
+ 162:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 163:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 164:lib/Common/src/i2c.c **** //      printf("requesting%x",Data);
+ 165:lib/Common/src/i2c.c ****       while (I22STAT != 0x18 && I22STAT != 0x20);
+ 166:lib/Common/src/i2c.c ****       FIO2PIN1 = 0x2;
+ 167:lib/Common/src/i2c.c ****       if (I22STAT == 0x20)
+ 168:lib/Common/src/i2c.c **** 	{
+ 169:lib/Common/src/i2c.c **** 	  printf ("No such device%4x\n", Data);
+ 170:lib/Common/src/i2c.c **** 	  i2cErr = 0x22;
+ 171:lib/Common/src/i2c.c **** 	}
+ 172:lib/Common/src/i2c.c ****     }
+ 173:lib/Common/src/i2c.c ****   else
+ 174:lib/Common/src/i2c.c ****     {
+ 175:lib/Common/src/i2c.c ****       for (; Keta != 0; Keta -= 8)
+ 397              		.loc 1 175 0 discriminator 1
  398 000c 000052E3 		cmp	r2, #0
- 154:lib/Common/src/i2c.c **** 					I22DAT = (Data & 0xFF);
- 399              		.loc 1 154 0 discriminator 1
+ 176:lib/Common/src/i2c.c **** 	{
+ 177:lib/Common/src/i2c.c **** 	  I22DAT = (Data & 0xFF);
+ 399              		.loc 1 177 0 discriminator 1
  400 0010 98009F15 		ldrne	r0, .L68
  401              	.LVL23:
- 155:lib/Common/src/i2c.c **** 					I22CONCLR  = 0x28;
- 402              		.loc 1 155 0 discriminator 1
+ 178:lib/Common/src/i2c.c **** 	  I22CONCLR = 0x28;
+ 402              		.loc 1 178 0 discriminator 1
  403 0014 28C0A013 		movne	ip, #40
- 153:lib/Common/src/i2c.c **** 				for(;Keta != 0;Keta-=8){
- 404              		.loc 1 153 0 discriminator 1
+ 175:lib/Common/src/i2c.c ****       for (; Keta != 0; Keta -= 8)
+ 404              		.loc 1 175 0 discriminator 1
  405 0018 2200000A 		beq	.L57
  406              	.LVL24:
  407              	.L67:
- 154:lib/Common/src/i2c.c **** 					I22DAT = (Data & 0xFF);
- 408              		.loc 1 154 0
+ 177:lib/Common/src/i2c.c **** 	  I22DAT = (Data & 0xFF);
+ 408              		.loc 1 177 0
  409 001c FF3001E2 		and	r3, r1, #255
  410 0020 083080E5 		str	r3, [r0, #8]
- 411              		.loc 1 155 0
+ 411              		.loc 1 178 0
  412 0024 18C080E5 		str	ip, [r0, #24]
  413              	.L63:
- 156:lib/Common/src/i2c.c **** 				while(I22STAT!=0x28);
- 414              		.loc 1 156 0 discriminator 1
+ 179:lib/Common/src/i2c.c **** 	  while (I22STAT != 0x28);
+ 414              		.loc 1 179 0 discriminator 1
  415 0028 043090E5 		ldr	r3, [r0, #4]
  416 002c 280053E3 		cmp	r3, #40
  417 0030 FCFFFF1A 		bne	.L63
  418              	.LVL25:
- 153:lib/Common/src/i2c.c **** 				for(;Keta != 0;Keta-=8){
- 419              		.loc 1 153 0
+ 175:lib/Common/src/i2c.c ****       for (; Keta != 0; Keta -= 8)
+ 419              		.loc 1 175 0
  420 0034 082052E2 		subs	r2, r2, #8
  421              	.LVL26:
  422 0038 1A00000A 		beq	.L57
- 157:lib/Common/src/i2c.c **** //				printf("Data%4x::::\n",Data);
- 158:lib/Common/src/i2c.c **** 					Data = Data >> 8;
- 423              		.loc 1 158 0
+ 180:lib/Common/src/i2c.c **** //              printf("Data%4x::::\n",Data);
+ 181:lib/Common/src/i2c.c **** 	  Data = Data >> 8;
+ 423              		.loc 1 181 0
  424 003c 2114A0E1 		mov	r1, r1, lsr #8
  425              	.LVL27:
  426 0040 F5FFFFEA 		b	.L67
  427              	.LVL28:
  428              	.L58:
- 141:lib/Common/src/i2c.c **** 				I22DAT = Data;
- 429              		.loc 1 141 0
+ 161:lib/Common/src/i2c.c ****       I22DAT = Data;
+ 429              		.loc 1 161 0
  430 0044 64309FE5 		ldr	r3, .L68
  431 0048 081083E5 		str	r1, [r3, #8]
- 142:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 432              		.loc 1 142 0
+ 162:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 432              		.loc 1 162 0
  433 004c 00C093E5 		ldr	ip, [r3, #0]
- 143:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 434              		.loc 1 143 0
+ 163:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 434              		.loc 1 163 0
  435 0050 0820A0E3 		mov	r2, #8
  436              	.LVL29:
- 142:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 437              		.loc 1 142 0
+ 162:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 437              		.loc 1 162 0
  438 0054 04008CE3 		orr	r0, ip, #4
  439              	.LVL30:
  440 0058 000083E5 		str	r0, [r3, #0]
- 143:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 441              		.loc 1 143 0
+ 163:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 441              		.loc 1 163 0
  442 005c 182083E5 		str	r2, [r3, #24]
  443              	.L62:
- 145:lib/Common/src/i2c.c **** 				while(I22STAT!=0x18 && I22STAT!=0x20);
- 444              		.loc 1 145 0 discriminator 1
+ 165:lib/Common/src/i2c.c ****       while (I22STAT != 0x18 && I22STAT != 0x20);
+ 444              		.loc 1 165 0 discriminator 1
  445 0060 042093E5 		ldr	r2, [r3, #4]
  446 0064 180052E3 		cmp	r2, #24
  447 0068 0200000A 		beq	.L61
- 145:lib/Common/src/i2c.c **** 				while(I22STAT!=0x18 && I22STAT!=0x20);
- 448              		.loc 1 145 0 is_stmt 0 discriminator 2
+ 165:lib/Common/src/i2c.c ****       while (I22STAT != 0x18 && I22STAT != 0x20);
+ 448              		.loc 1 165 0 is_stmt 0 discriminator 2
  449 006c 040093E5 		ldr	r0, [r3, #4]
  450 0070 200050E3 		cmp	r0, #32
  451 0074 F9FFFF1A 		bne	.L62
  452              	.L61:
- 146:lib/Common/src/i2c.c **** 	FIO2PIN1 = 0x2;
- 453              		.loc 1 146 0 is_stmt 1
+ 166:lib/Common/src/i2c.c ****       FIO2PIN1 = 0x2;
+ 453              		.loc 1 166 0 is_stmt 1
  454 0078 34009FE5 		ldr	r0, .L68+4
  455 007c 0220A0E3 		mov	r2, #2
  456 0080 AA2040E5 		strb	r2, [r0, #-170]
- 147:lib/Common/src/i2c.c **** 				if(I22STAT==0x20){
- 457              		.loc 1 147 0
+ 167:lib/Common/src/i2c.c ****       if (I22STAT == 0x20)
+ 457              		.loc 1 167 0
  458 0084 24C09FE5 		ldr	ip, .L68
  459 0088 04309CE5 		ldr	r3, [ip, #4]
  460 008c 200053E3 		cmp	r3, #32
  461 0090 0400001A 		bne	.L57
- 148:lib/Common/src/i2c.c **** 					printf("No such device%4x\n",Data);
- 462              		.loc 1 148 0
+ 169:lib/Common/src/i2c.c **** 	  printf ("No such device%4x\n", Data);
+ 462              		.loc 1 169 0
  463 0094 1C009FE5 		ldr	r0, .L68+8
  464 0098 FEFFFFEB 		bl	printf
  465              	.LVL31:
- 149:lib/Common/src/i2c.c **** 					i2cErr = 0x22;
- 466              		.loc 1 149 0
+ 170:lib/Common/src/i2c.c **** 	  i2cErr = 0x22;
+ 466              		.loc 1 170 0
  467 009c 18309FE5 		ldr	r3, .L68+12
  468 00a0 2210A0E3 		mov	r1, #34
  469 00a4 001083E5 		str	r1, [r3, #0]
  470              	.L57:
- 159:lib/Common/src/i2c.c **** 				}
- 160:lib/Common/src/i2c.c **** //				if(I22STAT==0x28)i2cErr = 0;
- 161:lib/Common/src/i2c.c **** //				break;
- 162:lib/Common/src/i2c.c **** 		}
- 163:lib/Common/src/i2c.c **** //	return i2cErr;
- 164:lib/Common/src/i2c.c **** }
- 471              		.loc 1 164 0
+ 182:lib/Common/src/i2c.c **** 	}
+ 183:lib/Common/src/i2c.c **** //      if(I22STAT==0x28)i2cErr = 0;
+ 184:lib/Common/src/i2c.c **** //      break;
+ 185:lib/Common/src/i2c.c ****     }
+ 186:lib/Common/src/i2c.c **** //      return i2cErr;
+ 187:lib/Common/src/i2c.c **** }
+ 471              		.loc 1 187 0
  472 00a8 0840BDE8 		ldmfd	sp!, {r3, lr}
  473 00ac 1EFF2FE1 		bx	lr
  474              	.L69:
@@ -692,146 +715,154 @@
  486              		.global	novorvisesender
  488              	novorvisesender:
  489              	.LFB6:
- 165:lib/Common/src/i2c.c **** void novorvisesender(int Continue, unsigned int Data, int Keta){
- 490              		.loc 1 165 0
+ 188:lib/Common/src/i2c.c **** 
+ 189:lib/Common/src/i2c.c **** void
+ 190:lib/Common/src/i2c.c **** novorvisesender (int Continue, unsigned int Data, int Keta)
+ 191:lib/Common/src/i2c.c **** {
+ 490              		.loc 1 191 0
  491              		.cfi_startproc
  492              		@ Function supports interworking.
  493              		@ args = 0, pretend = 0, frame = 0
  494              		@ frame_needed = 0, uses_anonymous_args = 0
  495              	.LVL32:
- 166:lib/Common/src/i2c.c **** 			if(Continue==0){
- 496              		.loc 1 166 0
+ 192:lib/Common/src/i2c.c ****   if (Continue == 0)
+ 496              		.loc 1 192 0
  497 0000 000050E3 		cmp	r0, #0
- 165:lib/Common/src/i2c.c **** void novorvisesender(int Continue, unsigned int Data, int Keta){
- 498              		.loc 1 165 0
+ 191:lib/Common/src/i2c.c **** {
+ 498              		.loc 1 191 0
  499 0004 38402DE9 		stmfd	sp!, {r3, r4, r5, lr}
  500              	.LCFI2:
  501              		.cfi_def_cfa_offset 16
- 165:lib/Common/src/i2c.c **** void novorvisesender(int Continue, unsigned int Data, int Keta){
- 502              		.loc 1 165 0
+ 191:lib/Common/src/i2c.c **** {
+ 502              		.loc 1 191 0
  503 0008 0140A0E1 		mov	r4, r1
  504              		.cfi_offset 14, -4
  505              		.cfi_offset 5, -8
  506              		.cfi_offset 4, -12
  507              		.cfi_offset 3, -16
- 508              		.loc 1 166 0
+ 508              		.loc 1 192 0
  509 000c 2100000A 		beq	.L71
- 167:lib/Common/src/i2c.c **** 				I22DAT = Data;
- 168:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 169:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 170:lib/Common/src/i2c.c **** 				while(I22STAT!=0x18 && I22STAT!=0x20)printf(".");
- 171:lib/Common/src/i2c.c **** 				if(I22STAT==0x20){
- 172:lib/Common/src/i2c.c **** 					printf("No such device%4x\n",Data);
- 173:lib/Common/src/i2c.c **** 					i2cErr = 0x22;
- 174:lib/Common/src/i2c.c **** 					return;
- 175:lib/Common/src/i2c.c **** 					}
- 176:lib/Common/src/i2c.c **** 			}else {
- 177:lib/Common/src/i2c.c **** 				for(;Keta != 0;Keta-=8){
- 510              		.loc 1 177 0 discriminator 1
+ 193:lib/Common/src/i2c.c ****     {
+ 194:lib/Common/src/i2c.c ****       I22DAT = Data;
+ 195:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 196:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 197:lib/Common/src/i2c.c ****       while (I22STAT != 0x18 && I22STAT != 0x20)
+ 198:lib/Common/src/i2c.c **** 	printf (".");
+ 199:lib/Common/src/i2c.c ****       if (I22STAT == 0x20)
+ 200:lib/Common/src/i2c.c **** 	{
+ 201:lib/Common/src/i2c.c **** 	  printf ("No such device%4x\n", Data);
+ 202:lib/Common/src/i2c.c **** 	  i2cErr = 0x22;
+ 203:lib/Common/src/i2c.c **** 	}
+ 204:lib/Common/src/i2c.c ****     }
+ 205:lib/Common/src/i2c.c ****   else
+ 206:lib/Common/src/i2c.c ****     {
+ 207:lib/Common/src/i2c.c ****       for (; Keta != 0; Keta -= 8)
+ 510              		.loc 1 207 0 discriminator 1
  511 0010 000052E3 		cmp	r2, #0
- 178:lib/Common/src/i2c.c **** 					I22DAT = (Data & 0xFF);
- 512              		.loc 1 178 0 discriminator 1
+ 208:lib/Common/src/i2c.c **** 	{
+ 209:lib/Common/src/i2c.c **** 	  I22DAT = (Data & 0xFF);
+ 512              		.loc 1 209 0 discriminator 1
  513 0014 A8109F15 		ldrne	r1, .L84
  514              	.LVL33:
- 179:lib/Common/src/i2c.c **** 					I22CONCLR  = 0x28;
- 515              		.loc 1 179 0 discriminator 1
+ 210:lib/Common/src/i2c.c **** 	  I22CONCLR = 0x28;
+ 515              		.loc 1 210 0 discriminator 1
  516 0018 2800A013 		movne	r0, #40
  517              	.LVL34:
- 177:lib/Common/src/i2c.c **** 				for(;Keta != 0;Keta-=8){
- 518              		.loc 1 177 0 discriminator 1
+ 207:lib/Common/src/i2c.c ****       for (; Keta != 0; Keta -= 8)
+ 518              		.loc 1 207 0 discriminator 1
  519 001c 1B00000A 		beq	.L70
  520              	.LVL35:
  521              	.L81:
- 178:lib/Common/src/i2c.c **** 					I22DAT = (Data & 0xFF);
- 522              		.loc 1 178 0
+ 209:lib/Common/src/i2c.c **** 	  I22DAT = (Data & 0xFF);
+ 522              		.loc 1 209 0
  523 0020 FF3004E2 		and	r3, r4, #255
  524 0024 083081E5 		str	r3, [r1, #8]
- 525              		.loc 1 179 0
+ 525              		.loc 1 210 0
  526 0028 180081E5 		str	r0, [r1, #24]
  527              	.L76:
- 180:lib/Common/src/i2c.c **** 				while(I22STAT!=0x28);
- 528              		.loc 1 180 0 discriminator 1
+ 211:lib/Common/src/i2c.c **** 	  while (I22STAT != 0x28);
+ 528              		.loc 1 211 0 discriminator 1
  529 002c 04C091E5 		ldr	ip, [r1, #4]
  530 0030 28005CE3 		cmp	ip, #40
  531 0034 FCFFFF1A 		bne	.L76
  532              	.LVL36:
- 177:lib/Common/src/i2c.c **** 				for(;Keta != 0;Keta-=8){
- 533              		.loc 1 177 0
+ 207:lib/Common/src/i2c.c ****       for (; Keta != 0; Keta -= 8)
+ 533              		.loc 1 207 0
  534 0038 082052E2 		subs	r2, r2, #8
  535              	.LVL37:
  536 003c 1300000A 		beq	.L70
- 181:lib/Common/src/i2c.c **** 					Data = Data >> 8;
- 537              		.loc 1 181 0
+ 212:lib/Common/src/i2c.c **** 	  Data = Data >> 8;
+ 537              		.loc 1 212 0
  538 0040 2444A0E1 		mov	r4, r4, lsr #8
  539              	.LVL38:
  540 0044 F5FFFFEA 		b	.L81
  541              	.LVL39:
  542              	.L83:
- 170:lib/Common/src/i2c.c **** 				while(I22STAT!=0x18 && I22STAT!=0x20)printf(".");
- 543              		.loc 1 170 0 discriminator 1
+ 198:lib/Common/src/i2c.c **** 	printf (".");
+ 543              		.loc 1 198 0
  544 0048 2E00A0E3 		mov	r0, #46
  545 004c FEFFFFEB 		bl	putchar
- 546 0050 043095E5 		ldr	r3, [r5, #4]
- 547 0054 180053E3 		cmp	r3, #24
- 548 0058 0200000A 		beq	.L74
- 549              	.L82:
- 170:lib/Common/src/i2c.c **** 				while(I22STAT!=0x18 && I22STAT!=0x20)printf(".");
- 550              		.loc 1 170 0 is_stmt 0
+ 197:lib/Common/src/i2c.c ****       while (I22STAT != 0x18 && I22STAT != 0x20)
+ 546              		.loc 1 197 0
+ 547 0050 043095E5 		ldr	r3, [r5, #4]
+ 548 0054 180053E3 		cmp	r3, #24
+ 549 0058 0200000A 		beq	.L74
+ 550              	.L82:
  551 005c 04C095E5 		ldr	ip, [r5, #4]
  552 0060 20005CE3 		cmp	ip, #32
  553 0064 F7FFFF1A 		bne	.L83
  554              	.L74:
- 171:lib/Common/src/i2c.c **** 				if(I22STAT==0x20){
- 555              		.loc 1 171 0 is_stmt 1
+ 199:lib/Common/src/i2c.c ****       if (I22STAT == 0x20)
+ 555              		.loc 1 199 0
  556 0068 54109FE5 		ldr	r1, .L84
  557 006c 040091E5 		ldr	r0, [r1, #4]
  558 0070 200050E3 		cmp	r0, #32
  559 0074 0500001A 		bne	.L70
- 172:lib/Common/src/i2c.c **** 					printf("No such device%4x\n",Data);
- 560              		.loc 1 172 0
+ 201:lib/Common/src/i2c.c **** 	  printf ("No such device%4x\n", Data);
+ 560              		.loc 1 201 0
  561 0078 48009FE5 		ldr	r0, .L84+4
  562 007c 0410A0E1 		mov	r1, r4
  563 0080 FEFFFFEB 		bl	printf
- 173:lib/Common/src/i2c.c **** 					i2cErr = 0x22;
- 564              		.loc 1 173 0
+ 202:lib/Common/src/i2c.c **** 	  i2cErr = 0x22;
+ 564              		.loc 1 202 0
  565 0084 40C09FE5 		ldr	ip, .L84+8
  566 0088 2220A0E3 		mov	r2, #34
  567 008c 00208CE5 		str	r2, [ip, #0]
  568              	.LVL40:
  569              	.L70:
- 182:lib/Common/src/i2c.c **** 				}
- 183:lib/Common/src/i2c.c **** //				if(I22STAT==0x28)i2cErr = 0;
- 184:lib/Common/src/i2c.c **** //				break;
- 185:lib/Common/src/i2c.c **** 		}
- 186:lib/Common/src/i2c.c **** //	return i2cErr;
- 187:lib/Common/src/i2c.c **** }
- 570              		.loc 1 187 0
+ 213:lib/Common/src/i2c.c **** 	}
+ 214:lib/Common/src/i2c.c **** //                              if(I22STAT==0x28)i2cErr = 0;
+ 215:lib/Common/src/i2c.c **** //                              break;
+ 216:lib/Common/src/i2c.c ****     }
+ 217:lib/Common/src/i2c.c **** //      return i2cErr;
+ 218:lib/Common/src/i2c.c **** }
+ 570              		.loc 1 218 0
  571 0090 3840BDE8 		ldmfd	sp!, {r3, r4, r5, lr}
  572 0094 1EFF2FE1 		bx	lr
  573              	.LVL41:
  574              	.L71:
- 167:lib/Common/src/i2c.c **** 				I22DAT = Data;
- 575              		.loc 1 167 0
+ 194:lib/Common/src/i2c.c ****       I22DAT = Data;
+ 575              		.loc 1 194 0
  576 0098 24509FE5 		ldr	r5, .L84
  577 009c 081085E5 		str	r1, [r5, #8]
- 168:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 578              		.loc 1 168 0
+ 195:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 578              		.loc 1 195 0
  579 00a0 002095E5 		ldr	r2, [r5, #0]
  580              	.LVL42:
- 169:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 581              		.loc 1 169 0
+ 196:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 581              		.loc 1 196 0
  582 00a4 0800A0E3 		mov	r0, #8
  583              	.LVL43:
- 168:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 584              		.loc 1 168 0
+ 195:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 584              		.loc 1 195 0
  585 00a8 041082E3 		orr	r1, r2, #4
  586              	.LVL44:
  587 00ac 001085E5 		str	r1, [r5, #0]
- 169:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 588              		.loc 1 169 0
+ 196:lib/Common/src/i2c.c ****       I22CONCLR = 0x08;
+ 588              		.loc 1 196 0
  589 00b0 180085E5 		str	r0, [r5, #24]
- 170:lib/Common/src/i2c.c **** 				while(I22STAT!=0x18 && I22STAT!=0x20)printf(".");
- 590              		.loc 1 170 0
+ 197:lib/Common/src/i2c.c ****       while (I22STAT != 0x18 && I22STAT != 0x20)
+ 590              		.loc 1 197 0
  591 00b4 043095E5 		ldr	r3, [r5, #4]
  592 00b8 180053E3 		cmp	r3, #24
  593 00bc E6FFFF1A 		bne	.L82
@@ -849,11 +880,13 @@
  606              		.global	tinyreader
  608              	tinyreader:
  609              	.LFB7:
- 188:lib/Common/src/i2c.c **** 
- 189:lib/Common/src/i2c.c **** /**************************************************************************************************
- 190:lib/Common/src/i2c.c **** */
- 191:lib/Common/src/i2c.c **** int tinyreader(int Keta, int Adr, int registernumber){
- 610              		.loc 1 191 0
+ 219:lib/Common/src/i2c.c **** 
+ 220:lib/Common/src/i2c.c **** /**************************************************************************************************
+ 221:lib/Common/src/i2c.c **** */
+ 222:lib/Common/src/i2c.c **** int
+ 223:lib/Common/src/i2c.c **** tinyreader (int Keta, int Adr, int registernumber)
+ 224:lib/Common/src/i2c.c **** {
+ 610              		.loc 1 224 0
  611              		.cfi_startproc
  612              		@ Function supports interworking.
  613              		@ args = 0, pretend = 0, frame = 0
@@ -863,9 +896,9 @@
  617 0000 F0412DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, lr}
  618              	.LCFI3:
  619              		.cfi_def_cfa_offset 24
- 192:lib/Common/src/i2c.c **** upper:
- 193:lib/Common/src/i2c.c **** 				I22DAT = (Adr + 1);
- 620              		.loc 1 193 0
+ 225:lib/Common/src/i2c.c **** upper:
+ 226:lib/Common/src/i2c.c ****   I22DAT = (Adr + 1);
+ 620              		.loc 1 226 0
  621 0004 E4409FE5 		ldr	r4, .L100
  622              		.cfi_offset 14, -4
  623              		.cfi_offset 8, -8
@@ -873,150 +906,152 @@
  625              		.cfi_offset 6, -16
  626              		.cfi_offset 5, -20
  627              		.cfi_offset 4, -24
- 191:lib/Common/src/i2c.c **** int tinyreader(int Keta, int Adr, int registernumber){
- 628              		.loc 1 191 0
+ 224:lib/Common/src/i2c.c **** {
+ 628              		.loc 1 224 0
  629 0008 0060A0E1 		mov	r6, r0
  630 000c 0250A0E1 		mov	r5, r2
- 194:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 195:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 196:lib/Common/src/i2c.c **** 				while(I22STAT!=0x40 && I22STAT!=0x48);
- 197:lib/Common/src/i2c.c **** 				if(I22STAT==0x48){
- 198:lib/Common/src/i2c.c **** 					printf("no acknowlege(%x)\n",I22STAT);
- 199:lib/Common/src/i2c.c **** 					i2crestart(2);
- 200:lib/Common/src/i2c.c **** 					goto upper;
- 201:lib/Common/src/i2c.c **** 					}
- 202:lib/Common/src/i2c.c **** 				if(I22STAT==0x40);
- 203:lib/Common/src/i2c.c **** 				while(registernumber!=(Keta+1)){
- 204:lib/Common/src/i2c.c **** 					printf("reading..  ");
- 205:lib/Common/src/i2c.c **** 					I22CONSET |= 0x04;
- 206:lib/Common/src/i2c.c **** 					I22CONCLR  = 0x28;
- 207:lib/Common/src/i2c.c **** 					printf("Wait\t");
- 208:lib/Common/src/i2c.c **** 					while(I22STAT != 0x50 );
- 209:lib/Common/src/i2c.c **** 					printf("%xreg\t%x",registernumber++,I22DAT);
- 631              		.loc 1 209 0
+ 227:lib/Common/src/i2c.c ****   I22CONSET |= 0x04;
+ 228:lib/Common/src/i2c.c ****   I22CONCLR = 0x08;
+ 229:lib/Common/src/i2c.c ****   while (I22STAT != 0x40 && I22STAT != 0x48);
+ 230:lib/Common/src/i2c.c ****   if (I22STAT == 0x48)
+ 231:lib/Common/src/i2c.c ****     {
+ 232:lib/Common/src/i2c.c ****       printf ("no acknowlege(%x)\n", I22STAT);
+ 233:lib/Common/src/i2c.c ****       i2crestart (2);
+ 234:lib/Common/src/i2c.c ****       goto upper;
+ 235:lib/Common/src/i2c.c ****     }
+ 236:lib/Common/src/i2c.c ****   if (I22STAT == 0x40);
+ 237:lib/Common/src/i2c.c ****   while (registernumber != (Keta + 1))
+ 238:lib/Common/src/i2c.c ****     {
+ 239:lib/Common/src/i2c.c ****       printf ("reading..  ");
+ 240:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 241:lib/Common/src/i2c.c ****       I22CONCLR = 0x28;
+ 242:lib/Common/src/i2c.c ****       printf ("Wait\t");
+ 243:lib/Common/src/i2c.c ****       while (I22STAT != 0x50);
+ 244:lib/Common/src/i2c.c ****       printf ("%xreg\t%x", registernumber++, I22DAT);
+ 631              		.loc 1 244 0
  632 0010 018081E2 		add	r8, r1, #1
- 195:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 633              		.loc 1 195 0
+ 228:lib/Common/src/i2c.c ****   I22CONCLR = 0x08;
+ 633              		.loc 1 228 0
  634 0014 0870A0E3 		mov	r7, #8
  635              	.LVL46:
  636              	.L91:
- 193:lib/Common/src/i2c.c **** 				I22DAT = (Adr + 1);
- 637              		.loc 1 193 0
+ 226:lib/Common/src/i2c.c ****   I22DAT = (Adr + 1);
+ 637              		.loc 1 226 0
  638 0018 088084E5 		str	r8, [r4, #8]
- 194:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 639              		.loc 1 194 0
+ 227:lib/Common/src/i2c.c ****   I22CONSET |= 0x04;
+ 639              		.loc 1 227 0
  640 001c 000094E5 		ldr	r0, [r4, #0]
  641 0020 043080E3 		orr	r3, r0, #4
  642 0024 003084E5 		str	r3, [r4, #0]
- 195:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 643              		.loc 1 195 0
+ 228:lib/Common/src/i2c.c ****   I22CONCLR = 0x08;
+ 643              		.loc 1 228 0
  644 0028 187084E5 		str	r7, [r4, #24]
  645              	.L89:
- 196:lib/Common/src/i2c.c **** 				while(I22STAT!=0x40 && I22STAT!=0x48);
- 646              		.loc 1 196 0 discriminator 1
+ 229:lib/Common/src/i2c.c ****   while (I22STAT != 0x40 && I22STAT != 0x48);
+ 646              		.loc 1 229 0 discriminator 1
  647 002c 041094E5 		ldr	r1, [r4, #4]
  648 0030 400051E3 		cmp	r1, #64
  649 0034 0200000A 		beq	.L88
- 196:lib/Common/src/i2c.c **** 				while(I22STAT!=0x40 && I22STAT!=0x48);
- 650              		.loc 1 196 0 is_stmt 0 discriminator 2
+ 229:lib/Common/src/i2c.c ****   while (I22STAT != 0x40 && I22STAT != 0x48);
+ 650              		.loc 1 229 0 is_stmt 0 discriminator 2
  651 0038 042094E5 		ldr	r2, [r4, #4]
  652 003c 480052E3 		cmp	r2, #72
  653 0040 F9FFFF1A 		bne	.L89
  654              	.L88:
- 197:lib/Common/src/i2c.c **** 				if(I22STAT==0x48){
- 655              		.loc 1 197 0 is_stmt 1
+ 230:lib/Common/src/i2c.c ****   if (I22STAT == 0x48)
+ 655              		.loc 1 230 0 is_stmt 1
  656 0044 04C094E5 		ldr	ip, [r4, #4]
  657 0048 48005CE3 		cmp	ip, #72
  658 004c 9C309FE5 		ldr	r3, .L100
  659 0050 0500001A 		bne	.L90
- 198:lib/Common/src/i2c.c **** 					printf("no acknowlege(%x)\n",I22STAT);
- 660              		.loc 1 198 0
+ 232:lib/Common/src/i2c.c ****       printf ("no acknowlege(%x)\n", I22STAT);
+ 660              		.loc 1 232 0
  661 0054 041094E5 		ldr	r1, [r4, #4]
  662 0058 94009FE5 		ldr	r0, .L100+4
  663 005c FEFFFFEB 		bl	printf
- 199:lib/Common/src/i2c.c **** 					i2crestart(2);
- 664              		.loc 1 199 0
+ 233:lib/Common/src/i2c.c ****       i2crestart (2);
+ 664              		.loc 1 233 0
  665 0060 0200A0E3 		mov	r0, #2
  666 0064 FEFFFFEB 		bl	i2crestart
- 200:lib/Common/src/i2c.c **** 					goto upper;
- 667              		.loc 1 200 0
+ 234:lib/Common/src/i2c.c ****       goto upper;
+ 667              		.loc 1 234 0
  668 0068 EAFFFFEA 		b	.L91
  669              	.L90:
- 203:lib/Common/src/i2c.c **** 				while(registernumber!=(Keta+1)){
- 670              		.loc 1 203 0
+ 237:lib/Common/src/i2c.c ****   while (registernumber != (Keta + 1))
+ 670              		.loc 1 237 0
  671 006c 016086E2 		add	r6, r6, #1
  672              	.LVL47:
  673 0070 060055E1 		cmp	r5, r6
- 202:lib/Common/src/i2c.c **** 				if(I22STAT==0x40);
- 674              		.loc 1 202 0
+ 236:lib/Common/src/i2c.c ****   if (I22STAT == 0x40);
+ 674              		.loc 1 236 0
  675 0074 042093E5 		ldr	r2, [r3, #4]
- 203:lib/Common/src/i2c.c **** 				while(registernumber!=(Keta+1)){
- 676              		.loc 1 203 0
+ 237:lib/Common/src/i2c.c ****   while (registernumber != (Keta + 1))
+ 676              		.loc 1 237 0
  677 0078 1600000A 		beq	.L92
- 205:lib/Common/src/i2c.c **** 					I22CONSET |= 0x04;
- 678              		.loc 1 205 0
+ 240:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 678              		.loc 1 240 0
  679 007c 0340A0E1 		mov	r4, r3
- 206:lib/Common/src/i2c.c **** 					I22CONCLR  = 0x28;
- 680              		.loc 1 206 0
+ 241:lib/Common/src/i2c.c ****       I22CONCLR = 0x28;
+ 680              		.loc 1 241 0
  681 0080 2880A0E3 		mov	r8, #40
  682              	.LVL48:
- 208:lib/Common/src/i2c.c **** 					while(I22STAT != 0x50 );
- 683              		.loc 1 208 0
+ 243:lib/Common/src/i2c.c ****       while (I22STAT != 0x50);
+ 683              		.loc 1 243 0
  684 0084 0370A0E1 		mov	r7, r3
  685              	.LVL49:
  686              	.L99:
- 204:lib/Common/src/i2c.c **** 					printf("reading..  ");
- 687              		.loc 1 204 0
+ 239:lib/Common/src/i2c.c ****       printf ("reading..  ");
+ 687              		.loc 1 239 0
  688 0088 68009FE5 		ldr	r0, .L100+8
  689 008c FEFFFFEB 		bl	printf
- 205:lib/Common/src/i2c.c **** 					I22CONSET |= 0x04;
- 690              		.loc 1 205 0
+ 240:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 690              		.loc 1 240 0
  691 0090 001094E5 		ldr	r1, [r4, #0]
  692 0094 043081E3 		orr	r3, r1, #4
  693 0098 003084E5 		str	r3, [r4, #0]
- 207:lib/Common/src/i2c.c **** 					printf("Wait\t");
- 694              		.loc 1 207 0
+ 242:lib/Common/src/i2c.c ****       printf ("Wait\t");
+ 694              		.loc 1 242 0
  695 009c 58009FE5 		ldr	r0, .L100+12
- 206:lib/Common/src/i2c.c **** 					I22CONCLR  = 0x28;
- 696              		.loc 1 206 0
+ 241:lib/Common/src/i2c.c ****       I22CONCLR = 0x28;
+ 696              		.loc 1 241 0
  697 00a0 188084E5 		str	r8, [r4, #24]
- 207:lib/Common/src/i2c.c **** 					printf("Wait\t");
- 698              		.loc 1 207 0
+ 242:lib/Common/src/i2c.c ****       printf ("Wait\t");
+ 698              		.loc 1 242 0
  699 00a4 FEFFFFEB 		bl	printf
  700              	.L93:
- 208:lib/Common/src/i2c.c **** 					while(I22STAT != 0x50 );
- 701              		.loc 1 208 0 discriminator 1
+ 243:lib/Common/src/i2c.c ****       while (I22STAT != 0x50);
+ 701              		.loc 1 243 0 discriminator 1
  702 00a8 04E094E5 		ldr	lr, [r4, #4]
  703 00ac 50005EE3 		cmp	lr, #80
  704 00b0 FCFFFF1A 		bne	.L93
- 705              		.loc 1 209 0
+ 705              		.loc 1 244 0
  706 00b4 0510A0E1 		mov	r1, r5
  707 00b8 082097E5 		ldr	r2, [r7, #8]
  708 00bc 3C009FE5 		ldr	r0, .L100+16
  709 00c0 FEFFFFEB 		bl	printf
  710 00c4 015085E2 		add	r5, r5, #1
  711              	.LVL50:
- 210:lib/Common/src/i2c.c **** 					vTaskDelay(10 / portTICK_RATE_MS);
- 712              		.loc 1 210 0
+ 245:lib/Common/src/i2c.c ****       vTaskDelay (10 / portTICK_RATE_MS);
+ 712              		.loc 1 245 0
  713 00c8 0A00A0E3 		mov	r0, #10
  714 00cc FEFFFFEB 		bl	vTaskDelay
- 203:lib/Common/src/i2c.c **** 				while(registernumber!=(Keta+1)){
- 715              		.loc 1 203 0
+ 237:lib/Common/src/i2c.c ****   while (registernumber != (Keta + 1))
+ 715              		.loc 1 237 0
  716 00d0 060055E1 		cmp	r5, r6
  717 00d4 EBFFFF1A 		bne	.L99
  718              	.L92:
- 211:lib/Common/src/i2c.c **** 
- 212:lib/Common/src/i2c.c **** //					if(a==32)return;
- 213:lib/Common/src/i2c.c **** 				}
- 214:lib/Common/src/i2c.c **** 				
- 215:lib/Common/src/i2c.c **** 				I22CONCLR = 0x0C;
- 719              		.loc 1 215 0
+ 246:lib/Common/src/i2c.c **** 
+ 247:lib/Common/src/i2c.c **** //                                      if(a==32)return;
+ 248:lib/Common/src/i2c.c ****     }
+ 249:lib/Common/src/i2c.c **** 
+ 250:lib/Common/src/i2c.c ****   I22CONCLR = 0x0C;
+ 719              		.loc 1 250 0
  720 00d8 10209FE5 		ldr	r2, .L100
  721 00dc 0C00A0E3 		mov	r0, #12
  722 00e0 180082E5 		str	r0, [r2, #24]
- 216:lib/Common/src/i2c.c **** //	return i2cErr;
- 217:lib/Common/src/i2c.c **** }
- 723              		.loc 1 217 0
+ 251:lib/Common/src/i2c.c **** //      return i2cErr;
+ 252:lib/Common/src/i2c.c **** }
+ 723              		.loc 1 252 0
  724 00e4 0000A0E3 		mov	r0, #0
  725 00e8 F041BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8, lr}
  726 00ec 1EFF2FE1 		bx	lr
@@ -1035,9 +1070,11 @@
  740              		.global	i2creader
  742              	i2creader:
  743              	.LFB8:
- 218:lib/Common/src/i2c.c **** 
- 219:lib/Common/src/i2c.c **** int i2creader(int Keta, int Adr, int registernumber){
- 744              		.loc 1 219 0
+ 253:lib/Common/src/i2c.c **** 
+ 254:lib/Common/src/i2c.c **** int
+ 255:lib/Common/src/i2c.c **** i2creader (int Keta, int Adr, int registernumber)
+ 256:lib/Common/src/i2c.c **** {
+ 744              		.loc 1 256 0
  745              		.cfi_startproc
  746              		@ Function supports interworking.
  747              		@ args = 0, pretend = 0, frame = 0
@@ -1047,10 +1084,10 @@
  751 0000 F0472DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
  752              	.LCFI4:
  753              		.cfi_def_cfa_offset 32
- 220:lib/Common/src/i2c.c **** char Loopy;
- 221:lib/Common/src/i2c.c **** upper:
- 222:lib/Common/src/i2c.c **** 				I22DAT = (Adr + 1);
- 754              		.loc 1 222 0
+ 257:lib/Common/src/i2c.c ****   char Loopy;
+ 258:lib/Common/src/i2c.c **** upper:
+ 259:lib/Common/src/i2c.c ****   I22DAT = (Adr + 1);
+ 754              		.loc 1 259 0
  755 0004 90419FE5 		ldr	r4, .L125
  756              		.cfi_offset 14, -4
  757              		.cfi_offset 10, -8
@@ -1060,151 +1097,155 @@
  761              		.cfi_offset 6, -24
  762              		.cfi_offset 5, -28
  763              		.cfi_offset 4, -32
- 219:lib/Common/src/i2c.c **** int i2creader(int Keta, int Adr, int registernumber){
- 764              		.loc 1 219 0
+ 256:lib/Common/src/i2c.c **** {
+ 764              		.loc 1 256 0
  765 0008 0060A0E1 		mov	r6, r0
  766 000c 0270A0E1 		mov	r7, r2
- 223:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 224:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 225:lib/Common/src/i2c.c **** 				printf("Status is %x\n",I22STAT);
- 226:lib/Common/src/i2c.c **** 				while(I22STAT!=0x40 && I22STAT!=0x48)printf(".");
- 227:lib/Common/src/i2c.c **** 				if(I22STAT==0x48){
- 228:lib/Common/src/i2c.c **** 					printf("no acknowlege(%x)\n",I22STAT);
- 229:lib/Common/src/i2c.c **** 					i2crestart(2);
- 230:lib/Common/src/i2c.c **** 					goto upper;
- 231:lib/Common/src/i2c.c **** 					}
- 232:lib/Common/src/i2c.c **** 				if(I22STAT==0x40);
- 233:lib/Common/src/i2c.c **** 				printf("Read begin[>  ");
- 234:lib/Common/src/i2c.c **** 				while(registernumber++!=(Keta+1)){
- 235:lib/Common/src/i2c.c **** 					I22CONSET |= 0x04;
- 236:lib/Common/src/i2c.c **** 					I22CONCLR  = 0x28;
- 237:lib/Common/src/i2c.c **** 					while(I22STAT != 0x50 );
- 238:lib/Common/src/i2c.c **** 					vTaskDelay(10 / portTICK_RATE_MS);
- 239:lib/Common/src/i2c.c **** 				switch (registernumber%4){
- 240:lib/Common/src/i2c.c **** 					case 0:
- 241:lib/Common/src/i2c.c **** 					Loopy='|';
- 242:lib/Common/src/i2c.c **** 					break;
- 243:lib/Common/src/i2c.c **** 					case 1:
- 244:lib/Common/src/i2c.c **** 					Loopy='/';
- 245:lib/Common/src/i2c.c **** 					break;
- 246:lib/Common/src/i2c.c **** 					case 2:
- 247:lib/Common/src/i2c.c **** 					Loopy='-';
- 248:lib/Common/src/i2c.c **** 					break;
- 249:lib/Common/src/i2c.c **** 					case 3:
- 250:lib/Common/src/i2c.c **** 					Loopy='\\';
- 767              		.loc 1 250 0
+ 260:lib/Common/src/i2c.c ****   I22CONSET |= 0x04;
+ 261:lib/Common/src/i2c.c ****   I22CONCLR = 0x08;
+ 262:lib/Common/src/i2c.c ****   printf ("Status is %x\n", I22STAT);
+ 263:lib/Common/src/i2c.c ****   while (I22STAT != 0x40 && I22STAT != 0x48)
+ 264:lib/Common/src/i2c.c ****     printf (".");
+ 265:lib/Common/src/i2c.c ****   if (I22STAT == 0x48)
+ 266:lib/Common/src/i2c.c ****     {
+ 267:lib/Common/src/i2c.c ****       printf ("no acknowlege(%x)\n", I22STAT);
+ 268:lib/Common/src/i2c.c ****       i2crestart (2);
+ 269:lib/Common/src/i2c.c ****       goto upper;
+ 270:lib/Common/src/i2c.c ****     }
+ 271:lib/Common/src/i2c.c ****   if (I22STAT == 0x40);
+ 272:lib/Common/src/i2c.c ****   printf ("Read begin[>  ");
+ 273:lib/Common/src/i2c.c ****   while (registernumber++ != (Keta + 1))
+ 274:lib/Common/src/i2c.c ****     {
+ 275:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 276:lib/Common/src/i2c.c ****       I22CONCLR = 0x28;
+ 277:lib/Common/src/i2c.c ****       while (I22STAT != 0x50);
+ 278:lib/Common/src/i2c.c ****       vTaskDelay (10 / portTICK_RATE_MS);
+ 279:lib/Common/src/i2c.c ****       switch (registernumber % 4)
+ 280:lib/Common/src/i2c.c **** 	{
+ 281:lib/Common/src/i2c.c **** 	case 0:
+ 282:lib/Common/src/i2c.c **** 	  Loopy = '|';
+ 283:lib/Common/src/i2c.c **** 	  break;
+ 284:lib/Common/src/i2c.c **** 	case 1:
+ 285:lib/Common/src/i2c.c **** 	  Loopy = '/';
+ 286:lib/Common/src/i2c.c **** 	  break;
+ 287:lib/Common/src/i2c.c **** 	case 2:
+ 288:lib/Common/src/i2c.c **** 	  Loopy = '-';
+ 289:lib/Common/src/i2c.c **** 	  break;
+ 290:lib/Common/src/i2c.c **** 	case 3:
+ 291:lib/Common/src/i2c.c **** 	  Loopy = '\\';
+ 767              		.loc 1 291 0
  768 0010 01A081E2 		add	sl, r1, #1
- 224:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 769              		.loc 1 224 0
+ 261:lib/Common/src/i2c.c ****   I22CONCLR = 0x08;
+ 769              		.loc 1 261 0
  770 0014 0880A0E3 		mov	r8, #8
  771              	.LVL52:
  772              	.L107:
- 222:lib/Common/src/i2c.c **** 				I22DAT = (Adr + 1);
- 773              		.loc 1 222 0
+ 259:lib/Common/src/i2c.c ****   I22DAT = (Adr + 1);
+ 773              		.loc 1 259 0
  774 0018 08A084E5 		str	sl, [r4, #8]
- 223:lib/Common/src/i2c.c **** 				I22CONSET |= 0x04;
- 775              		.loc 1 223 0
+ 260:lib/Common/src/i2c.c ****   I22CONSET |= 0x04;
+ 775              		.loc 1 260 0
  776 001c 001094E5 		ldr	r1, [r4, #0]
  777 0020 040081E3 		orr	r0, r1, #4
  778 0024 000084E5 		str	r0, [r4, #0]
- 224:lib/Common/src/i2c.c **** 				I22CONCLR  = 0x08;
- 779              		.loc 1 224 0
+ 261:lib/Common/src/i2c.c ****   I22CONCLR = 0x08;
+ 779              		.loc 1 261 0
  780 0028 188084E5 		str	r8, [r4, #24]
- 225:lib/Common/src/i2c.c **** 				printf("Status is %x\n",I22STAT);
- 781              		.loc 1 225 0
+ 262:lib/Common/src/i2c.c ****   printf ("Status is %x\n", I22STAT);
+ 781              		.loc 1 262 0
  782 002c 6C019FE5 		ldr	r0, .L125+4
  783 0030 041094E5 		ldr	r1, [r4, #4]
  784 0034 FEFFFFEB 		bl	printf
- 226:lib/Common/src/i2c.c **** 				while(I22STAT!=0x40 && I22STAT!=0x48)printf(".");
- 785              		.loc 1 226 0
+ 263:lib/Common/src/i2c.c ****   while (I22STAT != 0x40 && I22STAT != 0x48)
+ 785              		.loc 1 263 0
  786 0038 043094E5 		ldr	r3, [r4, #4]
  787 003c 400053E3 		cmp	r3, #64
  788 0040 0500001A 		bne	.L123
  789 0044 070000EA 		b	.L104
  790              	.L124:
- 226:lib/Common/src/i2c.c **** 				while(I22STAT!=0x40 && I22STAT!=0x48)printf(".");
- 791              		.loc 1 226 0 is_stmt 0 discriminator 1
+ 264:lib/Common/src/i2c.c ****     printf (".");
+ 791              		.loc 1 264 0
  792 0048 2E00A0E3 		mov	r0, #46
  793 004c FEFFFFEB 		bl	putchar
- 794 0050 049094E5 		ldr	r9, [r4, #4]
- 795 0054 400059E3 		cmp	r9, #64
- 796 0058 0200000A 		beq	.L104
- 797              	.L123:
- 226:lib/Common/src/i2c.c **** 				while(I22STAT!=0x40 && I22STAT!=0x48)printf(".");
- 798              		.loc 1 226 0
+ 263:lib/Common/src/i2c.c ****   while (I22STAT != 0x40 && I22STAT != 0x48)
+ 794              		.loc 1 263 0
+ 795 0050 049094E5 		ldr	r9, [r4, #4]
+ 796 0054 400059E3 		cmp	r9, #64
+ 797 0058 0200000A 		beq	.L104
+ 798              	.L123:
  799 005c 042094E5 		ldr	r2, [r4, #4]
  800 0060 480052E3 		cmp	r2, #72
  801 0064 F7FFFF1A 		bne	.L124
  802              	.L104:
- 227:lib/Common/src/i2c.c **** 				if(I22STAT==0x48){
- 803              		.loc 1 227 0 is_stmt 1
+ 265:lib/Common/src/i2c.c ****   if (I22STAT == 0x48)
+ 803              		.loc 1 265 0
  804 0068 04C094E5 		ldr	ip, [r4, #4]
  805 006c 48005CE3 		cmp	ip, #72
  806 0070 24919FE5 		ldr	r9, .L125
  807 0074 0500001A 		bne	.L106
- 228:lib/Common/src/i2c.c **** 					printf("no acknowlege(%x)\n",I22STAT);
- 808              		.loc 1 228 0
+ 267:lib/Common/src/i2c.c ****       printf ("no acknowlege(%x)\n", I22STAT);
+ 808              		.loc 1 267 0
  809 0078 041094E5 		ldr	r1, [r4, #4]
  810 007c 20019FE5 		ldr	r0, .L125+8
  811 0080 FEFFFFEB 		bl	printf
- 229:lib/Common/src/i2c.c **** 					i2crestart(2);
- 812              		.loc 1 229 0
+ 268:lib/Common/src/i2c.c ****       i2crestart (2);
+ 812              		.loc 1 268 0
  813 0084 0200A0E3 		mov	r0, #2
  814 0088 FEFFFFEB 		bl	i2crestart
- 230:lib/Common/src/i2c.c **** 					goto upper;
- 815              		.loc 1 230 0
+ 269:lib/Common/src/i2c.c ****       goto upper;
+ 815              		.loc 1 269 0
  816 008c E1FFFFEA 		b	.L107
  817              	.L106:
- 233:lib/Common/src/i2c.c **** 				printf("Read begin[>  ");
- 818              		.loc 1 233 0
+ 272:lib/Common/src/i2c.c ****   printf ("Read begin[>  ");
+ 818              		.loc 1 272 0
  819 0090 10019FE5 		ldr	r0, .L125+12
- 234:lib/Common/src/i2c.c **** 				while(registernumber++!=(Keta+1)){
- 820              		.loc 1 234 0
+ 273:lib/Common/src/i2c.c ****   while (registernumber++ != (Keta + 1))
+ 820              		.loc 1 273 0
  821 0094 016086E2 		add	r6, r6, #1
  822              	.LVL53:
- 232:lib/Common/src/i2c.c **** 				if(I22STAT==0x40);
- 823              		.loc 1 232 0
+ 271:lib/Common/src/i2c.c ****   if (I22STAT == 0x40);
+ 823              		.loc 1 271 0
  824 0098 043099E5 		ldr	r3, [r9, #4]
- 233:lib/Common/src/i2c.c **** 				printf("Read begin[>  ");
- 825              		.loc 1 233 0
+ 272:lib/Common/src/i2c.c ****   printf ("Read begin[>  ");
+ 825              		.loc 1 272 0
  826 009c FEFFFFEB 		bl	printf
  827              	.LVL54:
- 234:lib/Common/src/i2c.c **** 				while(registernumber++!=(Keta+1)){
- 828              		.loc 1 234 0
+ 273:lib/Common/src/i2c.c ****   while (registernumber++ != (Keta + 1))
+ 828              		.loc 1 273 0
  829 00a0 060057E1 		cmp	r7, r6
  830 00a4 00819F05 		ldreq	r8, .L125+16
  831 00a8 3000000A 		beq	.L108
  832 00ac F8809FE5 		ldr	r8, .L125+16
  833 00b0 017087E2 		add	r7, r7, #1
  834              	.LVL55:
- 235:lib/Common/src/i2c.c **** 					I22CONSET |= 0x04;
- 835              		.loc 1 235 0
+ 275:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 835              		.loc 1 275 0
  836 00b4 0940A0E1 		mov	r4, r9
- 236:lib/Common/src/i2c.c **** 					I22CONCLR  = 0x28;
- 837              		.loc 1 236 0
+ 276:lib/Common/src/i2c.c ****       I22CONCLR = 0x28;
+ 837              		.loc 1 276 0
  838 00b8 28A0A0E3 		mov	sl, #40
  839              	.LVL56:
  840              	.L116:
- 235:lib/Common/src/i2c.c **** 					I22CONSET |= 0x04;
- 841              		.loc 1 235 0
+ 275:lib/Common/src/i2c.c ****       I22CONSET |= 0x04;
+ 841              		.loc 1 275 0
  842 00bc 003094E5 		ldr	r3, [r4, #0]
  843 00c0 04E083E3 		orr	lr, r3, #4
  844 00c4 00E084E5 		str	lr, [r4, #0]
- 236:lib/Common/src/i2c.c **** 					I22CONCLR  = 0x28;
- 845              		.loc 1 236 0
+ 276:lib/Common/src/i2c.c ****       I22CONCLR = 0x28;
+ 845              		.loc 1 276 0
  846 00c8 18A084E5 		str	sl, [r4, #24]
  847              	.L109:
- 237:lib/Common/src/i2c.c **** 					while(I22STAT != 0x50 );
- 848              		.loc 1 237 0 discriminator 1
+ 277:lib/Common/src/i2c.c ****       while (I22STAT != 0x50);
+ 848              		.loc 1 277 0 discriminator 1
  849 00cc 040094E5 		ldr	r0, [r4, #4]
  850 00d0 500050E3 		cmp	r0, #80
  851 00d4 FCFFFF1A 		bne	.L109
- 238:lib/Common/src/i2c.c **** 					vTaskDelay(10 / portTICK_RATE_MS);
- 852              		.loc 1 238 0
+ 278:lib/Common/src/i2c.c ****       vTaskDelay (10 / portTICK_RATE_MS);
+ 852              		.loc 1 278 0
  853 00d8 0A00A0E3 		mov	r0, #10
  854 00dc FEFFFFEB 		bl	vTaskDelay
- 239:lib/Common/src/i2c.c **** 				switch (registernumber%4){
- 855              		.loc 1 239 0
+ 279:lib/Common/src/i2c.c ****       switch (registernumber % 4)
+ 855              		.loc 1 279 0
  856 00e0 C70FA0E1 		mov	r0, r7, asr #31
  857 00e4 202FA0E1 		mov	r2, r0, lsr #30
  858 00e8 023087E0 		add	r3, r7, r2
@@ -1220,31 +1261,31 @@
  868 010c 10010000 		.word	.L114
  869              	.L114:
  870              	.LVL57:
- 251:lib/Common/src/i2c.c **** 					break;
- 871              		.loc 1 251 0
+ 292:lib/Common/src/i2c.c **** 	  break;
+ 871              		.loc 1 292 0
  872 0110 5C10A0E3 		mov	r1, #92
- 250:lib/Common/src/i2c.c **** 					Loopy='\\';
- 873              		.loc 1 250 0
+ 291:lib/Common/src/i2c.c **** 	  Loopy = '\\';
+ 873              		.loc 1 291 0
  874 0114 0150A0E1 		mov	r5, r1
  875              	.LVL58:
  876              	.L111:
- 252:lib/Common/src/i2c.c **** 					}
- 253:lib/Common/src/i2c.c **** 				printf("\b\b\b=>%c",Loopy);
- 877              		.loc 1 253 0
+ 293:lib/Common/src/i2c.c **** 	}
+ 294:lib/Common/src/i2c.c ****       printf ("\b\b\b=>%c", Loopy);
+ 877              		.loc 1 294 0
  878 0118 90009FE5 		ldr	r0, .L125+20
  879 011c FEFFFFEB 		bl	printf
- 254:lib/Common/src/i2c.c **** 				fflush(stdout);
- 880              		.loc 1 254 0
+ 295:lib/Common/src/i2c.c ****       fflush (stdout);
+ 880              		.loc 1 295 0
  881 0120 001098E5 		ldr	r1, [r8, #0]
  882 0124 080091E5 		ldr	r0, [r1, #8]
  883 0128 FEFFFFEB 		bl	fflush
- 255:lib/Common/src/i2c.c **** 				vTaskDelay(10 / portTICK_RATE_MS);		
- 884              		.loc 1 255 0
+ 296:lib/Common/src/i2c.c ****       vTaskDelay (10 / portTICK_RATE_MS);
+ 884              		.loc 1 296 0
  885 012c 0A00A0E3 		mov	r0, #10
  886 0130 FEFFFFEB 		bl	vTaskDelay
  887              	.LVL59:
- 234:lib/Common/src/i2c.c **** 				while(registernumber++!=(Keta+1)){
- 888              		.loc 1 234 0
+ 273:lib/Common/src/i2c.c ****   while (registernumber++ != (Keta + 1))
+ 888              		.loc 1 273 0
  889 0134 070056E1 		cmp	r6, r7
  890 0138 0C00000A 		beq	.L108
  891 013c 017087E2 		add	r7, r7, #1
@@ -1252,61 +1293,61 @@
  893 0140 DDFFFFEA 		b	.L116
  894              	.LVL61:
  895              	.L113:
- 248:lib/Common/src/i2c.c **** 					break;
- 896              		.loc 1 248 0
+ 289:lib/Common/src/i2c.c **** 	  break;
+ 896              		.loc 1 289 0
  897 0144 2D10A0E3 		mov	r1, #45
- 247:lib/Common/src/i2c.c **** 					Loopy='-';
- 898              		.loc 1 247 0
+ 288:lib/Common/src/i2c.c **** 	  Loopy = '-';
+ 898              		.loc 1 288 0
  899 0148 0150A0E1 		mov	r5, r1
- 248:lib/Common/src/i2c.c **** 					break;
- 900              		.loc 1 248 0
+ 289:lib/Common/src/i2c.c **** 	  break;
+ 900              		.loc 1 289 0
  901 014c F1FFFFEA 		b	.L111
  902              	.LVL62:
  903              	.L112:
- 245:lib/Common/src/i2c.c **** 					break;
- 904              		.loc 1 245 0
+ 286:lib/Common/src/i2c.c **** 	  break;
+ 904              		.loc 1 286 0
  905 0150 2F10A0E3 		mov	r1, #47
- 244:lib/Common/src/i2c.c **** 					Loopy='/';
- 906              		.loc 1 244 0
+ 285:lib/Common/src/i2c.c **** 	  Loopy = '/';
+ 906              		.loc 1 285 0
  907 0154 0150A0E1 		mov	r5, r1
- 245:lib/Common/src/i2c.c **** 					break;
- 908              		.loc 1 245 0
+ 286:lib/Common/src/i2c.c **** 	  break;
+ 908              		.loc 1 286 0
  909 0158 EEFFFFEA 		b	.L111
  910              	.LVL63:
  911              	.L117:
- 239:lib/Common/src/i2c.c **** 				switch (registernumber%4){
- 912              		.loc 1 239 0
+ 279:lib/Common/src/i2c.c ****       switch (registernumber % 4)
+ 912              		.loc 1 279 0
  913 015c 7C10A0E3 		mov	r1, #124
- 241:lib/Common/src/i2c.c **** 					Loopy='|';
- 914              		.loc 1 241 0
+ 282:lib/Common/src/i2c.c **** 	  Loopy = '|';
+ 914              		.loc 1 282 0
  915 0160 0150A0E1 		mov	r5, r1
  916 0164 EBFFFFEA 		b	.L111
  917              	.L110:
- 239:lib/Common/src/i2c.c **** 				switch (registernumber%4){
- 918              		.loc 1 239 0
+ 279:lib/Common/src/i2c.c ****       switch (registernumber % 4)
+ 918              		.loc 1 279 0
  919 0168 0510A0E1 		mov	r1, r5
  920 016c E9FFFFEA 		b	.L111
  921              	.LVL64:
  922              	.L108:
- 256:lib/Common/src/i2c.c **** //					if(a==32)return;
- 257:lib/Common/src/i2c.c **** 				}
- 258:lib/Common/src/i2c.c **** 				printf("done.....");
- 923              		.loc 1 258 0
+ 297:lib/Common/src/i2c.c **** //                                      if(a==32)return;
+ 298:lib/Common/src/i2c.c ****     }
+ 299:lib/Common/src/i2c.c ****   printf ("done.....");
+ 923              		.loc 1 299 0
  924 0170 3C009FE5 		ldr	r0, .L125+24
  925 0174 FEFFFFEB 		bl	printf
- 259:lib/Common/src/i2c.c **** 				fflush(stdout);
- 926              		.loc 1 259 0
+ 300:lib/Common/src/i2c.c ****   fflush (stdout);
+ 926              		.loc 1 300 0
  927 0178 003098E5 		ldr	r3, [r8, #0]
  928 017c 080093E5 		ldr	r0, [r3, #8]
  929 0180 FEFFFFEB 		bl	fflush
- 260:lib/Common/src/i2c.c **** 				I22CONCLR = 0x0C;
- 930              		.loc 1 260 0
+ 301:lib/Common/src/i2c.c ****   I22CONCLR = 0x0C;
+ 930              		.loc 1 301 0
  931 0184 10209FE5 		ldr	r2, .L125
  932 0188 0CC0A0E3 		mov	ip, #12
  933 018c 18C082E5 		str	ip, [r2, #24]
- 261:lib/Common/src/i2c.c **** //	return i2cErr;
- 262:lib/Common/src/i2c.c **** }
- 934              		.loc 1 262 0
+ 302:lib/Common/src/i2c.c **** //      return i2cErr;
+ 303:lib/Common/src/i2c.c **** }
+ 934              		.loc 1 303 0
  935 0190 0000A0E3 		mov	r0, #0
  936 0194 F047BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
  937 0198 1EFF2FE1 		bx	lr
@@ -1327,11 +1368,13 @@
  953              		.global	tinyread
  955              	tinyread:
  956              	.LFB9:
- 263:lib/Common/src/i2c.c **** 
- 264:lib/Common/src/i2c.c **** /**************************************************************************************************
- 265:lib/Common/src/i2c.c **** ***************************************************************************************************
- 266:lib/Common/src/i2c.c **** void tinyread(int subadr, int size, int NumByte){
- 957              		.loc 1 266 0
+ 304:lib/Common/src/i2c.c **** 
+ 305:lib/Common/src/i2c.c **** /**************************************************************************************************
+ 306:lib/Common/src/i2c.c **** ***************************************************************************************************
+ 307:lib/Common/src/i2c.c **** void
+ 308:lib/Common/src/i2c.c **** tinyread (int subadr, int size, int NumByte)
+ 309:lib/Common/src/i2c.c **** {
+ 957              		.loc 1 309 0
  958              		.cfi_startproc
  959              		@ Function supports interworking.
  960              		@ args = 0, pretend = 0, frame = 0
@@ -1340,7 +1383,7 @@
  963 0000 F8402DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, lr}
  964              	.LCFI5:
  965              		.cfi_def_cfa_offset 24
- 966              		.loc 1 266 0
+ 966              		.loc 1 309 0
  967 0004 0070A0E1 		mov	r7, r0
  968              		.cfi_offset 14, -4
  969              		.cfi_offset 7, -8
@@ -1348,90 +1391,91 @@
  971              		.cfi_offset 5, -16
  972              		.cfi_offset 4, -20
  973              		.cfi_offset 3, -24
- 267:lib/Common/src/i2c.c **** 	i2cstart(2);
- 974              		.loc 1 267 0
+ 310:lib/Common/src/i2c.c ****   i2cstart (2);
+ 974              		.loc 1 310 0
  975 0008 0200A0E3 		mov	r0, #2
  976              	.LVL66:
- 266:lib/Common/src/i2c.c **** void tinyread(int subadr, int size, int NumByte){
- 977              		.loc 1 266 0
+ 309:lib/Common/src/i2c.c **** {
+ 977              		.loc 1 309 0
  978 000c 0160A0E1 		mov	r6, r1
  979 0010 0250A0E1 		mov	r5, r2
- 268:lib/Common/src/i2c.c **** 	i2cErr = 0;			//i want to read!b So, start.
- 980              		.loc 1 268 0
+ 311:lib/Common/src/i2c.c ****   i2cErr = 0;			//i want to read!b So, start.
+ 980              		.loc 1 311 0
  981 0014 7C409FE5 		ldr	r4, .L132
- 267:lib/Common/src/i2c.c **** 	i2cstart(2);
- 982              		.loc 1 267 0
+ 310:lib/Common/src/i2c.c ****   i2cstart (2);
+ 982              		.loc 1 310 0
  983 0018 FEFFFFEB 		bl	i2cstart
  984              	.LVL67:
- 985              		.loc 1 268 0
+ 985              		.loc 1 311 0
  986 001c 00C0A0E3 		mov	ip, #0
- 269:lib/Common/src/i2c.c **** 	novorvisesender(0,0x42,8);	//Hey, ?
- 987              		.loc 1 269 0
+ 312:lib/Common/src/i2c.c ****   novorvisesender (0, 0x42, 8);	//Hey, ?
+ 987              		.loc 1 312 0
  988 0020 0C00A0E1 		mov	r0, ip
  989 0024 4210A0E3 		mov	r1, #66
  990 0028 0820A0E3 		mov	r2, #8
- 268:lib/Common/src/i2c.c **** 	i2cErr = 0;			//i want to read!b So, start.
- 991              		.loc 1 268 0
+ 311:lib/Common/src/i2c.c ****   i2cErr = 0;			//i want to read!b So, start.
+ 991              		.loc 1 311 0
  992 002c 00C084E5 		str	ip, [r4, #0]
- 993              		.loc 1 269 0
+ 993              		.loc 1 312 0
  994 0030 FEFFFFEB 		bl	novorvisesender
- 270:lib/Common/src/i2c.c **** 	if(i2cErr==0x22){
- 995              		.loc 1 270 0
+ 313:lib/Common/src/i2c.c ****   if (i2cErr == 0x22)
+ 995              		.loc 1 313 0
  996 0034 003094E5 		ldr	r3, [r4, #0]
  997 0038 220053E3 		cmp	r3, #34
  998 003c 1200000A 		beq	.L131
- 271:lib/Common/src/i2c.c **** 		printf("fatal");
- 272:lib/Common/src/i2c.c **** 		i2cstop(2);
- 273:lib/Common/src/i2c.c **** 		return;
- 274:lib/Common/src/i2c.c **** 	}
- 275:lib/Common/src/i2c.c **** 	i2csender(1,subadr,8);
- 999              		.loc 1 275 0
+ 314:lib/Common/src/i2c.c ****     {
+ 315:lib/Common/src/i2c.c ****       printf ("fatal");
+ 316:lib/Common/src/i2c.c ****       i2cstop (2);
+ 317:lib/Common/src/i2c.c ****       return;
+ 318:lib/Common/src/i2c.c ****     }
+ 319:lib/Common/src/i2c.c ****   i2csender (1, subadr, 8);
+ 999              		.loc 1 319 0
  1000 0040 0710A0E1 		mov	r1, r7
  1001 0044 0820A0E3 		mov	r2, #8
  1002 0048 0100A0E3 		mov	r0, #1
  1003 004c FEFFFFEB 		bl	i2csender
- 276:lib/Common/src/i2c.c **** 	i2crestart(2);			//if you understand, restart,please.
- 1004              		.loc 1 276 0
+ 320:lib/Common/src/i2c.c ****   i2crestart (2);		//if you understand, restart,please.
+ 1004              		.loc 1 320 0
  1005 0050 0200A0E3 		mov	r0, #2
  1006 0054 FEFFFFEB 		bl	i2crestart
- 277:lib/Common/src/i2c.c **** 	tinyreader(size,0x42,NumByte);			//
- 1007              		.loc 1 277 0
+ 321:lib/Common/src/i2c.c ****   tinyreader (size, 0x42, NumByte);	//
+ 1007              		.loc 1 321 0
  1008 0058 0600A0E1 		mov	r0, r6
  1009 005c 4210A0E3 		mov	r1, #66
  1010 0060 0520A0E1 		mov	r2, r5
  1011 0064 FEFFFFEB 		bl	tinyreader
- 278:lib/Common/src/i2c.c **** 	vTaskDelay(30 / portTICK_RATE_MS);
- 1012              		.loc 1 278 0
+ 322:lib/Common/src/i2c.c ****   vTaskDelay (30 / portTICK_RATE_MS);
+ 1012              		.loc 1 322 0
  1013 0068 1E00A0E3 		mov	r0, #30
  1014 006c FEFFFFEB 		bl	vTaskDelay
  1015              	.L130:
  1016              	.LVL68:
  1017              	.LBB16:
  1018              	.LBB17:
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1019              		.loc 1 124 0
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1019              		.loc 1 140 0
  1020 0070 24009FE5 		ldr	r0, .L132+4
  1021 0074 5010A0E3 		mov	r1, #80
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1022              		.loc 1 125 0
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1022              		.loc 1 141 0
  1023 0078 2C20A0E3 		mov	r2, #44
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1024              		.loc 1 124 0
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1024              		.loc 1 140 0
  1025 007c 001080E5 		str	r1, [r0, #0]
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1026              		.loc 1 125 0
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1026              		.loc 1 141 0
  1027 0080 182080E5 		str	r2, [r0, #24]
  1028              	.LBE17:
  1029              	.LBE16:
- 279:lib/Common/src/i2c.c **** 	i2cstop(2);
- 280:lib/Common/src/i2c.c **** }
- 1030              		.loc 1 280 0
+ 323:lib/Common/src/i2c.c ****   i2cstop (2);
+ 324:lib/Common/src/i2c.c **** }
+ 1030              		.loc 1 324 0
  1031 0084 F840BDE8 		ldmfd	sp!, {r3, r4, r5, r6, r7, lr}
  1032 0088 1EFF2FE1 		bx	lr
  1033              	.LVL69:
  1034              	.L131:
- 271:lib/Common/src/i2c.c **** 		printf("fatal");
- 1035              		.loc 1 271 0
+ 315:lib/Common/src/i2c.c ****       printf ("fatal");
+ 1035              		.loc 1 315 0
  1036 008c 0C009FE5 		ldr	r0, .L132+8
  1037 0090 FEFFFFEB 		bl	printf
  1038              	.LVL70:
@@ -1449,8 +1493,11 @@
  1051              		.global	SCCBread
  1053              	SCCBread:
  1054              	.LFB10:
- 281:lib/Common/src/i2c.c **** void SCCBread(int subadr, int size, int NumByte){
- 1055              		.loc 1 281 0
+ 325:lib/Common/src/i2c.c **** 
+ 326:lib/Common/src/i2c.c **** void
+ 327:lib/Common/src/i2c.c **** SCCBread (int subadr, int size, int NumByte)
+ 328:lib/Common/src/i2c.c **** {
+ 1055              		.loc 1 328 0
  1056              		.cfi_startproc
  1057              		@ Function supports interworking.
  1058              		@ args = 0, pretend = 0, frame = 0
@@ -1459,7 +1506,7 @@
  1061 0000 F8402DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, lr}
  1062              	.LCFI6:
  1063              		.cfi_def_cfa_offset 24
- 1064              		.loc 1 281 0
+ 1064              		.loc 1 328 0
  1065 0004 0070A0E1 		mov	r7, r0
  1066              		.cfi_offset 14, -4
  1067              		.cfi_offset 7, -8
@@ -1467,56 +1514,57 @@
  1069              		.cfi_offset 5, -16
  1070              		.cfi_offset 4, -20
  1071              		.cfi_offset 3, -24
- 282:lib/Common/src/i2c.c **** 	i2cstart(2);
- 1072              		.loc 1 282 0
+ 329:lib/Common/src/i2c.c ****   i2cstart (2);
+ 1072              		.loc 1 329 0
  1073 0008 0200A0E3 		mov	r0, #2
  1074              	.LVL72:
- 281:lib/Common/src/i2c.c **** void SCCBread(int subadr, int size, int NumByte){
- 1075              		.loc 1 281 0
+ 328:lib/Common/src/i2c.c **** {
+ 1075              		.loc 1 328 0
  1076 000c 0160A0E1 		mov	r6, r1
  1077 0010 0250A0E1 		mov	r5, r2
- 283:lib/Common/src/i2c.c **** //	vTaskDelay(300 / portTICK_RATE_MS);
- 284:lib/Common/src/i2c.c **** 	i2cErr = 0;			//i want to read!b So, start.
- 1078              		.loc 1 284 0
+ 330:lib/Common/src/i2c.c **** //      vTaskDelay(300 / portTICK_RATE_MS);
+ 331:lib/Common/src/i2c.c ****   i2cErr = 0;			//i want to read!b So, start.
+ 1078              		.loc 1 331 0
  1079 0014 90409FE5 		ldr	r4, .L138
- 282:lib/Common/src/i2c.c **** 	i2cstart(2);
- 1080              		.loc 1 282 0
+ 329:lib/Common/src/i2c.c ****   i2cstart (2);
+ 1080              		.loc 1 329 0
  1081 0018 FEFFFFEB 		bl	i2cstart
  1082              	.LVL73:
- 1083              		.loc 1 284 0
+ 1083              		.loc 1 331 0
  1084 001c 00C0A0E3 		mov	ip, #0
- 285:lib/Common/src/i2c.c **** 	i2csender(0,0x42,8);	//Hey, ?
- 1085              		.loc 1 285 0
+ 332:lib/Common/src/i2c.c ****   i2csender (0, 0x42, 8);	//Hey, ?
+ 1085              		.loc 1 332 0
  1086 0020 0C00A0E1 		mov	r0, ip
  1087 0024 4210A0E3 		mov	r1, #66
  1088 0028 0820A0E3 		mov	r2, #8
- 284:lib/Common/src/i2c.c **** 	i2cErr = 0;			//i want to read!b So, start.
- 1089              		.loc 1 284 0
+ 331:lib/Common/src/i2c.c ****   i2cErr = 0;			//i want to read!b So, start.
+ 1089              		.loc 1 331 0
  1090 002c 00C084E5 		str	ip, [r4, #0]
- 1091              		.loc 1 285 0
+ 1091              		.loc 1 332 0
  1092 0030 FEFFFFEB 		bl	i2csender
- 286:lib/Common/src/i2c.c **** 	if(i2cErr==0x22){
- 1093              		.loc 1 286 0
+ 333:lib/Common/src/i2c.c ****   if (i2cErr == 0x22)
+ 1093              		.loc 1 333 0
  1094 0034 003094E5 		ldr	r3, [r4, #0]
  1095 0038 220053E3 		cmp	r3, #34
  1096 003c 1200000A 		beq	.L137
- 287:lib/Common/src/i2c.c **** 		printf("fatal");
- 288:lib/Common/src/i2c.c **** 		i2cstop(2);
- 289:lib/Common/src/i2c.c **** 		return;
- 290:lib/Common/src/i2c.c **** 	}
- 291:lib/Common/src/i2c.c **** 	i2csender(1,subadr,8);
- 1097              		.loc 1 291 0
+ 334:lib/Common/src/i2c.c ****     {
+ 335:lib/Common/src/i2c.c ****       printf ("fatal");
+ 336:lib/Common/src/i2c.c ****       i2cstop (2);
+ 337:lib/Common/src/i2c.c ****       return;
+ 338:lib/Common/src/i2c.c ****     }
+ 339:lib/Common/src/i2c.c ****   i2csender (1, subadr, 8);
+ 1097              		.loc 1 339 0
  1098 0040 0710A0E1 		mov	r1, r7
  1099 0044 0820A0E3 		mov	r2, #8
  1100 0048 0100A0E3 		mov	r0, #1
  1101 004c FEFFFFEB 		bl	i2csender
- 292:lib/Common/src/i2c.c **** //	printf("Adress read request at%4x OK\n\n", subadr);	//0x03byte? 
- 293:lib/Common/src/i2c.c **** 	i2crestart(2);			//if you understand, restart,please.
- 1102              		.loc 1 293 0
+ 340:lib/Common/src/i2c.c **** //      printf("Adress read request at%4x OK\n\n", subadr);     //0x03byte? 
+ 341:lib/Common/src/i2c.c ****   i2crestart (2);		//if you understand, restart,please.
+ 1102              		.loc 1 341 0
  1103 0050 0200A0E3 		mov	r0, #2
  1104 0054 FEFFFFEB 		bl	i2crestart
- 294:lib/Common/src/i2c.c **** 	i2creader(size,0x42,NumByte);			//
- 1105              		.loc 1 294 0
+ 342:lib/Common/src/i2c.c ****   i2creader (size, 0x42, NumByte);	//
+ 1105              		.loc 1 342 0
  1106 0058 0520A0E1 		mov	r2, r5
  1107 005c 0600A0E1 		mov	r0, r6
  1108 0060 4210A0E3 		mov	r1, #66
@@ -1524,57 +1572,57 @@
  1110              	.LVL74:
  1111              	.LBB18:
  1112              	.LBB19:
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1113              		.loc 1 124 0
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1113              		.loc 1 140 0
  1114 0068 40309FE5 		ldr	r3, .L138+4
  1115 006c 5020A0E3 		mov	r2, #80
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1116              		.loc 1 125 0
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1116              		.loc 1 141 0
  1117 0070 2CC0A0E3 		mov	ip, #44
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1118              		.loc 1 124 0
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1118              		.loc 1 140 0
  1119 0074 002083E5 		str	r2, [r3, #0]
  1120              	.LBE19:
  1121              	.LBE18:
- 295:lib/Common/src/i2c.c **** 	i2cstop(2);
- 296:lib/Common/src/i2c.c **** 	printf("Debu331g\n");
- 1122              		.loc 1 296 0
+ 343:lib/Common/src/i2c.c ****   i2cstop (2);
+ 344:lib/Common/src/i2c.c ****   printf ("Debu331g\n");
+ 1122              		.loc 1 344 0
  1123 0078 34009FE5 		ldr	r0, .L138+8
  1124              	.LBB21:
  1125              	.LBB20:
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1126              		.loc 1 125 0
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1126              		.loc 1 141 0
  1127 007c 18C083E5 		str	ip, [r3, #24]
  1128              	.LBE20:
  1129              	.LBE21:
- 1130              		.loc 1 296 0
+ 1130              		.loc 1 344 0
  1131 0080 FEFFFFEB 		bl	puts
  1132              	.LVL75:
  1133              	.L134:
- 297:lib/Common/src/i2c.c **** }
- 1134              		.loc 1 297 0
+ 345:lib/Common/src/i2c.c **** }
+ 1134              		.loc 1 345 0
  1135 0084 F840BDE8 		ldmfd	sp!, {r3, r4, r5, r6, r7, lr}
  1136 0088 1EFF2FE1 		bx	lr
  1137              	.L137:
- 287:lib/Common/src/i2c.c **** 		printf("fatal");
- 1138              		.loc 1 287 0
+ 335:lib/Common/src/i2c.c ****       printf ("fatal");
+ 1138              		.loc 1 335 0
  1139 008c 24009FE5 		ldr	r0, .L138+12
  1140 0090 FEFFFFEB 		bl	printf
  1141              	.LVL76:
  1142              	.LBB22:
  1143              	.LBB23:
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1144              		.loc 1 124 0
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1144              		.loc 1 140 0
  1145 0094 14009FE5 		ldr	r0, .L138+4
  1146 0098 5010A0E3 		mov	r1, #80
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1147              		.loc 1 125 0
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1147              		.loc 1 141 0
  1148 009c 2C20A0E3 		mov	r2, #44
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1149              		.loc 1 124 0
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1149              		.loc 1 140 0
  1150 00a0 001080E5 		str	r1, [r0, #0]
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1151              		.loc 1 125 0
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1151              		.loc 1 141 0
  1152 00a4 182080E5 		str	r2, [r0, #24]
  1153 00a8 F5FFFFEA 		b	.L134
  1154              	.L139:
@@ -1593,8 +1641,11 @@
  1168              		.global	SCCBwrite
  1170              	SCCBwrite:
  1171              	.LFB11:
- 298:lib/Common/src/i2c.c **** int SCCBwrite(int subadr, int size, int Data ){
- 1172              		.loc 1 298 0
+ 346:lib/Common/src/i2c.c **** 
+ 347:lib/Common/src/i2c.c **** int
+ 348:lib/Common/src/i2c.c **** SCCBwrite (int subadr, int size, int Data)
+ 349:lib/Common/src/i2c.c **** {
+ 1172              		.loc 1 349 0
  1173              		.cfi_startproc
  1174              		@ Function supports interworking.
  1175              		@ args = 0, pretend = 0, frame = 0
@@ -1603,659 +1654,851 @@
  1178 0000 F0412DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, lr}
  1179              	.LCFI7:
  1180              		.cfi_def_cfa_offset 24
- 299:lib/Common/src/i2c.c **** 	i2cstart(2);
- 300:lib/Common/src/i2c.c **** //	vTaskDelay(1 / portTICK_RATE_MS);
- 301:lib/Common/src/i2c.c **** 	i2cErr = 0;
- 1181              		.loc 1 301 0
- 1182 0004 98509FE5 		ldr	r5, .L144
+ 1181              		.loc 1 349 0
+ 1182 0004 0080A0E1 		mov	r8, r0
  1183              		.cfi_offset 14, -4
  1184              		.cfi_offset 8, -8
  1185              		.cfi_offset 7, -12
  1186              		.cfi_offset 6, -16
  1187              		.cfi_offset 5, -20
  1188              		.cfi_offset 4, -24
- 1189 0008 0040A0E3 		mov	r4, #0
- 298:lib/Common/src/i2c.c **** int SCCBwrite(int subadr, int size, int Data ){
- 1190              		.loc 1 298 0
- 1191 000c 0080A0E1 		mov	r8, r0
- 299:lib/Common/src/i2c.c **** 	i2cstart(2);
- 1192              		.loc 1 299 0
- 1193 0010 0200A0E3 		mov	r0, #2
- 1194              	.LVL78:
- 298:lib/Common/src/i2c.c **** int SCCBwrite(int subadr, int size, int Data ){
- 1195              		.loc 1 298 0
- 1196 0014 0160A0E1 		mov	r6, r1
- 1197 0018 0270A0E1 		mov	r7, r2
- 299:lib/Common/src/i2c.c **** 	i2cstart(2);
- 1198              		.loc 1 299 0
- 1199 001c FEFFFFEB 		bl	i2cstart
- 1200              	.LVL79:
- 302:lib/Common/src/i2c.c **** 	i2csender(0,0x42,8);	//Hey, ?
- 1201              		.loc 1 302 0
- 1202 0020 0400A0E1 		mov	r0, r4
- 1203 0024 4210A0E3 		mov	r1, #66
- 1204 0028 0820A0E3 		mov	r2, #8
- 301:lib/Common/src/i2c.c **** 	i2cErr = 0;
- 1205              		.loc 1 301 0
- 1206 002c 004085E5 		str	r4, [r5, #0]
- 1207              		.loc 1 302 0
- 1208 0030 FEFFFFEB 		bl	i2csender
- 303:lib/Common/src/i2c.c **** 	if(i2cErr==0x22){
- 1209              		.loc 1 303 0
- 1210 0034 003095E5 		ldr	r3, [r5, #0]
- 1211 0038 220053E3 		cmp	r3, #34
- 1212 003c 0F00000A 		beq	.L143
- 304:lib/Common/src/i2c.c **** 		printf("fatal");
- 305:lib/Common/src/i2c.c **** 		i2cstop(2);
- 306:lib/Common/src/i2c.c **** 		return -1;
- 307:lib/Common/src/i2c.c **** 	}
- 308:lib/Common/src/i2c.c **** 	i2csender(1,subadr,8);	//3byte? 
- 1213              		.loc 1 308 0
- 1214 0040 0100A0E3 		mov	r0, #1
- 1215 0044 0810A0E1 		mov	r1, r8
- 1216 0048 0820A0E3 		mov	r2, #8
- 1217 004c FEFFFFEB 		bl	i2csender
- 309:lib/Common/src/i2c.c **** 	i2csender(1,Data,size);
- 1218              		.loc 1 309 0
- 1219 0050 0100A0E3 		mov	r0, #1
- 1220 0054 0620A0E1 		mov	r2, r6
- 1221 0058 0710A0E1 		mov	r1, r7
- 1222 005c FEFFFFEB 		bl	i2csender
- 1223              	.LVL80:
- 1224              	.LBB24:
- 1225              	.LBB25:
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1226              		.loc 1 124 0
- 1227 0060 40309FE5 		ldr	r3, .L144+4
- 1228 0064 5020A0E3 		mov	r2, #80
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1229              		.loc 1 125 0
- 1230 0068 2CC0A0E3 		mov	ip, #44
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1231              		.loc 1 124 0
- 1232 006c 002083E5 		str	r2, [r3, #0]
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1233              		.loc 1 125 0
- 1234 0070 18C083E5 		str	ip, [r3, #24]
- 1235              	.LBE25:
- 1236              	.LBE24:
- 310:lib/Common/src/i2c.c **** 	i2cstop(2);
- 311:lib/Common/src/i2c.c **** 	return 0;
- 1237              		.loc 1 311 0
- 1238 0074 0400A0E1 		mov	r0, r4
- 1239              	.LVL81:
- 1240              	.L142:
- 312:lib/Common/src/i2c.c **** }
- 1241              		.loc 1 312 0
- 1242 0078 F041BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8, lr}
- 1243 007c 1EFF2FE1 		bx	lr
- 1244              	.L143:
- 304:lib/Common/src/i2c.c **** 		printf("fatal");
- 1245              		.loc 1 304 0
- 1246 0080 24009FE5 		ldr	r0, .L144+8
- 1247 0084 FEFFFFEB 		bl	printf
- 1248              	.LVL82:
- 1249              	.LBB26:
- 1250              	.LBB27:
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1251              		.loc 1 124 0
- 1252 0088 18109FE5 		ldr	r1, .L144+4
- 1253 008c 5000A0E3 		mov	r0, #80
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1254              		.loc 1 125 0
- 1255 0090 2C20A0E3 		mov	r2, #44
- 124:lib/Common/src/i2c.c **** 		I22CONSET = 0x50;
- 1256              		.loc 1 124 0
- 1257 0094 000081E5 		str	r0, [r1, #0]
- 1258              	.LBE27:
- 1259              	.LBE26:
- 306:lib/Common/src/i2c.c **** 		return -1;
- 1260              		.loc 1 306 0
- 1261 0098 0000E0E3 		mvn	r0, #0
- 1262              	.LBB29:
- 1263              	.LBB28:
- 125:lib/Common/src/i2c.c **** 		I22CONCLR = 0x2C;
- 1264              		.loc 1 125 0
- 1265 009c 182081E5 		str	r2, [r1, #24]
- 1266              	.LBE28:
- 1267              	.LBE29:
- 306:lib/Common/src/i2c.c **** 		return -1;
- 1268              		.loc 1 306 0
- 1269 00a0 F4FFFFEA 		b	.L142
- 1270              	.L145:
- 1271              		.align	2
- 1272              	.L144:
- 1273 00a4 00000000 		.word	i2cErr
- 1274 00a8 000008E0 		.word	-536346624
- 1275 00ac 94000000 		.word	.LC10
- 1276              		.cfi_endproc
- 1277              	.LFE11:
- 1279              		.section	.text.SCCBByteWrite,"ax",%progbits
- 1280              		.align	2
- 1281              		.global	SCCBByteWrite
- 1283              	SCCBByteWrite:
- 1284              	.LFB12:
- 313:lib/Common/src/i2c.c **** int SCCBByteWrite(int inp)
- 314:lib/Common/src/i2c.c **** {
- 1285              		.loc 1 314 0
- 1286              		.cfi_startproc
- 1287              		@ Function supports interworking.
- 1288              		@ args = 0, pretend = 0, frame = 0
- 1289              		@ frame_needed = 0, uses_anonymous_args = 0
- 1290              		@ link register save eliminated.
- 1291              	.LVL83:
- 315:lib/Common/src/i2c.c **** //	printf("%x,%x,%x",inp >> 8, 8, inp & 0xFF);
- 316:lib/Common/src/i2c.c **** 	return SCCBwrite( (inp >> 8 & 0xFF),8, (inp & 0xFF) );
- 1292              		.loc 1 316 0
- 1293 0000 2034A0E1 		mov	r3, r0, lsr #8
- 1294 0004 FF2000E2 		and	r2, r0, #255
- 1295 0008 0810A0E3 		mov	r1, #8
- 1296 000c FF0003E2 		and	r0, r3, #255
- 1297              	.LVL84:
- 317:lib/Common/src/i2c.c **** }
- 1298              		.loc 1 317 0
- 316:lib/Common/src/i2c.c **** 	return SCCBwrite( (inp >> 8 & 0xFF),8, (inp & 0xFF) );
- 1299              		.loc 1 316 0
- 1300 0010 FEFFFFEA 		b	SCCBwrite
- 1301              		.cfi_endproc
- 1302              	.LFE12:
- 1304              		.section	.text.vi2c,"ax",%progbits
- 1305              		.align	2
- 1306              		.global	vi2c
- 1308              	vi2c:
- 1309              	.LFB13:
- 318:lib/Common/src/i2c.c **** void vi2c( void *pvParameters )
- 319:lib/Common/src/i2c.c **** {
- 1310              		.loc 1 319 0
- 1311              		.cfi_startproc
- 1312              		@ Function supports interworking.
- 1313              		@ args = 0, pretend = 0, frame = 0
- 1314              		@ frame_needed = 0, uses_anonymous_args = 0
- 1315              	.LVL85:
- 1316 0000 F8402DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, lr}
- 1317              	.LCFI8:
- 1318              		.cfi_def_cfa_offset 24
- 320:lib/Common/src/i2c.c **** 
- 321:lib/Common/src/i2c.c **** 	int regpointer;
- 322:lib/Common/src/i2c.c **** 	char Loopy;
- 323:lib/Common/src/i2c.c **** 	xSemaphoreTake(Mutex, portMAX_DELAY );
- 1319              		.loc 1 323 0
- 1320 0004 38419FE5 		ldr	r4, .L162
- 1321              		.cfi_offset 14, -4
- 1322              		.cfi_offset 7, -8
- 1323              		.cfi_offset 6, -12
- 1324              		.cfi_offset 5, -16
- 1325              		.cfi_offset 4, -20
- 1326              		.cfi_offset 3, -24
- 1327 0008 0010A0E3 		mov	r1, #0
- 1328 000c 0130A0E1 		mov	r3, r1
- 1329              	.LBB30:
- 1330              	.LBB32:
-  49:lib/Common/src/i2c.c **** 		I22CONSET = 0x40;
- 1331              		.loc 1 49 0
- 1332 0010 4070A0E3 		mov	r7, #64
- 1333              	.LBE32:
- 1334              	.LBE30:
- 1335              		.loc 1 323 0
- 1336 0014 0020E0E3 		mvn	r2, #0
- 1337 0018 000094E5 		ldr	r0, [r4, #0]
- 1338              	.LVL86:
- 1339 001c FEFFFFEB 		bl	xQueueGenericReceive
- 1340              	.LVL87:
- 324:lib/Common/src/i2c.c **** 	i2cmasterset(2);
- 325:lib/Common/src/i2c.c **** 	I22SCLH = 80;
- 1341              		.loc 1 325 0
- 1342 0020 105087E2 		add	r5, r7, #16
- 1343              	.LBB34:
- 1344              	.LBB31:
-  49:lib/Common/src/i2c.c **** 		I22CONSET = 0x40;
- 1345              		.loc 1 49 0
- 1346 0024 1C119FE5 		ldr	r1, .L162+4
- 1347              	.LBE31:
- 1348              	.LBE34:
- 326:lib/Common/src/i2c.c **** 	I22SCLL = 180;
- 1349              		.loc 1 326 0
- 1350 0028 642085E2 		add	r2, r5, #100
- 1351              	.LBB35:
- 1352              	.LBB33:
-  49:lib/Common/src/i2c.c **** 		I22CONSET = 0x40;
- 1353              		.loc 1 49 0
- 1354 002c 007081E5 		str	r7, [r1, #0]
- 1355              	.LBE33:
- 1356              	.LBE35:
- 327:lib/Common/src/i2c.c **** 	vTaskDelay(300 / portTICK_RATE_MS);
- 1357              		.loc 1 327 0
- 1358 0030 4B0FA0E3 		mov	r0, #300
- 325:lib/Common/src/i2c.c **** 	I22SCLH = 80;
- 1359              		.loc 1 325 0
- 1360 0034 105081E5 		str	r5, [r1, #16]
- 328:lib/Common/src/i2c.c **** 	printf("Register Reset\n");
- 329:lib/Common/src/i2c.c **** 	fflush(stdout);
- 1361              		.loc 1 329 0
- 1362 0038 0C619FE5 		ldr	r6, .L162+8
- 326:lib/Common/src/i2c.c **** 	I22SCLL = 180;
- 1363              		.loc 1 326 0
- 1364 003c 142081E5 		str	r2, [r1, #20]
- 327:lib/Common/src/i2c.c **** 	vTaskDelay(300 / portTICK_RATE_MS);
- 1365              		.loc 1 327 0
- 1366 0040 FEFFFFEB 		bl	vTaskDelay
- 328:lib/Common/src/i2c.c **** 	printf("Register Reset\n");
- 1367              		.loc 1 328 0
- 1368 0044 04019FE5 		ldr	r0, .L162+12
- 1369 0048 FEFFFFEB 		bl	puts
- 1370              		.loc 1 329 0
- 1371 004c 000096E5 		ldr	r0, [r6, #0]
- 1372 0050 080090E5 		ldr	r0, [r0, #8]
- 1373 0054 FEFFFFEB 		bl	fflush
- 330:lib/Common/src/i2c.c **** 	RESETREG
- 1374              		.loc 1 330 0
- 1375 0058 4A0DA0E3 		mov	r0, #4736
- 1376 005c FEFFFFEB 		bl	SCCBByteWrite
- 331:lib/Common/src/i2c.c **** 	vTaskDelay(200 / portTICK_RATE_MS);
- 1377              		.loc 1 331 0
- 1378 0060 C800A0E3 		mov	r0, #200
- 1379 0064 FEFFFFEB 		bl	vTaskDelay
- 332:lib/Common/src/i2c.c **** //	fflush(stdout);
- 333:lib/Common/src/i2c.c **** 	printf("Setup begin[>  ");
- 1380              		.loc 1 333 0
- 1381 0068 E4009FE5 		ldr	r0, .L162+16
- 1382 006c FEFFFFEB 		bl	printf
- 334:lib/Common/src/i2c.c **** 	fflush(stdout);
- 1383              		.loc 1 334 0
- 1384 0070 003096E5 		ldr	r3, [r6, #0]
- 1385 0074 080093E5 		ldr	r0, [r3, #8]
- 1386 0078 FEFFFFEB 		bl	fflush
- 1387              	.LVL88:
- 1388 007c D4709FE5 		ldr	r7, .L162+20
- 335:lib/Common/src/i2c.c **** 	for(regpointer=0;regpointer!=129;){
- 1389              		.loc 1 335 0
- 1390 0080 0050A0E3 		mov	r5, #0
- 1391              	.LVL89:
- 1392              	.L160:
- 336:lib/Common/src/i2c.c **** 		if(SCCBByteWrite(OV7670[regpointer])==-1)continue;
- 1393              		.loc 1 336 0
- 1394 0084 050197E7 		ldr	r0, [r7, r5, asl #2]
- 1395 0088 FEFFFFEB 		bl	SCCBByteWrite
- 1396 008c 010070E3 		cmn	r0, #1
- 1397 0090 2800000A 		beq	.L149
- 337:lib/Common/src/i2c.c **** 		regpointer++;
- 1398              		.loc 1 337 0
- 1399 0094 015085E2 		add	r5, r5, #1
- 1400              	.LVL90:
- 338:lib/Common/src/i2c.c **** 		switch (regpointer%4){
- 1401              		.loc 1 338 0
- 1402 0098 031005E2 		and	r1, r5, #3
- 1403 009c 020051E3 		cmp	r1, #2
- 339:lib/Common/src/i2c.c **** 			case 0:
- 340:lib/Common/src/i2c.c **** 			Loopy='|';
- 341:lib/Common/src/i2c.c **** 			break;
- 342:lib/Common/src/i2c.c **** 			case 1:
- 343:lib/Common/src/i2c.c **** 			Loopy='/';
- 344:lib/Common/src/i2c.c **** 			break;
- 345:lib/Common/src/i2c.c **** 			case 2:
- 346:lib/Common/src/i2c.c **** 			Loopy='-';
- 1404              		.loc 1 346 0
- 1405 00a0 2D10A003 		moveq	r1, #45
- 338:lib/Common/src/i2c.c **** 		switch (regpointer%4){
- 1406              		.loc 1 338 0
- 1407 00a4 0500000A 		beq	.L150
- 1408 00a8 030051E3 		cmp	r1, #3
- 347:lib/Common/src/i2c.c **** 			break;
- 348:lib/Common/src/i2c.c **** 			case 3:
- 349:lib/Common/src/i2c.c **** 			Loopy='\\';
- 1409              		.loc 1 349 0
- 1410 00ac 5C10A003 		moveq	r1, #92
- 338:lib/Common/src/i2c.c **** 		switch (regpointer%4){
- 1411              		.loc 1 338 0
- 1412 00b0 0200000A 		beq	.L150
- 340:lib/Common/src/i2c.c **** 			Loopy='|';
- 1413              		.loc 1 340 0
- 1414 00b4 010051E3 		cmp	r1, #1
- 1415 00b8 2F10A003 		moveq	r1, #47
- 1416 00bc 7C10A013 		movne	r1, #124
- 1417              	.L150:
- 1418              	.LVL91:
- 350:lib/Common/src/i2c.c **** 			break;
- 351:lib/Common/src/i2c.c **** 			}
- 352:lib/Common/src/i2c.c **** 		printf("\b\b\b=>%c",Loopy);
- 1419              		.loc 1 352 0
- 1420 00c0 94009FE5 		ldr	r0, .L162+24
- 1421 00c4 FEFFFFEB 		bl	printf
- 1422              	.LVL92:
- 353:lib/Common/src/i2c.c **** 		fflush(stdout);
- 1423              		.loc 1 353 0
- 1424 00c8 00C096E5 		ldr	ip, [r6, #0]
- 1425 00cc 08009CE5 		ldr	r0, [ip, #8]
- 1426 00d0 FEFFFFEB 		bl	fflush
- 354:lib/Common/src/i2c.c **** 		vTaskDelay(10 / portTICK_RATE_MS);
- 1427              		.loc 1 354 0
- 1428 00d4 0A00A0E3 		mov	r0, #10
- 1429 00d8 FEFFFFEB 		bl	vTaskDelay
- 335:lib/Common/src/i2c.c **** 	for(regpointer=0;regpointer!=129;){
- 1430              		.loc 1 335 0
- 1431 00dc 810055E3 		cmp	r5, #129
- 1432 00e0 E7FFFF1A 		bne	.L160
- 1433              	.L155:
- 355:lib/Common/src/i2c.c **** 		}
- 356:lib/Common/src/i2c.c **** 	printf("\rData transmition End!\n");
- 1434              		.loc 1 356 0
- 1435 00e4 74009FE5 		ldr	r0, .L162+28
- 1436 00e8 FEFFFFEB 		bl	puts
- 357:lib/Common/src/i2c.c **** 	fflush(stdout);
- 1437              		.loc 1 357 0
- 1438 00ec 003096E5 		ldr	r3, [r6, #0]
- 1439 00f0 080093E5 		ldr	r0, [r3, #8]
- 1440 00f4 FEFFFFEB 		bl	fflush
- 358:lib/Common/src/i2c.c **** 	SCCBread(0x00,0xca,0);
- 1441              		.loc 1 358 0
- 1442 00f8 0000A0E3 		mov	r0, #0
- 1443 00fc 0020A0E1 		mov	r2, r0
- 1444 0100 CA10A0E3 		mov	r1, #202
- 1445 0104 FEFFFFEB 		bl	SCCBread
- 359:lib/Common/src/i2c.c **** 	vTaskDelay(200/portTICK_RATE_MS);
- 1446              		.loc 1 359 0
- 1447 0108 C800A0E3 		mov	r0, #200
- 1448 010c FEFFFFEB 		bl	vTaskDelay
- 360:lib/Common/src/i2c.c **** 	if(xSemaphoreGive( Mutex ))FIO2PIN1 = 0x2;
- 1449              		.loc 1 360 0
- 1450 0110 0010A0E3 		mov	r1, #0
- 1451 0114 000094E5 		ldr	r0, [r4, #0]
- 1452 0118 0120A0E1 		mov	r2, r1
- 1453 011c 0130A0E1 		mov	r3, r1
- 1454 0120 FEFFFFEB 		bl	xQueueGenericSend
- 1455 0124 000050E3 		cmp	r0, #0
- 1456 0128 34609F15 		ldrne	r6, .L162+32
- 1457 012c 0240A013 		movne	r4, #2
- 1458 0130 AA404615 		strneb	r4, [r6, #-170]
- 1459              	.L161:
- 1460 0134 FEFFFFEA 		b	.L161
- 1461              	.LVL93:
- 1462              	.L149:
- 335:lib/Common/src/i2c.c **** 	for(regpointer=0;regpointer!=129;){
- 1463              		.loc 1 335 0 discriminator 1
- 1464 0138 810055E3 		cmp	r5, #129
- 1465 013c D0FFFF1A 		bne	.L160
- 1466 0140 E7FFFFEA 		b	.L155
- 1467              	.L163:
- 1468              		.align	2
- 1469              	.L162:
- 1470 0144 00000000 		.word	Mutex
- 1471 0148 000008E0 		.word	-536346624
- 1472 014c 00000000 		.word	_impure_ptr
- 1473 0150 A8000000 		.word	.LC12
- 1474 0154 B8000000 		.word	.LC13
- 1475 0158 00000000 		.word	.LANCHOR0
- 1476 015c 80000000 		.word	.LC8
- 1477 0160 C8000000 		.word	.LC14
- 1478 0164 FFC0FF3F 		.word	1073725695
- 1479              		.cfi_endproc
- 1480              	.LFE13:
- 1482              		.global	OV7670
- 1483              		.section	.rodata.str1.4,"aMS",%progbits,1
- 1484              		.align	2
- 1485              	.LC0:
- 1486 0000 72657374 		.ascii	"restarter report...%x\000"
- 1486      61727465 
- 1486      72207265 
- 1486      706F7274 
- 1486      2E2E2E25 
- 1487 0016 0000     		.space	2
- 1488              	.LC1:
- 1489 0018 4E6F2073 		.ascii	"No such device%4x\012\000"
- 1489      75636820 
- 1489      64657669 
- 1489      63652534 
- 1489      780A00
- 1490 002b 00       		.space	1
- 1491              	.LC2:
- 1492 002c 6E6F2061 		.ascii	"no acknowlege(%x)\012\000"
- 1492      636B6E6F 
- 1492      776C6567 
- 1492      65282578 
- 1492      290A00
- 1493 003f 00       		.space	1
- 1494              	.LC3:
- 1495 0040 72656164 		.ascii	"reading..  \000"
- 1495      696E672E 
- 1495      2E202000 
- 1496              	.LC4:
- 1497 004c 57616974 		.ascii	"Wait\011\000"
- 1497      0900
- 1498 0052 0000     		.space	2
- 1499              	.LC5:
- 1500 0054 25787265 		.ascii	"%xreg\011%x\000"
- 1500      67092578 
- 1500      00
- 1501 005d 000000   		.space	3
- 1502              	.LC6:
- 1503 0060 53746174 		.ascii	"Status is %x\012\000"
- 1503      75732069 
- 1503      73202578 
- 1503      0A00
- 1504 006e 0000     		.space	2
- 1505              	.LC7:
- 1506 0070 52656164 		.ascii	"Read begin[>  \000"
- 1506      20626567 
- 1506      696E5B3E 
- 1506      202000
- 1507 007f 00       		.space	1
- 1508              	.LC8:
- 1509 0080 0808083D 		.ascii	"\010\010\010=>%c\000"
- 1509      3E256300 
- 1510              	.LC9:
- 1511 0088 646F6E65 		.ascii	"done.....\000"
- 1511      2E2E2E2E 
- 1511      2E00
- 1512 0092 0000     		.space	2
- 1513              	.LC10:
- 1514 0094 66617461 		.ascii	"fatal\000"
- 1514      6C00
- 1515 009a 0000     		.space	2
- 1516              	.LC11:
- 1517 009c 44656275 		.ascii	"Debu331g\000"
- 1517      33333167 
- 1517      00
- 1518 00a5 000000   		.space	3
- 1519              	.LC12:
- 1520 00a8 52656769 		.ascii	"Register Reset\000"
- 1520      73746572 
- 1520      20526573 
- 1520      657400
- 1521 00b7 00       		.space	1
- 1522              	.LC13:
- 1523 00b8 53657475 		.ascii	"Setup begin[>  \000"
- 1523      70206265 
- 1523      67696E5B 
- 1523      3E202000 
- 1524              	.LC14:
- 1525 00c8 0D446174 		.ascii	"\015Data transmition End!\000"
- 1525      61207472 
- 1525      616E736D 
- 1525      6974696F 
- 1525      6E20456E 
- 1526 00df 00       		.section	.rodata.OV7670,"a",%progbits
- 1527              		.align	2
- 1528              		.set	.LANCHOR0,. + 0
- 1531              	OV7670:
- 1532 0000 04120000 		.word	4612
- 1533 0004 D0400000 		.word	16592
- 1534 0008 028C0000 		.word	35842
- 1535 000c 3A700000 		.word	28730
- 1536 0010 11720000 		.word	29201
- 1537 0014 D0400000 		.word	16592
- 1538 0018 028C0000 		.word	35842
- 1539 001c 3A700000 		.word	28730
- 1540 0020 35710000 		.word	28981
- 1541 0024 11720000 		.word	29201
- 1542 0028 F0730000 		.word	29680
- 1543 002c 02A20000 		.word	41474
- 1544 0030 00150000 		.word	5376
- 1545 0034 207A0000 		.word	31264
- 1546 0038 107B0000 		.word	31504
- 1547 003c 1E7C0000 		.word	31774
- 1548 0040 357D0000 		.word	32053
- 1549 0044 5A7E0000 		.word	32346
- 1550 0048 697F0000 		.word	32617
- 1551 004c 76800000 		.word	32886
- 1552 0050 80810000 		.word	33152
- 1553 0054 88820000 		.word	33416
- 1554 0058 8F830000 		.word	33679
- 1555 005c 96840000 		.word	33942
- 1556 0060 A3850000 		.word	34211
- 1557 0064 AF860000 		.word	34479
- 1558 0068 C4870000 		.word	34756
- 1559 006c D7880000 		.word	35031
- 1560 0070 E8890000 		.word	35304
- 1561 0074 E0130000 		.word	5088
- 1562 0078 00000000 		.word	0
- 1563 007c 00100000 		.word	4096
- 1564 0080 400D0000 		.word	3392
- 1565 0084 18140000 		.word	5144
- 1566 0088 05A50000 		.word	42245
- 1567 008c 07AB0000 		.word	43783
- 1568 0090 95240000 		.word	9365
- 1569 0094 33250000 		.word	9523
- 1570 0098 E3260000 		.word	9955
- 1571 009c 789F0000 		.word	40824
- 1572 00a0 68A00000 		.word	41064
- 1573 00a4 03A10000 		.word	41219
- 1574 00a8 D8A60000 		.word	42712
- 1575 00ac D8A70000 		.word	42968
- 1576 00b0 F0A80000 		.word	43248
- 1577 00b4 90A90000 		.word	43408
- 1578 00b8 94AA0000 		.word	43668
- 1579 00bc E5130000 		.word	5093
- 1580 00c0 610E0000 		.word	3681
- 1581 00c4 4B0F0000 		.word	3915
- 1582 00c8 02160000 		.word	5634
- 1583 00cc 071E0000 		.word	7687
- 1584 00d0 02210000 		.word	8450
- 1585 00d4 91220000 		.word	8849
- 1586 00d8 07290000 		.word	10503
- 1587 00dc 0B330000 		.word	13067
- 1588 00e0 0B350000 		.word	13579
- 1589 00e4 1D370000 		.word	14109
- 1590 00e8 71380000 		.word	14449
- 1591 00ec 2A390000 		.word	14634
- 1592 00f0 783C0000 		.word	15480
- 1593 00f4 344D0000 		.word	19764
- 1594 00f8 204E0000 		.word	20000
- 1595 00fc 00690000 		.word	26880
- 1596 0100 0A6B0000 		.word	27402
- 1597 0104 10740000 		.word	29712
- 1598 0108 4F8D0000 		.word	36175
- 1599 010c 008E0000 		.word	36352
- 1600 0110 008F0000 		.word	36608
- 1601 0114 00900000 		.word	36864
- 1602 0118 00910000 		.word	37120
- 1603 011c 00960000 		.word	38400
- 1604 0120 009A0000 		.word	39424
- 1605 0124 84B00000 		.word	45188
- 1606 0128 0CB10000 		.word	45324
- 1607 012c 0EB20000 		.word	45582
- 1608 0130 82B30000 		.word	45954
- 1609 0134 0AB80000 		.word	47114
- 1610 0138 0A430000 		.word	17162
- 1611 013c F0440000 		.word	17648
- 1612 0140 34450000 		.word	17716
- 1613 0144 3A480000 		.word	18490
- 1614 0148 99590000 		.word	22937
- 1615 014c 885A0000 		.word	23176
- 1616 0150 445B0000 		.word	23364
- 1617 0154 675C0000 		.word	23655
- 1618 0158 495D0000 		.word	23881
- 1619 015c 0E5E0000 		.word	24078
- 1620 0160 0A6C0000 		.word	27658
- 1621 0164 556D0000 		.word	27989
- 1622 0168 116E0000 		.word	28177
- 1623 016c 9F6F0000 		.word	28575
- 1624 0170 406A0000 		.word	27200
- 1625 0174 40010000 		.word	320
- 1626 0178 60020000 		.word	608
- 1627 017c E7130000 		.word	5095
- 1628 0180 804F0000 		.word	20352
- 1629 0184 80500000 		.word	20608
- 1630 0188 00510000 		.word	20736
- 1631 018c 22520000 		.word	21026
- 1632 0190 5E530000 		.word	21342
- 1633 0194 80540000 		.word	21632
- 1634 0198 9E580000 		.word	22686
- 1635 019c 08410000 		.word	16648
- 1636 01a0 003F0000 		.word	16128
- 1637 01a4 05750000 		.word	29957
- 1638 01a8 E1760000 		.word	30433
- 1639 01ac 004C0000 		.word	19456
- 1640 01b0 01770000 		.word	30465
- 1641 01b4 C33D0000 		.word	15811
- 1642 01b8 094B0000 		.word	19209
- 1643 01bc 60C90000 		.word	51552
- 1644 01c0 38410000 		.word	16696
- 1645 01c4 40560000 		.word	22080
- 1646 01c8 11340000 		.word	13329
- 1647 01cc 123B0000 		.word	15122
- 1648 01d0 88A40000 		.word	42120
- 1649 01d4 00960000 		.word	38400
- 1650 01d8 30970000 		.word	38704
- 1651 01dc 20980000 		.word	38944
- 1652 01e0 30990000 		.word	39216
- 1653 01e4 849A0000 		.word	39556
- 1654 01e8 299B0000 		.word	39721
- 1655 01ec 039C0000 		.word	39939
- 1656 01f0 4C9D0000 		.word	40268
- 1657 01f4 3F9E0000 		.word	40511
- 1658 01f8 04780000 		.word	30724
- 1659 01fc 01790000 		.word	30977
- 1660 0200 F0C80000 		.word	51440
- 1661              		.text
- 1662              	.Letext0:
+ 350:lib/Common/src/i2c.c ****   i2cstart (2);
+ 1189              		.loc 1 350 0
+ 1190 0008 0200A0E3 		mov	r0, #2
+ 1191              	.LVL78:
+ 349:lib/Common/src/i2c.c **** {
+ 1192              		.loc 1 349 0
+ 1193 000c 0160A0E1 		mov	r6, r1
+ 1194 0010 0270A0E1 		mov	r7, r2
+ 1195              		.loc 1 350 0
+ 1196 0014 FEFFFFEB 		bl	i2cstart
+ 1197              	.LVL79:
+ 351:lib/Common/src/i2c.c **** //      vTaskDelay(1 / portTICK_RATE_MS);
+ 352:lib/Common/src/i2c.c ****   FIO2CLR1=2; 
+ 1198              		.loc 1 352 0
+ 1199 0018 90309FE5 		ldr	r3, .L144
+ 353:lib/Common/src/i2c.c ****   i2cErr = 0;
+ 1200              		.loc 1 353 0
+ 1201 001c 90509FE5 		ldr	r5, .L144+4
+ 1202 0020 0040A0E3 		mov	r4, #0
+ 352:lib/Common/src/i2c.c ****   FIO2CLR1=2; 
+ 1203              		.loc 1 352 0
+ 1204 0024 02C0A0E3 		mov	ip, #2
+ 1205 0028 A2C043E5 		strb	ip, [r3, #-162]
+ 354:lib/Common/src/i2c.c ****   i2csender (0, 0x42, 8);
+ 1206              		.loc 1 354 0
+ 1207 002c 0400A0E1 		mov	r0, r4
+ 1208 0030 4210A0E3 		mov	r1, #66
+ 1209 0034 0820A0E3 		mov	r2, #8
+ 353:lib/Common/src/i2c.c ****   i2cErr = 0;
+ 1210              		.loc 1 353 0
+ 1211 0038 004085E5 		str	r4, [r5, #0]
+ 1212              		.loc 1 354 0
+ 1213 003c FEFFFFEB 		bl	i2csender
+ 355:lib/Common/src/i2c.c ****   if (i2cErr == 0x22)
+ 1214              		.loc 1 355 0
+ 1215 0040 003095E5 		ldr	r3, [r5, #0]
+ 1216 0044 220053E3 		cmp	r3, #34
+ 1217 0048 0F00000A 		beq	.L143
+ 356:lib/Common/src/i2c.c ****     {
+ 357:lib/Common/src/i2c.c ****       printf ("fatal");
+ 358:lib/Common/src/i2c.c ****       i2cstop (2);
+ 359:lib/Common/src/i2c.c ****       return -1;
+ 360:lib/Common/src/i2c.c ****     }
+ 361:lib/Common/src/i2c.c ****   i2csender (1, subadr, 8);	//3byte? 
+ 1218              		.loc 1 361 0
+ 1219 004c 0100A0E3 		mov	r0, #1
+ 1220 0050 0810A0E1 		mov	r1, r8
+ 1221 0054 0820A0E3 		mov	r2, #8
+ 1222 0058 FEFFFFEB 		bl	i2csender
+ 362:lib/Common/src/i2c.c ****   i2csender (1, Data, size);
+ 1223              		.loc 1 362 0
+ 1224 005c 0100A0E3 		mov	r0, #1
+ 1225 0060 0620A0E1 		mov	r2, r6
+ 1226 0064 0710A0E1 		mov	r1, r7
+ 1227 0068 FEFFFFEB 		bl	i2csender
+ 1228              	.LVL80:
+ 1229              	.LBB24:
+ 1230              	.LBB25:
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1231              		.loc 1 140 0
+ 1232 006c 44309FE5 		ldr	r3, .L144+8
+ 1233 0070 5020A0E3 		mov	r2, #80
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1234              		.loc 1 141 0
+ 1235 0074 2CC0A0E3 		mov	ip, #44
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1236              		.loc 1 140 0
+ 1237 0078 002083E5 		str	r2, [r3, #0]
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1238              		.loc 1 141 0
+ 1239 007c 18C083E5 		str	ip, [r3, #24]
+ 1240              	.LBE25:
+ 1241              	.LBE24:
+ 363:lib/Common/src/i2c.c ****   i2cstop (2);
+ 364:lib/Common/src/i2c.c ****   return 0;
+ 1242              		.loc 1 364 0
+ 1243 0080 0400A0E1 		mov	r0, r4
+ 1244              	.LVL81:
+ 1245              	.L142:
+ 365:lib/Common/src/i2c.c **** }
+ 1246              		.loc 1 365 0
+ 1247 0084 F041BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8, lr}
+ 1248 0088 1EFF2FE1 		bx	lr
+ 1249              	.L143:
+ 357:lib/Common/src/i2c.c ****       printf ("fatal");
+ 1250              		.loc 1 357 0
+ 1251 008c 28009FE5 		ldr	r0, .L144+12
+ 1252 0090 FEFFFFEB 		bl	printf
+ 1253              	.LVL82:
+ 1254              	.LBB26:
+ 1255              	.LBB27:
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1256              		.loc 1 140 0
+ 1257 0094 1C109FE5 		ldr	r1, .L144+8
+ 1258 0098 5000A0E3 		mov	r0, #80
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1259              		.loc 1 141 0
+ 1260 009c 2C20A0E3 		mov	r2, #44
+ 140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
+ 1261              		.loc 1 140 0
+ 1262 00a0 000081E5 		str	r0, [r1, #0]
+ 1263              	.LBE27:
+ 1264              	.LBE26:
+ 359:lib/Common/src/i2c.c ****       return -1;
+ 1265              		.loc 1 359 0
+ 1266 00a4 0000E0E3 		mvn	r0, #0
+ 1267              	.LBB29:
+ 1268              	.LBB28:
+ 141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
+ 1269              		.loc 1 141 0
+ 1270 00a8 182081E5 		str	r2, [r1, #24]
+ 1271              	.LBE28:
+ 1272              	.LBE29:
+ 359:lib/Common/src/i2c.c ****       return -1;
+ 1273              		.loc 1 359 0
+ 1274 00ac F4FFFFEA 		b	.L142
+ 1275              	.L145:
+ 1276              		.align	2
+ 1277              	.L144:
+ 1278 00b0 FFC0FF3F 		.word	1073725695
+ 1279 00b4 00000000 		.word	i2cErr
+ 1280 00b8 000008E0 		.word	-536346624
+ 1281 00bc 94000000 		.word	.LC10
+ 1282              		.cfi_endproc
+ 1283              	.LFE11:
+ 1285              		.section	.text.SCCBByteWrite,"ax",%progbits
+ 1286              		.align	2
+ 1287              		.global	SCCBByteWrite
+ 1289              	SCCBByteWrite:
+ 1290              	.LFB12:
+ 366:lib/Common/src/i2c.c **** 
+ 367:lib/Common/src/i2c.c **** int
+ 368:lib/Common/src/i2c.c **** SCCBByteWrite (int inp)
+ 369:lib/Common/src/i2c.c **** {
+ 1291              		.loc 1 369 0
+ 1292              		.cfi_startproc
+ 1293              		@ Function supports interworking.
+ 1294              		@ args = 0, pretend = 0, frame = 0
+ 1295              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1296              		@ link register save eliminated.
+ 1297              	.LVL83:
+ 370:lib/Common/src/i2c.c **** //      printf("%x,%x,%x",inp >> 8, 8, inp & 0xFF);
+ 371:lib/Common/src/i2c.c ****  return SCCBwrite ((inp >> 8 & 0xFF), 8, (inp & 0xFF)) ;
+ 1298              		.loc 1 371 0
+ 1299 0000 2034A0E1 		mov	r3, r0, lsr #8
+ 1300 0004 FF2000E2 		and	r2, r0, #255
+ 1301 0008 0810A0E3 		mov	r1, #8
+ 1302 000c FF0003E2 		and	r0, r3, #255
+ 1303              	.LVL84:
+ 372:lib/Common/src/i2c.c **** }
+ 1304              		.loc 1 372 0
+ 371:lib/Common/src/i2c.c ****  return SCCBwrite ((inp >> 8 & 0xFF), 8, (inp & 0xFF)) ;
+ 1305              		.loc 1 371 0
+ 1306 0010 FEFFFFEA 		b	SCCBwrite
+ 1307              		.cfi_endproc
+ 1308              	.LFE12:
+ 1310              		.section	.text.vi2c,"ax",%progbits
+ 1311              		.align	2
+ 1312              		.global	vi2c
+ 1314              	vi2c:
+ 1315              	.LFB13:
+ 373:lib/Common/src/i2c.c **** 
+ 374:lib/Common/src/i2c.c **** void
+ 375:lib/Common/src/i2c.c **** vi2c (void *pvParameters)
+ 376:lib/Common/src/i2c.c **** {
+ 1316              		.loc 1 376 0
+ 1317              		.cfi_startproc
+ 1318              		@ Function supports interworking.
+ 1319              		@ args = 0, pretend = 0, frame = 0
+ 1320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1321              	.LVL85:
+ 1322 0000 F8402DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, lr}
+ 1323              	.LCFI8:
+ 1324              		.cfi_def_cfa_offset 24
+ 377:lib/Common/src/i2c.c ****   int regpointer = 0;
+ 378:lib/Common/src/i2c.c ****   char Loopy;
+ 379:lib/Common/src/i2c.c ****   xSemaphoreTake (Mutex, portMAX_DELAY);
+ 1325              		.loc 1 379 0
+ 1326 0004 2C419FE5 		ldr	r4, .L162
+ 1327              		.cfi_offset 14, -4
+ 1328              		.cfi_offset 7, -8
+ 1329              		.cfi_offset 6, -12
+ 1330              		.cfi_offset 5, -16
+ 1331              		.cfi_offset 4, -20
+ 1332              		.cfi_offset 3, -24
+ 1333 0008 0010A0E3 		mov	r1, #0
+ 1334 000c 0130A0E1 		mov	r3, r1
+ 1335              	.LBB30:
+ 1336              	.LBB32:
+  54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
+ 1337              		.loc 1 54 0
+ 1338 0010 4060A0E3 		mov	r6, #64
+ 1339              	.LBE32:
+ 1340              	.LBE30:
+ 1341              		.loc 1 379 0
+ 1342 0014 0020E0E3 		mvn	r2, #0
+ 1343 0018 000094E5 		ldr	r0, [r4, #0]
+ 1344              	.LVL86:
+ 1345 001c FEFFFFEB 		bl	xQueueGenericReceive
+ 1346              	.LVL87:
+ 380:lib/Common/src/i2c.c ****   i2cmasterset (2);
+ 381:lib/Common/src/i2c.c ****   I22SCLH = 80;
+ 1347              		.loc 1 381 0
+ 1348 0020 105086E2 		add	r5, r6, #16
+ 1349              	.LBB34:
+ 1350              	.LBB31:
+  54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
+ 1351              		.loc 1 54 0
+ 1352 0024 10119FE5 		ldr	r1, .L162+4
+ 1353              	.LBE31:
+ 1354              	.LBE34:
+ 382:lib/Common/src/i2c.c ****   I22SCLL = 180;
+ 1355              		.loc 1 382 0
+ 1356 0028 642085E2 		add	r2, r5, #100
+ 1357              	.LBB35:
+ 1358              	.LBB33:
+  54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
+ 1359              		.loc 1 54 0
+ 1360 002c 006081E5 		str	r6, [r1, #0]
+ 1361              	.LBE33:
+ 1362              	.LBE35:
+ 383:lib/Common/src/i2c.c ****   printf ("Register Reset\n");
+ 1363              		.loc 1 383 0
+ 1364 0030 08019FE5 		ldr	r0, .L162+8
+ 381:lib/Common/src/i2c.c ****   I22SCLH = 80;
+ 1365              		.loc 1 381 0
+ 1366 0034 105081E5 		str	r5, [r1, #16]
+ 382:lib/Common/src/i2c.c ****   I22SCLL = 180;
+ 1367              		.loc 1 382 0
+ 1368 0038 142081E5 		str	r2, [r1, #20]
+ 1369              		.loc 1 383 0
+ 1370 003c FEFFFFEB 		bl	puts
+ 384:lib/Common/src/i2c.c ****   vTaskDelay (300 / portTICK_RATE_MS);
+ 1371              		.loc 1 384 0
+ 1372 0040 4B0FA0E3 		mov	r0, #300
+ 1373 0044 FEFFFFEB 		bl	vTaskDelay
+ 385:lib/Common/src/i2c.c ****   RESETREG
+ 1374              		.loc 1 385 0
+ 1375 0048 4A0DA0E3 		mov	r0, #4736
+ 1376 004c FEFFFFEB 		bl	SCCBByteWrite
+ 386:lib/Common/src/i2c.c ****   vTaskDelay (200 / portTICK_RATE_MS);
+ 387:lib/Common/src/i2c.c ****   printf ("Setup begin[> ");
+ 388:lib/Common/src/i2c.c ****   fflush (stdout);
+ 1377              		.loc 1 388 0
+ 1378 0050 EC609FE5 		ldr	r6, .L162+12
+ 386:lib/Common/src/i2c.c ****   vTaskDelay (200 / portTICK_RATE_MS);
+ 1379              		.loc 1 386 0
+ 1380 0054 C800A0E3 		mov	r0, #200
+ 1381 0058 FEFFFFEB 		bl	vTaskDelay
+ 387:lib/Common/src/i2c.c ****   printf ("Setup begin[> ");
+ 1382              		.loc 1 387 0
+ 1383 005c E4009FE5 		ldr	r0, .L162+16
+ 1384 0060 FEFFFFEB 		bl	printf
+ 1385              		.loc 1 388 0
+ 1386 0064 003096E5 		ldr	r3, [r6, #0]
+ 1387 0068 080093E5 		ldr	r0, [r3, #8]
+ 1388 006c FEFFFFEB 		bl	fflush
+ 1389 0070 D4709FE5 		ldr	r7, .L162+20
+ 389:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
+ 1390              		.loc 1 389 0
+ 1391 0074 0050A0E3 		mov	r5, #0
+ 1392              	.LVL88:
+ 1393              	.L160:
+ 390:lib/Common/src/i2c.c ****     {
+ 391:lib/Common/src/i2c.c ****       if (SCCBByteWrite (OV7670[regpointer]) == -1) continue;
+ 1394              		.loc 1 391 0
+ 1395 0078 050197E7 		ldr	r0, [r7, r5, asl #2]
+ 1396 007c FEFFFFEB 		bl	SCCBByteWrite
+ 1397 0080 010070E3 		cmn	r0, #1
+ 1398 0084 2800000A 		beq	.L149
+ 392:lib/Common/src/i2c.c ****       regpointer++;
+ 1399              		.loc 1 392 0
+ 1400 0088 015085E2 		add	r5, r5, #1
+ 1401              	.LVL89:
+ 393:lib/Common/src/i2c.c ****       	switch (regpointer % 4)
+ 1402              		.loc 1 393 0
+ 1403 008c 031005E2 		and	r1, r5, #3
+ 1404 0090 020051E3 		cmp	r1, #2
+ 394:lib/Common/src/i2c.c **** 	  {
+ 395:lib/Common/src/i2c.c **** 	  case 0:
+ 396:lib/Common/src/i2c.c **** 	  Loopy = '|';
+ 397:lib/Common/src/i2c.c **** 	  break;
+ 398:lib/Common/src/i2c.c **** 	  case 1:
+ 399:lib/Common/src/i2c.c **** 	  Loopy = '/';
+ 400:lib/Common/src/i2c.c **** 	  break;
+ 401:lib/Common/src/i2c.c **** 	  case 2:
+ 402:lib/Common/src/i2c.c **** 	  Loopy = '-';
+ 1405              		.loc 1 402 0
+ 1406 0094 2D10A003 		moveq	r1, #45
+ 393:lib/Common/src/i2c.c ****       	switch (regpointer % 4)
+ 1407              		.loc 1 393 0
+ 1408 0098 0500000A 		beq	.L150
+ 1409 009c 030051E3 		cmp	r1, #3
+ 403:lib/Common/src/i2c.c **** 	  break;
+ 404:lib/Common/src/i2c.c **** 	  case 3:
+ 405:lib/Common/src/i2c.c **** 	  Loopy = '\\';
+ 1410              		.loc 1 405 0
+ 1411 00a0 5C10A003 		moveq	r1, #92
+ 393:lib/Common/src/i2c.c ****       	switch (regpointer % 4)
+ 1412              		.loc 1 393 0
+ 1413 00a4 0200000A 		beq	.L150
+ 396:lib/Common/src/i2c.c **** 	  Loopy = '|';
+ 1414              		.loc 1 396 0
+ 1415 00a8 010051E3 		cmp	r1, #1
+ 1416 00ac 2F10A003 		moveq	r1, #47
+ 1417 00b0 7C10A013 		movne	r1, #124
+ 1418              	.L150:
+ 1419              	.LVL90:
+ 406:lib/Common/src/i2c.c **** 	  break;
+ 407:lib/Common/src/i2c.c **** 	  }
+ 408:lib/Common/src/i2c.c **** 	printf ("\b\b\b=>%c", Loopy);
+ 1420              		.loc 1 408 0
+ 1421 00b4 94009FE5 		ldr	r0, .L162+24
+ 1422 00b8 FEFFFFEB 		bl	printf
+ 1423              	.LVL91:
+ 409:lib/Common/src/i2c.c **** 	fflush (stdout);
+ 1424              		.loc 1 409 0
+ 1425 00bc 000096E5 		ldr	r0, [r6, #0]
+ 1426 00c0 080090E5 		ldr	r0, [r0, #8]
+ 1427 00c4 FEFFFFEB 		bl	fflush
+ 410:lib/Common/src/i2c.c ****       vTaskDelay (10 / portTICK_RATE_MS);
+ 1428              		.loc 1 410 0
+ 1429 00c8 0A00A0E3 		mov	r0, #10
+ 1430 00cc FEFFFFEB 		bl	vTaskDelay
+ 389:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
+ 1431              		.loc 1 389 0
+ 1432 00d0 810055E3 		cmp	r5, #129
+ 1433 00d4 E7FFFF1A 		bne	.L160
+ 1434              	.L155:
+ 411:lib/Common/src/i2c.c ****     }
+ 412:lib/Common/src/i2c.c ****   printf ("\rData transmition End!\n");
+ 1435              		.loc 1 412 0
+ 1436 00d8 74009FE5 		ldr	r0, .L162+28
+ 1437 00dc FEFFFFEB 		bl	puts
+ 413:lib/Common/src/i2c.c ****   fflush (stdout);
+ 1438              		.loc 1 413 0
+ 1439 00e0 00C096E5 		ldr	ip, [r6, #0]
+ 1440 00e4 08009CE5 		ldr	r0, [ip, #8]
+ 1441 00e8 FEFFFFEB 		bl	fflush
+ 414:lib/Common/src/i2c.c ****   SCCBread (0x00, 0xca, 0);
+ 1442              		.loc 1 414 0
+ 1443 00ec 0000A0E3 		mov	r0, #0
+ 1444 00f0 0020A0E1 		mov	r2, r0
+ 1445 00f4 CA10A0E3 		mov	r1, #202
+ 1446 00f8 FEFFFFEB 		bl	SCCBread
+ 415:lib/Common/src/i2c.c ****   vTaskDelay (200 / portTICK_RATE_MS);
+ 1447              		.loc 1 415 0
+ 1448 00fc C800A0E3 		mov	r0, #200
+ 1449 0100 FEFFFFEB 		bl	vTaskDelay
+ 416:lib/Common/src/i2c.c ****   if (xSemaphoreGive (Mutex))
+ 1450              		.loc 1 416 0
+ 1451 0104 0010A0E3 		mov	r1, #0
+ 1452 0108 000094E5 		ldr	r0, [r4, #0]
+ 1453 010c 0120A0E1 		mov	r2, r1
+ 1454 0110 0130A0E1 		mov	r3, r1
+ 1455 0114 FEFFFFEB 		bl	xQueueGenericSend
+ 1456 0118 000050E3 		cmp	r0, #0
+ 417:lib/Common/src/i2c.c ****     FIO2PIN1 = 0x2;
+ 1457              		.loc 1 417 0
+ 1458 011c 34709F15 		ldrne	r7, .L162+32
+ 1459 0120 0240A013 		movne	r4, #2
+ 1460 0124 AA404715 		strneb	r4, [r7, #-170]
+ 1461              	.L161:
+ 1462 0128 FEFFFFEA 		b	.L161
+ 1463              	.LVL92:
+ 1464              	.L149:
+ 389:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
+ 1465              		.loc 1 389 0 discriminator 1
+ 1466 012c 810055E3 		cmp	r5, #129
+ 1467 0130 D0FFFF1A 		bne	.L160
+ 1468 0134 E7FFFFEA 		b	.L155
+ 1469              	.L163:
+ 1470              		.align	2
+ 1471              	.L162:
+ 1472 0138 00000000 		.word	Mutex
+ 1473 013c 000008E0 		.word	-536346624
+ 1474 0140 A8000000 		.word	.LC12
+ 1475 0144 00000000 		.word	_impure_ptr
+ 1476 0148 B8000000 		.word	.LC13
+ 1477 014c 00000000 		.word	.LANCHOR0
+ 1478 0150 80000000 		.word	.LC8
+ 1479 0154 C8000000 		.word	.LC14
+ 1480 0158 FFC0FF3F 		.word	1073725695
+ 1481              		.cfi_endproc
+ 1482              	.LFE13:
+ 1484              		.section	.text.ymzwrite0,"ax",%progbits
+ 1485              		.align	2
+ 1486              		.global	ymzwrite0
+ 1488              	ymzwrite0:
+ 1489              	.LFB14:
+ 418:lib/Common/src/i2c.c ****   //vTaskResume ( g_issrhandle );
+ 419:lib/Common/src/i2c.c **** //  vTaskSuspend(NULL);
+ 420:lib/Common/src/i2c.c **** //     xTaskCreate (ISSR, (signed portCHAR *) "ITS", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK
+ 421:lib/Common/src/i2c.c ****   while (1);
+ 422:lib/Common/src/i2c.c **** }
+ 423:lib/Common/src/i2c.c **** 
+ 424:lib/Common/src/i2c.c **** int
+ 425:lib/Common/src/i2c.c **** ymzwrite0 (int frec, int adr)
+ 426:lib/Common/src/i2c.c **** {
+ 1490              		.loc 1 426 0
+ 1491              		.cfi_startproc
+ 1492              		@ Function supports interworking.
+ 1493              		@ args = 0, pretend = 0, frame = 0
+ 1494              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1495              		@ link register save eliminated.
+ 1496              	.LVL93:
+ 1497 0000 F0012DE9 		stmfd	sp!, {r4, r5, r6, r7, r8}
+ 1498              	.LCFI9:
+ 1499              		.cfi_def_cfa_offset 20
+ 427:lib/Common/src/i2c.c ****   int highbyte;
+ 428:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 429:lib/Common/src/i2c.c ****   FIO4PIN = adr;
+ 430:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
+ 431:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
+ 432:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
+ 433:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
+ 434:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
+ 435:lib/Common/src/i2c.c ****   highbyte = (frec >> 8) & 0xFF;
+ 1500              		.loc 1 435 0
+ 1501 0004 4044A0E1 		mov	r4, r0, asr #8
+ 1502              		.cfi_offset 8, -4
+ 1503              		.cfi_offset 7, -8
+ 1504              		.cfi_offset 6, -12
+ 1505              		.cfi_offset 5, -16
+ 1506              		.cfi_offset 4, -20
+ 1507              	.LVL94:
+ 426:lib/Common/src/i2c.c **** {
+ 1508              		.loc 1 426 0
+ 1509 0008 0060A0E1 		mov	r6, r0
+ 428:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 1510              		.loc 1 428 0
+ 1511 000c 50209FE5 		ldr	r2, .L165
+ 431:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
+ 1512              		.loc 1 431 0
+ 1513 0010 FF0006E2 		and	r0, r6, #255
+ 1514              	.LVL95:
+ 430:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
+ 1515              		.loc 1 430 0
+ 1516 0014 02CC81E2 		add	ip, r1, #512
+ 1517              		.loc 1 435 0
+ 1518 0018 FF5004E2 		and	r5, r4, #255
+ 431:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
+ 1519              		.loc 1 431 0
+ 1520 001c 018C80E2 		add	r8, r0, #256
+ 432:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
+ 1521              		.loc 1 432 0
+ 1522 0020 033C80E2 		add	r3, r0, #768
+ 433:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
+ 1523              		.loc 1 433 0
+ 1524 0024 017081E2 		add	r7, r1, #1
+ 434:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
+ 1525              		.loc 1 434 0
+ 1526 0028 01608CE2 		add	r6, ip, #1
+ 1527              	.LVL96:
+ 436:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + highbyte;
+ 1528              		.loc 1 436 0
+ 1529 002c 015C85E2 		add	r5, r5, #256
+ 437:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec >> 8);
+ 1530              		.loc 1 437 0
+ 1531 0030 034C84E2 		add	r4, r4, #768
+ 428:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 1532              		.loc 1 428 0
+ 1533 0034 0000A0E3 		mov	r0, #0
+ 1534 0038 6B0F02E5 		str	r0, [r2, #-3947]
+ 429:lib/Common/src/i2c.c ****   FIO4PIN = adr;
+ 1535              		.loc 1 429 0
+ 1536 003c 6B1F02E5 		str	r1, [r2, #-3947]
+ 430:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
+ 1537              		.loc 1 430 0
+ 1538 0040 6BCF02E5 		str	ip, [r2, #-3947]
+ 431:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
+ 1539              		.loc 1 431 0
+ 1540 0044 6B8F02E5 		str	r8, [r2, #-3947]
+ 432:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
+ 1541              		.loc 1 432 0
+ 1542 0048 6B3F02E5 		str	r3, [r2, #-3947]
+ 433:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
+ 1543              		.loc 1 433 0
+ 1544 004c 6B7F02E5 		str	r7, [r2, #-3947]
+ 434:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
+ 1545              		.loc 1 434 0
+ 1546 0050 6B6F02E5 		str	r6, [r2, #-3947]
+ 436:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + highbyte;
+ 1547              		.loc 1 436 0
+ 1548 0054 6B5F02E5 		str	r5, [r2, #-3947]
+ 1549              		.loc 1 437 0
+ 1550 0058 6B4F02E5 		str	r4, [r2, #-3947]
+ 438:lib/Common/src/i2c.c **** }
+ 1551              		.loc 1 438 0
+ 1552 005c F001BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8}
+ 1553 0060 1EFF2FE1 		bx	lr
+ 1554              	.L166:
+ 1555              		.align	2
+ 1556              	.L165:
+ 1557 0064 FFCFFF3F 		.word	1073729535
+ 1558              		.cfi_endproc
+ 1559              	.LFE14:
+ 1561              		.section	.text.ymzwrite1,"ax",%progbits
+ 1562              		.align	2
+ 1563              		.global	ymzwrite1
+ 1565              	ymzwrite1:
+ 1566              	.LFB15:
+ 439:lib/Common/src/i2c.c **** 
+ 440:lib/Common/src/i2c.c **** int
+ 441:lib/Common/src/i2c.c **** ymzwrite1 (int value, int adr)
+ 442:lib/Common/src/i2c.c **** {
+ 1567              		.loc 1 442 0
+ 1568              		.cfi_startproc
+ 1569              		@ Function supports interworking.
+ 1570              		@ args = 0, pretend = 0, frame = 0
+ 1571              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1572              		@ link register save eliminated.
+ 1573              	.LVL97:
+ 443:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 1574              		.loc 1 443 0
+ 1575 0000 30309FE5 		ldr	r3, .L168
+ 442:lib/Common/src/i2c.c **** {
+ 1576              		.loc 1 442 0
+ 1577 0004 30002DE9 		stmfd	sp!, {r4, r5}
+ 1578              	.LCFI10:
+ 1579              		.cfi_def_cfa_offset 8
+ 444:lib/Common/src/i2c.c ****   FIO4PIN = adr;
+ 445:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
+ 446:lib/Common/src/i2c.c ****   FIO4PIN = (0x100 + value);
+ 1580              		.loc 1 446 0
+ 1581 0008 01CC80E2 		add	ip, r0, #256
+ 447:lib/Common/src/i2c.c ****   FIO4PIN = (0x300 + value);
+ 1582              		.loc 1 447 0
+ 1583 000c 032C80E2 		add	r2, r0, #768
+ 445:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
+ 1584              		.loc 1 445 0
+ 1585 0010 024C81E2 		add	r4, r1, #512
+ 1586              		.cfi_offset 5, -4
+ 1587              		.cfi_offset 4, -8
+ 443:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 1588              		.loc 1 443 0
+ 1589 0014 0050A0E3 		mov	r5, #0
+ 1590 0018 6B5F03E5 		str	r5, [r3, #-3947]
+ 448:lib/Common/src/i2c.c ****   return adr * 16 + value;
+ 449:lib/Common/src/i2c.c **** }
+ 1591              		.loc 1 449 0
+ 1592 001c 010280E0 		add	r0, r0, r1, asl #4
+ 1593              	.LVL98:
+ 444:lib/Common/src/i2c.c ****   FIO4PIN = adr;
+ 1594              		.loc 1 444 0
+ 1595 0020 6B1F03E5 		str	r1, [r3, #-3947]
+ 445:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
+ 1596              		.loc 1 445 0
+ 1597 0024 6B4F03E5 		str	r4, [r3, #-3947]
+ 446:lib/Common/src/i2c.c ****   FIO4PIN = (0x100 + value);
+ 1598              		.loc 1 446 0
+ 1599 0028 6BCF03E5 		str	ip, [r3, #-3947]
+ 447:lib/Common/src/i2c.c ****   FIO4PIN = (0x300 + value);
+ 1600              		.loc 1 447 0
+ 1601 002c 6B2F03E5 		str	r2, [r3, #-3947]
+ 1602              		.loc 1 449 0
+ 1603 0030 3000BDE8 		ldmfd	sp!, {r4, r5}
+ 1604 0034 1EFF2FE1 		bx	lr
+ 1605              	.L169:
+ 1606              		.align	2
+ 1607              	.L168:
+ 1608 0038 FFCFFF3F 		.word	1073729535
+ 1609              		.cfi_endproc
+ 1610              	.LFE15:
+ 1612              		.global	OV7670
+ 1613              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1614              		.align	2
+ 1615              	.LC0:
+ 1616 0000 72657374 		.ascii	"restarter report...%x\000"
+ 1616      61727465 
+ 1616      72207265 
+ 1616      706F7274 
+ 1616      2E2E2E25 
+ 1617 0016 0000     		.space	2
+ 1618              	.LC1:
+ 1619 0018 4E6F2073 		.ascii	"No such device%4x\012\000"
+ 1619      75636820 
+ 1619      64657669 
+ 1619      63652534 
+ 1619      780A00
+ 1620 002b 00       		.space	1
+ 1621              	.LC2:
+ 1622 002c 6E6F2061 		.ascii	"no acknowlege(%x)\012\000"
+ 1622      636B6E6F 
+ 1622      776C6567 
+ 1622      65282578 
+ 1622      290A00
+ 1623 003f 00       		.space	1
+ 1624              	.LC3:
+ 1625 0040 72656164 		.ascii	"reading..  \000"
+ 1625      696E672E 
+ 1625      2E202000 
+ 1626              	.LC4:
+ 1627 004c 57616974 		.ascii	"Wait\011\000"
+ 1627      0900
+ 1628 0052 0000     		.space	2
+ 1629              	.LC5:
+ 1630 0054 25787265 		.ascii	"%xreg\011%x\000"
+ 1630      67092578 
+ 1630      00
+ 1631 005d 000000   		.space	3
+ 1632              	.LC6:
+ 1633 0060 53746174 		.ascii	"Status is %x\012\000"
+ 1633      75732069 
+ 1633      73202578 
+ 1633      0A00
+ 1634 006e 0000     		.space	2
+ 1635              	.LC7:
+ 1636 0070 52656164 		.ascii	"Read begin[>  \000"
+ 1636      20626567 
+ 1636      696E5B3E 
+ 1636      202000
+ 1637 007f 00       		.space	1
+ 1638              	.LC8:
+ 1639 0080 0808083D 		.ascii	"\010\010\010=>%c\000"
+ 1639      3E256300 
+ 1640              	.LC9:
+ 1641 0088 646F6E65 		.ascii	"done.....\000"
+ 1641      2E2E2E2E 
+ 1641      2E00
+ 1642 0092 0000     		.space	2
+ 1643              	.LC10:
+ 1644 0094 66617461 		.ascii	"fatal\000"
+ 1644      6C00
+ 1645 009a 0000     		.space	2
+ 1646              	.LC11:
+ 1647 009c 44656275 		.ascii	"Debu331g\000"
+ 1647      33333167 
+ 1647      00
+ 1648 00a5 000000   		.space	3
+ 1649              	.LC12:
+ 1650 00a8 52656769 		.ascii	"Register Reset\000"
+ 1650      73746572 
+ 1650      20526573 
+ 1650      657400
+ 1651 00b7 00       		.space	1
+ 1652              	.LC13:
+ 1653 00b8 53657475 		.ascii	"Setup begin[> \000"
+ 1653      70206265 
+ 1653      67696E5B 
+ 1653      3E2000
+ 1654 00c7 00       		.space	1
+ 1655              	.LC14:
+ 1656 00c8 0D446174 		.ascii	"\015Data transmition End!\000"
+ 1656      61207472 
+ 1656      616E736D 
+ 1656      6974696F 
+ 1656      6E20456E 
+ 1657 00df 00       		.section	.rodata.OV7670,"a",%progbits
+ 1658              		.align	2
+ 1659              		.set	.LANCHOR0,. + 0
+ 1662              	OV7670:
+ 1663 0000 04120000 		.word	4612
+ 1664 0004 D0400000 		.word	16592
+ 1665 0008 028C0000 		.word	35842
+ 1666 000c 3A700000 		.word	28730
+ 1667 0010 11720000 		.word	29201
+ 1668 0014 D0400000 		.word	16592
+ 1669 0018 028C0000 		.word	35842
+ 1670 001c 3A700000 		.word	28730
+ 1671 0020 35710000 		.word	28981
+ 1672 0024 11720000 		.word	29201
+ 1673 0028 F0730000 		.word	29680
+ 1674 002c 02A20000 		.word	41474
+ 1675 0030 00150000 		.word	5376
+ 1676 0034 207A0000 		.word	31264
+ 1677 0038 107B0000 		.word	31504
+ 1678 003c 1E7C0000 		.word	31774
+ 1679 0040 357D0000 		.word	32053
+ 1680 0044 5A7E0000 		.word	32346
+ 1681 0048 697F0000 		.word	32617
+ 1682 004c 76800000 		.word	32886
+ 1683 0050 80810000 		.word	33152
+ 1684 0054 88820000 		.word	33416
+ 1685 0058 8F830000 		.word	33679
+ 1686 005c 96840000 		.word	33942
+ 1687 0060 A3850000 		.word	34211
+ 1688 0064 AF860000 		.word	34479
+ 1689 0068 C4870000 		.word	34756
+ 1690 006c D7880000 		.word	35031
+ 1691 0070 E8890000 		.word	35304
+ 1692 0074 E0130000 		.word	5088
+ 1693 0078 00000000 		.word	0
+ 1694 007c 00100000 		.word	4096
+ 1695 0080 400D0000 		.word	3392
+ 1696 0084 18140000 		.word	5144
+ 1697 0088 05A50000 		.word	42245
+ 1698 008c 07AB0000 		.word	43783
+ 1699 0090 95240000 		.word	9365
+ 1700 0094 33250000 		.word	9523
+ 1701 0098 E3260000 		.word	9955
+ 1702 009c 789F0000 		.word	40824
+ 1703 00a0 68A00000 		.word	41064
+ 1704 00a4 03A10000 		.word	41219
+ 1705 00a8 D8A60000 		.word	42712
+ 1706 00ac D8A70000 		.word	42968
+ 1707 00b0 F0A80000 		.word	43248
+ 1708 00b4 90A90000 		.word	43408
+ 1709 00b8 94AA0000 		.word	43668
+ 1710 00bc E5130000 		.word	5093
+ 1711 00c0 610E0000 		.word	3681
+ 1712 00c4 4B0F0000 		.word	3915
+ 1713 00c8 02160000 		.word	5634
+ 1714 00cc 071E0000 		.word	7687
+ 1715 00d0 02210000 		.word	8450
+ 1716 00d4 91220000 		.word	8849
+ 1717 00d8 07290000 		.word	10503
+ 1718 00dc 0B330000 		.word	13067
+ 1719 00e0 0B350000 		.word	13579
+ 1720 00e4 1D370000 		.word	14109
+ 1721 00e8 71380000 		.word	14449
+ 1722 00ec 2A390000 		.word	14634
+ 1723 00f0 783C0000 		.word	15480
+ 1724 00f4 344D0000 		.word	19764
+ 1725 00f8 204E0000 		.word	20000
+ 1726 00fc 00690000 		.word	26880
+ 1727 0100 0A6B0000 		.word	27402
+ 1728 0104 10740000 		.word	29712
+ 1729 0108 4F8D0000 		.word	36175
+ 1730 010c 008E0000 		.word	36352
+ 1731 0110 008F0000 		.word	36608
+ 1732 0114 00900000 		.word	36864
+ 1733 0118 00910000 		.word	37120
+ 1734 011c 00960000 		.word	38400
+ 1735 0120 009A0000 		.word	39424
+ 1736 0124 84B00000 		.word	45188
+ 1737 0128 0CB10000 		.word	45324
+ 1738 012c 0EB20000 		.word	45582
+ 1739 0130 82B30000 		.word	45954
+ 1740 0134 0AB80000 		.word	47114
+ 1741 0138 0A430000 		.word	17162
+ 1742 013c F0440000 		.word	17648
+ 1743 0140 34450000 		.word	17716
+ 1744 0144 3A480000 		.word	18490
+ 1745 0148 99590000 		.word	22937
+ 1746 014c 885A0000 		.word	23176
+ 1747 0150 445B0000 		.word	23364
+ 1748 0154 675C0000 		.word	23655
+ 1749 0158 495D0000 		.word	23881
+ 1750 015c 0E5E0000 		.word	24078
+ 1751 0160 0A6C0000 		.word	27658
+ 1752 0164 556D0000 		.word	27989
+ 1753 0168 116E0000 		.word	28177
+ 1754 016c 9F6F0000 		.word	28575
+ 1755 0170 406A0000 		.word	27200
+ 1756 0174 40010000 		.word	320
+ 1757 0178 60020000 		.word	608
+ 1758 017c E7130000 		.word	5095
+ 1759 0180 804F0000 		.word	20352
+ 1760 0184 80500000 		.word	20608
+ 1761 0188 00510000 		.word	20736
+ 1762 018c 22520000 		.word	21026
+ 1763 0190 5E530000 		.word	21342
+ 1764 0194 80540000 		.word	21632
+ 1765 0198 9E580000 		.word	22686
+ 1766 019c 08410000 		.word	16648
+ 1767 01a0 003F0000 		.word	16128
+ 1768 01a4 05750000 		.word	29957
+ 1769 01a8 E1760000 		.word	30433
+ 1770 01ac 004C0000 		.word	19456
+ 1771 01b0 01770000 		.word	30465
+ 1772 01b4 C33D0000 		.word	15811
+ 1773 01b8 094B0000 		.word	19209
+ 1774 01bc 60C90000 		.word	51552
+ 1775 01c0 38410000 		.word	16696
+ 1776 01c4 40560000 		.word	22080
+ 1777 01c8 11340000 		.word	13329
+ 1778 01cc 123B0000 		.word	15122
+ 1779 01d0 88A40000 		.word	42120
+ 1780 01d4 00960000 		.word	38400
+ 1781 01d8 30970000 		.word	38704
+ 1782 01dc 20980000 		.word	38944
+ 1783 01e0 30990000 		.word	39216
+ 1784 01e4 849A0000 		.word	39556
+ 1785 01e8 299B0000 		.word	39721
+ 1786 01ec 039C0000 		.word	39939
+ 1787 01f0 4C9D0000 		.word	40268
+ 1788 01f4 3F9E0000 		.word	40511
+ 1789 01f8 04780000 		.word	30724
+ 1790 01fc 01790000 		.word	30977
+ 1791 0200 F0C80000 		.word	51440
+ 1792              		.text
+ 1793              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 i2c.c
-     /tmp/ccQqEu8l.s:22     .text.i2enable:00000000 $a
-     /tmp/ccQqEu8l.s:25     .text.i2enable:00000000 i2enable
-     /tmp/ccQqEu8l.s:43     .text.i2enable:00000010 $d
-     /tmp/ccQqEu8l.s:48     .text.i2cmasterset:00000000 $a
-     /tmp/ccQqEu8l.s:51     .text.i2cmasterset:00000000 i2cmasterset
-     /tmp/ccQqEu8l.s:102    .text.i2cmasterset:00000058 $d
-     /tmp/ccQqEu8l.s:109    .text.i2cstart:00000000 $a
-     /tmp/ccQqEu8l.s:112    .text.i2cstart:00000000 i2cstart
-     /tmp/ccQqEu8l.s:181    .text.i2cstart:00000080 $d
-     /tmp/ccQqEu8l.s:188    .text.i2crestart:00000000 $a
-     /tmp/ccQqEu8l.s:191    .text.i2crestart:00000000 i2crestart
-     /tmp/ccQqEu8l.s:331    .text.i2crestart:00000114 $d
-     /tmp/ccQqEu8l.s:339    .text.i2cstop:00000000 $a
-     /tmp/ccQqEu8l.s:342    .text.i2cstop:00000000 i2cstop
-     /tmp/ccQqEu8l.s:371    .text.i2cstop:00000024 $d
-     /tmp/ccQqEu8l.s:376    .text.i2csender:00000000 $a
-     /tmp/ccQqEu8l.s:379    .text.i2csender:00000000 i2csender
-     /tmp/ccQqEu8l.s:477    .text.i2csender:000000b0 $d
-     /tmp/ccQqEu8l.s:485    .text.novorvisesender:00000000 $a
-     /tmp/ccQqEu8l.s:488    .text.novorvisesender:00000000 novorvisesender
-     /tmp/ccQqEu8l.s:598    .text.novorvisesender:000000c4 $d
-     /tmp/ccQqEu8l.s:605    .text.tinyreader:00000000 $a
-     /tmp/ccQqEu8l.s:608    .text.tinyreader:00000000 tinyreader
-     /tmp/ccQqEu8l.s:730    .text.tinyreader:000000f0 $d
-     /tmp/ccQqEu8l.s:739    .text.i2creader:00000000 $a
-     /tmp/ccQqEu8l.s:742    .text.i2creader:00000000 i2creader
-     /tmp/ccQqEu8l.s:865    .text.i2creader:00000100 $d
-     /tmp/ccQqEu8l.s:872    .text.i2creader:00000110 $a
-     /tmp/ccQqEu8l.s:941    .text.i2creader:0000019c $d
-     /tmp/ccQqEu8l.s:952    .text.tinyread:00000000 $a
-     /tmp/ccQqEu8l.s:955    .text.tinyread:00000000 tinyread
-     /tmp/ccQqEu8l.s:1043   .text.tinyread:00000098 $d
-     /tmp/ccQqEu8l.s:1050   .text.SCCBread:00000000 $a
-     /tmp/ccQqEu8l.s:1053   .text.SCCBread:00000000 SCCBread
-     /tmp/ccQqEu8l.s:1157   .text.SCCBread:000000ac $d
-     /tmp/ccQqEu8l.s:1167   .text.SCCBwrite:00000000 $a
-     /tmp/ccQqEu8l.s:1170   .text.SCCBwrite:00000000 SCCBwrite
-     /tmp/ccQqEu8l.s:1273   .text.SCCBwrite:000000a4 $d
-     /tmp/ccQqEu8l.s:1280   .text.SCCBByteWrite:00000000 $a
-     /tmp/ccQqEu8l.s:1283   .text.SCCBByteWrite:00000000 SCCBByteWrite
-     /tmp/ccQqEu8l.s:1305   .text.vi2c:00000000 $a
-     /tmp/ccQqEu8l.s:1308   .text.vi2c:00000000 vi2c
-     /tmp/ccQqEu8l.s:1470   .text.vi2c:00000144 $d
-     /tmp/ccQqEu8l.s:1531   .rodata.OV7670:00000000 OV7670
-     /tmp/ccQqEu8l.s:1484   .rodata.str1.4:00000000 $d
-     /tmp/ccQqEu8l.s:1527   .rodata.OV7670:00000000 $d
+     /tmp/cchZsJqz.s:22     .text.i2enable:00000000 $a
+     /tmp/cchZsJqz.s:25     .text.i2enable:00000000 i2enable
+     /tmp/cchZsJqz.s:43     .text.i2enable:00000010 $d
+     /tmp/cchZsJqz.s:48     .text.i2cmasterset:00000000 $a
+     /tmp/cchZsJqz.s:51     .text.i2cmasterset:00000000 i2cmasterset
+     /tmp/cchZsJqz.s:102    .text.i2cmasterset:00000058 $d
+     /tmp/cchZsJqz.s:109    .text.i2cstart:00000000 $a
+     /tmp/cchZsJqz.s:112    .text.i2cstart:00000000 i2cstart
+     /tmp/cchZsJqz.s:181    .text.i2cstart:00000080 $d
+     /tmp/cchZsJqz.s:188    .text.i2crestart:00000000 $a
+     /tmp/cchZsJqz.s:191    .text.i2crestart:00000000 i2crestart
+     /tmp/cchZsJqz.s:331    .text.i2crestart:00000114 $d
+     /tmp/cchZsJqz.s:339    .text.i2cstop:00000000 $a
+     /tmp/cchZsJqz.s:342    .text.i2cstop:00000000 i2cstop
+     /tmp/cchZsJqz.s:371    .text.i2cstop:00000024 $d
+     /tmp/cchZsJqz.s:376    .text.i2csender:00000000 $a
+     /tmp/cchZsJqz.s:379    .text.i2csender:00000000 i2csender
+     /tmp/cchZsJqz.s:477    .text.i2csender:000000b0 $d
+     /tmp/cchZsJqz.s:485    .text.novorvisesender:00000000 $a
+     /tmp/cchZsJqz.s:488    .text.novorvisesender:00000000 novorvisesender
+     /tmp/cchZsJqz.s:598    .text.novorvisesender:000000c4 $d
+     /tmp/cchZsJqz.s:605    .text.tinyreader:00000000 $a
+     /tmp/cchZsJqz.s:608    .text.tinyreader:00000000 tinyreader
+     /tmp/cchZsJqz.s:730    .text.tinyreader:000000f0 $d
+     /tmp/cchZsJqz.s:739    .text.i2creader:00000000 $a
+     /tmp/cchZsJqz.s:742    .text.i2creader:00000000 i2creader
+     /tmp/cchZsJqz.s:865    .text.i2creader:00000100 $d
+     /tmp/cchZsJqz.s:872    .text.i2creader:00000110 $a
+     /tmp/cchZsJqz.s:941    .text.i2creader:0000019c $d
+     /tmp/cchZsJqz.s:952    .text.tinyread:00000000 $a
+     /tmp/cchZsJqz.s:955    .text.tinyread:00000000 tinyread
+     /tmp/cchZsJqz.s:1043   .text.tinyread:00000098 $d
+     /tmp/cchZsJqz.s:1050   .text.SCCBread:00000000 $a
+     /tmp/cchZsJqz.s:1053   .text.SCCBread:00000000 SCCBread
+     /tmp/cchZsJqz.s:1157   .text.SCCBread:000000ac $d
+     /tmp/cchZsJqz.s:1167   .text.SCCBwrite:00000000 $a
+     /tmp/cchZsJqz.s:1170   .text.SCCBwrite:00000000 SCCBwrite
+     /tmp/cchZsJqz.s:1278   .text.SCCBwrite:000000b0 $d
+     /tmp/cchZsJqz.s:1286   .text.SCCBByteWrite:00000000 $a
+     /tmp/cchZsJqz.s:1289   .text.SCCBByteWrite:00000000 SCCBByteWrite
+     /tmp/cchZsJqz.s:1311   .text.vi2c:00000000 $a
+     /tmp/cchZsJqz.s:1314   .text.vi2c:00000000 vi2c
+     /tmp/cchZsJqz.s:1472   .text.vi2c:00000138 $d
+     /tmp/cchZsJqz.s:1485   .text.ymzwrite0:00000000 $a
+     /tmp/cchZsJqz.s:1488   .text.ymzwrite0:00000000 ymzwrite0
+     /tmp/cchZsJqz.s:1557   .text.ymzwrite0:00000064 $d
+     /tmp/cchZsJqz.s:1562   .text.ymzwrite1:00000000 $a
+     /tmp/cchZsJqz.s:1565   .text.ymzwrite1:00000000 ymzwrite1
+     /tmp/cchZsJqz.s:1608   .text.ymzwrite1:00000038 $d
+     /tmp/cchZsJqz.s:1662   .rodata.OV7670:00000000 OV7670
+     /tmp/cchZsJqz.s:1614   .rodata.str1.4:00000000 $d
+     /tmp/cchZsJqz.s:1658   .rodata.OV7670:00000000 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

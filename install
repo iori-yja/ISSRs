@@ -1,0 +1,1 @@
+lpc21isp $1 main.hex /dev/ttyUSB0 115200 4000

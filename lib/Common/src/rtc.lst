@@ -841,36 +841,36 @@
  572              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 rtc.c
-     /tmp/ccAbkkLk.s:23     .text.RTCInit:00000000 $t
-     /tmp/ccAbkkLk.s:28     .text.RTCInit:00000000 RTCInit
-     /tmp/ccAbkkLk.s:223    .text.RTCInit:000000c0 $d
-     /tmp/ccAbkkLk.s:241    .text.RTCStart:00000000 $t
-     /tmp/ccAbkkLk.s:246    .text.RTCStart:00000000 RTCStart
-     /tmp/ccAbkkLk.s:265    .text.RTCStart:00000010 $d
-     /tmp/ccAbkkLk.s:270    .text.RTCStop:00000000 $t
-     /tmp/ccAbkkLk.s:275    .text.RTCStop:00000000 RTCStop
-     /tmp/ccAbkkLk.s:291    .text.RTCStop:0000000c $d
-     /tmp/ccAbkkLk.s:296    .text.RTC_CTCReset:00000000 $t
-     /tmp/ccAbkkLk.s:301    .text.RTC_CTCReset:00000000 RTC_CTCReset
-     /tmp/ccAbkkLk.s:317    .text.RTC_CTCReset:0000000c $d
-     /tmp/ccAbkkLk.s:322    .text.RTCSetTime:00000000 $t
-     /tmp/ccAbkkLk.s:327    .text.RTCSetTime:00000000 RTCSetTime
-     /tmp/ccAbkkLk.s:381    .text.RTCSetTime:00000034 $d
-     /tmp/ccAbkkLk.s:386    .text.RTCSetAlarm:00000000 $t
-     /tmp/ccAbkkLk.s:391    .text.RTCSetAlarm:00000000 RTCSetAlarm
-     /tmp/ccAbkkLk.s:445    .text.RTCSetAlarm:00000034 $d
-     /tmp/ccAbkkLk.s:450    .text.RTCGetTime:00000000 $t
-     /tmp/ccAbkkLk.s:455    .text.RTCGetTime:00000000 RTCGetTime
-     /tmp/ccAbkkLk.s:517    .text.RTCGetTime:00000044 $d
-     /tmp/ccAbkkLk.s:524    .text.RTCSetAlarmMask:00000000 $t
-     /tmp/ccAbkkLk.s:529    .text.RTCSetAlarmMask:00000000 RTCSetAlarmMask
-     /tmp/ccAbkkLk.s:545    .text.RTCSetAlarmMask:00000008 $d
-     /tmp/ccAbkkLk.s:569    .bss.local_time:00000000 local_time
-     /tmp/ccAbkkLk.s:562    .bss.alarm_time:00000000 alarm_time
-     /tmp/ccAbkkLk.s:556    .bss.current_time:00000000 current_time
-     /tmp/ccAbkkLk.s:553    .bss.current_time:00000000 $d
-     /tmp/ccAbkkLk.s:559    .bss.alarm_time:00000000 $d
-     /tmp/ccAbkkLk.s:565    .bss.local_time:00000000 $d
+     /tmp/ccHPrV6t.s:23     .text.RTCInit:00000000 $t
+     /tmp/ccHPrV6t.s:28     .text.RTCInit:00000000 RTCInit
+     /tmp/ccHPrV6t.s:223    .text.RTCInit:000000c0 $d
+     /tmp/ccHPrV6t.s:241    .text.RTCStart:00000000 $t
+     /tmp/ccHPrV6t.s:246    .text.RTCStart:00000000 RTCStart
+     /tmp/ccHPrV6t.s:265    .text.RTCStart:00000010 $d
+     /tmp/ccHPrV6t.s:270    .text.RTCStop:00000000 $t
+     /tmp/ccHPrV6t.s:275    .text.RTCStop:00000000 RTCStop
+     /tmp/ccHPrV6t.s:291    .text.RTCStop:0000000c $d
+     /tmp/ccHPrV6t.s:296    .text.RTC_CTCReset:00000000 $t
+     /tmp/ccHPrV6t.s:301    .text.RTC_CTCReset:00000000 RTC_CTCReset
+     /tmp/ccHPrV6t.s:317    .text.RTC_CTCReset:0000000c $d
+     /tmp/ccHPrV6t.s:322    .text.RTCSetTime:00000000 $t
+     /tmp/ccHPrV6t.s:327    .text.RTCSetTime:00000000 RTCSetTime
+     /tmp/ccHPrV6t.s:381    .text.RTCSetTime:00000034 $d
+     /tmp/ccHPrV6t.s:386    .text.RTCSetAlarm:00000000 $t
+     /tmp/ccHPrV6t.s:391    .text.RTCSetAlarm:00000000 RTCSetAlarm
+     /tmp/ccHPrV6t.s:445    .text.RTCSetAlarm:00000034 $d
+     /tmp/ccHPrV6t.s:450    .text.RTCGetTime:00000000 $t
+     /tmp/ccHPrV6t.s:455    .text.RTCGetTime:00000000 RTCGetTime
+     /tmp/ccHPrV6t.s:517    .text.RTCGetTime:00000044 $d
+     /tmp/ccHPrV6t.s:524    .text.RTCSetAlarmMask:00000000 $t
+     /tmp/ccHPrV6t.s:529    .text.RTCSetAlarmMask:00000000 RTCSetAlarmMask
+     /tmp/ccHPrV6t.s:545    .text.RTCSetAlarmMask:00000008 $d
+     /tmp/ccHPrV6t.s:569    .bss.local_time:00000000 local_time
+     /tmp/ccHPrV6t.s:562    .bss.alarm_time:00000000 alarm_time
+     /tmp/ccHPrV6t.s:556    .bss.current_time:00000000 current_time
+     /tmp/ccHPrV6t.s:553    .bss.current_time:00000000 $d
+     /tmp/ccHPrV6t.s:559    .bss.alarm_time:00000000 $d
+     /tmp/ccHPrV6t.s:565    .bss.local_time:00000000 $d
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

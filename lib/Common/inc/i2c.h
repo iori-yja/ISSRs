@@ -10,6 +10,7 @@ int i2cstart();
 int i2cstop();
 void i2csender();
 extern int i2cbuff[];
+//extern xTaskHandle g_issrhandle;
 void read_ROM();
 void write_ROM();
 //void vi2c();

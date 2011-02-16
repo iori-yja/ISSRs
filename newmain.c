@@ -92,7 +92,6 @@ static void vrightwheelTask (void *pvParameters);
 static void vleftwheelTask (void *pvParameters);
 void vValueTask (void *pvParameters);
 void vtrsTask (void *pvParameters);
-unsigned int ADC_Read(unsigned int ch);
 
 /* Demo application definitions. */
 #define mainQUEUE_SIZE						( 3 )
@@ -120,6 +119,47 @@ int left;
 int right;
 xSemaphoreHandle Mutex;
 
+unsigned int
+ADC_Read (unsigned int ch)
+{
+  unsigned int i;
+  AD0CR = (0x00200400 | (1 << ch));	// Init ADC (Pclk = 18MHz) and select channel. Sampling rate = 4.5MHz
+  AD0CR |= 0x01000000;		// Start A/D Conversion
+  do
+    {
+      switch (ch)
+	{
+	case 0:
+	  i = AD0DR0;		// Read A/D Data Register
+	  break;
+	case 1:
+	  i = AD0DR1;
+	  break;
+	case 2:
+	  i = AD0DR2;
+	  break;
+	case 3:
+	  i = AD0DR3;
+	  break;
+	case 4:
+	  i = AD0DR4;
+	  break;
+	case 5:
+	  i = AD0DR5;
+	  break;
+	case 6:
+	  i = AD0DR6;
+	  break;
+	case 7:
+	  i = AD0DR7;
+	  break;
+	}
+
+    }
+  while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+  return (i >> 6) & 0x03FF;	// bit 6:15 is 10 bit AD value
+}
+
 /*-----------------------------------------------------------*/
 int
 main (void)
@@ -127,21 +167,24 @@ main (void)
   TargetResetInit ();		//
   GPIOResetInit ();
   UARTint ();
-  FIO2PIN1 = 2;
+  FIO2PIN1 = 0x2;
   Mutex = xSemaphoreCreateMutex ();
-  printf (" world!\n");
-  if(Mutex != NULL){
-//      xTaskCreate (vLedTask, (signed portCHAR *) "LED",
-//		   configMINIMAL_STACK_SIZE, NULL,
-//		   mainCHECK_TASK_PRIORITY - 1, NULL);
+  printf (" world!%d:%d\n", pdTRUE, pdFALSE);
+  if (Mutex != NULL)
+    {
+      xTaskCreate (vLedTask, (signed portCHAR *) "LED",
+		   configMINIMAL_STACK_SIZE, NULL,
+		   mainCHECK_TASK_PRIORITY - 1, NULL);
       /* Start2csender the tasks defined within this file/specific to this demo. */
-    xTaskCreate (ISSR, (signed portCHAR *) "issr", configMINIMAL_STACK_SIZE,
-		   NULL, mainCHECK_TASK_PRIORITY +1, NULL);
-     xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
-		   NULL, mainCHECK_TASK_PRIORITY , NULL);
+      xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
+		   NULL, mainCHECK_TASK_PRIORITY, NULL);
+      xTaskCreate (ISSR, (signed portCHAR *) "ITS", configMINIMAL_STACK_SIZE,
+		   NULL, mainCHECK_TASK_PRIORITY, NULL);
+      FIO2CLR1 = 0xFF;
       vTaskStartScheduler ();
-  FIO2SET1 = 2;
-  }
+    }
+  else
+    printf ("F");
   while (1);
   return 0;
 }
@@ -153,6 +196,7 @@ void
 UARTint (void)
 {
   DWORD Fdiv, i = 0;
+
   U0LCR = 0x83;			/* 8 bits, no Parity, 1 Stop bit */
   Fdiv = (Fpclk / 16) / UART_BAUD;	/*baud rate */
   U0DLM = Fdiv / 256;
@@ -182,12 +226,12 @@ getISSI (void)
     {
       il++;
       FIO2SET0 = 1;
+      FIO2SET1 = 2;
       prv = FIO2PIN0 & 3;
       bitshift = (bitshift << 1) + ((prv & 2) >> 1);
-      vTaskDelay (100 / portTICK_RATE_MS);
+      vTaskDelay (1 / portTICK_RATE_MS);
       FIO2CLR0 = 1;
-//      FIO2CLR1 = 2;
-      FIO2SET1 = 2;
+      FIO2CLR1 = 2;
       printf ("prv=%x", prv);
       crr = FIO0PIN & 3;
       printf ("Cr=%d", crr);
@@ -196,7 +240,7 @@ getISSI (void)
 	  printf ("-%d\t%d\n", crr, il);
 	  break;
 	}
-      vTaskDelay (100 / portTICK_RATE_MS);
+      vTaskDelay (1 / portTICK_RATE_MS);
     }
 }
 
@@ -231,7 +275,7 @@ ISSR (void *pvParameters)
 {
   unsigned int tmpData;
   vTaskDelay (30 / portTICK_RATE_MS);
-  while (!xSemaphoreTake (Mutex, 1 / portTICK_RATE_MS));
+  while (!xSemaphoreTake (Mutex, 301 / portTICK_RATE_MS));
   vTaskDelay (30 / portTICK_RATE_MS);
   FIO2CLR1 = 0xFF;
   while (1)
@@ -323,6 +367,7 @@ vLedTask (void *pvParameters)
     {
       FIO1PIN ^= LED1_MASK;
       vTaskDelay (207 / portTICK_RATE_MS);
+      vTaskSuspend (NULL);
     }
 
 }
@@ -437,44 +482,3 @@ vleftwheelTask (void *pvPatameters)
 	vTaskDelay (left / portTICK_RATE_MS);
     }
 }
-unsigned int
-ADC_Read (unsigned int ch)
-{
-  unsigned int i;
-  AD0CR = (0x00200400 | (1 << ch));	// Init ADC (Pclk = 18MHz) and select channel. Sampling rate = 4.5MHz
-  AD0CR |= 0x01000000;		// Start A/D Conversion
-  do
-    {
-      switch (ch)
-	{
-	case 0:
-	  i = AD0DR0;		// Read A/D Data Register
-	  break;
-	case 1:
-	  i = AD0DR1;
-	  break;
-	case 2:
-	  i = AD0DR2;
-	  break;
-	case 3:
-	  i = AD0DR3;
-	  break;
-	case 4:
-	  i = AD0DR4;
-	  break;
-	case 5:
-	  i = AD0DR5;
-	  break;
-	case 6:
-	  i = AD0DR6;
-	  break;
-	case 7:
-	  i = AD0DR7;
-	  break;
-	}
-
-    }
-  while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
-  return (i >> 6) & 0x03FF;	// bit 6:15 is 10 bit AD value
-}
-
