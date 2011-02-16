@@ -412,11 +412,10 @@ vi2c (void *pvParameters)
   printf ("\rData transmition End!\n");
   fflush (stdout);
   SCCBread (0x00, 0xca, 0);
-  vTaskDelay (200 / portTICK_RATE_MS);
-  if (xSemaphoreGive (Mutex))
-    FIO2PIN1 = 0x2;
+  printf("Semagive");
+  xSemaphoreGive (Mutex);
 //  vTaskResume ( g_issrhandle );
-//  vTaskSuspend(NULL);
+  vTaskSuspend(NULL);
 //  xTaskCreate (ISSR, (signed portCHAR *) "ITS", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL);
   while (1);
 }

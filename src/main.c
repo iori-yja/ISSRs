@@ -176,7 +176,8 @@ getISSI (void)
   int il = 0;
   int prv;
   int crr;
-  vTaskDelay (1 / portTICK_RATE_MS);
+  vTaskDelay (10 / portTICK_RATE_MS);
+  while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
   printf ("start ISSI connection\n");
   while (1)
     {
