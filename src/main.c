@@ -137,8 +137,7 @@ main (void)
       /* Start2csender the tasks defined within this file/specific to this demo. */
       xTaskCreate (ISSR, (signed portCHAR *) "issr", configMINIMAL_STACK_SIZE,
 		   NULL, mainCHECK_TASK_PRIORITY +1, NULL);
-
-    xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
+      xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
 		   NULL, mainCHECK_TASK_PRIORITY , NULL);
       vTaskStartScheduler ();
   FIO2SET1 = 2;
@@ -230,28 +229,48 @@ void
 ISSR (void *pvParameters)
 {
   unsigned int tmpData = 0;
+  unsigned int bakData = 0;
   int tole = 0;
   int cnt = 0;
+  int cot = 0;
+  int flg = 0;
   vTaskDelay (30 / portTICK_RATE_MS);
   GPIOInit (1, FAST_PORT, DIR_OUT, LED1_MASK);
   FIO2DIR0 = 1;
   while (!xSemaphoreTake (Mutex, 300 / portTICK_RATE_MS)) FIO1PIN ^= LED1_MASK;
-  while (1){
-	  vTaskDelay (10 / portTICK_RATE_MS);
-	  if( tole++==0 ){
-		  printf("tick");
-		  FIO1PIN ^= LED1_MASK;
+  while(1){
+ 	 while (1){
+		  vTaskDelay (1 / portTICK_RATE_MS);
+		  if( tole++==0 ){
+			  FIO1PIN ^= LED1_MASK;
+  			  FIO2PIN0 ^= 1;
+			  flg ^= 1; 
+			  fflush(stdout);
+			}
+		  else if( tole==10 ){
+			  tole = -10;
+			  if((flg%2)==1){
+				  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
+			  	  printf("%4x",tmpData>>1);
+				  fflush(stdout);
+				  printf("T");
+				  fflush(stdout);
+			  }
+			  if ((flg%2)==0){
+				  bakData = bakData + ((FIO2PIN0&2)<<cot++);
+				  fflush(stdout);
+				}
 		  }
-	  else if( tole==10 ){
-		  printf("Tack");
-		  tole = -10;
-  		  FIO2PIN0 ^= 1;
-		  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
+// 	  	  if(cot%12==0 && cnt!=0 && cot!=0)break;
+		  if( tole==-10 && (flg%2)==0 && bakData != tmpData )break;
+ 		} 
+// 	  if(cot%12==0 && cnt!=0 && cot!=0){
+//	  if(bakData != tmpData){
+		  printf("%x",bakData>>1);
 		  fflush(stdout);
-		  printf("%x",tmpData);
-	  	}
-		fflush(stdout);
-
+		  printf("\n");
+		  fflush(stdout);
+		  tole=cnt=tmpData=bakData=cot=0;
   }
   FIO2CLR1 = 0xFF;
   while (1)

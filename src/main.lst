@@ -155,147 +155,149 @@
  137:src/main.c    ****       /* Start2csender the tasks defined within this file/specific to this demo. */
  138:src/main.c    ****       xTaskCreate (ISSR, (signed portCHAR *) "issr", configMINIMAL_STACK_SIZE,
  139:src/main.c    **** 		   NULL, mainCHECK_TASK_PRIORITY +1, NULL);
- 140:src/main.c    **** 
- 141:src/main.c    ****     xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
- 142:src/main.c    **** 		   NULL, mainCHECK_TASK_PRIORITY , NULL);
- 143:src/main.c    ****       vTaskStartScheduler ();
- 144:src/main.c    ****   FIO2SET1 = 2;
- 145:src/main.c    ****   }
- 146:src/main.c    ****   while (1);
- 147:src/main.c    **** }
- 148:src/main.c    **** 
- 149:src/main.c    **** //*************************************************************************************************
- 150:src/main.c    **** //      -----------------------------In main initializer----------------------------^^
- 151:src/main.c    **** /*******UART initialize***************/
- 152:src/main.c    **** void
- 153:src/main.c    **** UARTint (void)
- 154:src/main.c    **** {
- 155:src/main.c    ****   DWORD Fdiv, i = 0;
- 156:src/main.c    ****   U0LCR = 0x83;			/* 8 bits, no Parity, 1 Stop bit */
- 157:src/main.c    ****   Fdiv = (Fpclk / 16) / UART_BAUD;	/*baud rate */
- 158:src/main.c    ****   U0DLM = Fdiv / 256;
- 159:src/main.c    ****   U0DLL = Fdiv % 256;
- 160:src/main.c    ****   U0LCR = 0x03;			/* DLAB = 0 */
- 161:src/main.c    ****   U0FCR = 0x07;			/* Enable and reset TX and RX FIFO. */
- 162:src/main.c    **** 
- 163:src/main.c    ****   printf ("Hello,");
- 164:src/main.c    **** }
- 165:src/main.c    **** 
- 166:src/main.c    **** //---------------------------------------
- 167:src/main.c    **** 
- 168:src/main.c    **** /*-----------------------------------------------------------*/
- 169:src/main.c    **** 
- 170:src/main.c    **** //*************************************************************************************************
- 171:src/main.c    **** //      ----------------------------------- Routines -------------------------------
- 172:src/main.c    **** void
- 173:src/main.c    **** getISSI (void)
- 174:src/main.c    **** {
- 175:src/main.c    ****   int bitshift = 0;
- 176:src/main.c    ****   int il = 0;
- 177:src/main.c    ****   int prv;
- 178:src/main.c    ****   int crr;
- 179:src/main.c    ****   vTaskDelay (10 / portTICK_RATE_MS);
- 180:src/main.c    ****   while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
- 181:src/main.c    ****   printf ("start ISSI connection\n");
- 182:src/main.c    ****   while (1)
- 183:src/main.c    ****     {
- 184:src/main.c    ****       il++;
- 185:src/main.c    ****       FIO2SET0 = 1;
- 186:src/main.c    ****       prv = FIO2PIN0 & 3;
- 187:src/main.c    ****       bitshift = (bitshift << 1) + ((prv & 2) >> 1);
- 188:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
- 189:src/main.c    ****       FIO2CLR0 = 1;
- 190:src/main.c    **** //      FIO2CLR1 = 2;
- 191:src/main.c    ****       FIO2SET1 = 2;
- 192:src/main.c    ****       printf ("prv=%x", prv);
- 193:src/main.c    ****       crr = FIO0PIN & 3;
- 194:src/main.c    ****       printf ("Cr=%d", crr);
- 195:src/main.c    ****       if (crr & 2 != prv & 2)
- 196:src/main.c    **** 	{
- 197:src/main.c    **** 	  printf ("-%d\t%d\n", crr, il);
- 198:src/main.c    **** 	  break;
- 199:src/main.c    **** 	}
- 200:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
- 201:src/main.c    ****     }
- 202:src/main.c    **** }
- 203:src/main.c    **** 
- 204:src/main.c    **** //*************************************************************************************************
- 205:src/main.c    **** //      -----------------------------------T A S K s.-------------------------------^^
- 206:src/main.c    **** 
- 207:src/main.c    **** void
- 208:src/main.c    **** vApplicationTickHook (void)
- 209:src/main.c    **** {
- 210:src/main.c    **** }
- 211:src/main.c    **** 
- 212:src/main.c    **** /*-----------------------------------------------------------*/
- 213:src/main.c    **** void
- 214:src/main.c    **** vADcTask (void *pvParameters)
- 215:src/main.c    **** {
- 216:src/main.c    ****   unsigned int a, t;
- 217:src/main.c    ****   unsigned int res[5];
- 218:src/main.c    ****   for (;;)
- 219:src/main.c    ****     {
- 220:src/main.c    ****       for (a = 0; a <= 4; a++)
- 221:src/main.c    **** 	{
- 222:src/main.c    **** 	  res[a] = ADC_Read (a);
- 223:src/main.c    **** 	}
- 224:src/main.c    ****       vTaskDelay (30 / portTICK_RATE_MS);
- 225:src/main.c    ****     }
- 226:src/main.c    **** }
- 227:src/main.c    **** 
- 228:src/main.c    **** /*-----------------------------------------------------------*/
- 229:src/main.c    **** void
- 230:src/main.c    **** ISSR (void *pvParameters)
- 231:src/main.c    **** {
-  27              		.loc 1 231 0
+ 140:src/main.c    ****       xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
+ 141:src/main.c    **** 		   NULL, mainCHECK_TASK_PRIORITY , NULL);
+ 142:src/main.c    ****       vTaskStartScheduler ();
+ 143:src/main.c    ****   FIO2SET1 = 2;
+ 144:src/main.c    ****   }
+ 145:src/main.c    ****   while (1);
+ 146:src/main.c    **** }
+ 147:src/main.c    **** 
+ 148:src/main.c    **** //*************************************************************************************************
+ 149:src/main.c    **** //      -----------------------------In main initializer----------------------------^^
+ 150:src/main.c    **** /*******UART initialize***************/
+ 151:src/main.c    **** void
+ 152:src/main.c    **** UARTint (void)
+ 153:src/main.c    **** {
+ 154:src/main.c    ****   DWORD Fdiv, i = 0;
+ 155:src/main.c    ****   U0LCR = 0x83;			/* 8 bits, no Parity, 1 Stop bit */
+ 156:src/main.c    ****   Fdiv = (Fpclk / 16) / UART_BAUD;	/*baud rate */
+ 157:src/main.c    ****   U0DLM = Fdiv / 256;
+ 158:src/main.c    ****   U0DLL = Fdiv % 256;
+ 159:src/main.c    ****   U0LCR = 0x03;			/* DLAB = 0 */
+ 160:src/main.c    ****   U0FCR = 0x07;			/* Enable and reset TX and RX FIFO. */
+ 161:src/main.c    **** 
+ 162:src/main.c    ****   printf ("Hello,");
+ 163:src/main.c    **** }
+ 164:src/main.c    **** 
+ 165:src/main.c    **** //---------------------------------------
+ 166:src/main.c    **** 
+ 167:src/main.c    **** /*-----------------------------------------------------------*/
+ 168:src/main.c    **** 
+ 169:src/main.c    **** //*************************************************************************************************
+ 170:src/main.c    **** //      ----------------------------------- Routines -------------------------------
+ 171:src/main.c    **** void
+ 172:src/main.c    **** getISSI (void)
+ 173:src/main.c    **** {
+ 174:src/main.c    ****   int bitshift = 0;
+ 175:src/main.c    ****   int il = 0;
+ 176:src/main.c    ****   int prv;
+ 177:src/main.c    ****   int crr;
+ 178:src/main.c    ****   vTaskDelay (10 / portTICK_RATE_MS);
+ 179:src/main.c    ****   while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
+ 180:src/main.c    ****   printf ("start ISSI connection\n");
+ 181:src/main.c    ****   while (1)
+ 182:src/main.c    ****     {
+ 183:src/main.c    ****       il++;
+ 184:src/main.c    ****       FIO2SET0 = 1;
+ 185:src/main.c    ****       prv = FIO2PIN0 & 3;
+ 186:src/main.c    ****       bitshift = (bitshift << 1) + ((prv & 2) >> 1);
+ 187:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
+ 188:src/main.c    ****       FIO2CLR0 = 1;
+ 189:src/main.c    **** //      FIO2CLR1 = 2;
+ 190:src/main.c    ****       FIO2SET1 = 2;
+ 191:src/main.c    ****       printf ("prv=%x", prv);
+ 192:src/main.c    ****       crr = FIO0PIN & 3;
+ 193:src/main.c    ****       printf ("Cr=%d", crr);
+ 194:src/main.c    ****       if (crr & 2 != prv & 2)
+ 195:src/main.c    **** 	{
+ 196:src/main.c    **** 	  printf ("-%d\t%d\n", crr, il);
+ 197:src/main.c    **** 	  break;
+ 198:src/main.c    **** 	}
+ 199:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
+ 200:src/main.c    ****     }
+ 201:src/main.c    **** }
+ 202:src/main.c    **** 
+ 203:src/main.c    **** //*************************************************************************************************
+ 204:src/main.c    **** //      -----------------------------------T A S K s.-------------------------------^^
+ 205:src/main.c    **** 
+ 206:src/main.c    **** void
+ 207:src/main.c    **** vApplicationTickHook (void)
+ 208:src/main.c    **** {
+ 209:src/main.c    **** }
+ 210:src/main.c    **** 
+ 211:src/main.c    **** /*-----------------------------------------------------------*/
+ 212:src/main.c    **** void
+ 213:src/main.c    **** vADcTask (void *pvParameters)
+ 214:src/main.c    **** {
+ 215:src/main.c    ****   unsigned int a, t;
+ 216:src/main.c    ****   unsigned int res[5];
+ 217:src/main.c    ****   for (;;)
+ 218:src/main.c    ****     {
+ 219:src/main.c    ****       for (a = 0; a <= 4; a++)
+ 220:src/main.c    **** 	{
+ 221:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 222:src/main.c    **** 	}
+ 223:src/main.c    ****       vTaskDelay (30 / portTICK_RATE_MS);
+ 224:src/main.c    ****     }
+ 225:src/main.c    **** }
+ 226:src/main.c    **** 
+ 227:src/main.c    **** /*-----------------------------------------------------------*/
+ 228:src/main.c    **** void
+ 229:src/main.c    **** ISSR (void *pvParameters)
+ 230:src/main.c    **** {
+  27              		.loc 1 230 0
   28              		.cfi_startproc
   29              		@ Function supports interworking.
   30              		@ args = 0, pretend = 0, frame = 0
   31              		@ frame_needed = 0, uses_anonymous_args = 0
   32              	.LVL0:
-  33 0000 F8452DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, r8, sl, lr}
+  33 0000 F0472DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
   34              	.LCFI0:
   35              		.cfi_def_cfa_offset 32
- 232:src/main.c    ****   unsigned int tmpData = 0;
+ 231:src/main.c    ****   unsigned int tmpData = 0;
+ 232:src/main.c    ****   unsigned int bakData = 0;
  233:src/main.c    ****   int tole = 0;
  234:src/main.c    ****   int cnt = 0;
- 235:src/main.c    ****   vTaskDelay (30 / portTICK_RATE_MS);
-  36              		.loc 1 235 0
+ 235:src/main.c    ****   int cot = 0;
+ 236:src/main.c    ****   int flg = 0;
+ 237:src/main.c    ****   vTaskDelay (30 / portTICK_RATE_MS);
+  36              		.loc 1 237 0
   37 0004 1E00A0E3 		mov	r0, #30
   38              	.LVL1:
   39              		.cfi_offset 14, -4
   40              		.cfi_offset 10, -8
-  41              		.cfi_offset 8, -12
-  42              		.cfi_offset 7, -16
-  43              		.cfi_offset 6, -20
-  44              		.cfi_offset 5, -24
-  45              		.cfi_offset 4, -28
-  46              		.cfi_offset 3, -32
+  41              		.cfi_offset 9, -12
+  42              		.cfi_offset 8, -16
+  43              		.cfi_offset 7, -20
+  44              		.cfi_offset 6, -24
+  45              		.cfi_offset 5, -28
+  46              		.cfi_offset 4, -32
   47 0008 FEFFFFEB 		bl	vTaskDelay
- 236:src/main.c    ****   GPIOInit (1, FAST_PORT, DIR_OUT, LED1_MASK);
-  48              		.loc 1 236 0
+ 238:src/main.c    ****   GPIOInit (1, FAST_PORT, DIR_OUT, LED1_MASK);
+  48              		.loc 1 238 0
   49 000c 0100A0E3 		mov	r0, #1
   50 0010 0020A0E1 		mov	r2, r0
   51 0014 0137A0E3 		mov	r3, #262144
   52 0018 0010A0E1 		mov	r1, r0
   53 001c FEFFFFEB 		bl	GPIOInit
- 237:src/main.c    ****   FIO2DIR0 = 1;
-  54              		.loc 1 237 0
-  55 0020 D8309FE5 		ldr	r3, .L9
+ 239:src/main.c    ****   FIO2DIR0 = 1;
+  54              		.loc 1 239 0
+  55 0020 A8319FE5 		ldr	r3, .L16
   56 0024 0120A0E3 		mov	r2, #1
   57 0028 BF2043E5 		strb	r2, [r3, #-191]
-  58 002c D0509FE5 		ldr	r5, .L9+4
- 238:src/main.c    ****   while (!xSemaphoreTake (Mutex, 300 / portTICK_RATE_MS)) FIO1PIN ^= LED1_MASK;
-  59              		.loc 1 238 0
-  60 0030 D0409FE5 		ldr	r4, .L9+8
+  58 002c A0519FE5 		ldr	r5, .L16+4
+ 240:src/main.c    ****   while (!xSemaphoreTake (Mutex, 300 / portTICK_RATE_MS)) FIO1PIN ^= LED1_MASK;
+  59              		.loc 1 240 0
+  60 0030 A0419FE5 		ldr	r4, .L16+8
   61 0034 020000EA 		b	.L2
   62              	.L3:
-  63              		.loc 1 238 0 is_stmt 0 discriminator 2
+  63              		.loc 1 240 0 is_stmt 0 discriminator 2
   64 0038 CB1F14E5 		ldr	r1, [r4, #-4043]
   65 003c 010721E2 		eor	r0, r1, #262144
   66 0040 CB0F04E5 		str	r0, [r4, #-4043]
   67              	.L2:
-  68              		.loc 1 238 0 discriminator 1
+  68              		.loc 1 240 0 discriminator 1
   69 0044 0010A0E3 		mov	r1, #0
   70 0048 000095E5 		ldr	r0, [r5, #0]
   71 004c 4B2FA0E3 		mov	r2, #300
@@ -303,1394 +305,1499 @@
   73 0054 FEFFFFEB 		bl	xQueueGenericReceive
   74 0058 000050E3 		cmp	r0, #0
   75 005c F5FFFF0A 		beq	.L3
-  76              		.loc 1 238 0
-  77 0060 0060A0E3 		mov	r6, #0
-  78 0064 A0409FE5 		ldr	r4, .L9+12
- 239:src/main.c    ****   while (1){
- 240:src/main.c    **** 	  vTaskDelay (10 / portTICK_RATE_MS);
- 241:src/main.c    **** 	  if( tole++==0 ){
- 242:src/main.c    **** 		  printf("tick");
- 243:src/main.c    **** 		  FIO1PIN ^= LED1_MASK;
- 244:src/main.c    **** 		  }
- 245:src/main.c    **** 	  else if( tole==10 ){
- 246:src/main.c    **** 		  printf("Tack");
- 247:src/main.c    **** 		  tole = -10;
- 248:src/main.c    ****   		  FIO2PIN0 ^= 1;
-  79              		.loc 1 248 0 is_stmt 1
-  80 0068 90809FE5 		ldr	r8, .L9
- 243:src/main.c    **** 		  FIO1PIN ^= LED1_MASK;
-  81              		.loc 1 243 0
-  82 006c 94509FE5 		ldr	r5, .L9+8
- 238:src/main.c    ****   while (!xSemaphoreTake (Mutex, 300 / portTICK_RATE_MS)) FIO1PIN ^= LED1_MASK;
-  83              		.loc 1 238 0
-  84 0070 06A0A0E1 		mov	sl, r6
-  85 0074 0670A0E1 		mov	r7, r6
-  86 0078 040000EA 		b	.L6
-  87              	.LVL2:
-  88              	.L4:
- 245:src/main.c    **** 	  else if( tole==10 ){
-  89              		.loc 1 245 0
-  90 007c 0A005AE3 		cmp	sl, #10
-  91 0080 0D00000A 		beq	.L8
+  76              		.loc 1 240 0
+  77 0060 0040A0E3 		mov	r4, #0
+  78 0064 70619FE5 		ldr	r6, .L16+12
+  79 0068 0450A0E1 		mov	r5, r4
+  80 006c 04A0A0E1 		mov	sl, r4
+  81 0070 0490A0E1 		mov	r9, r4
+  82 0074 0470A0E1 		mov	r7, r4
+  83 0078 0480A0E1 		mov	r8, r4
+  84              	.LVL2:
+  85              	.L4:
+ 241:src/main.c    ****   while(1){
+ 242:src/main.c    ****  	 while (1){
+ 243:src/main.c    **** 		  vTaskDelay (1 / portTICK_RATE_MS);
+  86              		.loc 1 243 0 is_stmt 1
+  87 007c 0100A0E3 		mov	r0, #1
+  88 0080 FEFFFFEB 		bl	vTaskDelay
+ 244:src/main.c    **** 		  if( tole++==0 ){
+  89              		.loc 1 244 0
+  90 0084 000059E3 		cmp	r9, #0
+  91 0088 019089E2 		add	r9, r9, #1
   92              	.LVL3:
-  93              	.L5:
- 249:src/main.c    **** 		  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
- 250:src/main.c    **** 		  fflush(stdout);
- 251:src/main.c    **** 		  printf("%x",tmpData);
- 252:src/main.c    **** 	  	}
- 253:src/main.c    **** 		fflush(stdout);
-  94              		.loc 1 253 0
-  95 0084 00E094E5 		ldr	lr, [r4, #0]
-  96 0088 08009EE5 		ldr	r0, [lr, #8]
-  97 008c FEFFFFEB 		bl	fflush
-  98              	.LVL4:
-  99              	.L6:
- 240:src/main.c    **** 	  vTaskDelay (10 / portTICK_RATE_MS);
- 100              		.loc 1 240 0
- 101 0090 0A00A0E3 		mov	r0, #10
- 102 0094 FEFFFFEB 		bl	vTaskDelay
- 241:src/main.c    **** 	  if( tole++==0 ){
- 103              		.loc 1 241 0
- 104 0098 00005AE3 		cmp	sl, #0
- 105 009c 01A08AE2 		add	sl, sl, #1
- 106              	.LVL5:
- 107 00a0 F5FFFF1A 		bne	.L4
- 242:src/main.c    **** 		  printf("tick");
- 108              		.loc 1 242 0
- 109 00a4 64009FE5 		ldr	r0, .L9+16
- 110 00a8 FEFFFFEB 		bl	printf
- 243:src/main.c    **** 		  FIO1PIN ^= LED1_MASK;
- 111              		.loc 1 243 0
- 112 00ac CB2F15E5 		ldr	r2, [r5, #-4043]
- 113 00b0 01C722E2 		eor	ip, r2, #262144
- 114 00b4 CBCF05E5 		str	ip, [r5, #-4043]
- 115 00b8 F1FFFFEA 		b	.L5
- 116              	.L8:
- 246:src/main.c    **** 		  printf("Tack");
- 117              		.loc 1 246 0
- 118 00bc 50009FE5 		ldr	r0, .L9+20
- 119 00c0 FEFFFFEB 		bl	printf
- 120              	.LVL6:
- 248:src/main.c    ****   		  FIO2PIN0 ^= 1;
- 121              		.loc 1 248 0
- 122 00c4 ABC058E5 		ldrb	ip, [r8, #-171]	@ zero_extendqisi2
- 123 00c8 01102CE2 		eor	r1, ip, #1
- 124 00cc AB1048E5 		strb	r1, [r8, #-171]
- 249:src/main.c    **** 		  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
- 125              		.loc 1 249 0
- 126 00d0 AB0058E5 		ldrb	r0, [r8, #-171]	@ zero_extendqisi2
- 127 00d4 023000E2 		and	r3, r0, #2
- 128 00d8 137687E0 		add	r7, r7, r3, asl r6
- 129              	.LVL7:
- 250:src/main.c    **** 		  fflush(stdout);
- 130              		.loc 1 250 0
- 131 00dc 00A094E5 		ldr	sl, [r4, #0]
- 132 00e0 08009AE5 		ldr	r0, [sl, #8]
- 133 00e4 FEFFFFEB 		bl	fflush
- 251:src/main.c    **** 		  printf("%x",tmpData);
- 134              		.loc 1 251 0
- 135 00e8 0710A0E1 		mov	r1, r7
- 136 00ec 24009FE5 		ldr	r0, .L9+24
- 137 00f0 FEFFFFEB 		bl	printf
- 247:src/main.c    **** 		  tole = -10;
- 138              		.loc 1 247 0
- 139 00f4 09A0E0E3 		mvn	sl, #9
- 249:src/main.c    **** 		  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
- 140              		.loc 1 249 0
- 141 00f8 016086E2 		add	r6, r6, #1
- 142              	.LVL8:
- 143 00fc E0FFFFEA 		b	.L5
- 144              	.L10:
- 145              		.align	2
- 146              	.L9:
- 147 0100 FFC0FF3F 		.word	1073725695
- 148 0104 00000000 		.word	.LANCHOR0
- 149 0108 FFCFFF3F 		.word	1073729535
- 150 010c 00000000 		.word	_impure_ptr
- 151 0110 00000000 		.word	.LC0
- 152 0114 08000000 		.word	.LC1
- 153 0118 10000000 		.word	.LC2
- 154              		.cfi_endproc
- 155              	.LFE5:
- 157              		.section	.text.main,"ax",%progbits
- 158              		.align	2
- 159              		.global	main
- 161              	main:
- 162              	.LFB0:
+  93 008c 2000000A 		beq	.L13
+  94              	.L5:
+ 245:src/main.c    **** 			  FIO1PIN ^= LED1_MASK;
+ 246:src/main.c    ****   			  FIO2PIN0 ^= 1;
+ 247:src/main.c    **** 			  flg ^= 1; 
+ 248:src/main.c    **** 			  fflush(stdout);
+ 249:src/main.c    **** 			}
+ 250:src/main.c    **** 		  else if( tole==10 ){
+  95              		.loc 1 250 0
+  96 0090 0A0059E3 		cmp	r9, #10
+  97 0094 2B00000A 		beq	.L14
+  98              	.L6:
+ 251:src/main.c    **** 			  tole = -10;
+ 252:src/main.c    **** 			  if((flg%2)==1){
+ 253:src/main.c    **** 				  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
+ 254:src/main.c    **** 			  	  printf("%4x",tmpData>>1);
+ 255:src/main.c    **** 				  fflush(stdout);
+ 256:src/main.c    **** 				  printf("T");
+ 257:src/main.c    **** 				  fflush(stdout);
+ 258:src/main.c    **** 			  }
+ 259:src/main.c    **** 			  if ((flg%2)==0){
+ 260:src/main.c    **** 				  bakData = bakData + ((FIO2PIN0&2)<<cot++);
+ 261:src/main.c    **** 				  fflush(stdout);
+ 262:src/main.c    **** 				}
+ 263:src/main.c    **** 		  }
+ 264:src/main.c    **** // 	  	  if(cot%12==0 && cnt!=0 && cot!=0)break;
+ 265:src/main.c    **** 		  if( tole==-10 && (flg%2)==0 && bakData != tmpData )break;
+  99              		.loc 1 265 0
+ 100 0098 0A0079E3 		cmn	r9, #10
+ 101 009c F6FFFF1A 		bne	.L4
+ 102 00a0 019004E2 		and	r9, r4, #1
+ 103              	.LVL4:
+ 104              	.L10:
+ 105              		.loc 1 265 0 is_stmt 0 discriminator 1
+ 106 00a4 019029E2 		eor	r9, r9, #1
+ 107 00a8 080057E1 		cmp	r7, r8
+ 108 00ac 0090A003 		moveq	r9, #0
+ 109 00b0 01900912 		andne	r9, r9, #1
+ 110 00b4 000059E3 		cmp	r9, #0
+ 111 00b8 0990E003 		mvneq	r9, #9
+ 112 00bc EEFFFF0A 		beq	.L4
+ 266:src/main.c    ****  		} 
+ 267:src/main.c    **** // 	  if(cot%12==0 && cnt!=0 && cot!=0){
+ 268:src/main.c    **** //	  if(bakData != tmpData){
+ 269:src/main.c    **** 		  printf("%x",bakData>>1);
+ 113              		.loc 1 269 0 is_stmt 1
+ 114 00c0 A710A0E1 		mov	r1, r7, lsr #1
+ 115 00c4 14019FE5 		ldr	r0, .L16+16
+ 116 00c8 FEFFFFEB 		bl	printf
+ 270:src/main.c    **** 		  fflush(stdout);
+ 117              		.loc 1 270 0
+ 118 00cc 005096E5 		ldr	r5, [r6, #0]
+ 119              	.LVL5:
+ 120 00d0 080095E5 		ldr	r0, [r5, #8]
+ 121 00d4 FEFFFFEB 		bl	fflush
+ 271:src/main.c    **** 		  printf("\n");
+ 122              		.loc 1 271 0
+ 123 00d8 0A00A0E3 		mov	r0, #10
+ 124 00dc FEFFFFEB 		bl	putchar
+ 272:src/main.c    **** 		  fflush(stdout);
+ 125              		.loc 1 272 0
+ 126 00e0 007096E5 		ldr	r7, [r6, #0]
+ 127              	.LVL6:
+ 273:src/main.c    **** 		  tole=cnt=tmpData=bakData=cot=0;
+ 128              		.loc 1 273 0
+ 129 00e4 0050A0E3 		mov	r5, #0
+ 272:src/main.c    **** 		  fflush(stdout);
+ 130              		.loc 1 272 0
+ 131 00e8 080097E5 		ldr	r0, [r7, #8]
+ 132 00ec FEFFFFEB 		bl	fflush
+ 133              	.LVL7:
+ 134              		.loc 1 273 0
+ 135 00f0 0590A0E1 		mov	r9, r5
+ 243:src/main.c    **** 		  vTaskDelay (1 / portTICK_RATE_MS);
+ 136              		.loc 1 243 0
+ 137 00f4 0100A0E3 		mov	r0, #1
+ 138 00f8 FEFFFFEB 		bl	vTaskDelay
+ 244:src/main.c    **** 		  if( tole++==0 ){
+ 139              		.loc 1 244 0
+ 140 00fc 000059E3 		cmp	r9, #0
+ 141              		.loc 1 273 0
+ 142 0100 05A0A0E1 		mov	sl, r5
+ 143 0104 0570A0E1 		mov	r7, r5
+ 144 0108 0580A0E1 		mov	r8, r5
+ 145              	.LVL8:
+ 244:src/main.c    **** 		  if( tole++==0 ){
+ 146              		.loc 1 244 0
+ 147 010c 019089E2 		add	r9, r9, #1
+ 148              	.LVL9:
+ 149 0110 DEFFFF1A 		bne	.L5
+ 150              	.LVL10:
+ 151              	.L13:
+ 245:src/main.c    **** 			  FIO1PIN ^= LED1_MASK;
+ 152              		.loc 1 245 0
+ 153 0114 BC109FE5 		ldr	r1, .L16+8
+ 154 0118 CBCF11E5 		ldr	ip, [r1, #-4043]
+ 155 011c 01072CE2 		eor	r0, ip, #262144
+ 156 0120 CB0F01E5 		str	r0, [r1, #-4043]
+ 246:src/main.c    ****   			  FIO2PIN0 ^= 1;
+ 157              		.loc 1 246 0
+ 158 0124 A4309FE5 		ldr	r3, .L16
+ 159 0128 AB2053E5 		ldrb	r2, [r3, #-171]	@ zero_extendqisi2
+ 160 012c 01E022E2 		eor	lr, r2, #1
+ 161 0130 ABE043E5 		strb	lr, [r3, #-171]
+ 248:src/main.c    **** 			  fflush(stdout);
+ 162              		.loc 1 248 0
+ 163 0134 00C096E5 		ldr	ip, [r6, #0]
+ 164 0138 08009CE5 		ldr	r0, [ip, #8]
+ 247:src/main.c    **** 			  flg ^= 1; 
+ 165              		.loc 1 247 0
+ 166 013c 014024E2 		eor	r4, r4, #1
+ 167              	.LVL11:
+ 248:src/main.c    **** 			  fflush(stdout);
+ 168              		.loc 1 248 0
+ 169 0140 FEFFFFEB 		bl	fflush
+ 170 0144 D3FFFFEA 		b	.L6
+ 171              	.L14:
+ 172              	.LVL12:
+ 252:src/main.c    **** 			  if((flg%2)==1){
+ 173              		.loc 1 252 0
+ 174 0148 A4EFA0E1 		mov	lr, r4, lsr #31
+ 175 014c 0E2084E0 		add	r2, r4, lr
+ 176 0150 013002E2 		and	r3, r2, #1
+ 177 0154 03906EE0 		rsb	r9, lr, r3
+ 178 0158 010059E3 		cmp	r9, #1
+ 179 015c 0A00000A 		beq	.L15
+ 180              	.L7:
+ 259:src/main.c    **** 			  if ((flg%2)==0){
+ 181              		.loc 1 259 0
+ 182 0160 019014E2 		ands	r9, r4, #1
+ 183 0164 CEFFFF1A 		bne	.L10
+ 260:src/main.c    **** 				  bakData = bakData + ((FIO2PIN0&2)<<cot++);
+ 184              		.loc 1 260 0
+ 185 0168 60009FE5 		ldr	r0, .L16
+ 261:src/main.c    **** 				  fflush(stdout);
+ 186              		.loc 1 261 0
+ 187 016c 002096E5 		ldr	r2, [r6, #0]
+ 260:src/main.c    **** 				  bakData = bakData + ((FIO2PIN0&2)<<cot++);
+ 188              		.loc 1 260 0
+ 189 0170 AB1050E5 		ldrb	r1, [r0, #-171]	@ zero_extendqisi2
+ 261:src/main.c    **** 				  fflush(stdout);
+ 190              		.loc 1 261 0
+ 191 0174 080092E5 		ldr	r0, [r2, #8]
+ 260:src/main.c    **** 				  bakData = bakData + ((FIO2PIN0&2)<<cot++);
+ 192              		.loc 1 260 0
+ 193 0178 023001E2 		and	r3, r1, #2
+ 194 017c 137587E0 		add	r7, r7, r3, asl r5
+ 195              	.LVL13:
+ 196 0180 015085E2 		add	r5, r5, #1
+ 197              	.LVL14:
+ 261:src/main.c    **** 				  fflush(stdout);
+ 198              		.loc 1 261 0
+ 199 0184 FEFFFFEB 		bl	fflush
+ 200 0188 C5FFFFEA 		b	.L10
+ 201              	.L15:
+ 253:src/main.c    **** 				  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
+ 202              		.loc 1 253 0
+ 203 018c 3CE09FE5 		ldr	lr, .L16
+ 204 0190 AB905EE5 		ldrb	r9, [lr, #-171]	@ zero_extendqisi2
+ 205 0194 02C009E2 		and	ip, r9, #2
+ 206 0198 1C8A88E0 		add	r8, r8, ip, asl sl
+ 207              	.LVL15:
+ 254:src/main.c    **** 			  	  printf("%4x",tmpData>>1);
+ 208              		.loc 1 254 0
+ 209 019c 40009FE5 		ldr	r0, .L16+20
+ 210 01a0 A810A0E1 		mov	r1, r8, lsr #1
+ 211 01a4 FEFFFFEB 		bl	printf
+ 255:src/main.c    **** 				  fflush(stdout);
+ 212              		.loc 1 255 0
+ 213 01a8 001096E5 		ldr	r1, [r6, #0]
+ 214 01ac 080091E5 		ldr	r0, [r1, #8]
+ 215 01b0 FEFFFFEB 		bl	fflush
+ 256:src/main.c    **** 				  printf("T");
+ 216              		.loc 1 256 0
+ 217 01b4 5400A0E3 		mov	r0, #84
+ 218 01b8 FEFFFFEB 		bl	putchar
+ 257:src/main.c    **** 				  fflush(stdout);
+ 219              		.loc 1 257 0
+ 220 01bc 000096E5 		ldr	r0, [r6, #0]
+ 221 01c0 080090E5 		ldr	r0, [r0, #8]
+ 253:src/main.c    **** 				  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
+ 222              		.loc 1 253 0
+ 223 01c4 01A08AE2 		add	sl, sl, #1
+ 224              	.LVL16:
+ 257:src/main.c    **** 				  fflush(stdout);
+ 225              		.loc 1 257 0
+ 226 01c8 FEFFFFEB 		bl	fflush
+ 227 01cc E3FFFFEA 		b	.L7
+ 228              	.L17:
+ 229              		.align	2
+ 230              	.L16:
+ 231 01d0 FFC0FF3F 		.word	1073725695
+ 232 01d4 00000000 		.word	.LANCHOR0
+ 233 01d8 FFCFFF3F 		.word	1073729535
+ 234 01dc 00000000 		.word	_impure_ptr
+ 235 01e0 04000000 		.word	.LC1
+ 236 01e4 00000000 		.word	.LC0
+ 237              		.cfi_endproc
+ 238              	.LFE5:
+ 240              		.section	.text.main,"ax",%progbits
+ 241              		.align	2
+ 242              		.global	main
+ 244              	main:
+ 245              	.LFB0:
  126:src/main.c    **** {
- 163              		.loc 1 126 0
- 164              		.cfi_startproc
- 165              		@ Function supports interworking.
- 166              		@ args = 0, pretend = 0, frame = 0
- 167              		@ frame_needed = 0, uses_anonymous_args = 0
- 168 0000 F0412DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, lr}
- 169              	.LCFI1:
- 170              		.cfi_def_cfa_offset 24
- 171 0004 10D04DE2 		sub	sp, sp, #16
- 172              	.LCFI2:
- 173              		.cfi_def_cfa_offset 40
+ 246              		.loc 1 126 0
+ 247              		.cfi_startproc
+ 248              		@ Function supports interworking.
+ 249              		@ args = 0, pretend = 0, frame = 0
+ 250              		@ frame_needed = 0, uses_anonymous_args = 0
+ 251 0000 F0412DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, lr}
+ 252              	.LCFI1:
+ 253              		.cfi_def_cfa_offset 24
+ 254 0004 10D04DE2 		sub	sp, sp, #16
+ 255              	.LCFI2:
+ 256              		.cfi_def_cfa_offset 40
  127:src/main.c    ****   TargetResetInit ();		//
- 174              		.loc 1 127 0
- 175              		.cfi_offset 14, -4
- 176              		.cfi_offset 8, -8
- 177              		.cfi_offset 7, -12
- 178              		.cfi_offset 6, -16
- 179              		.cfi_offset 5, -20
- 180              		.cfi_offset 4, -24
- 181 0008 FEFFFFEB 		bl	TargetResetInit
+ 257              		.loc 1 127 0
+ 258              		.cfi_offset 14, -4
+ 259              		.cfi_offset 8, -8
+ 260              		.cfi_offset 7, -12
+ 261              		.cfi_offset 6, -16
+ 262              		.cfi_offset 5, -20
+ 263              		.cfi_offset 4, -24
+ 264 0008 FEFFFFEB 		bl	TargetResetInit
  128:src/main.c    ****   GPIOResetInit ();
- 182              		.loc 1 128 0
- 183 000c FEFFFFEB 		bl	GPIOResetInit
- 184              	.LVL9:
- 185              	.LBB4:
- 186              	.LBB6:
- 156:src/main.c    ****   U0LCR = 0x83;			/* 8 bits, no Parity, 1 Stop bit */
- 187              		.loc 1 156 0
- 188 0010 B0109FE5 		ldr	r1, .L14
- 189 0014 8330A0E3 		mov	r3, #131
- 159:src/main.c    ****   U0DLL = Fdiv % 256;
- 190              		.loc 1 159 0
- 191 0018 13C0A0E3 		mov	ip, #19
- 161:src/main.c    ****   U0FCR = 0x07;			/* Enable and reset TX and RX FIFO. */
- 192              		.loc 1 161 0
- 193 001c 0720A0E3 		mov	r2, #7
- 158:src/main.c    ****   U0DLM = Fdiv / 256;
- 194              		.loc 1 158 0
- 195 0020 0040A0E3 		mov	r4, #0
- 196              	.LBE6:
- 197              	.LBE4:
+ 265              		.loc 1 128 0
+ 266 000c FEFFFFEB 		bl	GPIOResetInit
+ 267              	.LVL17:
+ 268              	.LBB4:
+ 269              	.LBB6:
+ 155:src/main.c    ****   U0LCR = 0x83;			/* 8 bits, no Parity, 1 Stop bit */
+ 270              		.loc 1 155 0
+ 271 0010 B0109FE5 		ldr	r1, .L21
+ 272 0014 8330A0E3 		mov	r3, #131
+ 158:src/main.c    ****   U0DLL = Fdiv % 256;
+ 273              		.loc 1 158 0
+ 274 0018 13C0A0E3 		mov	ip, #19
+ 160:src/main.c    ****   U0FCR = 0x07;			/* Enable and reset TX and RX FIFO. */
+ 275              		.loc 1 160 0
+ 276 001c 0720A0E3 		mov	r2, #7
+ 157:src/main.c    ****   U0DLM = Fdiv / 256;
+ 277              		.loc 1 157 0
+ 278 0020 0040A0E3 		mov	r4, #0
+ 279              	.LBE6:
+ 280              	.LBE4:
  130:src/main.c    ****   FIO2PIN1 = 2;
- 198              		.loc 1 130 0
- 199 0024 A0509FE5 		ldr	r5, .L14+4
- 200              	.LBB8:
- 201              	.LBB5:
- 160:src/main.c    ****   U0LCR = 0x03;			/* DLAB = 0 */
- 202              		.loc 1 160 0
- 203 0028 0370A0E3 		mov	r7, #3
- 156:src/main.c    ****   U0LCR = 0x83;			/* 8 bits, no Parity, 1 Stop bit */
- 204              		.loc 1 156 0
- 205 002c 0C3081E5 		str	r3, [r1, #12]
- 206              	.LVL10:
- 163:src/main.c    ****   printf ("Hello,");
- 207              		.loc 1 163 0
- 208 0030 98009FE5 		ldr	r0, .L14+8
- 158:src/main.c    ****   U0DLM = Fdiv / 256;
- 209              		.loc 1 158 0
- 210 0034 044081E5 		str	r4, [r1, #4]
- 211              	.LBE5:
- 212              	.LBE8:
+ 281              		.loc 1 130 0
+ 282 0024 A0509FE5 		ldr	r5, .L21+4
+ 283              	.LBB8:
+ 284              	.LBB5:
+ 159:src/main.c    ****   U0LCR = 0x03;			/* DLAB = 0 */
+ 285              		.loc 1 159 0
+ 286 0028 0370A0E3 		mov	r7, #3
+ 155:src/main.c    ****   U0LCR = 0x83;			/* 8 bits, no Parity, 1 Stop bit */
+ 287              		.loc 1 155 0
+ 288 002c 0C3081E5 		str	r3, [r1, #12]
+ 289              	.LVL18:
+ 162:src/main.c    ****   printf ("Hello,");
+ 290              		.loc 1 162 0
+ 291 0030 98009FE5 		ldr	r0, .L21+8
+ 157:src/main.c    ****   U0DLM = Fdiv / 256;
+ 292              		.loc 1 157 0
+ 293 0034 044081E5 		str	r4, [r1, #4]
+ 294              	.LBE5:
+ 295              	.LBE8:
  130:src/main.c    ****   FIO2PIN1 = 2;
- 213              		.loc 1 130 0
- 214 0038 0260A0E3 		mov	r6, #2
- 215              	.LBB9:
- 216              	.LBB7:
- 159:src/main.c    ****   U0DLL = Fdiv % 256;
- 217              		.loc 1 159 0
- 218 003c 00C081E5 		str	ip, [r1, #0]
- 160:src/main.c    ****   U0LCR = 0x03;			/* DLAB = 0 */
- 219              		.loc 1 160 0
- 220 0040 0C7081E5 		str	r7, [r1, #12]
- 161:src/main.c    ****   U0FCR = 0x07;			/* Enable and reset TX and RX FIFO. */
- 221              		.loc 1 161 0
- 222 0044 082081E5 		str	r2, [r1, #8]
- 163:src/main.c    ****   printf ("Hello,");
- 223              		.loc 1 163 0
- 224 0048 FEFFFFEB 		bl	printf
- 225              	.LBE7:
- 226              	.LBE9:
+ 296              		.loc 1 130 0
+ 297 0038 0260A0E3 		mov	r6, #2
+ 298              	.LBB9:
+ 299              	.LBB7:
+ 158:src/main.c    ****   U0DLL = Fdiv % 256;
+ 300              		.loc 1 158 0
+ 301 003c 00C081E5 		str	ip, [r1, #0]
+ 159:src/main.c    ****   U0LCR = 0x03;			/* DLAB = 0 */
+ 302              		.loc 1 159 0
+ 303 0040 0C7081E5 		str	r7, [r1, #12]
+ 160:src/main.c    ****   U0FCR = 0x07;			/* Enable and reset TX and RX FIFO. */
+ 304              		.loc 1 160 0
+ 305 0044 082081E5 		str	r2, [r1, #8]
+ 162:src/main.c    ****   printf ("Hello,");
+ 306              		.loc 1 162 0
+ 307 0048 FEFFFFEB 		bl	printf
+ 308              	.LBE7:
+ 309              	.LBE9:
  130:src/main.c    ****   FIO2PIN1 = 2;
- 227              		.loc 1 130 0
- 228 004c AA6045E5 		strb	r6, [r5, #-170]
+ 310              		.loc 1 130 0
+ 311 004c AA6045E5 		strb	r6, [r5, #-170]
  131:src/main.c    ****   Mutex = xSemaphoreCreateMutex ();
- 229              		.loc 1 131 0
- 230 0050 FEFFFFEB 		bl	xQueueCreateMutex
- 231 0054 78809FE5 		ldr	r8, .L14+12
- 232 0058 000088E5 		str	r0, [r8, #0]
+ 312              		.loc 1 131 0
+ 313 0050 FEFFFFEB 		bl	xQueueCreateMutex
+ 314 0054 78809FE5 		ldr	r8, .L21+12
+ 315 0058 000088E5 		str	r0, [r8, #0]
  132:src/main.c    ****   printf (" world!\n");
- 233              		.loc 1 132 0
- 234 005c 74009FE5 		ldr	r0, .L14+16
- 235 0060 FEFFFFEB 		bl	puts
+ 316              		.loc 1 132 0
+ 317 005c 74009FE5 		ldr	r0, .L21+16
+ 318 0060 FEFFFFEB 		bl	puts
  133:src/main.c    ****   if(Mutex != NULL){
- 236              		.loc 1 133 0
- 237 0064 003098E5 		ldr	r3, [r8, #0]
- 238 0068 040053E1 		cmp	r3, r4
- 239 006c 1400000A 		beq	.L12
+ 319              		.loc 1 133 0
+ 320 0064 003098E5 		ldr	r3, [r8, #0]
+ 321 0068 040053E1 		cmp	r3, r4
+ 322 006c 1400000A 		beq	.L19
  138:src/main.c    ****       xTaskCreate (ISSR, (signed portCHAR *) "issr", configMINIMAL_STACK_SIZE,
- 240              		.loc 1 138 0
- 241 0070 04E0A0E3 		mov	lr, #4
- 242 0074 60109FE5 		ldr	r1, .L14+20
- 243 0078 6820A0E3 		mov	r2, #104
- 244 007c 0430A0E1 		mov	r3, r4
- 245 0080 58009FE5 		ldr	r0, .L14+24
- 246 0084 00E08DE5 		str	lr, [sp, #0]
- 247 0088 04408DE5 		str	r4, [sp, #4]
- 248 008c 08408DE5 		str	r4, [sp, #8]
- 249 0090 0C408DE5 		str	r4, [sp, #12]
- 250 0094 FEFFFFEB 		bl	xTaskGenericCreate
- 141:src/main.c    ****     xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
- 251              		.loc 1 141 0
- 252 0098 44109FE5 		ldr	r1, .L14+28
- 253 009c 6820A0E3 		mov	r2, #104
- 254 00a0 0430A0E1 		mov	r3, r4
- 255 00a4 3C009FE5 		ldr	r0, .L14+32
- 256 00a8 00708DE5 		str	r7, [sp, #0]
- 257 00ac 04408DE5 		str	r4, [sp, #4]
- 258 00b0 08408DE5 		str	r4, [sp, #8]
- 259 00b4 0C408DE5 		str	r4, [sp, #12]
- 260 00b8 FEFFFFEB 		bl	xTaskGenericCreate
- 143:src/main.c    ****       vTaskStartScheduler ();
- 261              		.loc 1 143 0
- 262 00bc FEFFFFEB 		bl	vTaskStartScheduler
- 144:src/main.c    ****   FIO2SET1 = 2;
- 263              		.loc 1 144 0
- 264 00c0 A66045E5 		strb	r6, [r5, #-166]
- 265              	.L12:
- 266              	.L13:
- 267 00c4 FEFFFFEA 		b	.L13
- 268              	.L15:
- 269              		.align	2
- 270              	.L14:
- 271 00c8 00C000E0 		.word	-536821760
- 272 00cc FFC0FF3F 		.word	1073725695
- 273 00d0 14000000 		.word	.LC3
- 274 00d4 00000000 		.word	.LANCHOR0
- 275 00d8 1C000000 		.word	.LC4
- 276 00dc 24000000 		.word	.LC5
- 277 00e0 00000000 		.word	ISSR
- 278 00e4 2C000000 		.word	.LC6
- 279 00e8 00000000 		.word	vi2c
- 280              		.cfi_endproc
- 281              	.LFE0:
- 283              		.section	.text.getISSI,"ax",%progbits
- 284              		.align	2
- 285              		.global	getISSI
- 287              	getISSI:
- 288              	.LFB2:
- 174:src/main.c    **** {
- 289              		.loc 1 174 0
- 290              		.cfi_startproc
- 291              		@ Function supports interworking.
- 292              		@ args = 0, pretend = 0, frame = 0
- 293              		@ frame_needed = 0, uses_anonymous_args = 0
- 294              	.LVL11:
- 295 0000 F8402DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, lr}
- 296              	.LCFI3:
- 297              		.cfi_def_cfa_offset 24
- 179:src/main.c    ****   vTaskDelay (10 / portTICK_RATE_MS);
- 298              		.loc 1 179 0
- 299 0004 0A00A0E3 		mov	r0, #10
- 300              		.cfi_offset 14, -4
- 301              		.cfi_offset 7, -8
- 302              		.cfi_offset 6, -12
- 303              		.cfi_offset 5, -16
- 304              		.cfi_offset 4, -20
- 305              		.cfi_offset 3, -24
- 306 0008 FEFFFFEB 		bl	vTaskDelay
- 307 000c 84409FE5 		ldr	r4, .L21
- 180:src/main.c    ****   while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
- 308              		.loc 1 180 0
- 309 0010 000000EA 		b	.L17
- 310              	.L18:
- 180:src/main.c    ****   while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
- 311              		.loc 1 180 0 is_stmt 0 discriminator 2
- 312 0014 FEFFFFEB 		bl	vTaskDelay
- 313              	.L17:
- 180:src/main.c    ****   while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
- 314              		.loc 1 180 0 discriminator 1
- 315 0018 0010A0E3 		mov	r1, #0
- 316 001c 78209FE5 		ldr	r2, .L21+4
- 317 0020 0130A0E1 		mov	r3, r1
- 318 0024 000094E5 		ldr	r0, [r4, #0]
- 319 0028 FEFFFFEB 		bl	xQueueGenericReceive
- 320 002c 010050E3 		cmp	r0, #1
- 321 0030 0050A0E1 		mov	r5, r0
- 322 0034 190EA0E3 		mov	r0, #400
- 323 0038 F5FFFF1A 		bne	.L18
- 181:src/main.c    ****   printf ("start ISSI connection\n");
- 324              		.loc 1 181 0 is_stmt 1
- 325 003c 5C009FE5 		ldr	r0, .L21+8
- 326 0040 FEFFFFEB 		bl	puts
- 185:src/main.c    ****       FIO2SET0 = 1;
- 327              		.loc 1 185 0
- 328 0044 58409FE5 		ldr	r4, .L21+12
- 329 0048 0560A0E1 		mov	r6, r5
- 330              	.LVL12:
- 331              	.L20:
- 332 004c A76044E5 		strb	r6, [r4, #-167]
- 186:src/main.c    ****       prv = FIO2PIN0 & 3;
- 333              		.loc 1 186 0
- 334 0050 ABC054E5 		ldrb	ip, [r4, #-171]	@ zero_extendqisi2
- 188:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
- 335              		.loc 1 188 0
- 336 0054 6400A0E3 		mov	r0, #100
- 186:src/main.c    ****       prv = FIO2PIN0 & 3;
- 337              		.loc 1 186 0
- 338 0058 03700CE2 		and	r7, ip, #3
- 339              	.LVL13:
- 188:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
- 340              		.loc 1 188 0
- 341 005c FEFFFFEB 		bl	vTaskDelay
- 191:src/main.c    ****       FIO2SET1 = 2;
- 342              		.loc 1 191 0
- 343 0060 0220A0E3 		mov	r2, #2
- 192:src/main.c    ****       printf ("prv=%x", prv);
- 344              		.loc 1 192 0
- 345 0064 0710A0E1 		mov	r1, r7
- 189:src/main.c    ****       FIO2CLR0 = 1;
- 346              		.loc 1 189 0
- 347 0068 A35044E5 		strb	r5, [r4, #-163]
- 192:src/main.c    ****       printf ("prv=%x", prv);
- 348              		.loc 1 192 0
- 349 006c 34009FE5 		ldr	r0, .L21+16
- 191:src/main.c    ****       FIO2SET1 = 2;
- 350              		.loc 1 191 0
- 351 0070 A62044E5 		strb	r2, [r4, #-166]
- 192:src/main.c    ****       printf ("prv=%x", prv);
- 352              		.loc 1 192 0
- 353 0074 FEFFFFEB 		bl	printf
- 193:src/main.c    ****       crr = FIO0PIN & 3;
- 354              		.loc 1 193 0
- 355 0078 2C309FE5 		ldr	r3, .L21+20
- 356 007c EB1F13E5 		ldr	r1, [r3, #-4075]
- 194:src/main.c    ****       printf ("Cr=%d", crr);
- 357              		.loc 1 194 0
- 358 0080 28009FE5 		ldr	r0, .L21+24
- 193:src/main.c    ****       crr = FIO0PIN & 3;
- 359              		.loc 1 193 0
- 360 0084 031001E2 		and	r1, r1, #3
- 361              	.LVL14:
- 194:src/main.c    ****       printf ("Cr=%d", crr);
- 362              		.loc 1 194 0
- 363 0088 FEFFFFEB 		bl	printf
- 364              	.LVL15:
- 200:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
- 365              		.loc 1 200 0
- 366 008c 6400A0E3 		mov	r0, #100
- 367 0090 FEFFFFEB 		bl	vTaskDelay
- 201:src/main.c    ****     }
- 368              		.loc 1 201 0
- 369 0094 ECFFFFEA 		b	.L20
- 370              	.L22:
- 371              		.align	2
- 372              	.L21:
- 373 0098 00000000 		.word	.LANCHOR0
- 374 009c 2D010000 		.word	301
- 375 00a0 30000000 		.word	.LC7
- 376 00a4 FFC0FF3F 		.word	1073725695
- 377 00a8 48000000 		.word	.LC8
- 378 00ac FFCFFF3F 		.word	1073729535
- 379 00b0 50000000 		.word	.LC9
- 380              		.cfi_endproc
- 381              	.LFE2:
- 383              		.section	.text.vApplicationTickHook,"ax",%progbits
- 384              		.align	2
- 385              		.global	vApplicationTickHook
- 387              	vApplicationTickHook:
- 388              	.LFB3:
- 209:src/main.c    **** {
- 389              		.loc 1 209 0
- 390              		.cfi_startproc
- 391              		@ Function supports interworking.
- 392              		@ args = 0, pretend = 0, frame = 0
- 393              		@ frame_needed = 0, uses_anonymous_args = 0
- 394              		@ link register save eliminated.
- 210:src/main.c    **** }
- 395              		.loc 1 210 0
- 396 0000 1EFF2FE1 		bx	lr
- 397              		.cfi_endproc
- 398              	.LFE3:
- 400              		.section	.text.vtrsTask,"ax",%progbits
- 401              		.align	2
- 402              		.global	vtrsTask
- 404              	vtrsTask:
- 405              	.LFB7:
- 254:src/main.c    **** 
- 255:src/main.c    ****   }
- 256:src/main.c    ****   FIO2CLR1 = 0xFF;
- 257:src/main.c    ****   while (1)
- 258:src/main.c    ****     {
- 259:src/main.c    ****       getISSI ();
- 260:src/main.c    ****       vTaskDelay (300 / portTICK_RATE_MS);
- 261:src/main.c    ****     }
- 262:src/main.c    **** }
- 263:src/main.c    **** 
- 264:src/main.c    **** /*-----------------------------------------------------------*/
- 265:src/main.c    **** unsigned int res[5];
- 266:src/main.c    **** int white, black;
- 267:src/main.c    **** //-----------------
- 268:src/main.c    **** void
- 269:src/main.c    **** vValueTask (void *pvParameters)
- 270:src/main.c    **** {
- 271:src/main.c    ****   int i;
- 272:src/main.c    ****   unsigned int a, t;
- 273:src/main.c    ****   vTaskDelay (30 / portTICK_RATE_MS);
- 274:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
- 275:src/main.c    ****     {
- 276:src/main.c    ****       for (a = 0; a <= 7; a++)
- 277:src/main.c    **** 	{
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 280:src/main.c    **** 	}
- 281:src/main.c    ****       printf ("\n");
- 282:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
- 283:src/main.c    ****       black += (res[2]);
- 284:src/main.c    ****     }
- 285:src/main.c    **** //      white = (white / 20);
- 286:src/main.c    **** //      black = (black / 20);
- 287:src/main.c    **** //      printf("white %x, black %x", white, black);
- 288:src/main.c    **** //      write_ROM(0x1A, 32, white);             //(int subadr, int size, int Data)
- 289:src/main.c    **** //      write_ROM(0x2A, 32, black);             //(int subadr, int size, int Data)
- 290:src/main.c    ****   while (1)
- 291:src/main.c    ****     {
- 292:src/main.c    ****       for (a = 0; a <= 4; a++)
- 293:src/main.c    **** 	{
- 294:src/main.c    **** 	  res[a] = ADC_Read (a);
- 295:src/main.c    **** 	  printf ("%d\t", res[a]);
- 296:src/main.c    **** 	  vTaskDelay (3 / portTICK_RATE_MS);
- 297:src/main.c    **** 	}
- 298:src/main.c    ****       printf ("\n");
- 299:src/main.c    ****     }
- 300:src/main.c    **** }
- 301:src/main.c    **** 
- 302:src/main.c    **** void
- 303:src/main.c    **** vtrsTask (void *pvParameters)
- 304:src/main.c    **** {
- 406              		.loc 1 304 0
- 407              		.cfi_startproc
- 408              		@ Function supports interworking.
- 409              		@ args = 0, pretend = 0, frame = 0
- 410              		@ frame_needed = 0, uses_anonymous_args = 0
- 411              	.LVL16:
- 412 0000 F84F2DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, r8, r9, sl, fp, lr}
- 413              	.LCFI4:
- 414              		.cfi_def_cfa_offset 40
- 305:src/main.c    ****   vTaskDelay (300 / portTICK_RATE_MS);
- 415              		.loc 1 305 0
- 416 0004 4B0FA0E3 		mov	r0, #300
- 417              	.LVL17:
- 418              		.cfi_offset 14, -4
- 419              		.cfi_offset 11, -8
- 420              		.cfi_offset 10, -12
- 421              		.cfi_offset 9, -16
- 422              		.cfi_offset 8, -20
- 423              		.cfi_offset 7, -24
- 424              		.cfi_offset 6, -28
- 425              		.cfi_offset 5, -32
- 426              		.cfi_offset 4, -36
- 427              		.cfi_offset 3, -40
- 428 0008 FEFFFFEB 		bl	vTaskDelay
- 429 000c F0409FE5 		ldr	r4, .L42
- 430 0010 F0809FE5 		ldr	r8, .L42+4
- 431 0014 F0709FE5 		ldr	r7, .L42+8
- 432 0018 F0909FE5 		ldr	r9, .L42+12
- 433 001c F0A09FE5 		ldr	sl, .L42+16
- 306:src/main.c    ****   for (;;)
- 307:src/main.c    ****     {
- 308:src/main.c    ****       if ((2 * res[6]) <= (white + black))
- 434              		.loc 1 308 0
- 435 0020 0460A0E1 		mov	r6, r4
- 436 0024 0450A0E1 		mov	r5, r4
- 437              	.L31:
- 305:src/main.c    ****   vTaskDelay (300 / portTICK_RATE_MS);
- 438              		.loc 1 305 0
- 439 0028 002098E5 		ldr	r2, [r8, #0]
- 440 002c 003097E5 		ldr	r3, [r7, #0]
- 309:src/main.c    **** 	{
- 310:src/main.c    **** 	  printf ("migi");
- 311:src/main.c    **** 	  left = 0;
- 312:src/main.c    **** 	  right = 10;
- 441              		.loc 1 312 0
- 442 0030 0AB0A0E3 		mov	fp, #10
- 443 0034 033082E0 		add	r3, r2, r3
- 444 0038 020000EA 		b	.L28
- 445              	.L25:
- 313:src/main.c    **** 	  while ((2 * res[2]) <= (white + black)
- 314:src/main.c    **** 		 || ((2 * res[3]) <= (white + black))
- 315:src/main.c    **** 		 || ((2 * res[4]) <= (white + black)));
- 316:src/main.c    **** 	  left = 10;
- 317:src/main.c    **** 	  right = 10;
- 318:src/main.c    **** 	}
- 319:src/main.c    ****       if ((2 * res[4]) <= ((white + black)))
- 446              		.loc 1 319 0
- 447 003c 10E094E5 		ldr	lr, [r4, #16]
- 448 0040 8E0053E1 		cmp	r3, lr, asl #1
- 449 0044 1600002A 		bcs	.L41
- 450              	.L28:
- 308:src/main.c    ****       if ((2 * res[6]) <= (white + black))
- 451              		.loc 1 308 0
- 452 0048 180094E5 		ldr	r0, [r4, #24]
- 453 004c 800053E1 		cmp	r3, r0, asl #1
- 454 0050 F9FFFF3A 		bcc	.L25
- 310:src/main.c    **** 	  printf ("migi");
- 455              		.loc 1 310 0
- 456 0054 BC009FE5 		ldr	r0, .L42+20
- 457 0058 FEFFFFEB 		bl	printf
- 312:src/main.c    **** 	  right = 10;
- 458              		.loc 1 312 0
- 459 005c 081096E5 		ldr	r1, [r6, #8]
- 460 0060 003098E5 		ldr	r3, [r8, #0]
- 461 0064 00C097E5 		ldr	ip, [r7, #0]
- 462 0068 0C2096E5 		ldr	r2, [r6, #12]
- 463 006c 100096E5 		ldr	r0, [r6, #16]
- 464 0070 00B089E5 		str	fp, [r9, #0]
- 465 0074 8110A0E1 		mov	r1, r1, asl #1
- 466 0078 03308CE0 		add	r3, ip, r3
- 467 007c 8220A0E1 		mov	r2, r2, asl #1
- 468 0080 8000A0E1 		mov	r0, r0, asl #1
- 469              	.L37:
- 313:src/main.c    **** 	  while ((2 * res[2]) <= (white + black)
- 470              		.loc 1 313 0 discriminator 1
- 471 0084 030051E1 		cmp	r1, r3
- 472 0088 1C00009A 		bls	.L26
- 314:src/main.c    **** 		 || ((2 * res[3]) <= (white + black))
- 473              		.loc 1 314 0
- 474 008c 020053E1 		cmp	r3, r2
- 475 0090 FBFFFF2A 		bcs	.L37
- 315:src/main.c    **** 		 || ((2 * res[4]) <= (white + black)));
- 476              		.loc 1 315 0
- 477 0094 000053E1 		cmp	r3, r0
- 478 0098 F9FFFF2A 		bcs	.L37
- 316:src/main.c    **** 	  left = 10;
- 479              		.loc 1 316 0
- 480 009c 00B08AE5 		str	fp, [sl, #0]
- 481 00a0 E5FFFFEA 		b	.L25
- 482              	.L41:
- 320:src/main.c    **** 	{
- 321:src/main.c    **** 	  printf ("tyuou");
- 483              		.loc 1 321 0
- 484 00a4 70009FE5 		ldr	r0, .L42+24
- 485 00a8 FEFFFFEB 		bl	printf
- 322:src/main.c    **** 	  left = 10;
- 486              		.loc 1 322 0
- 487 00ac 002098E5 		ldr	r2, [r8, #0]
- 488 00b0 0C0095E5 		ldr	r0, [r5, #12]
- 489 00b4 08C095E5 		ldr	ip, [r5, #8]
- 490 00b8 003097E5 		ldr	r3, [r7, #0]
- 491 00bc 10B095E5 		ldr	fp, [r5, #16]
- 492 00c0 0A10A0E3 		mov	r1, #10
- 493 00c4 00108AE5 		str	r1, [sl, #0]
- 494 00c8 023083E0 		add	r3, r3, r2
- 495 00cc 8C10A0E1 		mov	r1, ip, asl #1
- 496 00d0 8020A0E1 		mov	r2, r0, asl #1
- 497 00d4 8B00A0E1 		mov	r0, fp, asl #1
- 498              	.L38:
- 323:src/main.c    **** 	  right = 0;
- 324:src/main.c    **** 	  while (((2 * res[2]) <= (white + black))
- 499              		.loc 1 324 0 discriminator 1
- 500 00d8 030051E1 		cmp	r1, r3
- 501 00dc 0600009A 		bls	.L29
- 325:src/main.c    **** 		 || ((2 * res[3]) <= (white + black))
- 502              		.loc 1 325 0
- 503 00e0 020053E1 		cmp	r3, r2
- 504 00e4 FBFFFF2A 		bcs	.L38
- 326:src/main.c    **** 		 || ((2 * res[4]) <= (white + black)));
- 505              		.loc 1 326 0
- 506 00e8 000053E1 		cmp	r3, r0
- 507 00ec F9FFFF2A 		bcs	.L38
- 327:src/main.c    **** 	  left = 10;
- 328:src/main.c    **** 	  right = 10;
- 508              		.loc 1 328 0
- 509 00f0 0AE0A0E3 		mov	lr, #10
- 510 00f4 00E089E5 		str	lr, [r9, #0]
- 511 00f8 CAFFFFEA 		b	.L31
- 512              	.L29:
- 513              	.L39:
- 514 00fc FEFFFFEA 		b	.L39
- 515              	.L26:
- 516              	.L40:
- 517 0100 FEFFFFEA 		b	.L40
- 518              	.L43:
- 519              		.align	2
- 520              	.L42:
- 521 0104 00000000 		.word	.LANCHOR3
- 522 0108 00000000 		.word	.LANCHOR1
- 523 010c 00000000 		.word	.LANCHOR2
- 524 0110 00000000 		.word	.LANCHOR4
- 525 0114 00000000 		.word	.LANCHOR5
- 526 0118 60000000 		.word	.LC11
- 527 011c 68000000 		.word	.LC12
- 528              		.cfi_endproc
- 529              	.LFE7:
- 531              		.section	.text.ADC_Read,"ax",%progbits
- 532              		.align	2
- 533              		.global	ADC_Read
- 535              	ADC_Read:
- 536              	.LFB12:
- 329:src/main.c    **** 	}
- 330:src/main.c    **** //              vTaskDelay(30 / portTICK_RATE_MS);
- 331:src/main.c    **** 
- 332:src/main.c    ****     }
- 333:src/main.c    **** }
- 334:src/main.c    **** 
- 335:src/main.c    **** //**           **GPIO TASK**          **
- 336:src/main.c    **** /*-----------------------------------------------------------*/
- 337:src/main.c    **** void
- 338:src/main.c    **** vLedTask (void *pvParameters)
- 339:src/main.c    **** {
- 340:src/main.c    ****   GPIOInit (1, FAST_PORT, DIR_OUT, LED1_MASK);
- 341:src/main.c    **** 
- 342:src/main.c    ****   for (;;)
- 343:src/main.c    ****     {
- 344:src/main.c    ****       FIO1PIN ^= LED1_MASK;
- 345:src/main.c    ****       vTaskDelay (207 / portTICK_RATE_MS);
- 346:src/main.c    ****     }
- 347:src/main.c    **** 
- 348:src/main.c    **** }
- 349:src/main.c    **** 
- 350:src/main.c    **** //----------------------------------------------------------
- 351:src/main.c    **** void
- 352:src/main.c    **** vLed2Task (void *pvParameters)
- 353:src/main.c    **** {
- 354:src/main.c    ****   for (;;)
- 355:src/main.c    ****     {
- 356:src/main.c    ****       FIO2PIN1 ^= 0x02;
- 357:src/main.c    ****       vTaskDelay (300 / portTICK_RATE_MS);
- 358:src/main.c    ****     }
- 359:src/main.c    **** 
- 360:src/main.c    **** }
- 361:src/main.c    **** 
- 362:src/main.c    **** //TODO 衝突検知　
- 363:src/main.c    **** /*-----------------------------------------------------------
- 364:src/main.c    **** 		for(a = 0; a <= 4; a++){
- 365:src/main.c    **** 			res[a] = ADC_Read(a);
- 366:src/main.c    **** 			printf("  %x....%4x\t", a, res[a] );
- 367:src/main.c    **** 		}
+ 323              		.loc 1 138 0
+ 324 0070 04E0A0E3 		mov	lr, #4
+ 325 0074 60109FE5 		ldr	r1, .L21+20
+ 326 0078 6820A0E3 		mov	r2, #104
+ 327 007c 0430A0E1 		mov	r3, r4
+ 328 0080 58009FE5 		ldr	r0, .L21+24
+ 329 0084 00E08DE5 		str	lr, [sp, #0]
+ 330 0088 04408DE5 		str	r4, [sp, #4]
+ 331 008c 08408DE5 		str	r4, [sp, #8]
+ 332 0090 0C408DE5 		str	r4, [sp, #12]
+ 333 0094 FEFFFFEB 		bl	xTaskGenericCreate
+ 140:src/main.c    ****       xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
+ 334              		.loc 1 140 0
+ 335 0098 44109FE5 		ldr	r1, .L21+28
+ 336 009c 6820A0E3 		mov	r2, #104
+ 337 00a0 0430A0E1 		mov	r3, r4
+ 338 00a4 3C009FE5 		ldr	r0, .L21+32
+ 339 00a8 00708DE5 		str	r7, [sp, #0]
+ 340 00ac 04408DE5 		str	r4, [sp, #4]
+ 341 00b0 08408DE5 		str	r4, [sp, #8]
+ 342 00b4 0C408DE5 		str	r4, [sp, #12]
+ 343 00b8 FEFFFFEB 		bl	xTaskGenericCreate
+ 142:src/main.c    ****       vTaskStartScheduler ();
+ 344              		.loc 1 142 0
+ 345 00bc FEFFFFEB 		bl	vTaskStartScheduler
+ 143:src/main.c    ****   FIO2SET1 = 2;
+ 346              		.loc 1 143 0
+ 347 00c0 A66045E5 		strb	r6, [r5, #-166]
+ 348              	.L19:
+ 349              	.L20:
+ 350 00c4 FEFFFFEA 		b	.L20
+ 351              	.L22:
+ 352              		.align	2
+ 353              	.L21:
+ 354 00c8 00C000E0 		.word	-536821760
+ 355 00cc FFC0FF3F 		.word	1073725695
+ 356 00d0 08000000 		.word	.LC2
+ 357 00d4 00000000 		.word	.LANCHOR0
+ 358 00d8 10000000 		.word	.LC3
+ 359 00dc 18000000 		.word	.LC4
+ 360 00e0 00000000 		.word	ISSR
+ 361 00e4 20000000 		.word	.LC5
+ 362 00e8 00000000 		.word	vi2c
+ 363              		.cfi_endproc
+ 364              	.LFE0:
+ 366              		.section	.text.getISSI,"ax",%progbits
+ 367              		.align	2
+ 368              		.global	getISSI
+ 370              	getISSI:
+ 371              	.LFB2:
+ 173:src/main.c    **** {
+ 372              		.loc 1 173 0
+ 373              		.cfi_startproc
+ 374              		@ Function supports interworking.
+ 375              		@ args = 0, pretend = 0, frame = 0
+ 376              		@ frame_needed = 0, uses_anonymous_args = 0
+ 377              	.LVL19:
+ 378 0000 F8402DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, lr}
+ 379              	.LCFI3:
+ 380              		.cfi_def_cfa_offset 24
+ 178:src/main.c    ****   vTaskDelay (10 / portTICK_RATE_MS);
+ 381              		.loc 1 178 0
+ 382 0004 0A00A0E3 		mov	r0, #10
+ 383              		.cfi_offset 14, -4
+ 384              		.cfi_offset 7, -8
+ 385              		.cfi_offset 6, -12
+ 386              		.cfi_offset 5, -16
+ 387              		.cfi_offset 4, -20
+ 388              		.cfi_offset 3, -24
+ 389 0008 FEFFFFEB 		bl	vTaskDelay
+ 390 000c 84409FE5 		ldr	r4, .L28
+ 179:src/main.c    ****   while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
+ 391              		.loc 1 179 0
+ 392 0010 000000EA 		b	.L24
+ 393              	.L25:
+ 179:src/main.c    ****   while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
+ 394              		.loc 1 179 0 is_stmt 0 discriminator 2
+ 395 0014 FEFFFFEB 		bl	vTaskDelay
+ 396              	.L24:
+ 179:src/main.c    ****   while(pdTRUE!=xSemaphoreTake(Mutex, 301 / portTICK_RATE_MS))vTaskDelay( 400 / portTICK_RATE_MS);
+ 397              		.loc 1 179 0 discriminator 1
+ 398 0018 0010A0E3 		mov	r1, #0
+ 399 001c 78209FE5 		ldr	r2, .L28+4
+ 400 0020 0130A0E1 		mov	r3, r1
+ 401 0024 000094E5 		ldr	r0, [r4, #0]
+ 402 0028 FEFFFFEB 		bl	xQueueGenericReceive
+ 403 002c 010050E3 		cmp	r0, #1
+ 404 0030 0050A0E1 		mov	r5, r0
+ 405 0034 190EA0E3 		mov	r0, #400
+ 406 0038 F5FFFF1A 		bne	.L25
+ 180:src/main.c    ****   printf ("start ISSI connection\n");
+ 407              		.loc 1 180 0 is_stmt 1
+ 408 003c 5C009FE5 		ldr	r0, .L28+8
+ 409 0040 FEFFFFEB 		bl	puts
+ 184:src/main.c    ****       FIO2SET0 = 1;
+ 410              		.loc 1 184 0
+ 411 0044 58409FE5 		ldr	r4, .L28+12
+ 412 0048 0560A0E1 		mov	r6, r5
+ 413              	.LVL20:
+ 414              	.L27:
+ 415 004c A76044E5 		strb	r6, [r4, #-167]
+ 185:src/main.c    ****       prv = FIO2PIN0 & 3;
+ 416              		.loc 1 185 0
+ 417 0050 ABC054E5 		ldrb	ip, [r4, #-171]	@ zero_extendqisi2
+ 187:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
+ 418              		.loc 1 187 0
+ 419 0054 6400A0E3 		mov	r0, #100
+ 185:src/main.c    ****       prv = FIO2PIN0 & 3;
+ 420              		.loc 1 185 0
+ 421 0058 03700CE2 		and	r7, ip, #3
+ 422              	.LVL21:
+ 187:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
+ 423              		.loc 1 187 0
+ 424 005c FEFFFFEB 		bl	vTaskDelay
+ 190:src/main.c    ****       FIO2SET1 = 2;
+ 425              		.loc 1 190 0
+ 426 0060 0220A0E3 		mov	r2, #2
+ 191:src/main.c    ****       printf ("prv=%x", prv);
+ 427              		.loc 1 191 0
+ 428 0064 0710A0E1 		mov	r1, r7
+ 188:src/main.c    ****       FIO2CLR0 = 1;
+ 429              		.loc 1 188 0
+ 430 0068 A35044E5 		strb	r5, [r4, #-163]
+ 191:src/main.c    ****       printf ("prv=%x", prv);
+ 431              		.loc 1 191 0
+ 432 006c 34009FE5 		ldr	r0, .L28+16
+ 190:src/main.c    ****       FIO2SET1 = 2;
+ 433              		.loc 1 190 0
+ 434 0070 A62044E5 		strb	r2, [r4, #-166]
+ 191:src/main.c    ****       printf ("prv=%x", prv);
+ 435              		.loc 1 191 0
+ 436 0074 FEFFFFEB 		bl	printf
+ 192:src/main.c    ****       crr = FIO0PIN & 3;
+ 437              		.loc 1 192 0
+ 438 0078 2C309FE5 		ldr	r3, .L28+20
+ 439 007c EB1F13E5 		ldr	r1, [r3, #-4075]
+ 193:src/main.c    ****       printf ("Cr=%d", crr);
+ 440              		.loc 1 193 0
+ 441 0080 28009FE5 		ldr	r0, .L28+24
+ 192:src/main.c    ****       crr = FIO0PIN & 3;
+ 442              		.loc 1 192 0
+ 443 0084 031001E2 		and	r1, r1, #3
+ 444              	.LVL22:
+ 193:src/main.c    ****       printf ("Cr=%d", crr);
+ 445              		.loc 1 193 0
+ 446 0088 FEFFFFEB 		bl	printf
+ 447              	.LVL23:
+ 199:src/main.c    ****       vTaskDelay (100 / portTICK_RATE_MS);
+ 448              		.loc 1 199 0
+ 449 008c 6400A0E3 		mov	r0, #100
+ 450 0090 FEFFFFEB 		bl	vTaskDelay
+ 200:src/main.c    ****     }
+ 451              		.loc 1 200 0
+ 452 0094 ECFFFFEA 		b	.L27
+ 453              	.L29:
+ 454              		.align	2
+ 455              	.L28:
+ 456 0098 00000000 		.word	.LANCHOR0
+ 457 009c 2D010000 		.word	301
+ 458 00a0 24000000 		.word	.LC6
+ 459 00a4 FFC0FF3F 		.word	1073725695
+ 460 00a8 3C000000 		.word	.LC7
+ 461 00ac FFCFFF3F 		.word	1073729535
+ 462 00b0 44000000 		.word	.LC8
+ 463              		.cfi_endproc
+ 464              	.LFE2:
+ 466              		.section	.text.vApplicationTickHook,"ax",%progbits
+ 467              		.align	2
+ 468              		.global	vApplicationTickHook
+ 470              	vApplicationTickHook:
+ 471              	.LFB3:
+ 208:src/main.c    **** {
+ 472              		.loc 1 208 0
+ 473              		.cfi_startproc
+ 474              		@ Function supports interworking.
+ 475              		@ args = 0, pretend = 0, frame = 0
+ 476              		@ frame_needed = 0, uses_anonymous_args = 0
+ 477              		@ link register save eliminated.
+ 209:src/main.c    **** }
+ 478              		.loc 1 209 0
+ 479 0000 1EFF2FE1 		bx	lr
+ 480              		.cfi_endproc
+ 481              	.LFE3:
+ 483              		.section	.text.vtrsTask,"ax",%progbits
+ 484              		.align	2
+ 485              		.global	vtrsTask
+ 487              	vtrsTask:
+ 488              	.LFB7:
+ 274:src/main.c    ****   }
+ 275:src/main.c    ****   FIO2CLR1 = 0xFF;
+ 276:src/main.c    ****   while (1)
+ 277:src/main.c    ****     {
+ 278:src/main.c    ****       getISSI ();
+ 279:src/main.c    ****       vTaskDelay (300 / portTICK_RATE_MS);
+ 280:src/main.c    ****     }
+ 281:src/main.c    **** }
+ 282:src/main.c    **** 
+ 283:src/main.c    **** /*-----------------------------------------------------------*/
+ 284:src/main.c    **** unsigned int res[5];
+ 285:src/main.c    **** int white, black;
+ 286:src/main.c    **** //-----------------
+ 287:src/main.c    **** void
+ 288:src/main.c    **** vValueTask (void *pvParameters)
+ 289:src/main.c    **** {
+ 290:src/main.c    ****   int i;
+ 291:src/main.c    ****   unsigned int a, t;
+ 292:src/main.c    ****   vTaskDelay (30 / portTICK_RATE_MS);
+ 293:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
+ 294:src/main.c    ****     {
+ 295:src/main.c    ****       for (a = 0; a <= 7; a++)
+ 296:src/main.c    **** 	{
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 299:src/main.c    **** 	}
+ 300:src/main.c    ****       printf ("\n");
+ 301:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
+ 302:src/main.c    ****       black += (res[2]);
+ 303:src/main.c    ****     }
+ 304:src/main.c    **** //      white = (white / 20);
+ 305:src/main.c    **** //      black = (black / 20);
+ 306:src/main.c    **** //      printf("white %x, black %x", white, black);
+ 307:src/main.c    **** //      write_ROM(0x1A, 32, white);             //(int subadr, int size, int Data)
+ 308:src/main.c    **** //      write_ROM(0x2A, 32, black);             //(int subadr, int size, int Data)
+ 309:src/main.c    ****   while (1)
+ 310:src/main.c    ****     {
+ 311:src/main.c    ****       for (a = 0; a <= 4; a++)
+ 312:src/main.c    **** 	{
+ 313:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 314:src/main.c    **** 	  printf ("%d\t", res[a]);
+ 315:src/main.c    **** 	  vTaskDelay (3 / portTICK_RATE_MS);
+ 316:src/main.c    **** 	}
+ 317:src/main.c    ****       printf ("\n");
+ 318:src/main.c    ****     }
+ 319:src/main.c    **** }
+ 320:src/main.c    **** 
+ 321:src/main.c    **** void
+ 322:src/main.c    **** vtrsTask (void *pvParameters)
+ 323:src/main.c    **** {
+ 489              		.loc 1 323 0
+ 490              		.cfi_startproc
+ 491              		@ Function supports interworking.
+ 492              		@ args = 0, pretend = 0, frame = 0
+ 493              		@ frame_needed = 0, uses_anonymous_args = 0
+ 494              	.LVL24:
+ 495 0000 F84F2DE9 		stmfd	sp!, {r3, r4, r5, r6, r7, r8, r9, sl, fp, lr}
+ 496              	.LCFI4:
+ 497              		.cfi_def_cfa_offset 40
+ 324:src/main.c    ****   vTaskDelay (300 / portTICK_RATE_MS);
+ 498              		.loc 1 324 0
+ 499 0004 4B0FA0E3 		mov	r0, #300
+ 500              	.LVL25:
+ 501              		.cfi_offset 14, -4
+ 502              		.cfi_offset 11, -8
+ 503              		.cfi_offset 10, -12
+ 504              		.cfi_offset 9, -16
+ 505              		.cfi_offset 8, -20
+ 506              		.cfi_offset 7, -24
+ 507              		.cfi_offset 6, -28
+ 508              		.cfi_offset 5, -32
+ 509              		.cfi_offset 4, -36
+ 510              		.cfi_offset 3, -40
+ 511 0008 FEFFFFEB 		bl	vTaskDelay
+ 512 000c F0409FE5 		ldr	r4, .L49
+ 513 0010 F0809FE5 		ldr	r8, .L49+4
+ 514 0014 F0709FE5 		ldr	r7, .L49+8
+ 515 0018 F0909FE5 		ldr	r9, .L49+12
+ 516 001c F0A09FE5 		ldr	sl, .L49+16
+ 325:src/main.c    ****   for (;;)
+ 326:src/main.c    ****     {
+ 327:src/main.c    ****       if ((2 * res[6]) <= (white + black))
+ 517              		.loc 1 327 0
+ 518 0020 0460A0E1 		mov	r6, r4
+ 519 0024 0450A0E1 		mov	r5, r4
+ 520              	.L38:
+ 324:src/main.c    ****   vTaskDelay (300 / portTICK_RATE_MS);
+ 521              		.loc 1 324 0
+ 522 0028 002098E5 		ldr	r2, [r8, #0]
+ 523 002c 003097E5 		ldr	r3, [r7, #0]
+ 328:src/main.c    **** 	{
+ 329:src/main.c    **** 	  printf ("migi");
+ 330:src/main.c    **** 	  left = 0;
+ 331:src/main.c    **** 	  right = 10;
+ 524              		.loc 1 331 0
+ 525 0030 0AB0A0E3 		mov	fp, #10
+ 526 0034 033082E0 		add	r3, r2, r3
+ 527 0038 020000EA 		b	.L35
+ 528              	.L32:
+ 332:src/main.c    **** 	  while ((2 * res[2]) <= (white + black)
+ 333:src/main.c    **** 		 || ((2 * res[3]) <= (white + black))
+ 334:src/main.c    **** 		 || ((2 * res[4]) <= (white + black)));
+ 335:src/main.c    **** 	  left = 10;
+ 336:src/main.c    **** 	  right = 10;
+ 337:src/main.c    **** 	}
+ 338:src/main.c    ****       if ((2 * res[4]) <= ((white + black)))
+ 529              		.loc 1 338 0
+ 530 003c 10E094E5 		ldr	lr, [r4, #16]
+ 531 0040 8E0053E1 		cmp	r3, lr, asl #1
+ 532 0044 1600002A 		bcs	.L48
+ 533              	.L35:
+ 327:src/main.c    ****       if ((2 * res[6]) <= (white + black))
+ 534              		.loc 1 327 0
+ 535 0048 180094E5 		ldr	r0, [r4, #24]
+ 536 004c 800053E1 		cmp	r3, r0, asl #1
+ 537 0050 F9FFFF3A 		bcc	.L32
+ 329:src/main.c    **** 	  printf ("migi");
+ 538              		.loc 1 329 0
+ 539 0054 BC009FE5 		ldr	r0, .L49+20
+ 540 0058 FEFFFFEB 		bl	printf
+ 331:src/main.c    **** 	  right = 10;
+ 541              		.loc 1 331 0
+ 542 005c 081096E5 		ldr	r1, [r6, #8]
+ 543 0060 003098E5 		ldr	r3, [r8, #0]
+ 544 0064 00C097E5 		ldr	ip, [r7, #0]
+ 545 0068 0C2096E5 		ldr	r2, [r6, #12]
+ 546 006c 100096E5 		ldr	r0, [r6, #16]
+ 547 0070 00B089E5 		str	fp, [r9, #0]
+ 548 0074 8110A0E1 		mov	r1, r1, asl #1
+ 549 0078 03308CE0 		add	r3, ip, r3
+ 550 007c 8220A0E1 		mov	r2, r2, asl #1
+ 551 0080 8000A0E1 		mov	r0, r0, asl #1
+ 552              	.L44:
+ 332:src/main.c    **** 	  while ((2 * res[2]) <= (white + black)
+ 553              		.loc 1 332 0 discriminator 1
+ 554 0084 030051E1 		cmp	r1, r3
+ 555 0088 1C00009A 		bls	.L33
+ 333:src/main.c    **** 		 || ((2 * res[3]) <= (white + black))
+ 556              		.loc 1 333 0
+ 557 008c 020053E1 		cmp	r3, r2
+ 558 0090 FBFFFF2A 		bcs	.L44
+ 334:src/main.c    **** 		 || ((2 * res[4]) <= (white + black)));
+ 559              		.loc 1 334 0
+ 560 0094 000053E1 		cmp	r3, r0
+ 561 0098 F9FFFF2A 		bcs	.L44
+ 335:src/main.c    **** 	  left = 10;
+ 562              		.loc 1 335 0
+ 563 009c 00B08AE5 		str	fp, [sl, #0]
+ 564 00a0 E5FFFFEA 		b	.L32
+ 565              	.L48:
+ 339:src/main.c    **** 	{
+ 340:src/main.c    **** 	  printf ("tyuou");
+ 566              		.loc 1 340 0
+ 567 00a4 70009FE5 		ldr	r0, .L49+24
+ 568 00a8 FEFFFFEB 		bl	printf
+ 341:src/main.c    **** 	  left = 10;
+ 569              		.loc 1 341 0
+ 570 00ac 002098E5 		ldr	r2, [r8, #0]
+ 571 00b0 0C0095E5 		ldr	r0, [r5, #12]
+ 572 00b4 08C095E5 		ldr	ip, [r5, #8]
+ 573 00b8 003097E5 		ldr	r3, [r7, #0]
+ 574 00bc 10B095E5 		ldr	fp, [r5, #16]
+ 575 00c0 0A10A0E3 		mov	r1, #10
+ 576 00c4 00108AE5 		str	r1, [sl, #0]
+ 577 00c8 023083E0 		add	r3, r3, r2
+ 578 00cc 8C10A0E1 		mov	r1, ip, asl #1
+ 579 00d0 8020A0E1 		mov	r2, r0, asl #1
+ 580 00d4 8B00A0E1 		mov	r0, fp, asl #1
+ 581              	.L45:
+ 342:src/main.c    **** 	  right = 0;
+ 343:src/main.c    **** 	  while (((2 * res[2]) <= (white + black))
+ 582              		.loc 1 343 0 discriminator 1
+ 583 00d8 030051E1 		cmp	r1, r3
+ 584 00dc 0600009A 		bls	.L36
+ 344:src/main.c    **** 		 || ((2 * res[3]) <= (white + black))
+ 585              		.loc 1 344 0
+ 586 00e0 020053E1 		cmp	r3, r2
+ 587 00e4 FBFFFF2A 		bcs	.L45
+ 345:src/main.c    **** 		 || ((2 * res[4]) <= (white + black)));
+ 588              		.loc 1 345 0
+ 589 00e8 000053E1 		cmp	r3, r0
+ 590 00ec F9FFFF2A 		bcs	.L45
+ 346:src/main.c    **** 	  left = 10;
+ 347:src/main.c    **** 	  right = 10;
+ 591              		.loc 1 347 0
+ 592 00f0 0AE0A0E3 		mov	lr, #10
+ 593 00f4 00E089E5 		str	lr, [r9, #0]
+ 594 00f8 CAFFFFEA 		b	.L38
+ 595              	.L36:
+ 596              	.L46:
+ 597 00fc FEFFFFEA 		b	.L46
+ 598              	.L33:
+ 599              	.L47:
+ 600 0100 FEFFFFEA 		b	.L47
+ 601              	.L50:
+ 602              		.align	2
+ 603              	.L49:
+ 604 0104 00000000 		.word	.LANCHOR3
+ 605 0108 00000000 		.word	.LANCHOR1
+ 606 010c 00000000 		.word	.LANCHOR2
+ 607 0110 00000000 		.word	.LANCHOR4
+ 608 0114 00000000 		.word	.LANCHOR5
+ 609 0118 54000000 		.word	.LC10
+ 610 011c 5C000000 		.word	.LC11
+ 611              		.cfi_endproc
+ 612              	.LFE7:
+ 614              		.section	.text.ADC_Read,"ax",%progbits
+ 615              		.align	2
+ 616              		.global	ADC_Read
+ 618              	ADC_Read:
+ 619              	.LFB12:
+ 348:src/main.c    **** 	}
+ 349:src/main.c    **** //              vTaskDelay(30 / portTICK_RATE_MS);
+ 350:src/main.c    **** 
+ 351:src/main.c    ****     }
+ 352:src/main.c    **** }
+ 353:src/main.c    **** 
+ 354:src/main.c    **** //**           **GPIO TASK**          **
+ 355:src/main.c    **** /*-----------------------------------------------------------*/
+ 356:src/main.c    **** void
+ 357:src/main.c    **** vLedTask (void *pvParameters)
+ 358:src/main.c    **** {
+ 359:src/main.c    ****   GPIOInit (1, FAST_PORT, DIR_OUT, LED1_MASK);
+ 360:src/main.c    **** 
+ 361:src/main.c    ****   for (;;)
+ 362:src/main.c    ****     {
+ 363:src/main.c    ****       FIO1PIN ^= LED1_MASK;
+ 364:src/main.c    ****       vTaskDelay (207 / portTICK_RATE_MS);
+ 365:src/main.c    ****     }
+ 366:src/main.c    **** 
+ 367:src/main.c    **** }
  368:src/main.c    **** 
- 369:src/main.c    **** void vHPYTask( void *pvParameters )
- 370:src/main.c    **** {	
- 371:src/main.c    **** int phase = 0;
- 372:src/main.c    **** unsigned int Step[4] = {0x6, 0xC, 0x9, 0x3}
- 373:src/main.c    **** 
- 374:src/main.c    **** for(;;)
- 375:src/main.c    **** {
- 376:src/main.c    **** 	if(){ 
- 377:src/main.c    **** 	FIO4CLR0 = 0x0F;
- 378:src/main.c    **** 	}
+ 369:src/main.c    **** //----------------------------------------------------------
+ 370:src/main.c    **** void
+ 371:src/main.c    **** vLed2Task (void *pvParameters)
+ 372:src/main.c    **** {
+ 373:src/main.c    ****   for (;;)
+ 374:src/main.c    ****     {
+ 375:src/main.c    ****       FIO2PIN1 ^= 0x02;
+ 376:src/main.c    ****       vTaskDelay (300 / portTICK_RATE_MS);
+ 377:src/main.c    ****     }
+ 378:src/main.c    **** 
  379:src/main.c    **** }
  380:src/main.c    **** 
- 381:src/main.c    **** }
- 382:src/main.c    **** 
- 383:src/main.c    **** 
- 384:src/main.c    **** -----------------------------------------------------------*/
- 385:src/main.c    **** void
- 386:src/main.c    **** vrightwheelTask (void *pvParameters)
- 387:src/main.c    **** {
- 388:src/main.c    ****   int phase;
- 389:src/main.c    ****   FIO4DIR0 = 0x0F;
- 390:src/main.c    ****   FIO4CLR0 = 0x0F;
- 391:src/main.c    ****   while (1)
- 392:src/main.c    ****     {
- 393:src/main.c    ****       if (0 != right)
- 394:src/main.c    **** 	{
- 395:src/main.c    **** 	  switch (phase)
- 396:src/main.c    **** 	    {
- 397:src/main.c    **** 	    case 0:
- 398:src/main.c    **** 	      FIO4PIN0 = 0x03;
- 399:src/main.c    **** 	      phase++;
- 400:src/main.c    **** 	      break;
- 401:src/main.c    **** 	    case 1:
- 402:src/main.c    **** 	      FIO4PIN0 = 0x09;
- 403:src/main.c    **** 	      phase++;
- 404:src/main.c    **** 	      break;
- 405:src/main.c    **** 	    case 2:
- 406:src/main.c    **** 	      FIO4PIN0 = 0x0C;
- 407:src/main.c    **** 	      phase++;
- 408:src/main.c    **** 	      break;
- 409:src/main.c    **** 	    case 3:
- 410:src/main.c    **** 	      FIO4PIN0 = 0x06;
- 411:src/main.c    **** 	    default:
- 412:src/main.c    **** 	      phase = 0;
- 413:src/main.c    **** 	      break;
- 414:src/main.c    **** 	    }
- 415:src/main.c    **** 	  vTaskDelay (right / portTICK_RATE_MS);
- 416:src/main.c    **** 	}
- 417:src/main.c    ****       else
- 418:src/main.c    **** 	vTaskDelay (10 / portTICK_RATE_MS);
- 419:src/main.c    **** 
- 420:src/main.c    ****     }
- 421:src/main.c    **** }
- 422:src/main.c    **** 
- 423:src/main.c    **** //============================
- 424:src/main.c    **** void
- 425:src/main.c    **** vleftwheelTask (void *pvPatameters)
- 426:src/main.c    **** {
- 427:src/main.c    ****   int phase;
- 428:src/main.c    ****   FIO4DIR1 = 0x0F;
- 429:src/main.c    ****   FIO4CLR1 = 0x0F;
- 430:src/main.c    ****   while (1)
- 431:src/main.c    ****     {
- 432:src/main.c    ****       if (0 != left)
- 433:src/main.c    **** 	{
- 434:src/main.c    **** 	  switch (phase)
- 435:src/main.c    **** 	    {
- 436:src/main.c    **** 	    case 0:
- 437:src/main.c    **** 	      FIO4PIN1 = 0x03;
- 438:src/main.c    **** 	      phase++;
- 439:src/main.c    **** 	      break;
- 440:src/main.c    **** 	    case 1:
- 441:src/main.c    **** 	      FIO4PIN1 = 0x09;
- 442:src/main.c    **** 	      phase++;
- 443:src/main.c    **** 	      break;
- 444:src/main.c    **** 	    case 2:
- 445:src/main.c    **** 	      FIO4PIN1 = 0x0C;
- 446:src/main.c    **** 	      phase++;
- 447:src/main.c    **** 	      break;
- 448:src/main.c    **** 	    case 3:
- 449:src/main.c    **** 	      FIO4PIN1 = 0x06;
- 450:src/main.c    **** 	    default:
- 451:src/main.c    **** 	      phase = 0;
- 452:src/main.c    **** 	      break;
- 453:src/main.c    **** 	    }
- 454:src/main.c    **** 	  vTaskDelay (left / portTICK_RATE_MS);
- 455:src/main.c    **** 	}
- 456:src/main.c    ****       else
- 457:src/main.c    **** 	vTaskDelay (left / portTICK_RATE_MS);
- 458:src/main.c    ****     }
- 459:src/main.c    **** }
- 460:src/main.c    **** unsigned int
- 461:src/main.c    **** ADC_Read (unsigned int ch)
- 462:src/main.c    **** {
- 537              		.loc 1 462 0
- 538              		.cfi_startproc
- 539              		@ Function supports interworking.
- 540              		@ args = 0, pretend = 0, frame = 0
- 541              		@ frame_needed = 0, uses_anonymous_args = 0
- 542              		@ link register save eliminated.
- 543              	.LVL18:
- 463:src/main.c    ****   unsigned int i;
- 464:src/main.c    ****   AD0CR = (0x00200400 | (1 << ch));	// Init ADC (Pclk = 18MHz) and select channel. Sampling rate = 
- 544              		.loc 1 464 0
- 545 0000 0120A0E3 		mov	r2, #1
- 546 0004 1210A0E1 		mov	r1, r2, asl r0
- 547 0008 C8209FE5 		ldr	r2, .L58
- 548 000c 02C681E3 		orr	ip, r1, #2097152
- 549 0010 011B8CE3 		orr	r1, ip, #1024
- 550 0014 001082E5 		str	r1, [r2, #0]
- 465:src/main.c    ****   AD0CR |= 0x01000000;		// Start A/D Conversion
- 551              		.loc 1 465 0
- 552 0018 00C092E5 		ldr	ip, [r2, #0]
- 553 001c 01148CE3 		orr	r1, ip, #16777216
- 554 0020 001082E5 		str	r1, [r2, #0]
- 555              	.L55:
- 556              	.LVL19:
- 466:src/main.c    ****   do
- 467:src/main.c    ****     {
- 468:src/main.c    ****       switch (ch)
- 557              		.loc 1 468 0
- 558 0024 070050E3 		cmp	r0, #7
- 559 0028 00F19F97 		ldrls	pc, [pc, r0, asl #2]
- 560 002c 080000EA 		b	.L45
- 561              	.L54:
- 562 0030 98000000 		.word	.L46
- 563 0034 88000000 		.word	.L47
- 564 0038 78000000 		.word	.L48
- 565 003c 68000000 		.word	.L49
- 566 0040 B8000000 		.word	.L50
- 567 0044 A8000000 		.word	.L51
- 568 0048 C8000000 		.word	.L52
- 569 004c 50000000 		.word	.L53
- 570              	.L53:
- 469:src/main.c    **** 	{
- 470:src/main.c    **** 	case 0:
- 471:src/main.c    **** 	  i = AD0DR0;		// Read A/D Data Register
- 472:src/main.c    **** 	  break;
- 473:src/main.c    **** 	case 1:
- 474:src/main.c    **** 	  i = AD0DR1;
- 475:src/main.c    **** 	  break;
- 476:src/main.c    **** 	case 2:
- 477:src/main.c    **** 	  i = AD0DR2;
- 478:src/main.c    **** 	  break;
- 479:src/main.c    **** 	case 3:
- 480:src/main.c    **** 	  i = AD0DR3;
- 481:src/main.c    **** 	  break;
- 482:src/main.c    **** 	case 4:
- 483:src/main.c    **** 	  i = AD0DR4;
- 484:src/main.c    **** 	  break;
- 485:src/main.c    **** 	case 5:
- 486:src/main.c    **** 	  i = AD0DR5;
- 487:src/main.c    **** 	  break;
- 488:src/main.c    **** 	case 6:
- 489:src/main.c    **** 	  i = AD0DR6;
- 490:src/main.c    **** 	  break;
- 491:src/main.c    **** 	case 7:
- 492:src/main.c    **** 	  i = AD0DR7;
- 571              		.loc 1 492 0
- 572 0050 2C3092E5 		ldr	r3, [r2, #44]
- 573              	.LVL20:
- 574              	.L45:
- 493:src/main.c    **** 	  break;
- 494:src/main.c    **** 	}
- 495:src/main.c    **** 
- 496:src/main.c    ****     }
- 497:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
- 575              		.loc 1 497 0
- 576 0054 000053E3 		cmp	r3, #0
- 577 0058 F1FFFFAA 		bge	.L55
- 578              	.L57:
- 498:src/main.c    ****   return (i >> 6) & 0x03FF;	// bit 6:15 is 10 bit AD value
- 579              		.loc 1 498 0
- 580 005c 0338A0E1 		mov	r3, r3, asl #16
- 581              	.LVL21:
- 499:src/main.c    **** }
- 582              		.loc 1 499 0
- 583 0060 230BA0E1 		mov	r0, r3, lsr #22
- 584              	.LVL22:
- 585 0064 1EFF2FE1 		bx	lr
- 586              	.LVL23:
- 587              	.L49:
- 480:src/main.c    **** 	  i = AD0DR3;
- 588              		.loc 1 480 0
- 589 0068 1C3092E5 		ldr	r3, [r2, #28]
- 590              	.LVL24:
- 497:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
- 591              		.loc 1 497 0
- 592 006c 000053E3 		cmp	r3, #0
- 593 0070 EBFFFFAA 		bge	.L55
- 594 0074 F8FFFFEA 		b	.L57
- 595              	.L48:
- 477:src/main.c    **** 	  i = AD0DR2;
- 596              		.loc 1 477 0
- 597 0078 183092E5 		ldr	r3, [r2, #24]
- 598              	.LVL25:
- 497:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
- 599              		.loc 1 497 0
- 600 007c 000053E3 		cmp	r3, #0
- 601 0080 E7FFFFAA 		bge	.L55
- 602 0084 F4FFFFEA 		b	.L57
- 603              	.L47:
- 474:src/main.c    **** 	  i = AD0DR1;
- 604              		.loc 1 474 0
- 605 0088 143092E5 		ldr	r3, [r2, #20]
- 606              	.LVL26:
- 497:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
- 607              		.loc 1 497 0
- 608 008c 000053E3 		cmp	r3, #0
- 609 0090 E3FFFFAA 		bge	.L55
- 610 0094 F0FFFFEA 		b	.L57
- 611              	.L46:
- 471:src/main.c    **** 	  i = AD0DR0;		// Read A/D Data Register
- 612              		.loc 1 471 0
- 613 0098 103092E5 		ldr	r3, [r2, #16]
- 614              	.LVL27:
- 497:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
- 615              		.loc 1 497 0
- 616 009c 000053E3 		cmp	r3, #0
- 617 00a0 DFFFFFAA 		bge	.L55
- 618 00a4 ECFFFFEA 		b	.L57
- 619              	.L51:
- 486:src/main.c    **** 	  i = AD0DR5;
- 620              		.loc 1 486 0
- 621 00a8 243092E5 		ldr	r3, [r2, #36]
- 622              	.LVL28:
- 497:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
- 623              		.loc 1 497 0
- 624 00ac 000053E3 		cmp	r3, #0
- 625 00b0 DBFFFFAA 		bge	.L55
- 626 00b4 E8FFFFEA 		b	.L57
- 627              	.L50:
- 483:src/main.c    **** 	  i = AD0DR4;
- 628              		.loc 1 483 0
- 629 00b8 203092E5 		ldr	r3, [r2, #32]
- 630              	.LVL29:
- 497:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
- 631              		.loc 1 497 0
- 632 00bc 000053E3 		cmp	r3, #0
- 633 00c0 D7FFFFAA 		bge	.L55
- 634 00c4 E4FFFFEA 		b	.L57
- 635              	.L52:
- 489:src/main.c    **** 	  i = AD0DR6;
- 636              		.loc 1 489 0
- 637 00c8 283092E5 		ldr	r3, [r2, #40]
- 638              	.LVL30:
- 497:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
- 639              		.loc 1 497 0
- 640 00cc 000053E3 		cmp	r3, #0
- 641 00d0 D3FFFFAA 		bge	.L55
- 642 00d4 E0FFFFEA 		b	.L57
- 643              	.L59:
- 644              		.align	2
- 645              	.L58:
- 646 00d8 004003E0 		.word	-536657920
- 647              		.cfi_endproc
- 648              	.LFE12:
- 650              		.section	.text.vValueTask,"ax",%progbits
- 651              		.align	2
- 652              		.global	vValueTask
- 654              	vValueTask:
- 655              	.LFB6:
- 270:src/main.c    **** {
- 656              		.loc 1 270 0
- 657              		.cfi_startproc
- 658              		@ Function supports interworking.
- 659              		@ args = 0, pretend = 0, frame = 0
- 660              		@ frame_needed = 0, uses_anonymous_args = 0
- 661              	.LVL31:
- 662 0000 F0412DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, lr}
- 663              	.LCFI5:
- 664              		.cfi_def_cfa_offset 24
- 273:src/main.c    ****   vTaskDelay (30 / portTICK_RATE_MS);
- 665              		.loc 1 273 0
- 666 0004 1E00A0E3 		mov	r0, #30
- 667              	.LVL32:
- 274:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
- 668              		.loc 1 274 0
- 669 0008 A8719FE5 		ldr	r7, .L68
- 670              		.cfi_offset 14, -4
- 671              		.cfi_offset 8, -8
- 672              		.cfi_offset 7, -12
- 673              		.cfi_offset 6, -16
- 674              		.cfi_offset 5, -20
- 675              		.cfi_offset 4, -24
- 676 000c A8619FE5 		ldr	r6, .L68+4
- 273:src/main.c    ****   vTaskDelay (30 / portTICK_RATE_MS);
- 677              		.loc 1 273 0
- 678 0010 FEFFFFEB 		bl	vTaskDelay
- 274:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
- 679              		.loc 1 274 0
- 680 0014 0030A0E3 		mov	r3, #0
- 681 0018 003087E5 		str	r3, [r7, #0]
- 682 001c 003086E5 		str	r3, [r6, #0]
- 683              	.LVL33:
- 684 0020 98419FE5 		ldr	r4, .L68+8
- 282:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
- 685              		.loc 1 282 0
- 686 0024 98819FE5 		ldr	r8, .L68+12
- 274:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
- 687              		.loc 1 274 0
- 688 0028 1450A0E3 		mov	r5, #20
+ 381:src/main.c    **** //TODO 衝突検知　
+ 382:src/main.c    **** /*-----------------------------------------------------------
+ 383:src/main.c    **** 		for(a = 0; a <= 4; a++){
+ 384:src/main.c    **** 			res[a] = ADC_Read(a);
+ 385:src/main.c    **** 			printf("  %x....%4x\t", a, res[a] );
+ 386:src/main.c    **** 		}
+ 387:src/main.c    **** 
+ 388:src/main.c    **** void vHPYTask( void *pvParameters )
+ 389:src/main.c    **** {	
+ 390:src/main.c    **** int phase = 0;
+ 391:src/main.c    **** unsigned int Step[4] = {0x6, 0xC, 0x9, 0x3}
+ 392:src/main.c    **** 
+ 393:src/main.c    **** for(;;)
+ 394:src/main.c    **** {
+ 395:src/main.c    **** 	if(){ 
+ 396:src/main.c    **** 	FIO4CLR0 = 0x0F;
+ 397:src/main.c    **** 	}
+ 398:src/main.c    **** }
+ 399:src/main.c    **** 
+ 400:src/main.c    **** }
+ 401:src/main.c    **** 
+ 402:src/main.c    **** 
+ 403:src/main.c    **** -----------------------------------------------------------*/
+ 404:src/main.c    **** void
+ 405:src/main.c    **** vrightwheelTask (void *pvParameters)
+ 406:src/main.c    **** {
+ 407:src/main.c    ****   int phase;
+ 408:src/main.c    ****   FIO4DIR0 = 0x0F;
+ 409:src/main.c    ****   FIO4CLR0 = 0x0F;
+ 410:src/main.c    ****   while (1)
+ 411:src/main.c    ****     {
+ 412:src/main.c    ****       if (0 != right)
+ 413:src/main.c    **** 	{
+ 414:src/main.c    **** 	  switch (phase)
+ 415:src/main.c    **** 	    {
+ 416:src/main.c    **** 	    case 0:
+ 417:src/main.c    **** 	      FIO4PIN0 = 0x03;
+ 418:src/main.c    **** 	      phase++;
+ 419:src/main.c    **** 	      break;
+ 420:src/main.c    **** 	    case 1:
+ 421:src/main.c    **** 	      FIO4PIN0 = 0x09;
+ 422:src/main.c    **** 	      phase++;
+ 423:src/main.c    **** 	      break;
+ 424:src/main.c    **** 	    case 2:
+ 425:src/main.c    **** 	      FIO4PIN0 = 0x0C;
+ 426:src/main.c    **** 	      phase++;
+ 427:src/main.c    **** 	      break;
+ 428:src/main.c    **** 	    case 3:
+ 429:src/main.c    **** 	      FIO4PIN0 = 0x06;
+ 430:src/main.c    **** 	    default:
+ 431:src/main.c    **** 	      phase = 0;
+ 432:src/main.c    **** 	      break;
+ 433:src/main.c    **** 	    }
+ 434:src/main.c    **** 	  vTaskDelay (right / portTICK_RATE_MS);
+ 435:src/main.c    **** 	}
+ 436:src/main.c    ****       else
+ 437:src/main.c    **** 	vTaskDelay (10 / portTICK_RATE_MS);
+ 438:src/main.c    **** 
+ 439:src/main.c    ****     }
+ 440:src/main.c    **** }
+ 441:src/main.c    **** 
+ 442:src/main.c    **** //============================
+ 443:src/main.c    **** void
+ 444:src/main.c    **** vleftwheelTask (void *pvPatameters)
+ 445:src/main.c    **** {
+ 446:src/main.c    ****   int phase;
+ 447:src/main.c    ****   FIO4DIR1 = 0x0F;
+ 448:src/main.c    ****   FIO4CLR1 = 0x0F;
+ 449:src/main.c    ****   while (1)
+ 450:src/main.c    ****     {
+ 451:src/main.c    ****       if (0 != left)
+ 452:src/main.c    **** 	{
+ 453:src/main.c    **** 	  switch (phase)
+ 454:src/main.c    **** 	    {
+ 455:src/main.c    **** 	    case 0:
+ 456:src/main.c    **** 	      FIO4PIN1 = 0x03;
+ 457:src/main.c    **** 	      phase++;
+ 458:src/main.c    **** 	      break;
+ 459:src/main.c    **** 	    case 1:
+ 460:src/main.c    **** 	      FIO4PIN1 = 0x09;
+ 461:src/main.c    **** 	      phase++;
+ 462:src/main.c    **** 	      break;
+ 463:src/main.c    **** 	    case 2:
+ 464:src/main.c    **** 	      FIO4PIN1 = 0x0C;
+ 465:src/main.c    **** 	      phase++;
+ 466:src/main.c    **** 	      break;
+ 467:src/main.c    **** 	    case 3:
+ 468:src/main.c    **** 	      FIO4PIN1 = 0x06;
+ 469:src/main.c    **** 	    default:
+ 470:src/main.c    **** 	      phase = 0;
+ 471:src/main.c    **** 	      break;
+ 472:src/main.c    **** 	    }
+ 473:src/main.c    **** 	  vTaskDelay (left / portTICK_RATE_MS);
+ 474:src/main.c    **** 	}
+ 475:src/main.c    ****       else
+ 476:src/main.c    **** 	vTaskDelay (left / portTICK_RATE_MS);
+ 477:src/main.c    ****     }
+ 478:src/main.c    **** }
+ 479:src/main.c    **** unsigned int
+ 480:src/main.c    **** ADC_Read (unsigned int ch)
+ 481:src/main.c    **** {
+ 620              		.loc 1 481 0
+ 621              		.cfi_startproc
+ 622              		@ Function supports interworking.
+ 623              		@ args = 0, pretend = 0, frame = 0
+ 624              		@ frame_needed = 0, uses_anonymous_args = 0
+ 625              		@ link register save eliminated.
+ 626              	.LVL26:
+ 482:src/main.c    ****   unsigned int i;
+ 483:src/main.c    ****   AD0CR = (0x00200400 | (1 << ch));	// Init ADC (Pclk = 18MHz) and select channel. Sampling rate = 
+ 627              		.loc 1 483 0
+ 628 0000 0120A0E3 		mov	r2, #1
+ 629 0004 1210A0E1 		mov	r1, r2, asl r0
+ 630 0008 C8209FE5 		ldr	r2, .L65
+ 631 000c 02C681E3 		orr	ip, r1, #2097152
+ 632 0010 011B8CE3 		orr	r1, ip, #1024
+ 633 0014 001082E5 		str	r1, [r2, #0]
+ 484:src/main.c    ****   AD0CR |= 0x01000000;		// Start A/D Conversion
+ 634              		.loc 1 484 0
+ 635 0018 00C092E5 		ldr	ip, [r2, #0]
+ 636 001c 01148CE3 		orr	r1, ip, #16777216
+ 637 0020 001082E5 		str	r1, [r2, #0]
+ 638              	.L62:
+ 639              	.LVL27:
+ 485:src/main.c    ****   do
+ 486:src/main.c    ****     {
+ 487:src/main.c    ****       switch (ch)
+ 640              		.loc 1 487 0
+ 641 0024 070050E3 		cmp	r0, #7
+ 642 0028 00F19F97 		ldrls	pc, [pc, r0, asl #2]
+ 643 002c 080000EA 		b	.L52
+ 644              	.L61:
+ 645 0030 98000000 		.word	.L53
+ 646 0034 88000000 		.word	.L54
+ 647 0038 78000000 		.word	.L55
+ 648 003c 68000000 		.word	.L56
+ 649 0040 B8000000 		.word	.L57
+ 650 0044 A8000000 		.word	.L58
+ 651 0048 C8000000 		.word	.L59
+ 652 004c 50000000 		.word	.L60
+ 653              	.L60:
+ 488:src/main.c    **** 	{
+ 489:src/main.c    **** 	case 0:
+ 490:src/main.c    **** 	  i = AD0DR0;		// Read A/D Data Register
+ 491:src/main.c    **** 	  break;
+ 492:src/main.c    **** 	case 1:
+ 493:src/main.c    **** 	  i = AD0DR1;
+ 494:src/main.c    **** 	  break;
+ 495:src/main.c    **** 	case 2:
+ 496:src/main.c    **** 	  i = AD0DR2;
+ 497:src/main.c    **** 	  break;
+ 498:src/main.c    **** 	case 3:
+ 499:src/main.c    **** 	  i = AD0DR3;
+ 500:src/main.c    **** 	  break;
+ 501:src/main.c    **** 	case 4:
+ 502:src/main.c    **** 	  i = AD0DR4;
+ 503:src/main.c    **** 	  break;
+ 504:src/main.c    **** 	case 5:
+ 505:src/main.c    **** 	  i = AD0DR5;
+ 506:src/main.c    **** 	  break;
+ 507:src/main.c    **** 	case 6:
+ 508:src/main.c    **** 	  i = AD0DR6;
+ 509:src/main.c    **** 	  break;
+ 510:src/main.c    **** 	case 7:
+ 511:src/main.c    **** 	  i = AD0DR7;
+ 654              		.loc 1 511 0
+ 655 0050 2C3092E5 		ldr	r3, [r2, #44]
+ 656              	.LVL28:
+ 657              	.L52:
+ 512:src/main.c    **** 	  break;
+ 513:src/main.c    **** 	}
+ 514:src/main.c    **** 
+ 515:src/main.c    ****     }
+ 516:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+ 658              		.loc 1 516 0
+ 659 0054 000053E3 		cmp	r3, #0
+ 660 0058 F1FFFFAA 		bge	.L62
+ 661              	.L64:
+ 517:src/main.c    ****   return (i >> 6) & 0x03FF;	// bit 6:15 is 10 bit AD value
+ 662              		.loc 1 517 0
+ 663 005c 0338A0E1 		mov	r3, r3, asl #16
+ 664              	.LVL29:
+ 518:src/main.c    **** }
+ 665              		.loc 1 518 0
+ 666 0060 230BA0E1 		mov	r0, r3, lsr #22
+ 667              	.LVL30:
+ 668 0064 1EFF2FE1 		bx	lr
+ 669              	.LVL31:
+ 670              	.L56:
+ 499:src/main.c    **** 	  i = AD0DR3;
+ 671              		.loc 1 499 0
+ 672 0068 1C3092E5 		ldr	r3, [r2, #28]
+ 673              	.LVL32:
+ 516:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+ 674              		.loc 1 516 0
+ 675 006c 000053E3 		cmp	r3, #0
+ 676 0070 EBFFFFAA 		bge	.L62
+ 677 0074 F8FFFFEA 		b	.L64
+ 678              	.L55:
+ 496:src/main.c    **** 	  i = AD0DR2;
+ 679              		.loc 1 496 0
+ 680 0078 183092E5 		ldr	r3, [r2, #24]
+ 681              	.LVL33:
+ 516:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+ 682              		.loc 1 516 0
+ 683 007c 000053E3 		cmp	r3, #0
+ 684 0080 E7FFFFAA 		bge	.L62
+ 685 0084 F4FFFFEA 		b	.L64
+ 686              	.L54:
+ 493:src/main.c    **** 	  i = AD0DR1;
+ 687              		.loc 1 493 0
+ 688 0088 143092E5 		ldr	r3, [r2, #20]
  689              	.LVL34:
- 690              	.L61:
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 691              		.loc 1 278 0 discriminator 1
- 692 002c 0000A0E3 		mov	r0, #0
- 693 0030 FEFFFFEB 		bl	ADC_Read
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 694              		.loc 1 279 0 discriminator 1
- 695 0034 0010A0E3 		mov	r1, #0
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 696              		.loc 1 278 0 discriminator 1
- 697 0038 0030A0E1 		mov	r3, r0
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 698              		.loc 1 279 0 discriminator 1
- 699 003c 0020A0E1 		mov	r2, r0
- 700 0040 80019FE5 		ldr	r0, .L68+16
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 701              		.loc 1 278 0 discriminator 1
- 702 0044 003084E5 		str	r3, [r4, #0]
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 703              		.loc 1 279 0 discriminator 1
- 704 0048 FEFFFFEB 		bl	printf
- 705              	.LVL35:
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 706              		.loc 1 278 0 discriminator 1
- 707 004c 0100A0E3 		mov	r0, #1
- 708 0050 FEFFFFEB 		bl	ADC_Read
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 709              		.loc 1 279 0 discriminator 1
- 710 0054 0110A0E3 		mov	r1, #1
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 711              		.loc 1 278 0 discriminator 1
- 712 0058 00C0A0E1 		mov	ip, r0
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 713              		.loc 1 279 0 discriminator 1
- 714 005c 0020A0E1 		mov	r2, r0
- 715 0060 60019FE5 		ldr	r0, .L68+16
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 716              		.loc 1 278 0 discriminator 1
- 717 0064 04C084E5 		str	ip, [r4, #4]
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 718              		.loc 1 279 0 discriminator 1
- 719 0068 FEFFFFEB 		bl	printf
- 720              	.LVL36:
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 721              		.loc 1 278 0 discriminator 1
- 722 006c 0200A0E3 		mov	r0, #2
- 723 0070 FEFFFFEB 		bl	ADC_Read
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 724              		.loc 1 279 0 discriminator 1
- 725 0074 0210A0E3 		mov	r1, #2
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 726              		.loc 1 278 0 discriminator 1
- 727 0078 0030A0E1 		mov	r3, r0
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 728              		.loc 1 279 0 discriminator 1
- 729 007c 0020A0E1 		mov	r2, r0
- 730 0080 40019FE5 		ldr	r0, .L68+16
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 731              		.loc 1 278 0 discriminator 1
- 732 0084 083084E5 		str	r3, [r4, #8]
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 733              		.loc 1 279 0 discriminator 1
- 734 0088 FEFFFFEB 		bl	printf
- 735              	.LVL37:
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 736              		.loc 1 278 0 discriminator 1
- 737 008c 0300A0E3 		mov	r0, #3
- 738 0090 FEFFFFEB 		bl	ADC_Read
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 739              		.loc 1 279 0 discriminator 1
- 740 0094 0310A0E3 		mov	r1, #3
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 741              		.loc 1 278 0 discriminator 1
- 742 0098 00C0A0E1 		mov	ip, r0
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 743              		.loc 1 279 0 discriminator 1
- 744 009c 0020A0E1 		mov	r2, r0
- 745 00a0 20019FE5 		ldr	r0, .L68+16
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 746              		.loc 1 278 0 discriminator 1
- 747 00a4 0CC084E5 		str	ip, [r4, #12]
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 748              		.loc 1 279 0 discriminator 1
- 749 00a8 FEFFFFEB 		bl	printf
- 750              	.LVL38:
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 751              		.loc 1 278 0 discriminator 1
- 752 00ac 0400A0E3 		mov	r0, #4
- 753 00b0 FEFFFFEB 		bl	ADC_Read
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 754              		.loc 1 279 0 discriminator 1
- 755 00b4 0410A0E3 		mov	r1, #4
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 756              		.loc 1 278 0 discriminator 1
- 757 00b8 0030A0E1 		mov	r3, r0
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 758              		.loc 1 279 0 discriminator 1
- 759 00bc 0020A0E1 		mov	r2, r0
- 760 00c0 00019FE5 		ldr	r0, .L68+16
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 761              		.loc 1 278 0 discriminator 1
- 762 00c4 103084E5 		str	r3, [r4, #16]
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 763              		.loc 1 279 0 discriminator 1
- 764 00c8 FEFFFFEB 		bl	printf
- 765              	.LVL39:
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 766              		.loc 1 278 0 discriminator 1
- 767 00cc 0500A0E3 		mov	r0, #5
- 768 00d0 FEFFFFEB 		bl	ADC_Read
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 769              		.loc 1 279 0 discriminator 1
- 770 00d4 0510A0E3 		mov	r1, #5
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 771              		.loc 1 278 0 discriminator 1
- 772 00d8 00C0A0E1 		mov	ip, r0
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 773              		.loc 1 279 0 discriminator 1
- 774 00dc 0020A0E1 		mov	r2, r0
- 775 00e0 E0009FE5 		ldr	r0, .L68+16
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 776              		.loc 1 278 0 discriminator 1
- 777 00e4 14C084E5 		str	ip, [r4, #20]
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 778              		.loc 1 279 0 discriminator 1
- 779 00e8 FEFFFFEB 		bl	printf
- 780              	.LVL40:
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 781              		.loc 1 278 0 discriminator 1
- 782 00ec 0600A0E3 		mov	r0, #6
- 783 00f0 FEFFFFEB 		bl	ADC_Read
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 784              		.loc 1 279 0 discriminator 1
- 785 00f4 0610A0E3 		mov	r1, #6
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 786              		.loc 1 278 0 discriminator 1
- 787 00f8 0030A0E1 		mov	r3, r0
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 788              		.loc 1 279 0 discriminator 1
- 789 00fc 0020A0E1 		mov	r2, r0
- 790 0100 C0009FE5 		ldr	r0, .L68+16
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 791              		.loc 1 278 0 discriminator 1
- 792 0104 183084E5 		str	r3, [r4, #24]
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 793              		.loc 1 279 0 discriminator 1
- 794 0108 FEFFFFEB 		bl	printf
- 795              	.LVL41:
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 796              		.loc 1 278 0 discriminator 1
- 797 010c 0700A0E3 		mov	r0, #7
- 798 0110 FEFFFFEB 		bl	ADC_Read
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 799              		.loc 1 279 0 discriminator 1
- 800 0114 0710A0E3 		mov	r1, #7
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 801              		.loc 1 278 0 discriminator 1
- 802 0118 00C0A0E1 		mov	ip, r0
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 803              		.loc 1 279 0 discriminator 1
- 804 011c 0020A0E1 		mov	r2, r0
- 805 0120 A0009FE5 		ldr	r0, .L68+16
- 278:src/main.c    **** 	  res[a] = ADC_Read (a);
- 806              		.loc 1 278 0 discriminator 1
- 807 0124 1CC084E5 		str	ip, [r4, #28]
- 279:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
- 808              		.loc 1 279 0 discriminator 1
- 809 0128 FEFFFFEB 		bl	printf
- 810              	.LVL42:
- 281:src/main.c    ****       printf ("\n");
- 811              		.loc 1 281 0 discriminator 1
- 812 012c 0A00A0E3 		mov	r0, #10
- 813 0130 FEFFFFEB 		bl	putchar
- 282:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
- 814              		.loc 1 282 0 discriminator 1
- 815 0134 043094E5 		ldr	r3, [r4, #4]
- 816 0138 0C1084E2 		add	r1, r4, #12
- 817 013c 021091E8 		ldmia	r1, {r1, ip}	@ phole ldm
- 818 0140 032081E0 		add	r2, r1, r3
- 819 0144 0C0082E0 		add	r0, r2, ip
- 820 0148 983080E0 		umull	r3, r0, r8, r0
- 283:src/main.c    ****       black += (res[2]);
- 821              		.loc 1 283 0 discriminator 1
- 822 014c 001096E5 		ldr	r1, [r6, #0]
- 282:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
- 823              		.loc 1 282 0 discriminator 1
- 824 0150 003097E5 		ldr	r3, [r7, #0]
- 283:src/main.c    ****       black += (res[2]);
- 825              		.loc 1 283 0 discriminator 1
- 826 0154 08C094E5 		ldr	ip, [r4, #8]
- 282:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
- 827              		.loc 1 282 0 discriminator 1
- 828 0158 A02083E0 		add	r2, r3, r0, lsr #1
- 274:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
- 829              		.loc 1 274 0 discriminator 1
- 830 015c 015055E2 		subs	r5, r5, #1
- 283:src/main.c    ****       black += (res[2]);
- 831              		.loc 1 283 0 discriminator 1
- 832 0160 0C0081E0 		add	r0, r1, ip
- 282:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
- 833              		.loc 1 282 0 discriminator 1
- 834 0164 002087E5 		str	r2, [r7, #0]
- 283:src/main.c    ****       black += (res[2]);
- 835              		.loc 1 283 0 discriminator 1
- 836 0168 000086E5 		str	r0, [r6, #0]
- 274:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
- 837              		.loc 1 274 0 discriminator 1
- 838 016c AEFFFF1A 		bne	.L61
- 839              	.LVL43:
- 292:src/main.c    ****       for (a = 0; a <= 4; a++)
- 840              		.loc 1 292 0 discriminator 1
- 841 0170 040055E3 		cmp	r5, #4
- 842 0174 0200009A 		bls	.L63
- 843              	.L67:
- 298:src/main.c    ****       printf ("\n");
- 844              		.loc 1 298 0
- 845 0178 0A00A0E3 		mov	r0, #10
- 846 017c FEFFFFEB 		bl	putchar
- 292:src/main.c    ****       for (a = 0; a <= 4; a++)
- 847              		.loc 1 292 0
- 848 0180 0050A0E3 		mov	r5, #0
- 849              	.LVL44:
- 850              	.L63:
- 294:src/main.c    **** 	  res[a] = ADC_Read (a);
- 851              		.loc 1 294 0 discriminator 2
- 852 0184 0500A0E1 		mov	r0, r5
- 853 0188 FEFFFFEB 		bl	ADC_Read
- 295:src/main.c    **** 	  printf ("%d\t", res[a]);
- 854              		.loc 1 295 0 discriminator 2
- 855 018c 0010A0E1 		mov	r1, r0
- 294:src/main.c    **** 	  res[a] = ADC_Read (a);
- 856              		.loc 1 294 0 discriminator 2
- 857 0190 0060A0E1 		mov	r6, r0
- 295:src/main.c    **** 	  printf ("%d\t", res[a]);
- 858              		.loc 1 295 0 discriminator 2
- 859 0194 30009FE5 		ldr	r0, .L68+20
- 294:src/main.c    **** 	  res[a] = ADC_Read (a);
- 860              		.loc 1 294 0 discriminator 2
- 861 0198 056184E7 		str	r6, [r4, r5, asl #2]
- 295:src/main.c    **** 	  printf ("%d\t", res[a]);
- 862              		.loc 1 295 0 discriminator 2
- 863 019c FEFFFFEB 		bl	printf
- 292:src/main.c    ****       for (a = 0; a <= 4; a++)
- 864              		.loc 1 292 0 discriminator 2
- 865 01a0 015085E2 		add	r5, r5, #1
- 296:src/main.c    **** 	  vTaskDelay (3 / portTICK_RATE_MS);
- 866              		.loc 1 296 0 discriminator 2
- 867 01a4 0300A0E3 		mov	r0, #3
- 868 01a8 FEFFFFEB 		bl	vTaskDelay
- 869              	.LVL45:
- 292:src/main.c    ****       for (a = 0; a <= 4; a++)
- 870              		.loc 1 292 0 discriminator 2
- 871 01ac 040055E3 		cmp	r5, #4
- 872 01b0 F0FFFF8A 		bhi	.L67
- 873 01b4 F2FFFFEA 		b	.L63
- 874              	.L69:
- 875              		.align	2
- 876              	.L68:
- 877 01b8 00000000 		.word	.LANCHOR1
- 878 01bc 00000000 		.word	.LANCHOR2
- 879 01c0 00000000 		.word	.LANCHOR3
- 880 01c4 ABAAAAAA 		.word	-1431655765
- 881 01c8 70000000 		.word	.LC13
- 882 01cc 80000000 		.word	.LC14
- 883              		.cfi_endproc
- 884              	.LFE6:
- 886              		.global	i2cbuff
- 887              		.global	i2cErr
- 888              		.global	left
- 889              		.global	right
- 890              		.global	Mutex
- 891              		.global	res
- 892              		.global	white
- 893              		.global	black
- 894              		.section	.bss.white,"aw",%nobits
- 895              		.align	2
- 896              		.set	.LANCHOR1,. + 0
- 899              	white:
- 900 0000 00000000 		.space	4
- 901              		.section	.bss.right,"aw",%nobits
- 902              		.align	2
- 903              		.set	.LANCHOR4,. + 0
- 906              	right:
- 907 0000 00000000 		.space	4
- 908              		.section	.bss.res,"aw",%nobits
- 909              		.align	2
- 910              		.set	.LANCHOR3,. + 0
- 913              	res:
- 914 0000 00000000 		.space	20
- 914      00000000 
- 914      00000000 
- 914      00000000 
- 914      00000000 
- 915              		.section	.bss.i2cErr,"aw",%nobits
- 916              		.align	2
- 919              	i2cErr:
- 920 0000 00000000 		.space	4
- 921              		.section	.bss.i2cbuff,"aw",%nobits
- 922              		.align	2
- 925              	i2cbuff:
- 926 0000 00000000 		.space	24
- 926      00000000 
- 926      00000000 
- 926      00000000 
- 926      00000000 
- 927              		.section	.bss.left,"aw",%nobits
- 928              		.align	2
- 929              		.set	.LANCHOR5,. + 0
- 932              	left:
- 933 0000 00000000 		.space	4
- 934              		.section	.rodata.str1.4,"aMS",%progbits,1
- 935              		.align	2
- 936              	.LC0:
- 937 0000 7469636B 		.ascii	"tick\000"
- 937      00
- 938 0005 000000   		.space	3
- 939              	.LC1:
- 940 0008 5461636B 		.ascii	"Tack\000"
- 940      00
- 941 000d 000000   		.space	3
- 942              	.LC2:
- 943 0010 257800   		.ascii	"%x\000"
- 944 0013 00       		.space	1
- 945              	.LC3:
- 946 0014 48656C6C 		.ascii	"Hello,\000"
- 946      6F2C00
- 947 001b 00       		.space	1
- 948              	.LC4:
- 949 001c 20776F72 		.ascii	" world!\000"
- 949      6C642100 
- 950              	.LC5:
- 951 0024 69737372 		.ascii	"issr\000"
- 951      00
- 952 0029 000000   		.space	3
- 953              	.LC6:
- 954 002c 4C4400   		.ascii	"LD\000"
- 955 002f 00       		.space	1
- 956              	.LC7:
- 957 0030 73746172 		.ascii	"start ISSI connection\000"
- 957      74204953 
- 957      53492063 
- 957      6F6E6E65 
- 957      6374696F 
- 958 0046 0000     		.space	2
- 959              	.LC8:
- 960 0048 7072763D 		.ascii	"prv=%x\000"
- 960      257800
- 961 004f 00       		.space	1
- 962              	.LC9:
- 963 0050 43723D25 		.ascii	"Cr=%d\000"
- 963      6400
- 964 0056 0000     		.space	2
- 965              	.LC10:
- 966 0058 2D256409 		.ascii	"-%d\011%d\012\000"
- 966      25640A00 
- 967              	.LC11:
- 968 0060 6D696769 		.ascii	"migi\000"
- 968      00
- 969 0065 000000   		.space	3
- 970              	.LC12:
- 971 0068 7479756F 		.ascii	"tyuou\000"
- 971      7500
- 972 006e 0000     		.space	2
- 973              	.LC13:
- 974 0070 20202578 		.ascii	"  %x....%4x\011\000"
- 974      2E2E2E2E 
- 974      25347809 
- 974      00
- 975 007d 000000   		.space	3
- 976              	.LC14:
- 977 0080 25640900 		.ascii	"%d\011\000"
- 978              		.section	.bss.Mutex,"aw",%nobits
- 979              		.align	2
- 980              		.set	.LANCHOR0,. + 0
- 983              	Mutex:
- 984 0000 00000000 		.space	4
- 985              		.section	.bss.black,"aw",%nobits
- 986              		.align	2
- 987              		.set	.LANCHOR2,. + 0
- 990              	black:
- 991 0000 00000000 		.space	4
- 992              		.text
- 993              	.Letext0:
+ 516:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+ 690              		.loc 1 516 0
+ 691 008c 000053E3 		cmp	r3, #0
+ 692 0090 E3FFFFAA 		bge	.L62
+ 693 0094 F0FFFFEA 		b	.L64
+ 694              	.L53:
+ 490:src/main.c    **** 	  i = AD0DR0;		// Read A/D Data Register
+ 695              		.loc 1 490 0
+ 696 0098 103092E5 		ldr	r3, [r2, #16]
+ 697              	.LVL35:
+ 516:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+ 698              		.loc 1 516 0
+ 699 009c 000053E3 		cmp	r3, #0
+ 700 00a0 DFFFFFAA 		bge	.L62
+ 701 00a4 ECFFFFEA 		b	.L64
+ 702              	.L58:
+ 505:src/main.c    **** 	  i = AD0DR5;
+ 703              		.loc 1 505 0
+ 704 00a8 243092E5 		ldr	r3, [r2, #36]
+ 705              	.LVL36:
+ 516:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+ 706              		.loc 1 516 0
+ 707 00ac 000053E3 		cmp	r3, #0
+ 708 00b0 DBFFFFAA 		bge	.L62
+ 709 00b4 E8FFFFEA 		b	.L64
+ 710              	.L57:
+ 502:src/main.c    **** 	  i = AD0DR4;
+ 711              		.loc 1 502 0
+ 712 00b8 203092E5 		ldr	r3, [r2, #32]
+ 713              	.LVL37:
+ 516:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+ 714              		.loc 1 516 0
+ 715 00bc 000053E3 		cmp	r3, #0
+ 716 00c0 D7FFFFAA 		bge	.L62
+ 717 00c4 E4FFFFEA 		b	.L64
+ 718              	.L59:
+ 508:src/main.c    **** 	  i = AD0DR6;
+ 719              		.loc 1 508 0
+ 720 00c8 283092E5 		ldr	r3, [r2, #40]
+ 721              	.LVL38:
+ 516:src/main.c    ****   while ((i & 0x80000000) == 0);	// Wait for end of A/D Conversion
+ 722              		.loc 1 516 0
+ 723 00cc 000053E3 		cmp	r3, #0
+ 724 00d0 D3FFFFAA 		bge	.L62
+ 725 00d4 E0FFFFEA 		b	.L64
+ 726              	.L66:
+ 727              		.align	2
+ 728              	.L65:
+ 729 00d8 004003E0 		.word	-536657920
+ 730              		.cfi_endproc
+ 731              	.LFE12:
+ 733              		.section	.text.vValueTask,"ax",%progbits
+ 734              		.align	2
+ 735              		.global	vValueTask
+ 737              	vValueTask:
+ 738              	.LFB6:
+ 289:src/main.c    **** {
+ 739              		.loc 1 289 0
+ 740              		.cfi_startproc
+ 741              		@ Function supports interworking.
+ 742              		@ args = 0, pretend = 0, frame = 0
+ 743              		@ frame_needed = 0, uses_anonymous_args = 0
+ 744              	.LVL39:
+ 745 0000 F0412DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, lr}
+ 746              	.LCFI5:
+ 747              		.cfi_def_cfa_offset 24
+ 292:src/main.c    ****   vTaskDelay (30 / portTICK_RATE_MS);
+ 748              		.loc 1 292 0
+ 749 0004 1E00A0E3 		mov	r0, #30
+ 750              	.LVL40:
+ 293:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
+ 751              		.loc 1 293 0
+ 752 0008 A8719FE5 		ldr	r7, .L75
+ 753              		.cfi_offset 14, -4
+ 754              		.cfi_offset 8, -8
+ 755              		.cfi_offset 7, -12
+ 756              		.cfi_offset 6, -16
+ 757              		.cfi_offset 5, -20
+ 758              		.cfi_offset 4, -24
+ 759 000c A8619FE5 		ldr	r6, .L75+4
+ 292:src/main.c    ****   vTaskDelay (30 / portTICK_RATE_MS);
+ 760              		.loc 1 292 0
+ 761 0010 FEFFFFEB 		bl	vTaskDelay
+ 293:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
+ 762              		.loc 1 293 0
+ 763 0014 0030A0E3 		mov	r3, #0
+ 764 0018 003087E5 		str	r3, [r7, #0]
+ 765 001c 003086E5 		str	r3, [r6, #0]
+ 766              	.LVL41:
+ 767 0020 98419FE5 		ldr	r4, .L75+8
+ 301:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
+ 768              		.loc 1 301 0
+ 769 0024 98819FE5 		ldr	r8, .L75+12
+ 293:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
+ 770              		.loc 1 293 0
+ 771 0028 1450A0E3 		mov	r5, #20
+ 772              	.LVL42:
+ 773              	.L68:
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 774              		.loc 1 297 0 discriminator 1
+ 775 002c 0000A0E3 		mov	r0, #0
+ 776 0030 FEFFFFEB 		bl	ADC_Read
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 777              		.loc 1 298 0 discriminator 1
+ 778 0034 0010A0E3 		mov	r1, #0
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 779              		.loc 1 297 0 discriminator 1
+ 780 0038 0030A0E1 		mov	r3, r0
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 781              		.loc 1 298 0 discriminator 1
+ 782 003c 0020A0E1 		mov	r2, r0
+ 783 0040 80019FE5 		ldr	r0, .L75+16
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 784              		.loc 1 297 0 discriminator 1
+ 785 0044 003084E5 		str	r3, [r4, #0]
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 786              		.loc 1 298 0 discriminator 1
+ 787 0048 FEFFFFEB 		bl	printf
+ 788              	.LVL43:
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 789              		.loc 1 297 0 discriminator 1
+ 790 004c 0100A0E3 		mov	r0, #1
+ 791 0050 FEFFFFEB 		bl	ADC_Read
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 792              		.loc 1 298 0 discriminator 1
+ 793 0054 0110A0E3 		mov	r1, #1
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 794              		.loc 1 297 0 discriminator 1
+ 795 0058 00C0A0E1 		mov	ip, r0
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 796              		.loc 1 298 0 discriminator 1
+ 797 005c 0020A0E1 		mov	r2, r0
+ 798 0060 60019FE5 		ldr	r0, .L75+16
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 799              		.loc 1 297 0 discriminator 1
+ 800 0064 04C084E5 		str	ip, [r4, #4]
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 801              		.loc 1 298 0 discriminator 1
+ 802 0068 FEFFFFEB 		bl	printf
+ 803              	.LVL44:
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 804              		.loc 1 297 0 discriminator 1
+ 805 006c 0200A0E3 		mov	r0, #2
+ 806 0070 FEFFFFEB 		bl	ADC_Read
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 807              		.loc 1 298 0 discriminator 1
+ 808 0074 0210A0E3 		mov	r1, #2
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 809              		.loc 1 297 0 discriminator 1
+ 810 0078 0030A0E1 		mov	r3, r0
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 811              		.loc 1 298 0 discriminator 1
+ 812 007c 0020A0E1 		mov	r2, r0
+ 813 0080 40019FE5 		ldr	r0, .L75+16
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 814              		.loc 1 297 0 discriminator 1
+ 815 0084 083084E5 		str	r3, [r4, #8]
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 816              		.loc 1 298 0 discriminator 1
+ 817 0088 FEFFFFEB 		bl	printf
+ 818              	.LVL45:
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 819              		.loc 1 297 0 discriminator 1
+ 820 008c 0300A0E3 		mov	r0, #3
+ 821 0090 FEFFFFEB 		bl	ADC_Read
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 822              		.loc 1 298 0 discriminator 1
+ 823 0094 0310A0E3 		mov	r1, #3
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 824              		.loc 1 297 0 discriminator 1
+ 825 0098 00C0A0E1 		mov	ip, r0
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 826              		.loc 1 298 0 discriminator 1
+ 827 009c 0020A0E1 		mov	r2, r0
+ 828 00a0 20019FE5 		ldr	r0, .L75+16
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 829              		.loc 1 297 0 discriminator 1
+ 830 00a4 0CC084E5 		str	ip, [r4, #12]
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 831              		.loc 1 298 0 discriminator 1
+ 832 00a8 FEFFFFEB 		bl	printf
+ 833              	.LVL46:
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 834              		.loc 1 297 0 discriminator 1
+ 835 00ac 0400A0E3 		mov	r0, #4
+ 836 00b0 FEFFFFEB 		bl	ADC_Read
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 837              		.loc 1 298 0 discriminator 1
+ 838 00b4 0410A0E3 		mov	r1, #4
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 839              		.loc 1 297 0 discriminator 1
+ 840 00b8 0030A0E1 		mov	r3, r0
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 841              		.loc 1 298 0 discriminator 1
+ 842 00bc 0020A0E1 		mov	r2, r0
+ 843 00c0 00019FE5 		ldr	r0, .L75+16
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 844              		.loc 1 297 0 discriminator 1
+ 845 00c4 103084E5 		str	r3, [r4, #16]
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 846              		.loc 1 298 0 discriminator 1
+ 847 00c8 FEFFFFEB 		bl	printf
+ 848              	.LVL47:
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 849              		.loc 1 297 0 discriminator 1
+ 850 00cc 0500A0E3 		mov	r0, #5
+ 851 00d0 FEFFFFEB 		bl	ADC_Read
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 852              		.loc 1 298 0 discriminator 1
+ 853 00d4 0510A0E3 		mov	r1, #5
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 854              		.loc 1 297 0 discriminator 1
+ 855 00d8 00C0A0E1 		mov	ip, r0
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 856              		.loc 1 298 0 discriminator 1
+ 857 00dc 0020A0E1 		mov	r2, r0
+ 858 00e0 E0009FE5 		ldr	r0, .L75+16
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 859              		.loc 1 297 0 discriminator 1
+ 860 00e4 14C084E5 		str	ip, [r4, #20]
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 861              		.loc 1 298 0 discriminator 1
+ 862 00e8 FEFFFFEB 		bl	printf
+ 863              	.LVL48:
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 864              		.loc 1 297 0 discriminator 1
+ 865 00ec 0600A0E3 		mov	r0, #6
+ 866 00f0 FEFFFFEB 		bl	ADC_Read
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 867              		.loc 1 298 0 discriminator 1
+ 868 00f4 0610A0E3 		mov	r1, #6
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 869              		.loc 1 297 0 discriminator 1
+ 870 00f8 0030A0E1 		mov	r3, r0
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 871              		.loc 1 298 0 discriminator 1
+ 872 00fc 0020A0E1 		mov	r2, r0
+ 873 0100 C0009FE5 		ldr	r0, .L75+16
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 874              		.loc 1 297 0 discriminator 1
+ 875 0104 183084E5 		str	r3, [r4, #24]
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 876              		.loc 1 298 0 discriminator 1
+ 877 0108 FEFFFFEB 		bl	printf
+ 878              	.LVL49:
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 879              		.loc 1 297 0 discriminator 1
+ 880 010c 0700A0E3 		mov	r0, #7
+ 881 0110 FEFFFFEB 		bl	ADC_Read
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 882              		.loc 1 298 0 discriminator 1
+ 883 0114 0710A0E3 		mov	r1, #7
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 884              		.loc 1 297 0 discriminator 1
+ 885 0118 00C0A0E1 		mov	ip, r0
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 886              		.loc 1 298 0 discriminator 1
+ 887 011c 0020A0E1 		mov	r2, r0
+ 888 0120 A0009FE5 		ldr	r0, .L75+16
+ 297:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 889              		.loc 1 297 0 discriminator 1
+ 890 0124 1CC084E5 		str	ip, [r4, #28]
+ 298:src/main.c    **** 	  printf ("  %x....%4x\t", a, res[a]);
+ 891              		.loc 1 298 0 discriminator 1
+ 892 0128 FEFFFFEB 		bl	printf
+ 893              	.LVL50:
+ 300:src/main.c    ****       printf ("\n");
+ 894              		.loc 1 300 0 discriminator 1
+ 895 012c 0A00A0E3 		mov	r0, #10
+ 896 0130 FEFFFFEB 		bl	putchar
+ 301:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
+ 897              		.loc 1 301 0 discriminator 1
+ 898 0134 043094E5 		ldr	r3, [r4, #4]
+ 899 0138 0C1084E2 		add	r1, r4, #12
+ 900 013c 021091E8 		ldmia	r1, {r1, ip}	@ phole ldm
+ 901 0140 032081E0 		add	r2, r1, r3
+ 902 0144 0C0082E0 		add	r0, r2, ip
+ 903 0148 983080E0 		umull	r3, r0, r8, r0
+ 302:src/main.c    ****       black += (res[2]);
+ 904              		.loc 1 302 0 discriminator 1
+ 905 014c 001096E5 		ldr	r1, [r6, #0]
+ 301:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
+ 906              		.loc 1 301 0 discriminator 1
+ 907 0150 003097E5 		ldr	r3, [r7, #0]
+ 302:src/main.c    ****       black += (res[2]);
+ 908              		.loc 1 302 0 discriminator 1
+ 909 0154 08C094E5 		ldr	ip, [r4, #8]
+ 301:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
+ 910              		.loc 1 301 0 discriminator 1
+ 911 0158 A02083E0 		add	r2, r3, r0, lsr #1
+ 293:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
+ 912              		.loc 1 293 0 discriminator 1
+ 913 015c 015055E2 		subs	r5, r5, #1
+ 302:src/main.c    ****       black += (res[2]);
+ 914              		.loc 1 302 0 discriminator 1
+ 915 0160 0C0081E0 		add	r0, r1, ip
+ 301:src/main.c    ****       white += ((res[1] + res[3] + res[4]) / 3);
+ 916              		.loc 1 301 0 discriminator 1
+ 917 0164 002087E5 		str	r2, [r7, #0]
+ 302:src/main.c    ****       black += (res[2]);
+ 918              		.loc 1 302 0 discriminator 1
+ 919 0168 000086E5 		str	r0, [r6, #0]
+ 293:src/main.c    ****   for (white = 0, black = 0, i = 1; i <= 20; i++)
+ 920              		.loc 1 293 0 discriminator 1
+ 921 016c AEFFFF1A 		bne	.L68
+ 922              	.LVL51:
+ 311:src/main.c    ****       for (a = 0; a <= 4; a++)
+ 923              		.loc 1 311 0 discriminator 1
+ 924 0170 040055E3 		cmp	r5, #4
+ 925 0174 0200009A 		bls	.L70
+ 926              	.L74:
+ 317:src/main.c    ****       printf ("\n");
+ 927              		.loc 1 317 0
+ 928 0178 0A00A0E3 		mov	r0, #10
+ 929 017c FEFFFFEB 		bl	putchar
+ 311:src/main.c    ****       for (a = 0; a <= 4; a++)
+ 930              		.loc 1 311 0
+ 931 0180 0050A0E3 		mov	r5, #0
+ 932              	.LVL52:
+ 933              	.L70:
+ 313:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 934              		.loc 1 313 0 discriminator 2
+ 935 0184 0500A0E1 		mov	r0, r5
+ 936 0188 FEFFFFEB 		bl	ADC_Read
+ 314:src/main.c    **** 	  printf ("%d\t", res[a]);
+ 937              		.loc 1 314 0 discriminator 2
+ 938 018c 0010A0E1 		mov	r1, r0
+ 313:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 939              		.loc 1 313 0 discriminator 2
+ 940 0190 0060A0E1 		mov	r6, r0
+ 314:src/main.c    **** 	  printf ("%d\t", res[a]);
+ 941              		.loc 1 314 0 discriminator 2
+ 942 0194 30009FE5 		ldr	r0, .L75+20
+ 313:src/main.c    **** 	  res[a] = ADC_Read (a);
+ 943              		.loc 1 313 0 discriminator 2
+ 944 0198 056184E7 		str	r6, [r4, r5, asl #2]
+ 314:src/main.c    **** 	  printf ("%d\t", res[a]);
+ 945              		.loc 1 314 0 discriminator 2
+ 946 019c FEFFFFEB 		bl	printf
+ 311:src/main.c    ****       for (a = 0; a <= 4; a++)
+ 947              		.loc 1 311 0 discriminator 2
+ 948 01a0 015085E2 		add	r5, r5, #1
+ 315:src/main.c    **** 	  vTaskDelay (3 / portTICK_RATE_MS);
+ 949              		.loc 1 315 0 discriminator 2
+ 950 01a4 0300A0E3 		mov	r0, #3
+ 951 01a8 FEFFFFEB 		bl	vTaskDelay
+ 952              	.LVL53:
+ 311:src/main.c    ****       for (a = 0; a <= 4; a++)
+ 953              		.loc 1 311 0 discriminator 2
+ 954 01ac 040055E3 		cmp	r5, #4
+ 955 01b0 F0FFFF8A 		bhi	.L74
+ 956 01b4 F2FFFFEA 		b	.L70
+ 957              	.L76:
+ 958              		.align	2
+ 959              	.L75:
+ 960 01b8 00000000 		.word	.LANCHOR1
+ 961 01bc 00000000 		.word	.LANCHOR2
+ 962 01c0 00000000 		.word	.LANCHOR3
+ 963 01c4 ABAAAAAA 		.word	-1431655765
+ 964 01c8 64000000 		.word	.LC12
+ 965 01cc 74000000 		.word	.LC13
+ 966              		.cfi_endproc
+ 967              	.LFE6:
+ 969              		.global	i2cbuff
+ 970              		.global	i2cErr
+ 971              		.global	left
+ 972              		.global	right
+ 973              		.global	Mutex
+ 974              		.global	res
+ 975              		.global	white
+ 976              		.global	black
+ 977              		.section	.bss.white,"aw",%nobits
+ 978              		.align	2
+ 979              		.set	.LANCHOR1,. + 0
+ 982              	white:
+ 983 0000 00000000 		.space	4
+ 984              		.section	.bss.right,"aw",%nobits
+ 985              		.align	2
+ 986              		.set	.LANCHOR4,. + 0
+ 989              	right:
+ 990 0000 00000000 		.space	4
+ 991              		.section	.bss.res,"aw",%nobits
+ 992              		.align	2
+ 993              		.set	.LANCHOR3,. + 0
+ 996              	res:
+ 997 0000 00000000 		.space	20
+ 997      00000000 
+ 997      00000000 
+ 997      00000000 
+ 997      00000000 
+ 998              		.section	.bss.i2cErr,"aw",%nobits
+ 999              		.align	2
+ 1002              	i2cErr:
+ 1003 0000 00000000 		.space	4
+ 1004              		.section	.bss.i2cbuff,"aw",%nobits
+ 1005              		.align	2
+ 1008              	i2cbuff:
+ 1009 0000 00000000 		.space	24
+ 1009      00000000 
+ 1009      00000000 
+ 1009      00000000 
+ 1009      00000000 
+ 1010              		.section	.bss.left,"aw",%nobits
+ 1011              		.align	2
+ 1012              		.set	.LANCHOR5,. + 0
+ 1015              	left:
+ 1016 0000 00000000 		.space	4
+ 1017              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1018              		.align	2
+ 1019              	.LC0:
+ 1020 0000 25347800 		.ascii	"%4x\000"
+ 1021              	.LC1:
+ 1022 0004 257800   		.ascii	"%x\000"
+ 1023 0007 00       		.space	1
+ 1024              	.LC2:
+ 1025 0008 48656C6C 		.ascii	"Hello,\000"
+ 1025      6F2C00
+ 1026 000f 00       		.space	1
+ 1027              	.LC3:
+ 1028 0010 20776F72 		.ascii	" world!\000"
+ 1028      6C642100 
+ 1029              	.LC4:
+ 1030 0018 69737372 		.ascii	"issr\000"
+ 1030      00
+ 1031 001d 000000   		.space	3
+ 1032              	.LC5:
+ 1033 0020 4C4400   		.ascii	"LD\000"
+ 1034 0023 00       		.space	1
+ 1035              	.LC6:
+ 1036 0024 73746172 		.ascii	"start ISSI connection\000"
+ 1036      74204953 
+ 1036      53492063 
+ 1036      6F6E6E65 
+ 1036      6374696F 
+ 1037 003a 0000     		.space	2
+ 1038              	.LC7:
+ 1039 003c 7072763D 		.ascii	"prv=%x\000"
+ 1039      257800
+ 1040 0043 00       		.space	1
+ 1041              	.LC8:
+ 1042 0044 43723D25 		.ascii	"Cr=%d\000"
+ 1042      6400
+ 1043 004a 0000     		.space	2
+ 1044              	.LC9:
+ 1045 004c 2D256409 		.ascii	"-%d\011%d\012\000"
+ 1045      25640A00 
+ 1046              	.LC10:
+ 1047 0054 6D696769 		.ascii	"migi\000"
+ 1047      00
+ 1048 0059 000000   		.space	3
+ 1049              	.LC11:
+ 1050 005c 7479756F 		.ascii	"tyuou\000"
+ 1050      7500
+ 1051 0062 0000     		.space	2
+ 1052              	.LC12:
+ 1053 0064 20202578 		.ascii	"  %x....%4x\011\000"
+ 1053      2E2E2E2E 
+ 1053      25347809 
+ 1053      00
+ 1054 0071 000000   		.space	3
+ 1055              	.LC13:
+ 1056 0074 25640900 		.ascii	"%d\011\000"
+ 1057              		.section	.bss.Mutex,"aw",%nobits
+ 1058              		.align	2
+ 1059              		.set	.LANCHOR0,. + 0
+ 1062              	Mutex:
+ 1063 0000 00000000 		.space	4
+ 1064              		.section	.bss.black,"aw",%nobits
+ 1065              		.align	2
+ 1066              		.set	.LANCHOR2,. + 0
+ 1069              	black:
+ 1070 0000 00000000 		.space	4
+ 1071              		.text
+ 1072              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccO0Hw7g.s:22     .text.ISSR:00000000 $a
-     /tmp/ccO0Hw7g.s:24     .text.ISSR:00000000 ISSR
-     /tmp/ccO0Hw7g.s:147    .text.ISSR:00000100 $d
-     /tmp/ccO0Hw7g.s:158    .text.main:00000000 $a
-     /tmp/ccO0Hw7g.s:161    .text.main:00000000 main
-     /tmp/ccO0Hw7g.s:271    .text.main:000000c8 $d
-     /tmp/ccO0Hw7g.s:284    .text.getISSI:00000000 $a
-     /tmp/ccO0Hw7g.s:287    .text.getISSI:00000000 getISSI
-     /tmp/ccO0Hw7g.s:373    .text.getISSI:00000098 $d
-     /tmp/ccO0Hw7g.s:384    .text.vApplicationTickHook:00000000 $a
-     /tmp/ccO0Hw7g.s:387    .text.vApplicationTickHook:00000000 vApplicationTickHook
-     /tmp/ccO0Hw7g.s:401    .text.vtrsTask:00000000 $a
-     /tmp/ccO0Hw7g.s:404    .text.vtrsTask:00000000 vtrsTask
-     /tmp/ccO0Hw7g.s:521    .text.vtrsTask:00000104 $d
-     /tmp/ccO0Hw7g.s:532    .text.ADC_Read:00000000 $a
-     /tmp/ccO0Hw7g.s:535    .text.ADC_Read:00000000 ADC_Read
-     /tmp/ccO0Hw7g.s:562    .text.ADC_Read:00000030 $d
-     /tmp/ccO0Hw7g.s:572    .text.ADC_Read:00000050 $a
-     /tmp/ccO0Hw7g.s:646    .text.ADC_Read:000000d8 $d
-     /tmp/ccO0Hw7g.s:651    .text.vValueTask:00000000 $a
-     /tmp/ccO0Hw7g.s:654    .text.vValueTask:00000000 vValueTask
-     /tmp/ccO0Hw7g.s:877    .text.vValueTask:000001b8 $d
-     /tmp/ccO0Hw7g.s:925    .bss.i2cbuff:00000000 i2cbuff
-     /tmp/ccO0Hw7g.s:919    .bss.i2cErr:00000000 i2cErr
-     /tmp/ccO0Hw7g.s:932    .bss.left:00000000 left
-     /tmp/ccO0Hw7g.s:906    .bss.right:00000000 right
-     /tmp/ccO0Hw7g.s:983    .bss.Mutex:00000000 Mutex
-     /tmp/ccO0Hw7g.s:913    .bss.res:00000000 res
-     /tmp/ccO0Hw7g.s:899    .bss.white:00000000 white
-     /tmp/ccO0Hw7g.s:990    .bss.black:00000000 black
-     /tmp/ccO0Hw7g.s:895    .bss.white:00000000 $d
-     /tmp/ccO0Hw7g.s:902    .bss.right:00000000 $d
-     /tmp/ccO0Hw7g.s:909    .bss.res:00000000 $d
-     /tmp/ccO0Hw7g.s:916    .bss.i2cErr:00000000 $d
-     /tmp/ccO0Hw7g.s:922    .bss.i2cbuff:00000000 $d
-     /tmp/ccO0Hw7g.s:928    .bss.left:00000000 $d
-     /tmp/ccO0Hw7g.s:935    .rodata.str1.4:00000000 $d
-     /tmp/ccO0Hw7g.s:979    .bss.Mutex:00000000 $d
-     /tmp/ccO0Hw7g.s:986    .bss.black:00000000 $d
+     /tmp/cc4eaIqO.s:22     .text.ISSR:00000000 $a
+     /tmp/cc4eaIqO.s:24     .text.ISSR:00000000 ISSR
+     /tmp/cc4eaIqO.s:231    .text.ISSR:000001d0 $d
+     /tmp/cc4eaIqO.s:241    .text.main:00000000 $a
+     /tmp/cc4eaIqO.s:244    .text.main:00000000 main
+     /tmp/cc4eaIqO.s:354    .text.main:000000c8 $d
+     /tmp/cc4eaIqO.s:367    .text.getISSI:00000000 $a
+     /tmp/cc4eaIqO.s:370    .text.getISSI:00000000 getISSI
+     /tmp/cc4eaIqO.s:456    .text.getISSI:00000098 $d
+     /tmp/cc4eaIqO.s:467    .text.vApplicationTickHook:00000000 $a
+     /tmp/cc4eaIqO.s:470    .text.vApplicationTickHook:00000000 vApplicationTickHook
+     /tmp/cc4eaIqO.s:484    .text.vtrsTask:00000000 $a
+     /tmp/cc4eaIqO.s:487    .text.vtrsTask:00000000 vtrsTask
+     /tmp/cc4eaIqO.s:604    .text.vtrsTask:00000104 $d
+     /tmp/cc4eaIqO.s:615    .text.ADC_Read:00000000 $a
+     /tmp/cc4eaIqO.s:618    .text.ADC_Read:00000000 ADC_Read
+     /tmp/cc4eaIqO.s:645    .text.ADC_Read:00000030 $d
+     /tmp/cc4eaIqO.s:655    .text.ADC_Read:00000050 $a
+     /tmp/cc4eaIqO.s:729    .text.ADC_Read:000000d8 $d
+     /tmp/cc4eaIqO.s:734    .text.vValueTask:00000000 $a
+     /tmp/cc4eaIqO.s:737    .text.vValueTask:00000000 vValueTask
+     /tmp/cc4eaIqO.s:960    .text.vValueTask:000001b8 $d
+     /tmp/cc4eaIqO.s:1008   .bss.i2cbuff:00000000 i2cbuff
+     /tmp/cc4eaIqO.s:1002   .bss.i2cErr:00000000 i2cErr
+     /tmp/cc4eaIqO.s:1015   .bss.left:00000000 left
+     /tmp/cc4eaIqO.s:989    .bss.right:00000000 right
+     /tmp/cc4eaIqO.s:1062   .bss.Mutex:00000000 Mutex
+     /tmp/cc4eaIqO.s:996    .bss.res:00000000 res
+     /tmp/cc4eaIqO.s:982    .bss.white:00000000 white
+     /tmp/cc4eaIqO.s:1069   .bss.black:00000000 black
+     /tmp/cc4eaIqO.s:978    .bss.white:00000000 $d
+     /tmp/cc4eaIqO.s:985    .bss.right:00000000 $d
+     /tmp/cc4eaIqO.s:992    .bss.res:00000000 $d
+     /tmp/cc4eaIqO.s:999    .bss.i2cErr:00000000 $d
+     /tmp/cc4eaIqO.s:1005   .bss.i2cbuff:00000000 $d
+     /tmp/cc4eaIqO.s:1011   .bss.left:00000000 $d
+     /tmp/cc4eaIqO.s:1018   .rodata.str1.4:00000000 $d
+     /tmp/cc4eaIqO.s:1058   .bss.Mutex:00000000 $d
+     /tmp/cc4eaIqO.s:1065   .bss.black:00000000 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
 vTaskDelay
 GPIOInit
 xQueueGenericReceive
-fflush
 printf
+fflush
+putchar
 _impure_ptr
 TargetResetInit
 GPIOResetInit
@@ -1699,4 +1806,3 @@ puts
 xTaskGenericCreate
 vTaskStartScheduler
 vi2c
-putchar
