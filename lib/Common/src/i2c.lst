@@ -1450,8 +1450,8 @@
  1014 006c FEFFFFEB 		bl	vTaskDelay
  1015              	.L130:
  1016              	.LVL68:
- 1017              	.LBB16:
- 1018              	.LBB17:
+ 1017              	.LBB24:
+ 1018              	.LBB25:
  140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
  1019              		.loc 1 140 0
  1020 0070 24009FE5 		ldr	r0, .L132+4
@@ -1465,8 +1465,8 @@
  141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
  1026              		.loc 1 141 0
  1027 0080 182080E5 		str	r2, [r0, #24]
- 1028              	.LBE17:
- 1029              	.LBE16:
+ 1028              	.LBE25:
+ 1029              	.LBE24:
  323:lib/Common/src/i2c.c ****   i2cstop (2);
  324:lib/Common/src/i2c.c **** }
  1030              		.loc 1 324 0
@@ -1570,8 +1570,8 @@
  1108 0060 4210A0E3 		mov	r1, #66
  1109 0064 FEFFFFEB 		bl	i2creader
  1110              	.LVL74:
- 1111              	.LBB18:
- 1112              	.LBB19:
+ 1111              	.LBB26:
+ 1112              	.LBB27:
  140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
  1113              		.loc 1 140 0
  1114 0068 40309FE5 		ldr	r3, .L138+4
@@ -1582,19 +1582,19 @@
  140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
  1118              		.loc 1 140 0
  1119 0074 002083E5 		str	r2, [r3, #0]
- 1120              	.LBE19:
- 1121              	.LBE18:
+ 1120              	.LBE27:
+ 1121              	.LBE26:
  343:lib/Common/src/i2c.c ****   i2cstop (2);
  344:lib/Common/src/i2c.c ****   printf ("Debu331g\n");
  1122              		.loc 1 344 0
  1123 0078 34009FE5 		ldr	r0, .L138+8
- 1124              	.LBB21:
- 1125              	.LBB20:
+ 1124              	.LBB29:
+ 1125              	.LBB28:
  141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
  1126              		.loc 1 141 0
  1127 007c 18C083E5 		str	ip, [r3, #24]
- 1128              	.LBE20:
- 1129              	.LBE21:
+ 1128              	.LBE28:
+ 1129              	.LBE29:
  1130              		.loc 1 344 0
  1131 0080 FEFFFFEB 		bl	puts
  1132              	.LVL75:
@@ -1609,8 +1609,8 @@
  1139 008c 24009FE5 		ldr	r0, .L138+12
  1140 0090 FEFFFFEB 		bl	printf
  1141              	.LVL76:
- 1142              	.LBB22:
- 1143              	.LBB23:
+ 1142              	.LBB30:
+ 1143              	.LBB31:
  140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
  1144              		.loc 1 140 0
  1145 0094 14009FE5 		ldr	r0, .L138+4
@@ -1632,8 +1632,8 @@
  1158 00b0 000008E0 		.word	-536346624
  1159 00b4 9C000000 		.word	.LC11
  1160 00b8 94000000 		.word	.LC10
- 1161              	.LBE23:
- 1162              	.LBE22:
+ 1161              	.LBE31:
+ 1162              	.LBE30:
  1163              		.cfi_endproc
  1164              	.LFE10:
  1166              		.section	.text.SCCBwrite,"ax",%progbits
@@ -1718,8 +1718,8 @@
  1226 0064 0710A0E1 		mov	r1, r7
  1227 0068 FEFFFFEB 		bl	i2csender
  1228              	.LVL80:
- 1229              	.LBB24:
- 1230              	.LBB25:
+ 1229              	.LBB32:
+ 1230              	.LBB33:
  140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
  1231              		.loc 1 140 0
  1232 006c 44309FE5 		ldr	r3, .L144+8
@@ -1733,8 +1733,8 @@
  141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
  1238              		.loc 1 141 0
  1239 007c 18C083E5 		str	ip, [r3, #24]
- 1240              	.LBE25:
- 1241              	.LBE24:
+ 1240              	.LBE33:
+ 1241              	.LBE32:
  363:lib/Common/src/i2c.c ****   i2cstop (2);
  364:lib/Common/src/i2c.c ****   return 0;
  1242              		.loc 1 364 0
@@ -1751,8 +1751,8 @@
  1251 008c 28009FE5 		ldr	r0, .L144+12
  1252 0090 FEFFFFEB 		bl	printf
  1253              	.LVL82:
- 1254              	.LBB26:
- 1255              	.LBB27:
+ 1254              	.LBB34:
+ 1255              	.LBB35:
  140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
  1256              		.loc 1 140 0
  1257 0094 1C109FE5 		ldr	r1, .L144+8
@@ -1763,18 +1763,18 @@
  140:lib/Common/src/i2c.c ****       I22CONSET = 0x50;
  1261              		.loc 1 140 0
  1262 00a0 000081E5 		str	r0, [r1, #0]
- 1263              	.LBE27:
- 1264              	.LBE26:
+ 1263              	.LBE35:
+ 1264              	.LBE34:
  359:lib/Common/src/i2c.c ****       return -1;
  1265              		.loc 1 359 0
  1266 00a4 0000E0E3 		mvn	r0, #0
- 1267              	.LBB29:
- 1268              	.LBB28:
+ 1267              	.LBB37:
+ 1268              	.LBB36:
  141:lib/Common/src/i2c.c ****       I22CONCLR = 0x2C;
  1269              		.loc 1 141 0
  1270 00a8 182081E5 		str	r2, [r1, #24]
- 1271              	.LBE28:
- 1272              	.LBE29:
+ 1271              	.LBE36:
+ 1272              	.LBE37:
  359:lib/Common/src/i2c.c ****       return -1;
  1273              		.loc 1 359 0
  1274 00ac F4FFFFEA 		b	.L142
@@ -1840,7 +1840,7 @@
  378:lib/Common/src/i2c.c ****   char Loopy;
  379:lib/Common/src/i2c.c ****   xSemaphoreTake (Mutex, portMAX_DELAY);
  1325              		.loc 1 379 0
- 1326 0004 24419FE5 		ldr	r4, .L161
+ 1326 0004 30419FE5 		ldr	r4, .L161
  1327              		.cfi_offset 14, -4
  1328              		.cfi_offset 7, -8
  1329              		.cfi_offset 6, -12
@@ -1849,13 +1849,13 @@
  1332              		.cfi_offset 3, -24
  1333 0008 0010A0E3 		mov	r1, #0
  1334 000c 0130A0E1 		mov	r3, r1
- 1335              	.LBB30:
- 1336              	.LBB32:
+ 1335              	.LBB38:
+ 1336              	.LBB40:
   54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
  1337              		.loc 1 54 0
  1338 0010 4060A0E3 		mov	r6, #64
- 1339              	.LBE32:
- 1340              	.LBE30:
+ 1339              	.LBE40:
+ 1340              	.LBE38:
  1341              		.loc 1 379 0
  1342 0014 0020E0E3 		mvn	r2, #0
  1343 0018 000094E5 		ldr	r0, [r4, #0]
@@ -1866,26 +1866,26 @@
  381:lib/Common/src/i2c.c ****   I22SCLH = 80;
  1347              		.loc 1 381 0
  1348 0020 105086E2 		add	r5, r6, #16
- 1349              	.LBB34:
- 1350              	.LBB31:
+ 1349              	.LBB42:
+ 1350              	.LBB39:
   54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
  1351              		.loc 1 54 0
- 1352 0024 08119FE5 		ldr	r1, .L161+4
- 1353              	.LBE31:
- 1354              	.LBE34:
+ 1352 0024 14119FE5 		ldr	r1, .L161+4
+ 1353              	.LBE39:
+ 1354              	.LBE42:
  382:lib/Common/src/i2c.c ****   I22SCLL = 180;
  1355              		.loc 1 382 0
  1356 0028 642085E2 		add	r2, r5, #100
- 1357              	.LBB35:
- 1358              	.LBB33:
+ 1357              	.LBB43:
+ 1358              	.LBB41:
   54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
  1359              		.loc 1 54 0
  1360 002c 006081E5 		str	r6, [r1, #0]
- 1361              	.LBE33:
- 1362              	.LBE35:
+ 1361              	.LBE41:
+ 1362              	.LBE43:
  383:lib/Common/src/i2c.c ****   printf ("Register Reset\n");
  1363              		.loc 1 383 0
- 1364 0030 00019FE5 		ldr	r0, .L161+8
+ 1364 0030 0C019FE5 		ldr	r0, .L161+8
  381:lib/Common/src/i2c.c ****   I22SCLH = 80;
  1365              		.loc 1 381 0
  1366 0034 105081E5 		str	r5, [r1, #16]
@@ -1906,39 +1906,39 @@
  387:lib/Common/src/i2c.c ****   printf ("Setup begin[> ");
  388:lib/Common/src/i2c.c ****   fflush (stdout);
  1377              		.loc 1 388 0
- 1378 0050 E4609FE5 		ldr	r6, .L161+12
+ 1378 0050 F0509FE5 		ldr	r5, .L161+12
  386:lib/Common/src/i2c.c ****   vTaskDelay (200 / portTICK_RATE_MS);
  1379              		.loc 1 386 0
  1380 0054 C800A0E3 		mov	r0, #200
  1381 0058 FEFFFFEB 		bl	vTaskDelay
  387:lib/Common/src/i2c.c ****   printf ("Setup begin[> ");
  1382              		.loc 1 387 0
- 1383 005c DC009FE5 		ldr	r0, .L161+16
+ 1383 005c E8009FE5 		ldr	r0, .L161+16
  1384 0060 FEFFFFEB 		bl	printf
  1385              		.loc 1 388 0
- 1386 0064 003096E5 		ldr	r3, [r6, #0]
+ 1386 0064 003095E5 		ldr	r3, [r5, #0]
  1387 0068 080093E5 		ldr	r0, [r3, #8]
  1388 006c FEFFFFEB 		bl	fflush
- 1389 0070 CC709FE5 		ldr	r7, .L161+20
+ 1389 0070 D8709FE5 		ldr	r7, .L161+20
  389:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
  1390              		.loc 1 389 0
- 1391 0074 0050A0E3 		mov	r5, #0
+ 1391 0074 0060A0E3 		mov	r6, #0
  1392              	.LVL88:
  1393              	.L160:
  390:lib/Common/src/i2c.c ****     {
  391:lib/Common/src/i2c.c ****       if (SCCBByteWrite (OV7670[regpointer]) == -1) continue;
  1394              		.loc 1 391 0
- 1395 0078 050197E7 		ldr	r0, [r7, r5, asl #2]
+ 1395 0078 060197E7 		ldr	r0, [r7, r6, asl #2]
  1396 007c FEFFFFEB 		bl	SCCBByteWrite
  1397 0080 010070E3 		cmn	r0, #1
- 1398 0084 2600000A 		beq	.L149
+ 1398 0084 2900000A 		beq	.L149
  392:lib/Common/src/i2c.c ****       regpointer++;
  1399              		.loc 1 392 0
- 1400 0088 015085E2 		add	r5, r5, #1
+ 1400 0088 016086E2 		add	r6, r6, #1
  1401              	.LVL89:
  393:lib/Common/src/i2c.c ****       	switch (regpointer % 4)
  1402              		.loc 1 393 0
- 1403 008c 031005E2 		and	r1, r5, #3
+ 1403 008c 031006E2 		and	r1, r6, #3
  1404 0090 020051E3 		cmp	r1, #2
  394:lib/Common/src/i2c.c **** 	  {
  395:lib/Common/src/i2c.c **** 	  case 0:
@@ -1974,12 +1974,12 @@
  407:lib/Common/src/i2c.c **** 	  }
  408:lib/Common/src/i2c.c **** 	printf ("\b\b\b=>%c", Loopy);
  1420              		.loc 1 408 0
- 1421 00b4 8C009FE5 		ldr	r0, .L161+24
+ 1421 00b4 98009FE5 		ldr	r0, .L161+24
  1422 00b8 FEFFFFEB 		bl	printf
  1423              	.LVL91:
  409:lib/Common/src/i2c.c **** 	fflush (stdout);
  1424              		.loc 1 409 0
- 1425 00bc 000096E5 		ldr	r0, [r6, #0]
+ 1425 00bc 000095E5 		ldr	r0, [r5, #0]
  1426 00c0 080090E5 		ldr	r0, [r0, #8]
  1427 00c4 FEFFFFEB 		bl	fflush
  410:lib/Common/src/i2c.c ****       vTaskDelay (10 / portTICK_RATE_MS);
@@ -1988,18 +1988,18 @@
  1430 00cc FEFFFFEB 		bl	vTaskDelay
  389:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
  1431              		.loc 1 389 0
- 1432 00d0 810055E3 		cmp	r5, #129
+ 1432 00d0 810056E3 		cmp	r6, #129
  1433 00d4 E7FFFF1A 		bne	.L160
  1434              	.L155:
  411:lib/Common/src/i2c.c ****     }
  412:lib/Common/src/i2c.c ****   printf ("\rData transmition End!\n");
  1435              		.loc 1 412 0
- 1436 00d8 6C009FE5 		ldr	r0, .L161+28
+ 1436 00d8 78009FE5 		ldr	r0, .L161+28
  1437 00dc FEFFFFEB 		bl	puts
  413:lib/Common/src/i2c.c ****   fflush (stdout);
  1438              		.loc 1 413 0
- 1439 00e0 007096E5 		ldr	r7, [r6, #0]
- 1440 00e4 080097E5 		ldr	r0, [r7, #8]
+ 1439 00e0 00C095E5 		ldr	ip, [r5, #0]
+ 1440 00e4 08009CE5 		ldr	r0, [ip, #8]
  1441 00e8 FEFFFFEB 		bl	fflush
  414:lib/Common/src/i2c.c ****   SCCBread (0x00, 0xca, 0);
  1442              		.loc 1 414 0
@@ -2009,498 +2009,730 @@
  1446 00f8 FEFFFFEB 		bl	SCCBread
  415:lib/Common/src/i2c.c ****   printf("Semagive");
  1447              		.loc 1 415 0
- 1448 00fc 4C009FE5 		ldr	r0, .L161+32
+ 1448 00fc 58009FE5 		ldr	r0, .L161+32
  1449 0100 FEFFFFEB 		bl	printf
- 416:lib/Common/src/i2c.c ****   xSemaphoreGive (Mutex);
+ 416:lib/Common/src/i2c.c ****   fflush (stdout);
  1450              		.loc 1 416 0
- 1451 0104 0010A0E3 		mov	r1, #0
- 1452 0108 000094E5 		ldr	r0, [r4, #0]
- 1453 010c 0120A0E1 		mov	r2, r1
- 1454 0110 0130A0E1 		mov	r3, r1
- 1455 0114 FEFFFFEB 		bl	xQueueGenericSend
- 417:lib/Common/src/i2c.c **** //  vTaskResume ( g_issrhandle );
- 418:lib/Common/src/i2c.c ****   vTaskSuspend(NULL);
- 1456              		.loc 1 418 0
- 1457 0118 0000A0E3 		mov	r0, #0
- 1458 011c FEFFFFEB 		bl	vTaskSuspend
- 1459              	.L156:
- 1460 0120 FEFFFFEA 		b	.L156
- 1461              	.LVL92:
- 1462              	.L149:
- 389:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
- 1463              		.loc 1 389 0 discriminator 1
- 1464 0124 810055E3 		cmp	r5, #129
- 1465 0128 D2FFFF1A 		bne	.L160
- 1466 012c E9FFFFEA 		b	.L155
- 1467              	.L162:
- 1468              		.align	2
- 1469              	.L161:
- 1470 0130 00000000 		.word	Mutex
- 1471 0134 000008E0 		.word	-536346624
- 1472 0138 A8000000 		.word	.LC12
- 1473 013c 00000000 		.word	_impure_ptr
- 1474 0140 B8000000 		.word	.LC13
- 1475 0144 00000000 		.word	.LANCHOR0
- 1476 0148 80000000 		.word	.LC8
- 1477 014c C8000000 		.word	.LC14
- 1478 0150 E0000000 		.word	.LC15
- 1479              		.cfi_endproc
- 1480              	.LFE13:
- 1482              		.section	.text.ymzwrite0,"ax",%progbits
- 1483              		.align	2
- 1484              		.global	ymzwrite0
- 1486              	ymzwrite0:
- 1487              	.LFB14:
+ 1451 0104 007095E5 		ldr	r7, [r5, #0]
+ 1452 0108 080097E5 		ldr	r0, [r7, #8]
+ 1453 010c FEFFFFEB 		bl	fflush
+ 417:lib/Common/src/i2c.c ****   xSemaphoreGive (Mutex);
+ 1454              		.loc 1 417 0
+ 1455 0110 0010A0E3 		mov	r1, #0
+ 1456 0114 000094E5 		ldr	r0, [r4, #0]
+ 1457 0118 0120A0E1 		mov	r2, r1
+ 1458 011c 0130A0E1 		mov	r3, r1
+ 1459 0120 FEFFFFEB 		bl	xQueueGenericSend
+ 1460              	.L156:
+ 418:lib/Common/src/i2c.c **** //  vTaskResume ( g_issrhandle );
  419:lib/Common/src/i2c.c **** //  xTaskCreate (ISSR, (signed portCHAR *) "ITS", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PR
- 420:lib/Common/src/i2c.c ****   while (1);
+ 420:lib/Common/src/i2c.c ****   while (1) vTaskDelay(10000 / portTICK_RATE_MS);
+ 1461              		.loc 1 420 0 discriminator 1
+ 1462 0124 34009FE5 		ldr	r0, .L161+36
+ 1463 0128 FEFFFFEB 		bl	vTaskDelay
+ 1464 012c FCFFFFEA 		b	.L156
+ 1465              	.LVL92:
+ 1466              	.L149:
+ 389:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
+ 1467              		.loc 1 389 0 discriminator 1
+ 1468 0130 810056E3 		cmp	r6, #129
+ 1469 0134 CFFFFF1A 		bne	.L160
+ 1470 0138 E6FFFFEA 		b	.L155
+ 1471              	.L162:
+ 1472              		.align	2
+ 1473              	.L161:
+ 1474 013c 00000000 		.word	Mutex
+ 1475 0140 000008E0 		.word	-536346624
+ 1476 0144 A8000000 		.word	.LC12
+ 1477 0148 00000000 		.word	_impure_ptr
+ 1478 014c B8000000 		.word	.LC13
+ 1479 0150 00000000 		.word	.LANCHOR0
+ 1480 0154 80000000 		.word	.LC8
+ 1481 0158 C8000000 		.word	.LC14
+ 1482 015c E0000000 		.word	.LC15
+ 1483 0160 10270000 		.word	10000
+ 1484              		.cfi_endproc
+ 1485              	.LFE13:
+ 1487              		.section	.text.waiti2c,"ax",%progbits
+ 1488              		.align	2
+ 1489              		.global	waiti2c
+ 1491              	waiti2c:
+ 1492              	.LFB14:
  421:lib/Common/src/i2c.c **** }
- 422:lib/Common/src/i2c.c **** 
- 423:lib/Common/src/i2c.c **** int
- 424:lib/Common/src/i2c.c **** ymzwrite0 (int frec, int adr)
- 425:lib/Common/src/i2c.c **** {
- 1488              		.loc 1 425 0
- 1489              		.cfi_startproc
- 1490              		@ Function supports interworking.
- 1491              		@ args = 0, pretend = 0, frame = 0
- 1492              		@ frame_needed = 0, uses_anonymous_args = 0
- 1493              		@ link register save eliminated.
- 1494              	.LVL93:
- 1495 0000 F0012DE9 		stmfd	sp!, {r4, r5, r6, r7, r8}
- 1496              	.LCFI9:
- 1497              		.cfi_def_cfa_offset 20
- 426:lib/Common/src/i2c.c ****   int highbyte;
- 427:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
- 428:lib/Common/src/i2c.c ****   FIO4PIN = adr;
- 429:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
- 430:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
- 431:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
- 432:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
- 433:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
- 434:lib/Common/src/i2c.c ****   highbyte = (frec >> 8) & 0xFF;
- 1498              		.loc 1 434 0
- 1499 0004 4044A0E1 		mov	r4, r0, asr #8
- 1500              		.cfi_offset 8, -4
- 1501              		.cfi_offset 7, -8
- 1502              		.cfi_offset 6, -12
- 1503              		.cfi_offset 5, -16
- 1504              		.cfi_offset 4, -20
- 1505              	.LVL94:
- 425:lib/Common/src/i2c.c **** {
- 1506              		.loc 1 425 0
- 1507 0008 0060A0E1 		mov	r6, r0
- 427:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
- 1508              		.loc 1 427 0
- 1509 000c 50209FE5 		ldr	r2, .L164
- 430:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
- 1510              		.loc 1 430 0
- 1511 0010 FF0006E2 		and	r0, r6, #255
- 1512              	.LVL95:
- 429:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
- 1513              		.loc 1 429 0
- 1514 0014 02CC81E2 		add	ip, r1, #512
- 1515              		.loc 1 434 0
- 1516 0018 FF5004E2 		and	r5, r4, #255
- 430:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
- 1517              		.loc 1 430 0
- 1518 001c 018C80E2 		add	r8, r0, #256
- 431:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
- 1519              		.loc 1 431 0
- 1520 0020 033C80E2 		add	r3, r0, #768
- 432:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
- 1521              		.loc 1 432 0
- 1522 0024 017081E2 		add	r7, r1, #1
- 433:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
- 1523              		.loc 1 433 0
- 1524 0028 01608CE2 		add	r6, ip, #1
- 1525              	.LVL96:
- 435:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + highbyte;
- 1526              		.loc 1 435 0
- 1527 002c 015C85E2 		add	r5, r5, #256
- 436:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec >> 8);
- 1528              		.loc 1 436 0
- 1529 0030 034C84E2 		add	r4, r4, #768
- 427:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
- 1530              		.loc 1 427 0
- 1531 0034 0000A0E3 		mov	r0, #0
- 1532 0038 6B0F02E5 		str	r0, [r2, #-3947]
- 428:lib/Common/src/i2c.c ****   FIO4PIN = adr;
- 1533              		.loc 1 428 0
- 1534 003c 6B1F02E5 		str	r1, [r2, #-3947]
- 429:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
- 1535              		.loc 1 429 0
- 1536 0040 6BCF02E5 		str	ip, [r2, #-3947]
- 430:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
- 1537              		.loc 1 430 0
- 1538 0044 6B8F02E5 		str	r8, [r2, #-3947]
- 431:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
- 1539              		.loc 1 431 0
- 1540 0048 6B3F02E5 		str	r3, [r2, #-3947]
- 432:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
+ 422:lib/Common/src/i2c.c **** void
+ 423:lib/Common/src/i2c.c **** waiti2c (unsigned int Delay){
+ 1493              		.loc 1 423 0
+ 1494              		.cfi_startproc
+ 1495              		@ Function supports interworking.
+ 1496              		@ args = 0, pretend = 0, frame = 0
+ 1497              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1498              		@ link register save eliminated.
+ 1499              	.LVL93:
+ 424:lib/Common/src/i2c.c **** 	while(Delay--);
+ 425:lib/Common/src/i2c.c **** 	}
+ 1500              		.loc 1 425 0
+ 1501 0000 1EFF2FE1 		bx	lr
+ 1502              		.cfi_endproc
+ 1503              	.LFE14:
+ 1505              		.section	.text.nonei2c,"ax",%progbits
+ 1506              		.align	2
+ 1507              		.global	nonei2c
+ 1509              	nonei2c:
+ 1510              	.LFB15:
+ 426:lib/Common/src/i2c.c **** void
+ 427:lib/Common/src/i2c.c **** nonei2c (void *pvParameters)
+ 428:lib/Common/src/i2c.c **** {
+ 1511              		.loc 1 428 0
+ 1512              		.cfi_startproc
+ 1513              		@ Function supports interworking.
+ 1514              		@ args = 0, pretend = 0, frame = 0
+ 1515              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1516              	.LVL94:
+ 1517              	.LBB44:
+ 1518              	.LBB46:
+  54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
+ 1519              		.loc 1 54 0
+ 1520 0000 E8109FE5 		ldr	r1, .L178
+ 1521              	.LBE46:
+ 1522              	.LBE44:
+ 1523              		.loc 1 428 0
+ 1524 0004 F0412DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, lr}
+ 1525              	.LCFI9:
+ 1526              		.cfi_def_cfa_offset 24
+ 429:lib/Common/src/i2c.c ****   int regpointer = 0;
+ 430:lib/Common/src/i2c.c ****   char Loopy;
+ 431:lib/Common/src/i2c.c ****   i2cmasterset (2);
+ 432:lib/Common/src/i2c.c ****   I22SCLH = 80;
+ 433:lib/Common/src/i2c.c ****   I22SCLL = 180;
+ 1527              		.loc 1 433 0
+ 1528 0008 B420A0E3 		mov	r2, #180
+ 1529              	.LBB48:
+ 1530              	.LBB45:
+  54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
+ 1531              		.loc 1 54 0
+ 1532 000c 4050A0E3 		mov	r5, #64
+ 1533              		.cfi_offset 14, -4
+ 1534              		.cfi_offset 8, -8
+ 1535              		.cfi_offset 7, -12
+ 1536              		.cfi_offset 6, -16
+ 1537              		.cfi_offset 5, -20
+ 1538              		.cfi_offset 4, -24
+ 1539              	.LBE45:
+ 1540              	.LBE48:
+ 432:lib/Common/src/i2c.c ****   I22SCLH = 80;
  1541              		.loc 1 432 0
- 1542 004c 6B7F02E5 		str	r7, [r2, #-3947]
- 433:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
- 1543              		.loc 1 433 0
- 1544 0050 6B6F02E5 		str	r6, [r2, #-3947]
- 435:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + highbyte;
- 1545              		.loc 1 435 0
- 1546 0054 6B5F02E5 		str	r5, [r2, #-3947]
- 1547              		.loc 1 436 0
- 1548 0058 6B4F02E5 		str	r4, [r2, #-3947]
- 437:lib/Common/src/i2c.c **** }
- 1549              		.loc 1 437 0
- 1550 005c F001BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8}
- 1551 0060 1EFF2FE1 		bx	lr
- 1552              	.L165:
- 1553              		.align	2
- 1554              	.L164:
- 1555 0064 FFCFFF3F 		.word	1073729535
- 1556              		.cfi_endproc
- 1557              	.LFE14:
- 1559              		.section	.text.ymzwrite1,"ax",%progbits
- 1560              		.align	2
- 1561              		.global	ymzwrite1
- 1563              	ymzwrite1:
- 1564              	.LFB15:
- 438:lib/Common/src/i2c.c **** 
- 439:lib/Common/src/i2c.c **** int
- 440:lib/Common/src/i2c.c **** ymzwrite1 (int value, int adr)
- 441:lib/Common/src/i2c.c **** {
- 1565              		.loc 1 441 0
- 1566              		.cfi_startproc
- 1567              		@ Function supports interworking.
- 1568              		@ args = 0, pretend = 0, frame = 0
- 1569              		@ frame_needed = 0, uses_anonymous_args = 0
- 1570              		@ link register save eliminated.
- 1571              	.LVL97:
- 442:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
- 1572              		.loc 1 442 0
- 1573 0000 30309FE5 		ldr	r3, .L167
- 441:lib/Common/src/i2c.c **** {
- 1574              		.loc 1 441 0
- 1575 0004 30002DE9 		stmfd	sp!, {r4, r5}
- 1576              	.LCFI10:
- 1577              		.cfi_def_cfa_offset 8
- 443:lib/Common/src/i2c.c ****   FIO4PIN = adr;
- 444:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
- 445:lib/Common/src/i2c.c ****   FIO4PIN = (0x100 + value);
- 1578              		.loc 1 445 0
- 1579 0008 01CC80E2 		add	ip, r0, #256
- 446:lib/Common/src/i2c.c ****   FIO4PIN = (0x300 + value);
- 1580              		.loc 1 446 0
- 1581 000c 032C80E2 		add	r2, r0, #768
- 444:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
- 1582              		.loc 1 444 0
- 1583 0010 024C81E2 		add	r4, r1, #512
- 1584              		.cfi_offset 5, -4
- 1585              		.cfi_offset 4, -8
- 442:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
- 1586              		.loc 1 442 0
- 1587 0014 0050A0E3 		mov	r5, #0
- 1588 0018 6B5F03E5 		str	r5, [r3, #-3947]
- 447:lib/Common/src/i2c.c ****   return adr * 16 + value;
- 448:lib/Common/src/i2c.c **** }
- 1589              		.loc 1 448 0
- 1590 001c 010280E0 		add	r0, r0, r1, asl #4
- 1591              	.LVL98:
- 443:lib/Common/src/i2c.c ****   FIO4PIN = adr;
- 1592              		.loc 1 443 0
- 1593 0020 6B1F03E5 		str	r1, [r3, #-3947]
- 444:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
- 1594              		.loc 1 444 0
- 1595 0024 6B4F03E5 		str	r4, [r3, #-3947]
- 445:lib/Common/src/i2c.c ****   FIO4PIN = (0x100 + value);
- 1596              		.loc 1 445 0
- 1597 0028 6BCF03E5 		str	ip, [r3, #-3947]
- 446:lib/Common/src/i2c.c ****   FIO4PIN = (0x300 + value);
- 1598              		.loc 1 446 0
- 1599 002c 6B2F03E5 		str	r2, [r3, #-3947]
- 1600              		.loc 1 448 0
- 1601 0030 3000BDE8 		ldmfd	sp!, {r4, r5}
- 1602 0034 1EFF2FE1 		bx	lr
- 1603              	.L168:
- 1604              		.align	2
- 1605              	.L167:
- 1606 0038 FFCFFF3F 		.word	1073729535
- 1607              		.cfi_endproc
- 1608              	.LFE15:
- 1610              		.global	OV7670
- 1611              		.section	.rodata.str1.4,"aMS",%progbits,1
- 1612              		.align	2
- 1613              	.LC0:
- 1614 0000 72657374 		.ascii	"restarter report...%x\000"
- 1614      61727465 
- 1614      72207265 
- 1614      706F7274 
- 1614      2E2E2E25 
- 1615 0016 0000     		.space	2
- 1616              	.LC1:
- 1617 0018 4E6F2073 		.ascii	"No such device%4x\012\000"
- 1617      75636820 
- 1617      64657669 
- 1617      63652534 
- 1617      780A00
- 1618 002b 00       		.space	1
- 1619              	.LC2:
- 1620 002c 6E6F2061 		.ascii	"no acknowlege(%x)\012\000"
- 1620      636B6E6F 
- 1620      776C6567 
- 1620      65282578 
- 1620      290A00
- 1621 003f 00       		.space	1
- 1622              	.LC3:
- 1623 0040 72656164 		.ascii	"reading..  \000"
- 1623      696E672E 
- 1623      2E202000 
- 1624              	.LC4:
- 1625 004c 57616974 		.ascii	"Wait\011\000"
- 1625      0900
- 1626 0052 0000     		.space	2
- 1627              	.LC5:
- 1628 0054 25787265 		.ascii	"%xreg\011%x\000"
- 1628      67092578 
- 1628      00
- 1629 005d 000000   		.space	3
- 1630              	.LC6:
- 1631 0060 53746174 		.ascii	"Status is %x\012\000"
- 1631      75732069 
- 1631      73202578 
- 1631      0A00
- 1632 006e 0000     		.space	2
- 1633              	.LC7:
- 1634 0070 52656164 		.ascii	"Read begin[>  \000"
- 1634      20626567 
- 1634      696E5B3E 
- 1634      202000
- 1635 007f 00       		.space	1
- 1636              	.LC8:
- 1637 0080 0808083D 		.ascii	"\010\010\010=>%c\000"
- 1637      3E256300 
- 1638              	.LC9:
- 1639 0088 646F6E65 		.ascii	"done.....\000"
- 1639      2E2E2E2E 
- 1639      2E00
- 1640 0092 0000     		.space	2
- 1641              	.LC10:
- 1642 0094 66617461 		.ascii	"fatal\000"
- 1642      6C00
- 1643 009a 0000     		.space	2
- 1644              	.LC11:
- 1645 009c 44656275 		.ascii	"Debu331g\000"
- 1645      33333167 
- 1645      00
- 1646 00a5 000000   		.space	3
- 1647              	.LC12:
- 1648 00a8 52656769 		.ascii	"Register Reset\000"
- 1648      73746572 
- 1648      20526573 
- 1648      657400
- 1649 00b7 00       		.space	1
- 1650              	.LC13:
- 1651 00b8 53657475 		.ascii	"Setup begin[> \000"
- 1651      70206265 
- 1651      67696E5B 
- 1651      3E2000
- 1652 00c7 00       		.space	1
- 1653              	.LC14:
- 1654 00c8 0D446174 		.ascii	"\015Data transmition End!\000"
- 1654      61207472 
- 1654      616E736D 
- 1654      6974696F 
- 1654      6E20456E 
- 1655 00df 00       		.space	1
- 1656              	.LC15:
- 1657 00e0 53656D61 		.ascii	"Semagive\000"
- 1657      67697665 
- 1657      00
- 1658 00e9 000000   		.section	.rodata.OV7670,"a",%progbits
- 1659              		.align	2
- 1660              		.set	.LANCHOR0,. + 0
- 1663              	OV7670:
- 1664 0000 04120000 		.word	4612
- 1665 0004 D0400000 		.word	16592
- 1666 0008 028C0000 		.word	35842
- 1667 000c 3A700000 		.word	28730
- 1668 0010 11720000 		.word	29201
- 1669 0014 D0400000 		.word	16592
- 1670 0018 028C0000 		.word	35842
- 1671 001c 3A700000 		.word	28730
- 1672 0020 35710000 		.word	28981
- 1673 0024 11720000 		.word	29201
- 1674 0028 F0730000 		.word	29680
- 1675 002c 02A20000 		.word	41474
- 1676 0030 00150000 		.word	5376
- 1677 0034 207A0000 		.word	31264
- 1678 0038 107B0000 		.word	31504
- 1679 003c 1E7C0000 		.word	31774
- 1680 0040 357D0000 		.word	32053
- 1681 0044 5A7E0000 		.word	32346
- 1682 0048 697F0000 		.word	32617
- 1683 004c 76800000 		.word	32886
- 1684 0050 80810000 		.word	33152
- 1685 0054 88820000 		.word	33416
- 1686 0058 8F830000 		.word	33679
- 1687 005c 96840000 		.word	33942
- 1688 0060 A3850000 		.word	34211
- 1689 0064 AF860000 		.word	34479
- 1690 0068 C4870000 		.word	34756
- 1691 006c D7880000 		.word	35031
- 1692 0070 E8890000 		.word	35304
- 1693 0074 E0130000 		.word	5088
- 1694 0078 00000000 		.word	0
- 1695 007c 00100000 		.word	4096
- 1696 0080 400D0000 		.word	3392
- 1697 0084 18140000 		.word	5144
- 1698 0088 05A50000 		.word	42245
- 1699 008c 07AB0000 		.word	43783
- 1700 0090 95240000 		.word	9365
- 1701 0094 33250000 		.word	9523
- 1702 0098 E3260000 		.word	9955
- 1703 009c 789F0000 		.word	40824
- 1704 00a0 68A00000 		.word	41064
- 1705 00a4 03A10000 		.word	41219
- 1706 00a8 D8A60000 		.word	42712
- 1707 00ac D8A70000 		.word	42968
- 1708 00b0 F0A80000 		.word	43248
- 1709 00b4 90A90000 		.word	43408
- 1710 00b8 94AA0000 		.word	43668
- 1711 00bc E5130000 		.word	5093
- 1712 00c0 610E0000 		.word	3681
- 1713 00c4 4B0F0000 		.word	3915
- 1714 00c8 02160000 		.word	5634
- 1715 00cc 071E0000 		.word	7687
- 1716 00d0 02210000 		.word	8450
- 1717 00d4 91220000 		.word	8849
- 1718 00d8 07290000 		.word	10503
- 1719 00dc 0B330000 		.word	13067
- 1720 00e0 0B350000 		.word	13579
- 1721 00e4 1D370000 		.word	14109
- 1722 00e8 71380000 		.word	14449
- 1723 00ec 2A390000 		.word	14634
- 1724 00f0 783C0000 		.word	15480
- 1725 00f4 344D0000 		.word	19764
- 1726 00f8 204E0000 		.word	20000
- 1727 00fc 00690000 		.word	26880
- 1728 0100 0A6B0000 		.word	27402
- 1729 0104 10740000 		.word	29712
- 1730 0108 4F8D0000 		.word	36175
- 1731 010c 008E0000 		.word	36352
- 1732 0110 008F0000 		.word	36608
- 1733 0114 00900000 		.word	36864
- 1734 0118 00910000 		.word	37120
- 1735 011c 00960000 		.word	38400
- 1736 0120 009A0000 		.word	39424
- 1737 0124 84B00000 		.word	45188
- 1738 0128 0CB10000 		.word	45324
- 1739 012c 0EB20000 		.word	45582
- 1740 0130 82B30000 		.word	45954
- 1741 0134 0AB80000 		.word	47114
- 1742 0138 0A430000 		.word	17162
- 1743 013c F0440000 		.word	17648
- 1744 0140 34450000 		.word	17716
- 1745 0144 3A480000 		.word	18490
- 1746 0148 99590000 		.word	22937
- 1747 014c 885A0000 		.word	23176
- 1748 0150 445B0000 		.word	23364
- 1749 0154 675C0000 		.word	23655
- 1750 0158 495D0000 		.word	23881
- 1751 015c 0E5E0000 		.word	24078
- 1752 0160 0A6C0000 		.word	27658
- 1753 0164 556D0000 		.word	27989
- 1754 0168 116E0000 		.word	28177
- 1755 016c 9F6F0000 		.word	28575
- 1756 0170 406A0000 		.word	27200
- 1757 0174 40010000 		.word	320
- 1758 0178 60020000 		.word	608
- 1759 017c E7130000 		.word	5095
- 1760 0180 804F0000 		.word	20352
- 1761 0184 80500000 		.word	20608
- 1762 0188 00510000 		.word	20736
- 1763 018c 22520000 		.word	21026
- 1764 0190 5E530000 		.word	21342
- 1765 0194 80540000 		.word	21632
- 1766 0198 9E580000 		.word	22686
- 1767 019c 08410000 		.word	16648
- 1768 01a0 003F0000 		.word	16128
- 1769 01a4 05750000 		.word	29957
- 1770 01a8 E1760000 		.word	30433
- 1771 01ac 004C0000 		.word	19456
- 1772 01b0 01770000 		.word	30465
- 1773 01b4 C33D0000 		.word	15811
- 1774 01b8 094B0000 		.word	19209
- 1775 01bc 60C90000 		.word	51552
- 1776 01c0 38410000 		.word	16696
- 1777 01c4 40560000 		.word	22080
- 1778 01c8 11340000 		.word	13329
- 1779 01cc 123B0000 		.word	15122
- 1780 01d0 88A40000 		.word	42120
- 1781 01d4 00960000 		.word	38400
- 1782 01d8 30970000 		.word	38704
- 1783 01dc 20980000 		.word	38944
- 1784 01e0 30990000 		.word	39216
- 1785 01e4 849A0000 		.word	39556
- 1786 01e8 299B0000 		.word	39721
- 1787 01ec 039C0000 		.word	39939
- 1788 01f0 4C9D0000 		.word	40268
- 1789 01f4 3F9E0000 		.word	40511
- 1790 01f8 04780000 		.word	30724
- 1791 01fc 01790000 		.word	30977
- 1792 0200 F0C80000 		.word	51440
- 1793              		.text
- 1794              	.Letext0:
+ 1542 0010 5040A0E3 		mov	r4, #80
+ 1543              	.LBB49:
+ 1544              	.LBB47:
+  54:lib/Common/src/i2c.c ****       I22CONSET = 0x40;
+ 1545              		.loc 1 54 0
+ 1546 0014 005081E5 		str	r5, [r1, #0]
+ 1547              	.LBE47:
+ 1548              	.LBE49:
+ 434:lib/Common/src/i2c.c ****   printf ("Register Reset\n");
+ 1549              		.loc 1 434 0
+ 1550 0018 D4009FE5 		ldr	r0, .L178+4
+ 1551              	.LVL95:
+ 432:lib/Common/src/i2c.c ****   I22SCLH = 80;
+ 1552              		.loc 1 432 0
+ 1553 001c 104081E5 		str	r4, [r1, #16]
+ 433:lib/Common/src/i2c.c ****   I22SCLL = 180;
+ 1554              		.loc 1 433 0
+ 1555 0020 142081E5 		str	r2, [r1, #20]
+ 1556              		.loc 1 434 0
+ 1557 0024 FEFFFFEB 		bl	puts
+ 1558              	.LVL96:
+ 435:lib/Common/src/i2c.c ****   waiti2c (300000);
+ 436:lib/Common/src/i2c.c ****   RESETREG
+ 437:lib/Common/src/i2c.c ****   waiti2c (200000);
+ 438:lib/Common/src/i2c.c ****   printf ("Setup begin[> ");
+ 439:lib/Common/src/i2c.c ****   fflush (stdout);
+ 1559              		.loc 1 439 0
+ 1560 0028 C8509FE5 		ldr	r5, .L178+8
+ 436:lib/Common/src/i2c.c ****   RESETREG
+ 1561              		.loc 1 436 0
+ 1562 002c 4A0DA0E3 		mov	r0, #4736
+ 1563 0030 FEFFFFEB 		bl	SCCBByteWrite
+ 1564              	.LVL97:
+ 438:lib/Common/src/i2c.c ****   printf ("Setup begin[> ");
+ 1565              		.loc 1 438 0
+ 1566 0034 C0009FE5 		ldr	r0, .L178+12
+ 1567 0038 FEFFFFEB 		bl	printf
+ 1568              		.loc 1 439 0
+ 1569 003c 003095E5 		ldr	r3, [r5, #0]
+ 1570 0040 080093E5 		ldr	r0, [r3, #8]
+ 1571 0044 FEFFFFEB 		bl	fflush
+ 1572 0048 B0709FE5 		ldr	r7, .L178+16
+ 440:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
+ 1573              		.loc 1 440 0
+ 1574 004c B0609FE5 		ldr	r6, .L178+20
+ 1575 0050 0040A0E3 		mov	r4, #0
+ 1576              	.LVL98:
+ 1577              	.L176:
+ 441:lib/Common/src/i2c.c ****     {
+ 442:lib/Common/src/i2c.c ****       if (SCCBByteWrite (OV7670[regpointer]) == -1) continue;
+ 1578              		.loc 1 442 0
+ 1579 0054 0700A0E1 		mov	r0, r7
+ 1580 0058 FEFFFFEB 		bl	SCCBByteWrite
+ 1581 005c 010070E3 		cmn	r0, #1
+ 1582 0060 1600000A 		beq	.L166
+ 1583              	.L177:
+ 443:lib/Common/src/i2c.c ****       regpointer++;
+ 1584              		.loc 1 443 0
+ 1585 0064 014084E2 		add	r4, r4, #1
+ 1586              	.LVL99:
+ 444:lib/Common/src/i2c.c ****       	switch (regpointer % 4)
+ 1587              		.loc 1 444 0
+ 1588 0068 031004E2 		and	r1, r4, #3
+ 1589 006c 020051E3 		cmp	r1, #2
+ 445:lib/Common/src/i2c.c **** 	  {
+ 446:lib/Common/src/i2c.c **** 	  case 0:
+ 447:lib/Common/src/i2c.c **** 	  Loopy = '|';
+ 448:lib/Common/src/i2c.c **** 	  break;
+ 449:lib/Common/src/i2c.c **** 	  case 1:
+ 450:lib/Common/src/i2c.c **** 	  Loopy = '/';
+ 451:lib/Common/src/i2c.c **** 	  break;
+ 452:lib/Common/src/i2c.c **** 	  case 2:
+ 453:lib/Common/src/i2c.c **** 	  Loopy = '-';
+ 454:lib/Common/src/i2c.c **** 	  break;
+ 1590              		.loc 1 454 0
+ 1591 0070 2D10A003 		moveq	r1, #45
+ 444:lib/Common/src/i2c.c ****       	switch (regpointer % 4)
+ 1592              		.loc 1 444 0
+ 1593 0074 0500000A 		beq	.L167
+ 1594 0078 030051E3 		cmp	r1, #3
+ 455:lib/Common/src/i2c.c **** 	  case 3:
+ 456:lib/Common/src/i2c.c **** 	  Loopy = '\\';
+ 457:lib/Common/src/i2c.c **** 	  break;
+ 1595              		.loc 1 457 0
+ 1596 007c 5C10A003 		moveq	r1, #92
+ 444:lib/Common/src/i2c.c ****       	switch (regpointer % 4)
+ 1597              		.loc 1 444 0
+ 1598 0080 0200000A 		beq	.L167
+ 1599 0084 010051E3 		cmp	r1, #1
+ 1600 0088 2F10A003 		moveq	r1, #47
+ 1601 008c 7C10A013 		movne	r1, #124
+ 1602              	.L167:
+ 458:lib/Common/src/i2c.c **** 	  }
+ 459:lib/Common/src/i2c.c **** 	printf ("\b\b\b=>%c", Loopy);
+ 1603              		.loc 1 459 0
+ 1604 0090 70009FE5 		ldr	r0, .L178+24
+ 1605 0094 FEFFFFEB 		bl	printf
+ 460:lib/Common/src/i2c.c **** 	fflush (stdout);
+ 1606              		.loc 1 460 0
+ 1607 0098 000095E5 		ldr	r0, [r5, #0]
+ 1608 009c 080090E5 		ldr	r0, [r0, #8]
+ 1609 00a0 FEFFFFEB 		bl	fflush
+ 1610              	.LVL100:
+ 440:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
+ 1611              		.loc 1 440 0
+ 1612 00a4 810054E3 		cmp	r4, #129
+ 1613 00a8 0600000A 		beq	.L171
+ 1614 00ac 047196E7 		ldr	r7, [r6, r4, asl #2]
+ 442:lib/Common/src/i2c.c ****       if (SCCBByteWrite (OV7670[regpointer]) == -1) continue;
+ 1615              		.loc 1 442 0
+ 1616 00b0 0700A0E1 		mov	r0, r7
+ 1617 00b4 FEFFFFEB 		bl	SCCBByteWrite
+ 1618 00b8 010070E3 		cmn	r0, #1
+ 1619 00bc E8FFFF1A 		bne	.L177
+ 1620              	.LVL101:
+ 1621              	.L166:
+ 440:lib/Common/src/i2c.c ****   for (regpointer = 0; regpointer != 129;)
+ 1622              		.loc 1 440 0 discriminator 1
+ 1623 00c0 810054E3 		cmp	r4, #129
+ 1624 00c4 E2FFFF1A 		bne	.L176
+ 1625              	.L171:
+ 461:lib/Common/src/i2c.c ****       waiti2c (1000);
+ 462:lib/Common/src/i2c.c ****     }
+ 463:lib/Common/src/i2c.c ****   printf ("\rData transmition End!\n");
+ 1626              		.loc 1 463 0
+ 1627 00c8 3C009FE5 		ldr	r0, .L178+28
+ 1628 00cc FEFFFFEB 		bl	puts
+ 464:lib/Common/src/i2c.c ****   fflush (stdout);
+ 1629              		.loc 1 464 0
+ 1630 00d0 00C095E5 		ldr	ip, [r5, #0]
+ 1631 00d4 08009CE5 		ldr	r0, [ip, #8]
+ 1632 00d8 FEFFFFEB 		bl	fflush
+ 465:lib/Common/src/i2c.c ****   SCCBread (0x00, 0xca, 0);
+ 1633              		.loc 1 465 0
+ 1634 00dc 0000A0E3 		mov	r0, #0
+ 1635 00e0 CA10A0E3 		mov	r1, #202
+ 1636 00e4 0020A0E1 		mov	r2, r0
+ 466:lib/Common/src/i2c.c **** }
+ 1637              		.loc 1 466 0
+ 1638 00e8 F041BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8, lr}
+ 465:lib/Common/src/i2c.c ****   SCCBread (0x00, 0xca, 0);
+ 1639              		.loc 1 465 0
+ 1640 00ec FEFFFFEA 		b	SCCBread
+ 1641              	.L179:
+ 1642              		.align	2
+ 1643              	.L178:
+ 1644 00f0 000008E0 		.word	-536346624
+ 1645 00f4 A8000000 		.word	.LC12
+ 1646 00f8 00000000 		.word	_impure_ptr
+ 1647 00fc B8000000 		.word	.LC13
+ 1648 0100 04120000 		.word	4612
+ 1649 0104 00000000 		.word	.LANCHOR0
+ 1650 0108 80000000 		.word	.LC8
+ 1651 010c C8000000 		.word	.LC14
+ 1652              		.cfi_endproc
+ 1653              	.LFE15:
+ 1655              		.section	.text.ymzwrite0,"ax",%progbits
+ 1656              		.align	2
+ 1657              		.global	ymzwrite0
+ 1659              	ymzwrite0:
+ 1660              	.LFB16:
+ 467:lib/Common/src/i2c.c **** int
+ 468:lib/Common/src/i2c.c **** ymzwrite0 (int frec, int adr)
+ 469:lib/Common/src/i2c.c **** {
+ 1661              		.loc 1 469 0
+ 1662              		.cfi_startproc
+ 1663              		@ Function supports interworking.
+ 1664              		@ args = 0, pretend = 0, frame = 0
+ 1665              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1666              		@ link register save eliminated.
+ 1667              	.LVL102:
+ 1668 0000 F0012DE9 		stmfd	sp!, {r4, r5, r6, r7, r8}
+ 1669              	.LCFI10:
+ 1670              		.cfi_def_cfa_offset 20
+ 470:lib/Common/src/i2c.c ****   int highbyte;
+ 471:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 472:lib/Common/src/i2c.c ****   FIO4PIN = adr;
+ 473:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
+ 474:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
+ 475:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
+ 476:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
+ 477:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
+ 478:lib/Common/src/i2c.c ****   highbyte = (frec >> 8) & 0xFF;
+ 1671              		.loc 1 478 0
+ 1672 0004 4044A0E1 		mov	r4, r0, asr #8
+ 1673              		.cfi_offset 8, -4
+ 1674              		.cfi_offset 7, -8
+ 1675              		.cfi_offset 6, -12
+ 1676              		.cfi_offset 5, -16
+ 1677              		.cfi_offset 4, -20
+ 1678              	.LVL103:
+ 469:lib/Common/src/i2c.c **** {
+ 1679              		.loc 1 469 0
+ 1680 0008 0060A0E1 		mov	r6, r0
+ 471:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 1681              		.loc 1 471 0
+ 1682 000c 50209FE5 		ldr	r2, .L181
+ 474:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
+ 1683              		.loc 1 474 0
+ 1684 0010 FF0006E2 		and	r0, r6, #255
+ 1685              	.LVL104:
+ 473:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
+ 1686              		.loc 1 473 0
+ 1687 0014 02CC81E2 		add	ip, r1, #512
+ 1688              		.loc 1 478 0
+ 1689 0018 FF5004E2 		and	r5, r4, #255
+ 474:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
+ 1690              		.loc 1 474 0
+ 1691 001c 018C80E2 		add	r8, r0, #256
+ 475:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
+ 1692              		.loc 1 475 0
+ 1693 0020 033C80E2 		add	r3, r0, #768
+ 476:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
+ 1694              		.loc 1 476 0
+ 1695 0024 017081E2 		add	r7, r1, #1
+ 477:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
+ 1696              		.loc 1 477 0
+ 1697 0028 01608CE2 		add	r6, ip, #1
+ 1698              	.LVL105:
+ 479:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + highbyte;
+ 1699              		.loc 1 479 0
+ 1700 002c 015C85E2 		add	r5, r5, #256
+ 480:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec >> 8);
+ 1701              		.loc 1 480 0
+ 1702 0030 034C84E2 		add	r4, r4, #768
+ 471:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 1703              		.loc 1 471 0
+ 1704 0034 0000A0E3 		mov	r0, #0
+ 1705 0038 6B0F02E5 		str	r0, [r2, #-3947]
+ 472:lib/Common/src/i2c.c ****   FIO4PIN = adr;
+ 1706              		.loc 1 472 0
+ 1707 003c 6B1F02E5 		str	r1, [r2, #-3947]
+ 473:lib/Common/src/i2c.c ****   FIO4PIN = 0x200 + adr;
+ 1708              		.loc 1 473 0
+ 1709 0040 6BCF02E5 		str	ip, [r2, #-3947]
+ 474:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + (frec & 0xFF);
+ 1710              		.loc 1 474 0
+ 1711 0044 6B8F02E5 		str	r8, [r2, #-3947]
+ 475:lib/Common/src/i2c.c ****   FIO4PIN = 0x300 + (frec & 0xFF);
+ 1712              		.loc 1 475 0
+ 1713 0048 6B3F02E5 		str	r3, [r2, #-3947]
+ 476:lib/Common/src/i2c.c ****   FIO4PIN = adr + 1;
+ 1714              		.loc 1 476 0
+ 1715 004c 6B7F02E5 		str	r7, [r2, #-3947]
+ 477:lib/Common/src/i2c.c ****   FIO4PIN = 0x201 + adr;
+ 1716              		.loc 1 477 0
+ 1717 0050 6B6F02E5 		str	r6, [r2, #-3947]
+ 479:lib/Common/src/i2c.c ****   FIO4PIN = 0x100 + highbyte;
+ 1718              		.loc 1 479 0
+ 1719 0054 6B5F02E5 		str	r5, [r2, #-3947]
+ 1720              		.loc 1 480 0
+ 1721 0058 6B4F02E5 		str	r4, [r2, #-3947]
+ 481:lib/Common/src/i2c.c **** }
+ 1722              		.loc 1 481 0
+ 1723 005c F001BDE8 		ldmfd	sp!, {r4, r5, r6, r7, r8}
+ 1724 0060 1EFF2FE1 		bx	lr
+ 1725              	.L182:
+ 1726              		.align	2
+ 1727              	.L181:
+ 1728 0064 FFCFFF3F 		.word	1073729535
+ 1729              		.cfi_endproc
+ 1730              	.LFE16:
+ 1732              		.section	.text.ymzwrite1,"ax",%progbits
+ 1733              		.align	2
+ 1734              		.global	ymzwrite1
+ 1736              	ymzwrite1:
+ 1737              	.LFB17:
+ 482:lib/Common/src/i2c.c **** 
+ 483:lib/Common/src/i2c.c **** int
+ 484:lib/Common/src/i2c.c **** ymzwrite1 (int value, int adr)
+ 485:lib/Common/src/i2c.c **** {
+ 1738              		.loc 1 485 0
+ 1739              		.cfi_startproc
+ 1740              		@ Function supports interworking.
+ 1741              		@ args = 0, pretend = 0, frame = 0
+ 1742              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1743              		@ link register save eliminated.
+ 1744              	.LVL106:
+ 486:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 1745              		.loc 1 486 0
+ 1746 0000 30309FE5 		ldr	r3, .L184
+ 485:lib/Common/src/i2c.c **** {
+ 1747              		.loc 1 485 0
+ 1748 0004 30002DE9 		stmfd	sp!, {r4, r5}
+ 1749              	.LCFI11:
+ 1750              		.cfi_def_cfa_offset 8
+ 487:lib/Common/src/i2c.c ****   FIO4PIN = adr;
+ 488:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
+ 489:lib/Common/src/i2c.c ****   FIO4PIN = (0x100 + value);
+ 1751              		.loc 1 489 0
+ 1752 0008 01CC80E2 		add	ip, r0, #256
+ 490:lib/Common/src/i2c.c ****   FIO4PIN = (0x300 + value);
+ 1753              		.loc 1 490 0
+ 1754 000c 032C80E2 		add	r2, r0, #768
+ 488:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
+ 1755              		.loc 1 488 0
+ 1756 0010 024C81E2 		add	r4, r1, #512
+ 1757              		.cfi_offset 5, -4
+ 1758              		.cfi_offset 4, -8
+ 486:lib/Common/src/i2c.c ****   FIO4PIN = 0x00;
+ 1759              		.loc 1 486 0
+ 1760 0014 0050A0E3 		mov	r5, #0
+ 1761 0018 6B5F03E5 		str	r5, [r3, #-3947]
+ 491:lib/Common/src/i2c.c ****   return adr * 16 + value;
+ 492:lib/Common/src/i2c.c **** }
+ 1762              		.loc 1 492 0
+ 1763 001c 010280E0 		add	r0, r0, r1, asl #4
+ 1764              	.LVL107:
+ 487:lib/Common/src/i2c.c ****   FIO4PIN = adr;
+ 1765              		.loc 1 487 0
+ 1766 0020 6B1F03E5 		str	r1, [r3, #-3947]
+ 488:lib/Common/src/i2c.c ****   FIO4PIN = (0x200 + adr);
+ 1767              		.loc 1 488 0
+ 1768 0024 6B4F03E5 		str	r4, [r3, #-3947]
+ 489:lib/Common/src/i2c.c ****   FIO4PIN = (0x100 + value);
+ 1769              		.loc 1 489 0
+ 1770 0028 6BCF03E5 		str	ip, [r3, #-3947]
+ 490:lib/Common/src/i2c.c ****   FIO4PIN = (0x300 + value);
+ 1771              		.loc 1 490 0
+ 1772 002c 6B2F03E5 		str	r2, [r3, #-3947]
+ 1773              		.loc 1 492 0
+ 1774 0030 3000BDE8 		ldmfd	sp!, {r4, r5}
+ 1775 0034 1EFF2FE1 		bx	lr
+ 1776              	.L185:
+ 1777              		.align	2
+ 1778              	.L184:
+ 1779 0038 FFCFFF3F 		.word	1073729535
+ 1780              		.cfi_endproc
+ 1781              	.LFE17:
+ 1783              		.global	OV7670
+ 1784              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1785              		.align	2
+ 1786              	.LC0:
+ 1787 0000 72657374 		.ascii	"restarter report...%x\000"
+ 1787      61727465 
+ 1787      72207265 
+ 1787      706F7274 
+ 1787      2E2E2E25 
+ 1788 0016 0000     		.space	2
+ 1789              	.LC1:
+ 1790 0018 4E6F2073 		.ascii	"No such device%4x\012\000"
+ 1790      75636820 
+ 1790      64657669 
+ 1790      63652534 
+ 1790      780A00
+ 1791 002b 00       		.space	1
+ 1792              	.LC2:
+ 1793 002c 6E6F2061 		.ascii	"no acknowlege(%x)\012\000"
+ 1793      636B6E6F 
+ 1793      776C6567 
+ 1793      65282578 
+ 1793      290A00
+ 1794 003f 00       		.space	1
+ 1795              	.LC3:
+ 1796 0040 72656164 		.ascii	"reading..  \000"
+ 1796      696E672E 
+ 1796      2E202000 
+ 1797              	.LC4:
+ 1798 004c 57616974 		.ascii	"Wait\011\000"
+ 1798      0900
+ 1799 0052 0000     		.space	2
+ 1800              	.LC5:
+ 1801 0054 25787265 		.ascii	"%xreg\011%x\000"
+ 1801      67092578 
+ 1801      00
+ 1802 005d 000000   		.space	3
+ 1803              	.LC6:
+ 1804 0060 53746174 		.ascii	"Status is %x\012\000"
+ 1804      75732069 
+ 1804      73202578 
+ 1804      0A00
+ 1805 006e 0000     		.space	2
+ 1806              	.LC7:
+ 1807 0070 52656164 		.ascii	"Read begin[>  \000"
+ 1807      20626567 
+ 1807      696E5B3E 
+ 1807      202000
+ 1808 007f 00       		.space	1
+ 1809              	.LC8:
+ 1810 0080 0808083D 		.ascii	"\010\010\010=>%c\000"
+ 1810      3E256300 
+ 1811              	.LC9:
+ 1812 0088 646F6E65 		.ascii	"done.....\000"
+ 1812      2E2E2E2E 
+ 1812      2E00
+ 1813 0092 0000     		.space	2
+ 1814              	.LC10:
+ 1815 0094 66617461 		.ascii	"fatal\000"
+ 1815      6C00
+ 1816 009a 0000     		.space	2
+ 1817              	.LC11:
+ 1818 009c 44656275 		.ascii	"Debu331g\000"
+ 1818      33333167 
+ 1818      00
+ 1819 00a5 000000   		.space	3
+ 1820              	.LC12:
+ 1821 00a8 52656769 		.ascii	"Register Reset\000"
+ 1821      73746572 
+ 1821      20526573 
+ 1821      657400
+ 1822 00b7 00       		.space	1
+ 1823              	.LC13:
+ 1824 00b8 53657475 		.ascii	"Setup begin[> \000"
+ 1824      70206265 
+ 1824      67696E5B 
+ 1824      3E2000
+ 1825 00c7 00       		.space	1
+ 1826              	.LC14:
+ 1827 00c8 0D446174 		.ascii	"\015Data transmition End!\000"
+ 1827      61207472 
+ 1827      616E736D 
+ 1827      6974696F 
+ 1827      6E20456E 
+ 1828 00df 00       		.space	1
+ 1829              	.LC15:
+ 1830 00e0 53656D61 		.ascii	"Semagive\000"
+ 1830      67697665 
+ 1830      00
+ 1831 00e9 000000   		.section	.rodata.OV7670,"a",%progbits
+ 1832              		.align	2
+ 1833              		.set	.LANCHOR0,. + 0
+ 1836              	OV7670:
+ 1837 0000 04120000 		.word	4612
+ 1838 0004 D0400000 		.word	16592
+ 1839 0008 028C0000 		.word	35842
+ 1840 000c 3A700000 		.word	28730
+ 1841 0010 11720000 		.word	29201
+ 1842 0014 D0400000 		.word	16592
+ 1843 0018 028C0000 		.word	35842
+ 1844 001c 3A700000 		.word	28730
+ 1845 0020 35710000 		.word	28981
+ 1846 0024 11720000 		.word	29201
+ 1847 0028 F0730000 		.word	29680
+ 1848 002c 02A20000 		.word	41474
+ 1849 0030 00150000 		.word	5376
+ 1850 0034 207A0000 		.word	31264
+ 1851 0038 107B0000 		.word	31504
+ 1852 003c 1E7C0000 		.word	31774
+ 1853 0040 357D0000 		.word	32053
+ 1854 0044 5A7E0000 		.word	32346
+ 1855 0048 697F0000 		.word	32617
+ 1856 004c 76800000 		.word	32886
+ 1857 0050 80810000 		.word	33152
+ 1858 0054 88820000 		.word	33416
+ 1859 0058 8F830000 		.word	33679
+ 1860 005c 96840000 		.word	33942
+ 1861 0060 A3850000 		.word	34211
+ 1862 0064 AF860000 		.word	34479
+ 1863 0068 C4870000 		.word	34756
+ 1864 006c D7880000 		.word	35031
+ 1865 0070 E8890000 		.word	35304
+ 1866 0074 E0130000 		.word	5088
+ 1867 0078 00000000 		.word	0
+ 1868 007c 00100000 		.word	4096
+ 1869 0080 400D0000 		.word	3392
+ 1870 0084 18140000 		.word	5144
+ 1871 0088 05A50000 		.word	42245
+ 1872 008c 07AB0000 		.word	43783
+ 1873 0090 95240000 		.word	9365
+ 1874 0094 33250000 		.word	9523
+ 1875 0098 E3260000 		.word	9955
+ 1876 009c 789F0000 		.word	40824
+ 1877 00a0 68A00000 		.word	41064
+ 1878 00a4 03A10000 		.word	41219
+ 1879 00a8 D8A60000 		.word	42712
+ 1880 00ac D8A70000 		.word	42968
+ 1881 00b0 F0A80000 		.word	43248
+ 1882 00b4 90A90000 		.word	43408
+ 1883 00b8 94AA0000 		.word	43668
+ 1884 00bc E5130000 		.word	5093
+ 1885 00c0 610E0000 		.word	3681
+ 1886 00c4 4B0F0000 		.word	3915
+ 1887 00c8 02160000 		.word	5634
+ 1888 00cc 071E0000 		.word	7687
+ 1889 00d0 02210000 		.word	8450
+ 1890 00d4 91220000 		.word	8849
+ 1891 00d8 07290000 		.word	10503
+ 1892 00dc 0B330000 		.word	13067
+ 1893 00e0 0B350000 		.word	13579
+ 1894 00e4 1D370000 		.word	14109
+ 1895 00e8 71380000 		.word	14449
+ 1896 00ec 2A390000 		.word	14634
+ 1897 00f0 783C0000 		.word	15480
+ 1898 00f4 344D0000 		.word	19764
+ 1899 00f8 204E0000 		.word	20000
+ 1900 00fc 00690000 		.word	26880
+ 1901 0100 0A6B0000 		.word	27402
+ 1902 0104 10740000 		.word	29712
+ 1903 0108 4F8D0000 		.word	36175
+ 1904 010c 008E0000 		.word	36352
+ 1905 0110 008F0000 		.word	36608
+ 1906 0114 00900000 		.word	36864
+ 1907 0118 00910000 		.word	37120
+ 1908 011c 00960000 		.word	38400
+ 1909 0120 009A0000 		.word	39424
+ 1910 0124 84B00000 		.word	45188
+ 1911 0128 0CB10000 		.word	45324
+ 1912 012c 0EB20000 		.word	45582
+ 1913 0130 82B30000 		.word	45954
+ 1914 0134 0AB80000 		.word	47114
+ 1915 0138 0A430000 		.word	17162
+ 1916 013c F0440000 		.word	17648
+ 1917 0140 34450000 		.word	17716
+ 1918 0144 3A480000 		.word	18490
+ 1919 0148 99590000 		.word	22937
+ 1920 014c 885A0000 		.word	23176
+ 1921 0150 445B0000 		.word	23364
+ 1922 0154 675C0000 		.word	23655
+ 1923 0158 495D0000 		.word	23881
+ 1924 015c 0E5E0000 		.word	24078
+ 1925 0160 0A6C0000 		.word	27658
+ 1926 0164 556D0000 		.word	27989
+ 1927 0168 116E0000 		.word	28177
+ 1928 016c 9F6F0000 		.word	28575
+ 1929 0170 406A0000 		.word	27200
+ 1930 0174 40010000 		.word	320
+ 1931 0178 60020000 		.word	608
+ 1932 017c E7130000 		.word	5095
+ 1933 0180 804F0000 		.word	20352
+ 1934 0184 80500000 		.word	20608
+ 1935 0188 00510000 		.word	20736
+ 1936 018c 22520000 		.word	21026
+ 1937 0190 5E530000 		.word	21342
+ 1938 0194 80540000 		.word	21632
+ 1939 0198 9E580000 		.word	22686
+ 1940 019c 08410000 		.word	16648
+ 1941 01a0 003F0000 		.word	16128
+ 1942 01a4 05750000 		.word	29957
+ 1943 01a8 E1760000 		.word	30433
+ 1944 01ac 004C0000 		.word	19456
+ 1945 01b0 01770000 		.word	30465
+ 1946 01b4 C33D0000 		.word	15811
+ 1947 01b8 094B0000 		.word	19209
+ 1948 01bc 60C90000 		.word	51552
+ 1949 01c0 38410000 		.word	16696
+ 1950 01c4 40560000 		.word	22080
+ 1951 01c8 11340000 		.word	13329
+ 1952 01cc 123B0000 		.word	15122
+ 1953 01d0 88A40000 		.word	42120
+ 1954 01d4 00960000 		.word	38400
+ 1955 01d8 30970000 		.word	38704
+ 1956 01dc 20980000 		.word	38944
+ 1957 01e0 30990000 		.word	39216
+ 1958 01e4 849A0000 		.word	39556
+ 1959 01e8 299B0000 		.word	39721
+ 1960 01ec 039C0000 		.word	39939
+ 1961 01f0 4C9D0000 		.word	40268
+ 1962 01f4 3F9E0000 		.word	40511
+ 1963 01f8 04780000 		.word	30724
+ 1964 01fc 01790000 		.word	30977
+ 1965 0200 F0C80000 		.word	51440
+ 1966              		.text
+ 1967              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 i2c.c
-     /tmp/cc4Spwqh.s:22     .text.i2enable:00000000 $a
-     /tmp/cc4Spwqh.s:25     .text.i2enable:00000000 i2enable
-     /tmp/cc4Spwqh.s:43     .text.i2enable:00000010 $d
-     /tmp/cc4Spwqh.s:48     .text.i2cmasterset:00000000 $a
-     /tmp/cc4Spwqh.s:51     .text.i2cmasterset:00000000 i2cmasterset
-     /tmp/cc4Spwqh.s:102    .text.i2cmasterset:00000058 $d
-     /tmp/cc4Spwqh.s:109    .text.i2cstart:00000000 $a
-     /tmp/cc4Spwqh.s:112    .text.i2cstart:00000000 i2cstart
-     /tmp/cc4Spwqh.s:181    .text.i2cstart:00000080 $d
-     /tmp/cc4Spwqh.s:188    .text.i2crestart:00000000 $a
-     /tmp/cc4Spwqh.s:191    .text.i2crestart:00000000 i2crestart
-     /tmp/cc4Spwqh.s:331    .text.i2crestart:00000114 $d
-     /tmp/cc4Spwqh.s:339    .text.i2cstop:00000000 $a
-     /tmp/cc4Spwqh.s:342    .text.i2cstop:00000000 i2cstop
-     /tmp/cc4Spwqh.s:371    .text.i2cstop:00000024 $d
-     /tmp/cc4Spwqh.s:376    .text.i2csender:00000000 $a
-     /tmp/cc4Spwqh.s:379    .text.i2csender:00000000 i2csender
-     /tmp/cc4Spwqh.s:477    .text.i2csender:000000b0 $d
-     /tmp/cc4Spwqh.s:485    .text.novorvisesender:00000000 $a
-     /tmp/cc4Spwqh.s:488    .text.novorvisesender:00000000 novorvisesender
-     /tmp/cc4Spwqh.s:598    .text.novorvisesender:000000c4 $d
-     /tmp/cc4Spwqh.s:605    .text.tinyreader:00000000 $a
-     /tmp/cc4Spwqh.s:608    .text.tinyreader:00000000 tinyreader
-     /tmp/cc4Spwqh.s:730    .text.tinyreader:000000f0 $d
-     /tmp/cc4Spwqh.s:739    .text.i2creader:00000000 $a
-     /tmp/cc4Spwqh.s:742    .text.i2creader:00000000 i2creader
-     /tmp/cc4Spwqh.s:865    .text.i2creader:00000100 $d
-     /tmp/cc4Spwqh.s:872    .text.i2creader:00000110 $a
-     /tmp/cc4Spwqh.s:941    .text.i2creader:0000019c $d
-     /tmp/cc4Spwqh.s:952    .text.tinyread:00000000 $a
-     /tmp/cc4Spwqh.s:955    .text.tinyread:00000000 tinyread
-     /tmp/cc4Spwqh.s:1043   .text.tinyread:00000098 $d
-     /tmp/cc4Spwqh.s:1050   .text.SCCBread:00000000 $a
-     /tmp/cc4Spwqh.s:1053   .text.SCCBread:00000000 SCCBread
-     /tmp/cc4Spwqh.s:1157   .text.SCCBread:000000ac $d
-     /tmp/cc4Spwqh.s:1167   .text.SCCBwrite:00000000 $a
-     /tmp/cc4Spwqh.s:1170   .text.SCCBwrite:00000000 SCCBwrite
-     /tmp/cc4Spwqh.s:1278   .text.SCCBwrite:000000b0 $d
-     /tmp/cc4Spwqh.s:1286   .text.SCCBByteWrite:00000000 $a
-     /tmp/cc4Spwqh.s:1289   .text.SCCBByteWrite:00000000 SCCBByteWrite
-     /tmp/cc4Spwqh.s:1311   .text.vi2c:00000000 $a
-     /tmp/cc4Spwqh.s:1314   .text.vi2c:00000000 vi2c
-     /tmp/cc4Spwqh.s:1470   .text.vi2c:00000130 $d
-     /tmp/cc4Spwqh.s:1483   .text.ymzwrite0:00000000 $a
-     /tmp/cc4Spwqh.s:1486   .text.ymzwrite0:00000000 ymzwrite0
-     /tmp/cc4Spwqh.s:1555   .text.ymzwrite0:00000064 $d
-     /tmp/cc4Spwqh.s:1560   .text.ymzwrite1:00000000 $a
-     /tmp/cc4Spwqh.s:1563   .text.ymzwrite1:00000000 ymzwrite1
-     /tmp/cc4Spwqh.s:1606   .text.ymzwrite1:00000038 $d
-     /tmp/cc4Spwqh.s:1663   .rodata.OV7670:00000000 OV7670
-     /tmp/cc4Spwqh.s:1612   .rodata.str1.4:00000000 $d
-     /tmp/cc4Spwqh.s:1659   .rodata.OV7670:00000000 $d
+     /tmp/ccnuSo1U.s:22     .text.i2enable:00000000 $a
+     /tmp/ccnuSo1U.s:25     .text.i2enable:00000000 i2enable
+     /tmp/ccnuSo1U.s:43     .text.i2enable:00000010 $d
+     /tmp/ccnuSo1U.s:48     .text.i2cmasterset:00000000 $a
+     /tmp/ccnuSo1U.s:51     .text.i2cmasterset:00000000 i2cmasterset
+     /tmp/ccnuSo1U.s:102    .text.i2cmasterset:00000058 $d
+     /tmp/ccnuSo1U.s:109    .text.i2cstart:00000000 $a
+     /tmp/ccnuSo1U.s:112    .text.i2cstart:00000000 i2cstart
+     /tmp/ccnuSo1U.s:181    .text.i2cstart:00000080 $d
+     /tmp/ccnuSo1U.s:188    .text.i2crestart:00000000 $a
+     /tmp/ccnuSo1U.s:191    .text.i2crestart:00000000 i2crestart
+     /tmp/ccnuSo1U.s:331    .text.i2crestart:00000114 $d
+     /tmp/ccnuSo1U.s:339    .text.i2cstop:00000000 $a
+     /tmp/ccnuSo1U.s:342    .text.i2cstop:00000000 i2cstop
+     /tmp/ccnuSo1U.s:371    .text.i2cstop:00000024 $d
+     /tmp/ccnuSo1U.s:376    .text.i2csender:00000000 $a
+     /tmp/ccnuSo1U.s:379    .text.i2csender:00000000 i2csender
+     /tmp/ccnuSo1U.s:477    .text.i2csender:000000b0 $d
+     /tmp/ccnuSo1U.s:485    .text.novorvisesender:00000000 $a
+     /tmp/ccnuSo1U.s:488    .text.novorvisesender:00000000 novorvisesender
+     /tmp/ccnuSo1U.s:598    .text.novorvisesender:000000c4 $d
+     /tmp/ccnuSo1U.s:605    .text.tinyreader:00000000 $a
+     /tmp/ccnuSo1U.s:608    .text.tinyreader:00000000 tinyreader
+     /tmp/ccnuSo1U.s:730    .text.tinyreader:000000f0 $d
+     /tmp/ccnuSo1U.s:739    .text.i2creader:00000000 $a
+     /tmp/ccnuSo1U.s:742    .text.i2creader:00000000 i2creader
+     /tmp/ccnuSo1U.s:865    .text.i2creader:00000100 $d
+     /tmp/ccnuSo1U.s:872    .text.i2creader:00000110 $a
+     /tmp/ccnuSo1U.s:941    .text.i2creader:0000019c $d
+     /tmp/ccnuSo1U.s:952    .text.tinyread:00000000 $a
+     /tmp/ccnuSo1U.s:955    .text.tinyread:00000000 tinyread
+     /tmp/ccnuSo1U.s:1043   .text.tinyread:00000098 $d
+     /tmp/ccnuSo1U.s:1050   .text.SCCBread:00000000 $a
+     /tmp/ccnuSo1U.s:1053   .text.SCCBread:00000000 SCCBread
+     /tmp/ccnuSo1U.s:1157   .text.SCCBread:000000ac $d
+     /tmp/ccnuSo1U.s:1167   .text.SCCBwrite:00000000 $a
+     /tmp/ccnuSo1U.s:1170   .text.SCCBwrite:00000000 SCCBwrite
+     /tmp/ccnuSo1U.s:1278   .text.SCCBwrite:000000b0 $d
+     /tmp/ccnuSo1U.s:1286   .text.SCCBByteWrite:00000000 $a
+     /tmp/ccnuSo1U.s:1289   .text.SCCBByteWrite:00000000 SCCBByteWrite
+     /tmp/ccnuSo1U.s:1311   .text.vi2c:00000000 $a
+     /tmp/ccnuSo1U.s:1314   .text.vi2c:00000000 vi2c
+     /tmp/ccnuSo1U.s:1474   .text.vi2c:0000013c $d
+     /tmp/ccnuSo1U.s:1488   .text.waiti2c:00000000 $a
+     /tmp/ccnuSo1U.s:1491   .text.waiti2c:00000000 waiti2c
+     /tmp/ccnuSo1U.s:1506   .text.nonei2c:00000000 $a
+     /tmp/ccnuSo1U.s:1509   .text.nonei2c:00000000 nonei2c
+     /tmp/ccnuSo1U.s:1644   .text.nonei2c:000000f0 $d
+     /tmp/ccnuSo1U.s:1656   .text.ymzwrite0:00000000 $a
+     /tmp/ccnuSo1U.s:1659   .text.ymzwrite0:00000000 ymzwrite0
+     /tmp/ccnuSo1U.s:1728   .text.ymzwrite0:00000064 $d
+     /tmp/ccnuSo1U.s:1733   .text.ymzwrite1:00000000 $a
+     /tmp/ccnuSo1U.s:1736   .text.ymzwrite1:00000000 ymzwrite1
+     /tmp/ccnuSo1U.s:1779   .text.ymzwrite1:00000038 $d
+     /tmp/ccnuSo1U.s:1836   .rodata.OV7670:00000000 OV7670
+     /tmp/ccnuSo1U.s:1785   .rodata.str1.4:00000000 $d
+     /tmp/ccnuSo1U.s:1832   .rodata.OV7670:00000000 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
@@ -2513,5 +2745,4 @@ _impure_ptr
 puts
 xQueueGenericReceive
 xQueueGenericSend
-vTaskSuspend
 Mutex

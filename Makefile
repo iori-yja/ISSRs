@@ -96,7 +96,7 @@ EXTRAINCDIRS =  . 					\
 # List C source files (THUMB INTERWORK) here.
 # use file-extension c for "c-only"-files
 THUMB_SOURCE = \
-		./src/$(TARGET).c		        \
+#		./src/$(TARGET).c		        \
 
 #/*----- library PATH -----*/
 # define COMMON LIBRARY PATH
@@ -111,7 +111,7 @@ THUMB_SOURCE += \
 		$(COMMON)/src/target.c			\
 		$(COMMON)/src/syscalls.c		\
 #		$(COMMON)/src/camerareset.c		\
-		$(COMMON)/src/adc.c		
+#		$(COMMON)/src/adc.c		
 #		$(COMMON)/src/Italia.c
 		
 # define USB LIBRARY PATH
@@ -175,6 +175,7 @@ LIBRARY_DIRS = $(addprefix -L,$(LIBPATHS))
 ARM_SOURCE= \
 		$(RTOS_SOURCE_DIR)/portable/GCC/ARM7_LPC23xx/portISR.c \
 		$(COMMON)/src/i2c.c			\
+		./src/$(TARGET).c		        \
 #		$(WEBLIB)/EMAC_ISR.c 			\
 #		./src/vcom.c					\
 

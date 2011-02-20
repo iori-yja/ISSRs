@@ -814,16 +814,16 @@
  716              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 misc.c
-     /tmp/ccoOHu8K.s:23     .text.__NOP:00000000 $t
-     /tmp/ccoOHu8K.s:28     .text.__NOP:00000000 __NOP
-     /tmp/ccoOHu8K.s:45     .text.time_waste:00000000 $t
-     /tmp/ccoOHu8K.s:50     .text.time_waste:00000000 time_waste
-     /tmp/ccoOHu8K.s:94     .text._delay_us:00000000 $t
-     /tmp/ccoOHu8K.s:99     .text._delay_us:00000000 _delay_us
-     /tmp/ccoOHu8K.s:181    .text.dump:00000000 $t
-     /tmp/ccoOHu8K.s:186    .text.dump:00000000 dump
-     /tmp/ccoOHu8K.s:702    .text.dump:00000314 $d
-     /tmp/ccoOHu8K.s:709    .rodata.str1.4:00000000 $d
+     /tmp/ccrUAUEd.s:23     .text.__NOP:00000000 $t
+     /tmp/ccrUAUEd.s:28     .text.__NOP:00000000 __NOP
+     /tmp/ccrUAUEd.s:45     .text.time_waste:00000000 $t
+     /tmp/ccrUAUEd.s:50     .text.time_waste:00000000 time_waste
+     /tmp/ccrUAUEd.s:94     .text._delay_us:00000000 $t
+     /tmp/ccrUAUEd.s:99     .text._delay_us:00000000 _delay_us
+     /tmp/ccrUAUEd.s:181    .text.dump:00000000 $t
+     /tmp/ccrUAUEd.s:186    .text.dump:00000000 dump
+     /tmp/ccrUAUEd.s:702    .text.dump:00000314 $d
+     /tmp/ccrUAUEd.s:709    .rodata.str1.4:00000000 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

@@ -121,7 +121,7 @@ int right;
 xSemaphoreHandle Mutex;
 
 /*-----------------------------------------------------------*/
-int
+void
 main (void)
 {
   TargetResetInit ();		//
@@ -135,15 +135,15 @@ main (void)
 //		   configMINIMAL_STACK_SIZE, NULL,
 //		   mainCHECK_TASK_PRIORITY - 1, NULL);
       /* Start2csender the tasks defined within this file/specific to this demo. */
-    xTaskCreate (ISSR, (signed portCHAR *) "issr", configMINIMAL_STACK_SIZE,
+      xTaskCreate (ISSR, (signed portCHAR *) "issr", configMINIMAL_STACK_SIZE,
 		   NULL, mainCHECK_TASK_PRIORITY +1, NULL);
-     xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
+
+    xTaskCreate (vi2c, (signed portCHAR *) "LD", configMINIMAL_STACK_SIZE,
 		   NULL, mainCHECK_TASK_PRIORITY , NULL);
       vTaskStartScheduler ();
   FIO2SET1 = 2;
   }
   while (1);
-  return 0;
 }
 
 //*******************************************************************************************************
@@ -207,7 +207,6 @@ getISSI (void)
 void
 vApplicationTickHook (void)
 {
-
 }
 
 /*-----------------------------------------------------------*/
@@ -230,10 +229,30 @@ vADcTask (void *pvParameters)
 void
 ISSR (void *pvParameters)
 {
-  unsigned int tmpData;
+  unsigned int tmpData = 0;
+  int tole = 0;
+  int cnt = 0;
   vTaskDelay (30 / portTICK_RATE_MS);
-  while (!xSemaphoreTake (Mutex, 1 / portTICK_RATE_MS));
-  vTaskDelay (30 / portTICK_RATE_MS);
+  GPIOInit (1, FAST_PORT, DIR_OUT, LED1_MASK);
+  FIO2DIR0 = 1;
+  while (!xSemaphoreTake (Mutex, 300 / portTICK_RATE_MS)) FIO1PIN ^= LED1_MASK;
+  while (1){
+	  vTaskDelay (10 / portTICK_RATE_MS);
+	  if( tole++==0 ){
+		  printf("tick");
+		  FIO1PIN ^= LED1_MASK;
+		  }
+	  else if( tole==10 ){
+		  printf("Tack");
+		  tole = -10;
+  		  FIO2PIN0 ^= 1;
+		  tmpData = tmpData + ((FIO2PIN0&2)<<cnt++);
+		  fflush(stdout);
+		  printf("%x",tmpData);
+	  	}
+		fflush(stdout);
+
+  }
   FIO2CLR1 = 0xFF;
   while (1)
     {

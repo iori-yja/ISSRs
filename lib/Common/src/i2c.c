@@ -413,13 +413,57 @@ vi2c (void *pvParameters)
   fflush (stdout);
   SCCBread (0x00, 0xca, 0);
   printf("Semagive");
+  fflush (stdout);
   xSemaphoreGive (Mutex);
 //  vTaskResume ( g_issrhandle );
-  vTaskSuspend(NULL);
 //  xTaskCreate (ISSR, (signed portCHAR *) "ITS", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL);
-  while (1);
+  while (1) vTaskDelay(10000 / portTICK_RATE_MS);
 }
-
+void
+waiti2c (unsigned int Delay){
+	while(Delay--);
+	}
+void
+nonei2c (void *pvParameters)
+{
+  int regpointer = 0;
+  char Loopy;
+  i2cmasterset (2);
+  I22SCLH = 80;
+  I22SCLL = 180;
+  printf ("Register Reset\n");
+  waiti2c (300000);
+  RESETREG
+  waiti2c (200000);
+  printf ("Setup begin[> ");
+  fflush (stdout);
+  for (regpointer = 0; regpointer != 129;)
+    {
+      if (SCCBByteWrite (OV7670[regpointer]) == -1) continue;
+      regpointer++;
+      	switch (regpointer % 4)
+	  {
+	  case 0:
+	  Loopy = '|';
+	  break;
+	  case 1:
+	  Loopy = '/';
+	  break;
+	  case 2:
+	  Loopy = '-';
+	  break;
+	  case 3:
+	  Loopy = '\\';
+	  break;
+	  }
+	printf ("\b\b\b=>%c", Loopy);
+	fflush (stdout);
+      waiti2c (1000);
+    }
+  printf ("\rData transmition End!\n");
+  fflush (stdout);
+  SCCBread (0x00, 0xca, 0);
+}
 int
 ymzwrite0 (int frec, int adr)
 {

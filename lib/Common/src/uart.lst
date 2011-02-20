@@ -689,15 +689,15 @@
  282              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 uart.c
-     /tmp/ccYjwI7A.s:24     .text.UARTInit:00000000 $t
-     /tmp/ccYjwI7A.s:29     .text.UARTInit:00000000 UARTInit
-     /tmp/ccYjwI7A.s:148    .text.UARTInit:0000007c $d
-     /tmp/ccYjwI7A.s:162    .text.UARTPutch:00000000 $t
-     /tmp/ccYjwI7A.s:167    .text.UARTPutch:00000000 UARTPutch
-     /tmp/ccYjwI7A.s:212    .text.UARTPutch:00000028 $d
-     /tmp/ccYjwI7A.s:220    .text.UARTGetch:00000000 $t
-     /tmp/ccYjwI7A.s:225    .text.UARTGetch:00000000 UARTGetch
-     /tmp/ccYjwI7A.s:274    .text.UARTGetch:00000030 $d
+     /tmp/ccZkW7b1.s:24     .text.UARTInit:00000000 $t
+     /tmp/ccZkW7b1.s:29     .text.UARTInit:00000000 UARTInit
+     /tmp/ccZkW7b1.s:148    .text.UARTInit:0000007c $d
+     /tmp/ccZkW7b1.s:162    .text.UARTPutch:00000000 $t
+     /tmp/ccZkW7b1.s:167    .text.UARTPutch:00000000 UARTPutch
+     /tmp/ccZkW7b1.s:212    .text.UARTPutch:00000028 $d
+     /tmp/ccZkW7b1.s:220    .text.UARTGetch:00000000 $t
+     /tmp/ccZkW7b1.s:225    .text.UARTGetch:00000000 UARTGetch
+     /tmp/ccZkW7b1.s:274    .text.UARTGetch:00000030 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
